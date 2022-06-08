@@ -44,19 +44,9 @@ variable "atlantis_gitlab_webhook_secret" {
 variable "gitlab_token" {
   type = string
 }
-variable "keycloak_password" {
-  type = string
-}
-variable "keycloak_admin_password" {
-  type = string
-}
 
-variable "iam_user_arn" {
-  type = string
-}
-variable "email_domain" {
-  type = string
-}
+
+
 variable "hosted_zone_name" {
   type = string
 }
