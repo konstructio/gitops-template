@@ -138,11 +138,11 @@ module "eks" {
     username = "system:node:{{EC2PrivateDNSName}}"
     groups   = ["system:bootstrappers", "system:nodes"]
   }])
-  map_users = concat(var.map_users, [{
-    userarn  = var.iam_user_arn
-    username = "admin"
-    groups   = ["system:masters"]
-  }])
+  # map_users = concat(var.map_users, [{
+  #   userarn  = var.iam_user_arn
+  #   username = "admin"
+  #   groups   = ["system:masters"]
+  # }])
   map_accounts = var.map_accounts
 }
 
