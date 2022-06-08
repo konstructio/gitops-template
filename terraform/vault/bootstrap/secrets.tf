@@ -118,7 +118,6 @@ resource "vault_generic_secret" "atlantis_secrets" {
   "TF_VAR_gitlab_url": "gitlab.<AWS_HOSTED_ZONE_NAME>",
   "TF_VAR_hosted_zone_id": "${var.hosted_zone_id}",
   "TF_VAR_hosted_zone_name": "${var.hosted_zone_name}",
-  "TF_VAR_iam_user_arn": "${var.iam_user_arn}",
   "TF_VAR_keycloak_admin_password": "${var.keycloak_admin_password}",
   "TF_VAR_keycloak_password": "${var.keycloak_password}",
   "TF_VAR_vault_addr": "${var.vault_addr}",
