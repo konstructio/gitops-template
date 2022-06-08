@@ -13,11 +13,10 @@ The [kubefirst/nebulous](https://hub.docker.com/repository/docker/kubefirst/nebu
 
 | Application              | Namespace        | Description                                 | URL (where applicable)                              |
 |--------------------------|------------------|---------------------------------------------|-----------------------------------------------------|
-| GitLab                   |                  | Privately Hosted GitLab Omnibus Server      | https://gitlab.<AWS_HOSTED_ZONE_NAME>               |
+| GitLab                   | gitlab           | Privately Hosted GitLab Omnibus Server      | https://gitlab.<AWS_HOSTED_ZONE_NAME>               |
 | Vault                    | vault            | Secrets Management                          | https://vault.<AWS_HOSTED_ZONE_NAME>                |
 | Argo CD                  | argocd           | GitOps Continuous Delivery                  | https://argocd.<AWS_HOSTED_ZONE_NAME>               |
 | Argo Workflows           | argo             | Application Continuous Integration          | https://argo.<AWS_HOSTED_ZONE_NAME>                 |
-| Keycloak                 | keycloak         | Authentication                              | https://keycloak.<AWS_HOSTED_ZONE_NAME>             |
 | Atlantis                 | atlantis         | Terraform Workflow Automation               | https://atlantis.<AWS_HOSTED_ZONE_NAME>             |
 | Chart Museum             | chartmuseum      | Helm Chart Registry                         | https://chartmuseum.<AWS_HOSTED_ZONE_NAME>          |
 | Metaphor Development     | development      | Development instance of sample application  | https://metaphor-development.<AWS_HOSTED_ZONE_NAME> |
@@ -48,7 +47,6 @@ Any change to a `*.tf` file, even a whitespace change, will trigger its correspo
 In addition to infrastructure terraform, the `gitops` repository also contains configuration as code for the following products:
 - ArgoCD: The Argo CD app-registry, repositories, and secrets
 - GitLab: Gitlab Repositories and ECR registries needed to house containers for those repositories
-- Keycloak: Kubefirst Realm, User Groups for Admin and Developer roles, and sample users that get SSO access to vault, argo cd, argo workflows, and gitlab
 - Vault: auth backends, secrets engine, infrastructure secrets
 
 ## engineering onboarding

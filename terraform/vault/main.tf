@@ -25,8 +25,6 @@ module "bootstrap" {
   atlantis_gitlab_token             = var.atlantis_gitlab_token
   atlantis_gitlab_webhook_secret    = var.atlantis_gitlab_webhook_secret
   gitlab_token                      = var.gitlab_token
-  keycloak_password                 = var.keycloak_password
-  keycloak_admin_password           = var.keycloak_admin_password
 }
 
 module "oidc" {
