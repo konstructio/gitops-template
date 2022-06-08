@@ -15,7 +15,6 @@ module "bootstrap" {
   aws_secret_access_key             = var.aws_secret_access_key
   vault_token                       = var.vault_token
   email_address                     = var.email_address
-  email_domain                      = var.email_domain
   vault_addr                        = var.vault_addr
   aws_access_key_id                 = var.aws_access_key_id
   gitlab_bot_root_password          = var.gitlab_bot_root_password
@@ -28,7 +27,6 @@ module "bootstrap" {
   gitlab_token                      = var.gitlab_token
   keycloak_password                 = var.keycloak_password
   keycloak_admin_password           = var.keycloak_admin_password
-  # iam_user_arn                      = var.iam_user_arn
 }
 
 module "oidc" {

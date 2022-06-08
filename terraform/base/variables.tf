@@ -9,11 +9,3 @@ variable "aws_account_id" {
 variable "hosted_zone_name" {
   type = string
 }
-
-variable "email_domain" {
-  type = string
-}
-
-variable "iam_user_arn" {
-  type = string
-}
