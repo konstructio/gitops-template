@@ -17,7 +17,6 @@ module "eks" {
 
   aws_account_id = var.aws_account_id
   cluster_name   = "kubefirst"
-  # iam_user_arn   = var.iam_user_arn
 }
 
 module "kms" {

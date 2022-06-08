@@ -43,6 +43,3 @@ variable "cluster_name" {
 variable "aws_account_id" {
   type = string
 }
-variable "iam_user_arn" {
-  type = string
-}
