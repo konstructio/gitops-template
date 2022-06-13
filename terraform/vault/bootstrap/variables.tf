@@ -40,8 +40,6 @@ variable "atlantis_gitlab_webhook_secret" {
 variable "gitlab_token" {
   type = string
 }
-
-
 variable "hosted_zone_name" {
   type = string
 }
