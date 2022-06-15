@@ -1,3 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: soft-serve
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
