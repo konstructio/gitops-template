@@ -30,6 +30,18 @@ spec:
             tls:
               enabled: true
               secretName: gitlab-tls
+        gitlab:
+          # https://docs.gitlab.com/charts/installation/command-line-options.html#tls-configuration
+          webservice:
+            ingress:
+              provider: nginx
+              class: nginx
+              annotations:
+                kubernetes.io/tls-acme: true
+                cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              tls:
+                enabled: true
+                secretName: gitlab-webservice-tls
         certmanager-issuer:
           email: <EMAIL_ADDRESS>
         upgradeCheck:
