@@ -19,7 +19,7 @@ spec:
             defaultProjectsFeatures:
               containerRegistry: false
           hosts:
-            domain: k8s.kubefirst.io
+            domain: <AWS_HOSTED_ZONE_NAME>
           ingress:
             configureCertmanager: false
             provider: nginx
