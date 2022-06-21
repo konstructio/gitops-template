@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitlab
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  source:
+    repoURL: https://charts.gitlab.io
+    targetRevision: 6.0.1
+    helm:
+      values: |-
+        global:
+          appConfig:
+            defaultProjectsFeatures:
+              containerRegistry: false
+          hosts:
+            domain: k8s.kubefirst.io
+          ingress:
+            configureCertmanager: false
+            provider: nginx
+            class: nginx
+            annotations:
+              kubernetes.io/tls-acme: true
+              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            tls:
+              enabled: true
+              secretName: gitlab-tls
+        certmanager-issuer:
+          email: <EMAIL_ADDRESS>
+        upgradeCheck:
+          enabled: false
+        certmanager:
+          installCRDs: false
+          install: false
+        nginx-ingress:
+          enabled: false
+        registry:
+          enabled: false
+        # add on later
+        gitlab-runner:
+          install: false
+    chart: gitlab
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitlab
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
