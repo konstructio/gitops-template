@@ -42,7 +42,7 @@ spec:
         - -c
         - |
           sleep 10
-          kubectl -n vault exec vault-tmp-0 -- vault operator init -format=json > /tmp/cluster-keys.json
+          kubectl -n vault exec vault-0 -- vault operator init -format=json > /tmp/cluster-keys.json
           kubectl -n vault create secret generic vault-unseal-keys --from-file=/tmp/cluster-keys.json
         volumeMounts:
         - mountPath: /tmp
