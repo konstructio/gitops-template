@@ -18,6 +18,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: vault-unseal-sa
+  namespace: vault
   annotations:
     argocd.argoproj.io/sync-wave: "6"
 automountServiceAccountToken: true
