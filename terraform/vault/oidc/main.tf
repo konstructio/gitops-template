@@ -1,5 +1,5 @@
 data "vault_generic_secret" "vault_oidc_secrets" {
-  path = "secret/admin/oidc/vault"
+  path = "secret/oidc/vault"
 }
 
 variable "vault_redirect_uris" {
