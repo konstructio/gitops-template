@@ -15,6 +15,8 @@ spec:
     helm:
       values: |-
         global:
+          registry:
+              enabled: false
           appConfig:
             defaultProjectsFeatures:
               containerRegistry: false
@@ -29,10 +31,18 @@ spec:
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
             tls:
               enabled: true
-              secretName: gitlab-tls
+              secretName: gitlab-tls       
         gitlab:
+          sidekiq:
+            registry:
+              enabled: false
+          unicorn:
+            registry:
+              enabled: false
           # https://docs.gitlab.com/charts/installation/command-line-options.html#tls-configuration
           webservice:
+            registry:
+              enabled: false
             ingress:
               provider: nginx
               class: nginx
@@ -42,6 +52,9 @@ spec:
               tls:
                 enabled: true
                 secretName: gitlab-webservice-tls
+        webservice:
+          registry:
+           enabled: false
         certmanager-issuer:
           email: <EMAIL_ADDRESS>
         upgradeCheck:
