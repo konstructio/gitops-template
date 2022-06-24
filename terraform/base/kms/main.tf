@@ -1,7 +1,3 @@
-variable "aws_account_id" {
-  type = string
-}
-
 resource "aws_kms_key" "vault_unseal" {
   description              = "KMS key for auto unsealing Hashicorp Vault"
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
@@ -9,13 +5,13 @@ resource "aws_kms_key" "vault_unseal" {
   policy                   = <<EOT
 {
   "Version": "2012-10-17",
-  "Id": "key-consolepolicy-3",
+  "Id": "kms-key-policy",
   "Statement": [
     {
       "Sid": "Enable IAM User Permissions",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::${var.aws_account_id}:root"
+        "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:root"
       },
       "Action": "kms:*",
       "Resource": "*"
@@ -25,7 +21,7 @@ resource "aws_kms_key" "vault_unseal" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::${var.aws_account_id}:root"
+          "arn:aws:iam::<AWS_ACCOUNT_ID>:root"
         ]
       },
       "Action": [
@@ -51,7 +47,7 @@ resource "aws_kms_key" "vault_unseal" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::${var.aws_account_id}:root"
+          "arn:aws:iam::<AWS_ACCOUNT_ID>:root"
         ]
       },
       "Action": [
@@ -68,7 +64,7 @@ resource "aws_kms_key" "vault_unseal" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::${var.aws_account_id}:root"
+          "arn:aws:iam::<AWS_ACCOUNT_ID>:root"
         ]
       },
       "Action": [
