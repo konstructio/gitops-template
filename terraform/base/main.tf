@@ -20,7 +20,6 @@ module "eks" {
 }
 
 module "kms" {
-  aws_account_id = var.aws_account_id
   source = "./kms"
 }
 
