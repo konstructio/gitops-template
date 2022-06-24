@@ -23,57 +23,33 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
-apiVersion: batch/v1
-kind: Job
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: k-add-argocd-permissions
+  name: argocd-clusterrole
   annotations:
     argocd.argoproj.io/sync-wave: "8"
-    argocd.argoproj.io/hook: PostSync
-    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
-spec:
-  template:
-    spec:
-      containers:
-        # todo adjust node permissions to be adequate for geting a kubeconfig in terraform - manually adding in console
-      - name: argocd-permissions
-        image: kubefirst/kubefirst-builder:spike # TODO: official versioned image
-        command:
-        - /bin/bash
-        - -c
-        - |
-          aws eks update-kubeconfig --name kubefirst --region <AWS_DEFAULT_REGION>
-          kubectl -n argocd delete rolebinding argocd-admin --ignore-not-found=true
-          kubectl -n argocd create rolebinding argocd-admin --clusterrole=admin --serviceaccount=argocd:default
-        # todo remove this envFrom and assume role
-        envFrom:
-        - secretRef:
-            name: aws-creds
-      restartPolicy: Never
-  backoffLimit: 2
+subjects:
+- kind: ServiceAccount
+  name: argocd
+  namespace: argocd
+roleRef:
+  kind: ClusterRole
+  name: admin
+  apiGroup: rbac.authorization.k8s.io
 ---
-apiVersion: batch/v1
-kind: Job
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: k-add-argo-permissions
+  name: argo-clusterrole
   annotations:
     argocd.argoproj.io/sync-wave: "9"
-spec:
-  template:
-    spec:
-      containers:
-      - name: argo-permissions
-        image: kubefirst/kubefirst-builder:spike
-        command:
-        - /bin/bash
-        - -c
-        - |
-          aws eks update-kubeconfig --name kubefirst --region <AWS_DEFAULT_REGION>
-          kubectl -n argo delete rolebinding argo-admin --ignore-not-found=true
-          kubectl -n argo create rolebinding argo-admin --clusterrole=admin --serviceaccount=argo:default
-        # todo remove this envFrom and assume role
-        envFrom:
-        - secretRef:
-            name: aws-creds
-      restartPolicy: Never
-  backoffLimit: 2
+subjects:
+- kind: ServiceAccount
+  name: argo
+  namespace: argo
+roleRef:
+  kind: ClusterRole
+  name: admin
+  apiGroup: rbac.authorization.k8s.io
+
