@@ -84,6 +84,7 @@ resource "aws_security_group" "all_worker_mgmt" {
     ]
   }
 }
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.14.2"
@@ -136,7 +137,6 @@ module "eks" {
   map_accounts = var.map_accounts
 }
 
-
 module "iam_assumable_role_argo_admin" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
@@ -159,51 +159,11 @@ module "iam_assumable_role_argo_admin" {
   oidc_fully_qualified_subjects = ["system:serviceaccount:argo:argo"]
 }
 
-
-
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name = module.eks.cluster_id
   addon_name   = "vpc-cni"
   addon_version = "v1.10.1-eksbuild.1"
 }
-
-# data "tls_certificate" "eks" {
-#   url = module.eks.cluster_oidc_issuer_url
-# }
-
-# resource "aws_iam_openid_connect_provider" "irsa" {
-#   client_id_list  = ["sts.amazonaws.com"]
-#   thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-#   url             = module.eks.cluster_oidc_issuer_url
-# }
-
-# data "aws_iam_policy_document" "assume_role_policy" {
-#   statement {
-#     actions = ["sts:AssumeRoleWithWebIdentity"]
-#     effect  = "Allow"
-
-#     condition {
-#       test     = "StringEquals"
-#       variable = "${replace(aws_iam_openid_connect_provider.irsa.url, "https://", "")}:sub"
-#       values   = ["system:serviceaccount:kube-system:aws-node"]
-#     }
-
-#     principals {
-#       identifiers = [aws_iam_openid_connect_provider.irsa.arn]
-#       type        = "Federated"
-#     }
-#   }
-# }
-
-# resource "aws_iam_role" "vpc_cni" {
-#   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-#   name               = "VpcCniRole"
-# }
-
-# resource "aws_iam_role_policy_attachment" "vpc_cni" {
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-#   role       = aws_iam_role.vpc_cni.name
-# }
 
 resource "aws_eks_node_group" "preprod_nodes" {
   cluster_name    = module.eks.cluster_id
@@ -254,6 +214,7 @@ resource "aws_eks_node_group" "mgmt_nodes" {
     module.eks
   ]
 }
+
 resource "aws_eks_node_group" "production_nodes" {
   cluster_name    = module.eks.cluster_id
   node_group_name = "production-nodes"
