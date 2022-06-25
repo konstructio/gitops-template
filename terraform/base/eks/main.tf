@@ -135,6 +135,73 @@ module "eks" {
 }
 
 
+module "iam_assumable_role_argo_admin" {
+  source = "../../modules/iam-assumable-role-with-oidc"
+  version = "4.0.0"
+
+  create_role = true
+
+  role_name = "Argo"
+
+  tags = {
+    Role = "Argo"
+  }
+
+  provider_url  = module.eks.oidc_provider_arn
+
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
+
+  oidc_fully_qualified_subjects = ["system:serviceaccount:argo:argo"]
+}
+
+
+
+resource "aws_eks_addon" "vpc_cni" {
+  cluster_name = module.eks.cluster_id
+  addon_name   = "vpc-cni"
+  addon_version = "1.11.2-eksbuild.1"
+}
+
+data "tls_certificate" "eks" {
+  url = module.eks.cluster_oidc_issuer_url
+}
+
+resource "aws_iam_openid_connect_provider" "irsa" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = module.eks.cluster_oidc_issuer_url
+}
+
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.irsa.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-node"]
+    }
+
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.irsa.arn]
+      type        = "Federated"
+    }
+  }
+}
+
+resource "aws_iam_role" "vpc_cni" {
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+  name               = "VpcCniRole"
+}
+
+resource "aws_iam_role_policy_attachment" "vpc_cni" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.vpc_cni.name
+}
+
 resource "aws_eks_node_group" "preprod_nodes" {
   cluster_name    = module.eks.cluster_id
   node_group_name = "preprod-nodes"

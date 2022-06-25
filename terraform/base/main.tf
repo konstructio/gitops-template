@@ -27,18 +27,6 @@ module "dynamodb" {
   source = "./dynamodb"
 }
 
-# TODO: decide the long term plan for these
-# module "s3" {
-#   source = "./s3"
-# }
-
-# TODO: think these can be destroyed
-# module "security_groups" {
-#   source = "./security-groups"
-
-#   kubefirst_vpc_id = module.eks.kubefirst_vpc_id
-# }
-
-output "vault_unseal_kms_key" {
+// todo https://github.com/terraform-aws-modules/terraform-aws-iam/tree/v4.0.0/examples/iam-assumable-role-with-oidcoutput "vault_unseal_kms_key" {
   value = module.kms.vault_unseal_kms_key
 }
