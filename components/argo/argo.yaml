@@ -212,7 +212,7 @@ kind: ServiceAccount
 metadata:
   name: argo
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin
+    eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/Argo
 ---
 apiVersion: v1
 kind: ServiceAccount
