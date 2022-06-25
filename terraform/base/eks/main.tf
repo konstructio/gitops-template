@@ -115,7 +115,9 @@ module "eks" {
   cluster_version = "1.20"
   subnets         = module.vpc.private_subnets
   enable_irsa     = true 
-
+  # write_kubeconfig = false
+  manage_aws_auth = false
+  
   tags = {
     ClusterName = "kubefirst"
   }
@@ -165,43 +167,43 @@ resource "aws_eks_addon" "vpc_cni" {
   addon_version = "v1.10.1-eksbuild.1"
 }
 
-data "tls_certificate" "eks" {
-  url = module.eks.cluster_oidc_issuer_url
-}
+# data "tls_certificate" "eks" {
+#   url = module.eks.cluster_oidc_issuer_url
+# }
 
-resource "aws_iam_openid_connect_provider" "irsa" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = module.eks.cluster_oidc_issuer_url
-}
+# resource "aws_iam_openid_connect_provider" "irsa" {
+#   client_id_list  = ["sts.amazonaws.com"]
+#   thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+#   url             = module.eks.cluster_oidc_issuer_url
+# }
 
-data "aws_iam_policy_document" "assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-    effect  = "Allow"
+# data "aws_iam_policy_document" "assume_role_policy" {
+#   statement {
+#     actions = ["sts:AssumeRoleWithWebIdentity"]
+#     effect  = "Allow"
 
-    condition {
-      test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.irsa.url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:kube-system:aws-node"]
-    }
+#     condition {
+#       test     = "StringEquals"
+#       variable = "${replace(aws_iam_openid_connect_provider.irsa.url, "https://", "")}:sub"
+#       values   = ["system:serviceaccount:kube-system:aws-node"]
+#     }
 
-    principals {
-      identifiers = [aws_iam_openid_connect_provider.irsa.arn]
-      type        = "Federated"
-    }
-  }
-}
+#     principals {
+#       identifiers = [aws_iam_openid_connect_provider.irsa.arn]
+#       type        = "Federated"
+#     }
+#   }
+# }
 
-resource "aws_iam_role" "vpc_cni" {
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-  name               = "VpcCniRole"
-}
+# resource "aws_iam_role" "vpc_cni" {
+#   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+#   name               = "VpcCniRole"
+# }
 
-resource "aws_iam_role_policy_attachment" "vpc_cni" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.vpc_cni.name
-}
+# resource "aws_iam_role_policy_attachment" "vpc_cni" {
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+#   role       = aws_iam_role.vpc_cni.name
+# }
 
 resource "aws_eks_node_group" "preprod_nodes" {
   cluster_name    = module.eks.cluster_id
