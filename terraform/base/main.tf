@@ -27,6 +27,7 @@ module "dynamodb" {
   source = "./dynamodb"
 }
 
+output "vault_unseal_kms_key" {
 // todo https://github.com/terraform-aws-modules/terraform-aws-iam/tree/v4.0.0/examples/iam-assumable-role-with-oidcoutput "vault_unseal_kms_key" {
   value = module.kms.vault_unseal_kms_key
 }
