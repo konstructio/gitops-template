@@ -162,7 +162,7 @@ module "iam_assumable_role_argo_admin" {
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name = module.eks.cluster_id
   addon_name   = "vpc-cni"
-  addon_version = "1.11.2"
+  addon_version = "v1.10.1-eksbuild.1"
 }
 
 data "tls_certificate" "eks" {
