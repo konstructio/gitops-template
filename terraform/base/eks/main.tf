@@ -86,7 +86,7 @@ resource "aws_security_group" "all_worker_mgmt" {
 }
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.47.0"
+  version = "3.14.2"
 
   name                 = "kubefirst-vpc"
   cidr                 = "10.0.0.0/16"
