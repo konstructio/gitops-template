@@ -574,6 +574,7 @@ data:
         /{{workflow.name}}\
         /{{pod.name}}"
       endpoint: s3.amazonaws.com
+      useSDKCreds: true
   sso: |
     # TODO: might need a route added
     issuer: https://gitlab.<AWS_HOSTED_ZONE_NAME>
