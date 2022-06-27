@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: external-secrets-operator-wait
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  template:
+    spec:
+      serviceAccountName: argocd-server
+      containers:
+      - name: external-secrets-operator-wait
+        image: argoproj/argocd:v2.4.2
+        command:
+        - /bin/sh
+        - -c
+        - |
+          argocd login argocd.argocd-server.svc.cluster.local --core
+          argocd app wait external-secrets-operator
+      restartPolicy: Never
+  backoffLimit: 1

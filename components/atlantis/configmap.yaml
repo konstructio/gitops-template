@@ -1,7 +1,10 @@
+# todo remove this and volumeMount in application.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kubeconfig
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 data:
   config: |
     apiVersion: v1
