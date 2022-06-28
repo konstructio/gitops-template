@@ -6,7 +6,7 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "6"
 spec:
   destination:
     server: https://kubernetes.default.svc
@@ -18,9 +18,9 @@ spec:
     helm:
       parameters:
         - name: server.route.host
-          value: vault.kubefirst.io
+          value: vault.<AWS_HOSTED_ZONE_NAME>
         - name: 'server.ingress.hosts[0].host'
-          value: vault.kubefirst.io
+          value: vault.<AWS_HOSTED_ZONE_NAME>
       values: |-
         server:
           image:
@@ -50,13 +50,13 @@ spec:
         
               storage "dynamodb" {
                 ha_enabled = "true"
-                region = "us-east-2"
+                region = "<AWS_DEFAULT_REGION>"
                 table = "vault-dynamodb-backend"
               }
         
               seal "awskms" {
-                 region     = "us-east-2"
-                 kms_key_id = "0c3cd762-e513-45cd-95bd-a8f0dc4ec837"
+                 region     = "<AWS_DEFAULT_REGION>"
+                 kms_key_id = "<KMS_KEY_ID>"
               }
               service_registration "kubernetes" {}
         
@@ -71,11 +71,11 @@ spec:
               kubernetes.io/ingress.class: nginx
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
             path: /
-            host: vault.kubefirst.io
+            host: vault.<AWS_HOSTED_ZONE_NAME>
             tls:
              - secretName: vault-tls
                hosts:
-                 - vault.kubefirst.io
+                 - vault.<AWS_HOSTED_ZONE_NAME>
         injector:
           enabled: true
     chart: vault
@@ -83,36 +83,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    # todo blue - mutating webhooks needs to be ignored in argocd
     syncOptions:
       - CreateNamespace=true
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: unseal-vault
-  annotations:
-    argocd.argoproj.io/sync-wave: "9"
-    # argocd.argoproj.io/hook: PostSync # don't PostSync, vault doesn't finish sync while waiting for pods to be running which requires this job
-    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
-spec:
-  template:
-    spec:
-      containers:
-        # todo adjust node permissions to be adequate for geting a kubeconfig in terraform - manually adding in console
-      - name: unseal-vault
-        image: kubefirst/kubefirst-builder:spike # TODO: official versioned image
-        command:
-        - /bin/bash
-        - -c
-        - |
-          sleep 30
-          aws eks update-kubeconfig --name kubefirst --region us-east-2
-          kubectl -n vault exec vault-0 -- vault operator init -format=json > cluster-keys.json
-          kubectl -n vault create secret generic vault-unseal-keys --from-file=cluster-keys.json
-        # todo remove this envFrom and assume role
-        envFrom:
-        - secretRef:
-            name: aws-creds
-      restartPolicy: Never
-  backoffLimit: 2
