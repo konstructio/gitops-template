@@ -1,58 +1,3 @@
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: vault-unseal-clusterrole
-  annotations:
-    argocd.argoproj.io/sync-wave: "6"
-subjects:
-- kind: ServiceAccount
-  name: vault-unseal-sa
-  namespace: vault
-roleRef:
-  kind: ClusterRole
-  name: admin
-  apiGroup: rbac.authorization.k8s.io
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: vault-unseal-sa
-  namespace: vault
-  annotations:
-    argocd.argoproj.io/sync-wave: "6"
-automountServiceAccountToken: true
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: unseal-vault
-  namespace: vault
-  annotations:
-    argocd.argoproj.io/sync-wave: "6"
-spec:
-  template:
-    spec:
-      serviceAccountName: vault-unseal-sa
-      containers:
-      - name: unseal-vault
-        image: public.ecr.aws/bitnami/kubectl:1.20
-        command:
-        - /bin/sh
-        - -c
-        - |
-          sleep 10
-          kubectl -n vault exec vault-0 -- vault operator init -format=json > /tmp/cluster-keys.json
-          kubectl -n vault create secret generic vault-unseal-keys --from-file=/tmp/cluster-keys.json
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-dir
-      restartPolicy: Never
-      volumes:
-      - name: tmp-dir
-        emptyDir: {}
-  backoffLimit: 2
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -61,79 +6,16 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "6"
+    argocd.argoproj.io/sync-wave: "4"
 spec:
+  project: default
+  source:
+    repoURL: https://gitlab.<AWS_HOSTED_ZONE_NAME>/kubefirst/gitops.git
+    path: components/vault
+    targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
-  project: default
-  source:
-    repoURL: 'https://helm.releases.hashicorp.com'
-    targetRevision: 0.18.0
-    helm:
-      parameters:
-        - name: server.route.host
-          value: vault.<AWS_HOSTED_ZONE_NAME>
-        - name: 'server.ingress.hosts[0].host'
-          value: vault.<AWS_HOSTED_ZONE_NAME>
-      values: |-
-        server:
-          image:
-            repository: "vault"
-            tag: "1.9.2"
-          affinity: ""
-          ha:
-            enabled: true
-            replicas: 3
-           
-            # config is a raw string of default configuration when using a Stateful
-            # deployment. Default is to use a Consul for its HA storage backend.
-            # This should be HCL.
-            
-            # Note: Configuration files are stored in ConfigMaps so sensitive data 
-            # such as passwords should be either mounted through extraSecretEnvironmentVars
-            # or through a Kube secret.  For more information see: 
-            # https://www.vaultproject.io/docs/platform/k8s/helm/run#protecting-sensitive-vault-configurations
-            config: |
-              ui = true
-        
-              listener "tcp" {
-                tls_disable = 1
-                address = "[::]:8200"
-                cluster_address = "[::]:8201"
-              }
-        
-              storage "dynamodb" {
-                ha_enabled = "true"
-                region = "<AWS_DEFAULT_REGION>"
-                table = "vault-dynamodb-backend"
-              }
-        
-              seal "awskms" {
-                 region     = "<AWS_DEFAULT_REGION>"
-                 kms_key_id = "<KMS_KEY_ID>"
-              }
-              service_registration "kubernetes" {}
-        
-          ui:
-            enabled: true
-            serviceType: "ClusterIP"
-            serviceNodePort: null
-            externalPort: 8200
-          ingress:
-            enabled: true
-            annotations:
-              kubernetes.io/ingress.class: nginx
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
-            path: /
-            host: vault.<AWS_HOSTED_ZONE_NAME>
-            tls:
-             - secretName: vault-tls
-               hosts:
-                 - vault.<AWS_HOSTED_ZONE_NAME>
-        injector:
-          enabled: true
-    chart: vault
   syncPolicy:
     automated:
       prune: true
