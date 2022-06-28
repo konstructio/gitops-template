@@ -18,6 +18,5 @@ spec:
         - |
           argocd login argocd.argocd-server.svc.cluster.local --core
           argocd app wait atlantis
-          argocd app wait atlantis-components
       restartPolicy: Never
   backoffLimit: 1
