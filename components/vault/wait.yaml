@@ -18,6 +18,5 @@ spec:
         - |
           argocd login argocd.argocd-server.svc.cluster.local --core
           argocd app wait vault
-          argocd app wait vault-components
       restartPolicy: Never
   backoffLimit: 1

@@ -6,7 +6,7 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "7"
+    argocd.argoproj.io/sync-wave: "6"
 spec:
   project: default
   source:
@@ -22,34 +22,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: argocd-clusterrole
-  annotations:
-    argocd.argoproj.io/sync-wave: "8"
-subjects:
-- kind: ServiceAccount
-  name: argocd
-  namespace: argocd
-roleRef:
-  kind: ClusterRole
-  name: admin
-  apiGroup: rbac.authorization.k8s.io
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: argo-clusterrole
-  annotations:
-    argocd.argoproj.io/sync-wave: "9"
-subjects:
-- kind: ServiceAccount
-  name: argo
-  namespace: argo
-roleRef:
-  kind: ClusterRole
-  name: admin
-  apiGroup: rbac.authorization.k8s.io
-
