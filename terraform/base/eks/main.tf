@@ -113,7 +113,7 @@ module "eks" {
   version         = "17.20.0"
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = local.cluster_name
-  cluster_version = "1.20"
+  cluster_version = "1.20.15"
   subnets         = module.vpc.private_subnets
   enable_irsa     = true 
   # write_kubeconfig = false
@@ -179,9 +179,9 @@ resource "aws_eks_node_group" "preprod_nodes" {
   }
 
   scaling_config {
-    desired_size = 2
-    max_size     = 2
-    min_size     = 2
+    desired_size = 3
+    max_size     = 3
+    min_size     = 3
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
@@ -204,9 +204,9 @@ resource "aws_eks_node_group" "mgmt_nodes" {
   }
 
   scaling_config {
-    desired_size = 1
-    max_size     = 1
-    min_size     = 1
+    desired_size = 2
+    max_size     = 2
+    min_size     = 2
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
@@ -229,9 +229,9 @@ resource "aws_eks_node_group" "production_nodes" {
   }
 
   scaling_config {
-    desired_size = 1
-    max_size     = 1
-    min_size     = 1
+    desired_size = 2
+    max_size     = 2
+    min_size     = 2
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
