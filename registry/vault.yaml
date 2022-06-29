@@ -29,7 +29,7 @@ metadata:
   name: vault-components-wait
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   template:
     spec:
@@ -41,6 +41,7 @@ spec:
         - /bin/sh
         - -c
         - |
+          sleep 5
           argocd login argocd.argocd-server.svc.cluster.local --core
           argocd app wait vault
           argocd app wait vault-components
