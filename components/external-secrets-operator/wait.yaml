@@ -16,6 +16,7 @@ spec:
         - /bin/sh
         - -c
         - |
+          sleep 10
           argocd login argocd.argocd-server.svc.cluster.local --core
           argocd app wait external-secrets-operator
       restartPolicy: Never
