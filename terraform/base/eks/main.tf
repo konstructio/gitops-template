@@ -144,7 +144,7 @@ module "iam_assumable_role_argo_admin" {
 
   create_role = true
 
-  role_name = "Argo"
+  role_name = "Argo-${local.cluster_name}"
 
   tags = {
     Role = "Argo"
