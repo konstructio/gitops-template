@@ -22,28 +22,28 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: vault-components-wait
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "4"
-spec:
-  template:
-    spec:
-      serviceAccountName: argocd-server
-      containers:
-      - name: vault-components-wait
-        image: argoproj/argocd:v2.4.2
-        command:
-        - /bin/sh
-        - -c
-        - |
-          sleep 5
-          argocd login argocd.argocd-server.svc.cluster.local --core
-          argocd app wait vault
-          argocd app wait vault-components
-      restartPolicy: Never
-  backoffLimit: 1
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: vault-components-wait
+#   namespace: argocd
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "4"
+# spec:
+#   template:
+#     spec:
+#       serviceAccountName: argocd-server
+#       containers:
+#       - name: vault-components-wait
+#         image: argoproj/argocd:v2.4.2
+#         command:
+#         - /bin/sh
+#         - -c
+#         - |
+#           sleep 5
+#           argocd login argocd.argocd-server.svc.cluster.local --core
+#           argocd app wait vault
+#           argocd app wait vault-components
+#       restartPolicy: Never
+#   backoffLimit: 1

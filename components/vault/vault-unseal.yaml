@@ -1,29 +1,29 @@
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: unseal-vault
-  namespace: vault
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-spec:
-  template:
-    spec:
-      serviceAccountName: vault-unseal-sa
-      containers:
-      - name: unseal-vault
-        image: public.ecr.aws/bitnami/kubectl:1.20
-        command:
-        - /bin/sh
-        - -c
-        - |
-          sleep 10
-          kubectl -n vault exec vault-0 -- vault operator init -format=json > /tmp/cluster-keys.json
-          kubectl -n vault create secret generic vault-unseal-keys --from-file=/tmp/cluster-keys.json
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-dir
-      restartPolicy: Never
-      volumes:
-      - name: tmp-dir
-        emptyDir: {}
-  backoffLimit: 2
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: unseal-vault
+#   namespace: vault
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "1"
+# spec:
+#   template:
+#     spec:
+#       serviceAccountName: vault-unseal-sa
+#       containers:
+#       - name: unseal-vault
+#         image: public.ecr.aws/bitnami/kubectl:1.20
+#         command:
+#         - /bin/sh
+#         - -c
+#         - |
+#           sleep 10
+#           kubectl -n vault exec vault-0 -- vault operator init -format=json > /tmp/cluster-keys.json
+#           kubectl -n vault create secret generic vault-unseal-keys --from-file=/tmp/cluster-keys.json
+#         volumeMounts:
+#         - mountPath: /tmp
+#           name: tmp-dir
+#       restartPolicy: Never
+#       volumes:
+#       - name: tmp-dir
+#         emptyDir: {}
+#   backoffLimit: 2
