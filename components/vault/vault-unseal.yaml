@@ -27,3 +27,59 @@
 #       - name: tmp-dir
 #         emptyDir: {}
 #   backoffLimit: 2
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-vault
+  namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  template:
+    spec:
+      serviceAccountName: vault-unseal-sa
+      containers:
+      - name: wait-for-vault
+        image: kubefirst/chubbo:0.2
+        env:
+        - name: VAULT_INITIALIZED
+          value: 'false'
+        - name: VAULT_SEALED
+          value: 'true'
+        command:
+        - /bin/sh
+        - -c
+        - |
+          until $VAULT_INITIALIZED && !$VAULT_SEALED; do
+              export VAULT_STATUS=$(curl --silent http://vault.vault.svc.cluster.local:8200/v1/sys/health | jq -r)
+              export VAULT_INITIALIZED=$(echo $VAULT_STATUS | jq -r .initialized)
+              export VAULT_SEALED=$(echo $VAULT_STATUS | jq -r .sealed)
+              echo 'waiting for vault to initialize and unseal'
+              sleep 5
+          done
+          echo 'vault unsealed and initialized'
+      restartPolicy: Never
+  backoffLimit: 2
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: not-running-yet
+  namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  template:
+    spec:
+      serviceAccountName: vault-unseal-sa
+      containers:
+      - name: not-running-yet
+        image: kubefirst/chubbo:0.2
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "i was waiting"
+      restartPolicy: Never
+  backoffLimit: 2
