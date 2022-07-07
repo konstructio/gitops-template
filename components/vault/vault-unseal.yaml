@@ -1,85 +1,32 @@
-# apiVersion: batch/v1
-# kind: Job
-# metadata:
-#   name: unseal-vault
-#   namespace: vault
-#   annotations:
-#     argocd.argoproj.io/sync-wave: "1"
-# spec:
-#   template:
-#     spec:
-#       serviceAccountName: vault-unseal-sa
-#       containers:
-#       - name: unseal-vault
-#         image: public.ecr.aws/bitnami/kubectl:1.20
-#         command:
-#         - /bin/sh
-#         - -c
-#         - |
-#           sleep 10
-#           kubectl -n vault exec vault-0 -- vault operator init -format=json > /tmp/cluster-keys.json
-#           kubectl -n vault create secret generic vault-unseal-keys --from-file=/tmp/cluster-keys.json
-#         volumeMounts:
-#         - mountPath: /tmp
-#           name: tmp-dir
-#       restartPolicy: Never
-#       volumes:
-#       - name: tmp-dir
-#         emptyDir: {}
-#   backoffLimit: 2
----
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: wait-for-vault
+  name: unseal-vault
   namespace: vault
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   template:
     spec:
       serviceAccountName: vault-unseal-sa
       containers:
-      - name: wait-for-vault
-        image: kubefirst/chubbo:0.2
-        env:
-        - name: VAULT_INITIALIZED
-          value: 'false'
-        - name: VAULT_SEALED
-          value: 'true'
+      - name: unseal-vault
+        image: public.ecr.aws/bitnami/kubectl:1.20
         command:
         - /bin/sh
         - -c
+        # todo find a kubectl wait event to replace this sleep
         - |
-          until $VAULT_INITIALIZED && !$VAULT_SEALED; do
-              export VAULT_STATUS=$(curl --silent http://vault.vault.svc.cluster.local:8200/v1/sys/health | jq -r)
-              export VAULT_INITIALIZED=$(echo $VAULT_STATUS | jq -r .initialized)
-              export VAULT_SEALED=$(echo $VAULT_STATUS | jq -r .sealed)
-              echo 'waiting for vault to initialize and unseal'
-              sleep 5
-          done
-          echo 'vault unsealed and initialized'
+          echo "waiting for vault readiness, sleeping 10 seconds"
+          sleep 10
+          kubectl -n vault exec vault-0 -- vault operator init -format=json > /tmp/cluster-keys.json
+          kubectl -n vault create secret generic vault-unseal-keys --from-file=/tmp/cluster-keys.json
+          while ! kubectl get secret vault-configured --namespace vault; do echo "waiting for vault configuration, sleeping 5 seconds"; sleep 5; done
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
       restartPolicy: Never
-  backoffLimit: 2
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: not-running-yet
-  namespace: vault
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
-spec:
-  template:
-    spec:
-      serviceAccountName: vault-unseal-sa
-      containers:
-      - name: not-running-yet
-        image: kubefirst/chubbo:0.2
-        command:
-        - /bin/sh
-        - -c
-        - |
-          echo "i was waiting"
-      restartPolicy: Never
+      volumes:
+      - name: tmp-dir
+        emptyDir: {}
   backoffLimit: 2
