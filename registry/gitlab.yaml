@@ -21,7 +21,7 @@ spec:
             defaultProjectsFeatures:
               containerRegistry: false
           hosts:
-            domain: kubefirst.tech
+            domain: <AWS_HOSTED_ZONE_NAME>
           ingress:
             configureCertmanager: false
             provider: nginx
