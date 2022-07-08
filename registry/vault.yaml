@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab.<AWS_HOSTED_ZONE_NAME>/kubefirst/gitops.git
+    repoURL: https://vault.<AWS_HOSTED_ZONE_NAME>/kubefirst/gitops.git
     path: components/vault
     targetRevision: HEAD
   destination:
