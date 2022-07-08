@@ -48,7 +48,7 @@ resource "aws_appautoscaling_policy" "dynamodb_table_write_policy" {
 
 resource "aws_dynamodb_table" "vault_dynamodb_table" {
   # todo https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table#point_in_time_recovery
-  name           = "vault-dynamodb-backend"
+  name           = "vault-backend-<CLUSTER_NAME>"
   billing_mode   = "PROVISIONED"
   read_capacity  = 15
   write_capacity = 33
@@ -70,7 +70,7 @@ resource "aws_dynamodb_table" "vault_dynamodb_table" {
   }
 
   tags = {
-    Name          = "vault-dynamodb-backend"
+    Name          = "vault-backend-<CLUSTER_NAME>"
     VaultInstance = "vault"
     Environment   = "mgmt"
   }

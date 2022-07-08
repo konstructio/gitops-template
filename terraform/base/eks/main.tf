@@ -30,7 +30,7 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  cluster_name = var.cluster_name
+  cluster_name = "<CLUSTER_NAME>"
 }
 
 resource "random_string" "suffix" {
@@ -144,7 +144,7 @@ module "iam_assumable_role_argo_admin" {
 
   create_role = true
 
-  role_name = "Argo-${local.cluster_name}"
+  role_name = "argo-${local.cluster_name}"
 
   tags = {
     Role = "Argo"

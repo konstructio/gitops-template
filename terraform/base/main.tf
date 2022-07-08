@@ -16,7 +16,7 @@ module "eks" {
   source = "./eks"
 
   aws_account_id = var.aws_account_id
-  cluster_name   = "kubefirst"
+  cluster_name   = "<CLUSTER_NAME>"
 }
 
 module "kms" {
