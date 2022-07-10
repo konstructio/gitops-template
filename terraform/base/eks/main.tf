@@ -150,7 +150,7 @@ module "iam_assumable_role_argo_admin" {
     Role = "Argo"
   }
 
-  provider_url  = module.eks.oidc_provider_arn
+  provider_url  = module.eks.cluster_oidc_issuer_url
 
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AdministratorAccess",

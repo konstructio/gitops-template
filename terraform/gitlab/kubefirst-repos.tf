@@ -6,6 +6,9 @@ terraform {
     encrypt = true
   }
 }
+provider "aws" {
+  region = "<AWS_DEFAULT_REGION>"
+}
 
 resource "gitlab_group" "kubefirst" {
   name                   = "kubefirst"
