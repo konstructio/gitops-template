@@ -20,6 +20,11 @@ spec:
         - name: orgWhitelist
           value: gitlab.<AWS_HOSTED_ZONE_NAME>/kubefirst/gitops
       values: |-
+        serviceAccount:
+          create: true
+          mount: true
+          annotations:
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::126827061464:role/Atlantis'
         resources:
           limits:
             cpu: 400m
