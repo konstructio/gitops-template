@@ -130,6 +130,10 @@ module "eks" {
     username = "admin"
     groups   = ["system:masters"]
     }, {
+    rolearn  = "arn:aws:iam::${var.aws_account_id}:role/Atlantis"
+    username = "admin"
+    groups   = ["system:masters"]
+    }, {
     rolearn  = aws_iam_role.kubefirst_worker_nodes_role.arn
     username = "system:node:{{EC2PrivateDNSName}}"
     groups   = ["system:bootstrappers", "system:nodes"]
