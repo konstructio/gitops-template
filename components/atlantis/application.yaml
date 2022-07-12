@@ -24,7 +24,7 @@ spec:
           create: true
           mount: true
           annotations:
-            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/Atlantis'
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>'
         resources:
           limits:
             cpu: 400m
