@@ -136,6 +136,10 @@ module "eks" {
     username = "admin"
     groups   = ["system:masters"]
     }, {
+    rolearn  = "arn:aws:iam::${var.aws_account_id}:role/Atlantis"
+    username = "admin"
+    groups   = ["system:masters"]
+    }, {
     rolearn  = aws_iam_role.kubefirst_worker_nodes_role.arn
     username = "system:node:{{EC2PrivateDNSName}}"
     groups   = ["system:bootstrappers", "system:nodes"]
@@ -158,13 +162,35 @@ module "iam_assumable_role_argo_admin" {
     ProvisionedBy = "kubefirst"
   }
 
-  provider_url  = module.eks.oidc_provider_arn
+  provider_url  = module.eks.cluster_oidc_issuer_url
 
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AdministratorAccess",
   ]
 
   oidc_fully_qualified_subjects = ["system:serviceaccount:argo:argo"]
+}
+  
+module "iam_assumable_role_atlantis_admin" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+
+  version = "4.0.0"
+
+  create_role = true
+
+  role_name = "Atlantis"
+
+  tags = {
+    Role = "Atlantis"
+  }
+
+  provider_url  = module.eks.cluster_oidc_issuer_url
+
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
+
+  oidc_fully_qualified_subjects = ["system:serviceaccount:atlantis:atlantis"]
 }
 
 resource "aws_eks_addon" "vpc_cni" {

@@ -20,6 +20,7 @@ resource "aws_ecr_repository" "ecr_repo" {
   count                = var.create_ecr != true ? 0 : 1
   name                 = <CLUSTER_NAME>
   image_tag_mutability = "IMMUTABLE"
+  force_delete         = force
 
   image_scanning_configuration {
     scan_on_push = true

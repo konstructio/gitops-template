@@ -3,8 +3,11 @@ data "terraform_remote_state" "eks" {
   config = {
     bucket = "<TF_STATE_BUCKET>"
     key    = "terraform/base/tfstate.tf"
-    region = var.aws_region
+    region = "<AWS_DEFAULT_REGION>"
   }
+}
+provider "aws" {
+  region = "<AWS_DEFAULT_REGION>"
 }
 
 data "aws_eks_cluster" "cluster" {
