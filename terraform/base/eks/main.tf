@@ -109,7 +109,7 @@ module "vpc" {
   }
 
   vpc_tags = {
-    "ClusterName"   = "local.cluster_name"
+    "ClusterName"   = "${local.cluster_name}"
     "ProvisionedBy" = "kubefirst"
   }
 }
@@ -125,7 +125,7 @@ module "eks" {
   manage_aws_auth = false
   
   tags = {
-    ClusterName = "local.cluster_name"
+    ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
 
@@ -136,7 +136,7 @@ module "eks" {
     username = "admin"
     groups   = ["system:masters"]
     }, {
-    rolearn  = "arn:aws:iam::${var.aws_account_id}:role/Atlantis"
+    rolearn  = "arn:aws:iam::${var.aws_account_id}:role/atlantis-${local.cluster_name}"
     username = "admin"
     groups   = ["system:masters"]
     }, {
@@ -158,7 +158,7 @@ module "iam_assumable_role_argo_admin" {
 
   tags = {
     Role = "Argo"
-    ClusterName = "local.cluster_name"
+    ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
 
@@ -178,10 +178,12 @@ module "iam_assumable_role_atlantis_admin" {
 
   create_role = true
 
-  role_name = "Atlantis"
+  role_name = "atlantis-${local.cluster_name}"
 
   tags = {
     Role = "Atlantis"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
   }
 
   provider_url  = module.eks.cluster_oidc_issuer_url
@@ -210,7 +212,7 @@ resource "aws_eks_node_group" "preprod_nodes" {
 
   labels = {
     workload = "preprod"
-    ClusterName = "local.cluster_name"
+    ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
 
@@ -237,7 +239,7 @@ resource "aws_eks_node_group" "mgmt_nodes" {
 
   labels = {
     workload = "mgmt"
-    ClusterName = "local.cluster_name"
+    ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
 
@@ -264,7 +266,7 @@ resource "aws_eks_node_group" "production_nodes" {
 
   labels = {
     workload = "production"
-    ClusterName = "local.cluster_name"
+    ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
 
