@@ -5,6 +5,7 @@ resource "aws_s3_bucket" "argo_artifact_bucket" {
 
   tags = {
     Name = "<ARGO_ARTIFACT_BUCKET>"
+    
   }
 }
 
