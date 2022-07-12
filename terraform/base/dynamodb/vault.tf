@@ -73,6 +73,8 @@ resource "aws_dynamodb_table" "vault_dynamodb_table" {
     Name          = "vault-backend-<CLUSTER_NAME>"
     VaultInstance = "vault"
     Environment   = "mgmt"
+    ClusterName   = "<CLUSTER_NAME>"
+    ProvisionedBy = "kubefirst"
   }
 
   lifecycle {
