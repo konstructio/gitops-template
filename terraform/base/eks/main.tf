@@ -30,7 +30,7 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  cluster_name = var.cluster_name
+  cluster_name = "<CLUSTER_NAME>"
 }
 
 resource "random_string" "suffix" {
@@ -107,6 +107,11 @@ module "vpc" {
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"             = "1"
   }
+
+  vpc_tags = {
+    "ClusterName"   = "${local.cluster_name}"
+    "ProvisionedBy" = "kubefirst"
+  }
 }
 
 module "eks" {
@@ -120,7 +125,8 @@ module "eks" {
   manage_aws_auth = false
   
   tags = {
-    ClusterName = "kubefirst"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
   }
 
   vpc_id = module.vpc.vpc_id
@@ -130,7 +136,7 @@ module "eks" {
     username = "admin"
     groups   = ["system:masters"]
     }, {
-    rolearn  = "arn:aws:iam::${var.aws_account_id}:role/Atlantis"
+    rolearn  = "arn:aws:iam::${var.aws_account_id}:role/atlantis-${local.cluster_name}"
     username = "admin"
     groups   = ["system:masters"]
     }, {
@@ -148,10 +154,12 @@ module "iam_assumable_role_argo_admin" {
 
   create_role = true
 
-  role_name = "Argo"
+  role_name = "argo-${local.cluster_name}"
 
   tags = {
     Role = "Argo"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
   }
 
   provider_url  = module.eks.cluster_oidc_issuer_url
@@ -170,10 +178,12 @@ module "iam_assumable_role_atlantis_admin" {
 
   create_role = true
 
-  role_name = "Atlantis"
+  role_name = "atlantis-${local.cluster_name}"
 
   tags = {
     Role = "Atlantis"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
   }
 
   provider_url  = module.eks.cluster_oidc_issuer_url
@@ -201,7 +211,9 @@ resource "aws_eks_node_group" "preprod_nodes" {
   disk_size       = 50
 
   labels = {
-    "workload" = "preprod"
+    workload = "preprod"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
   }
 
   scaling_config {
@@ -226,7 +238,9 @@ resource "aws_eks_node_group" "mgmt_nodes" {
   disk_size       = 50
 
   labels = {
-    "workload" = "mgmt"
+    workload = "mgmt"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
   }
 
   scaling_config {
@@ -251,7 +265,9 @@ resource "aws_eks_node_group" "production_nodes" {
   disk_size       = 50
 
   labels = {
-    "workload" = "production"
+    workload = "production"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
   }
 
   scaling_config {

@@ -18,7 +18,7 @@ resource "gitlab_project" "repo" {
 
 resource "aws_ecr_repository" "ecr_repo" {
   count                = var.create_ecr != true ? 0 : 1
-  name                 = var.repo_name
+  name                 = <CLUSTER_NAME>
   image_tag_mutability = "IMMUTABLE"
   force_delete         = true
 
