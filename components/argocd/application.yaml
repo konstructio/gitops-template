@@ -1,0 +1,79 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/argoproj/argo-cd.git'
+    chart: charts/argo-cd
+    targetRevision: 4.9.14
+    helm:
+      values: |-
+        server:
+          rbacConfig:
+            policy.csv: |
+              g, admins, role:admin
+            policy.default: role:readonly
+          ingress:
+            enabled: true
+            annotations:
+              kubernetes.io/ingress.class: nginx
+              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+            hosts:
+              - argocd.<AWS_HOSTED_ZONE_NAME>
+            paths:
+              - /
+            pathType: Prefix
+            tls:
+              - secretName: argocd-tls
+                hosts: argocd.<AWS_HOSTED_ZONE_NAME>
+            https: true
+          additionalApplications:
+          - name: registry
+            namespace: argocd
+            additionalLabels: {}
+            additionalAnnotations: {}
+            finalizers:
+            - resources-finalizer.argocd.argoproj.io
+            project: default
+            source:
+              repoURL: ssh://soft-serve.soft-serve.svc.cluster.local:22/gitops
+              targetRevision: HEAD
+              path: registry
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: argocd
+            syncPolicy:
+              automated:
+                prune: true
+                selfHeal: true
+              syncOptions:
+              - CreateNamespace=true
+              retry:
+                limit: 5
+                backoff:
+                  duration: 5s
+                  maxDuration: 5m0s
+                  factor: 2
+          config:
+            oidc.config: |
+            name: Gitlab
+            issuer: https://gitlab.<AWS_HOSTED_ZONE_NAME>
+            clientID: <ARGOCD_OIDC_CLIENT_ID>
+            clientSecret: $oidc.gitlab.clientSecret
+            requestedScopes: ["openid", "email"]
+          url: 'https://argocd.<AWS_HOSTED_ZONE_NAME>'        
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
