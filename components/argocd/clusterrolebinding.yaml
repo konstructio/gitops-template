@@ -1,4 +1,4 @@
-#! nothing registers /argocd yet so this is going to live with external-dns
+# todo does this need to be here?
 #! nothing registers /argocd yet so this is going to live with external-dns
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
