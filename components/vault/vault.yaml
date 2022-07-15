@@ -51,7 +51,7 @@ spec:
               storage "dynamodb" {
                 ha_enabled = "true"
                 region = "<AWS_DEFAULT_REGION>"
-                table = "vault-dynamodb-backend"
+                table = "vault-backend-<CLUSTER_NAME>"
               }
         
               seal "awskms" {
