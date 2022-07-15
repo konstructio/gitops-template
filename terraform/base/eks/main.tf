@@ -124,7 +124,7 @@ module "eks" {
   # write_kubeconfig = false
   manage_aws_auth = false
   
-  kubeconfig_output_path = "kubeconfig"
+  kubeconfig_output_path = "./kubeconfig"
     
   tags = {
     ClusterName = "${local.cluster_name}"
