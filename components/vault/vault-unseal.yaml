@@ -16,12 +16,7 @@ spec:
         - /bin/sh
         - -c
         - |
-          while ! kubectl get pod vault-0 --namespace vault; do echo "waiting for vault pods to be running, sleeping 5 seconds"; sleep 5; done
-          echo "waiting for vault to unseal, waiting 10 seconds..."
-          sleep 10
-          kubectl -n vault exec vault-0 -- vault operator init -format=json > /tmp/cluster-keys.json
-          kubectl -n vault create secret generic vault-unseal-keys --from-file=/tmp/cluster-keys.json
-          while ! kubectl get secret vault-configured --namespace vault; do echo "waiting for vault configuration, sleeping 5 seconds"; sleep 5; done
+          while ! kubectl get secret vault-configured --namespace vault; do echo "waiting for vault to terraform to apply, sleeping 5 seconds"; sleep 5; done
         volumeMounts:
         - mountPath: /tmp
           name: tmp-dir
