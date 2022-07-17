@@ -6,6 +6,11 @@ output "cluster_name" {
   description = "eks cluster name"
   value       = module.eks.cluster_id
 }
+  
+output "worker_iam_role_arn" {
+  description = "worker iam role arn"
+  value       = module.eks.worker_iam_role_arn
+}
 
 output "cluster_security_group_id" {
   description = "Security group ids attached to the cluster control plane."
