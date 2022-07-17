@@ -122,7 +122,8 @@ module "eks" {
   subnets         = module.vpc.private_subnets
   enable_irsa     = true 
   # write_kubeconfig = false
-  manage_aws_auth = true
+  manage_aws_auth = false
+  workers_role_name = "worker-node-role-<CLUSTER_NAME>"
   
   kubeconfig_output_path = "./kubeconfig"
     
