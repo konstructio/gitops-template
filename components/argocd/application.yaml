@@ -30,7 +30,7 @@ spec:
               - /
             pathType: Prefix
             tls:
-              - secretName: argocd-tls
+              - secretName: argocd-secret
                 hosts: 
                   - argocd.<AWS_HOSTED_ZONE_NAME>
             https: true
@@ -68,7 +68,7 @@ spec:
               clientID: <ARGOCD_OIDC_CLIENT_ID>
               clientSecret: $oidc.gitlab.clientSecret
               requestedScopes: ["openid", "email"]
-          url: 'https://argocd.<AWS_HOSTED_ZONE_NAME>'        
+            url: 'https://argocd.<AWS_HOSTED_ZONE_NAME>'        
   destination:
     server: "https://kubernetes.default.svc"
     namespace: argocd
