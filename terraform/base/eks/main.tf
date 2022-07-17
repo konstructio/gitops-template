@@ -122,7 +122,7 @@ module "eks" {
   subnets         = module.vpc.private_subnets
   enable_irsa     = true 
   # write_kubeconfig = false
-  manage_aws_auth = false
+  manage_aws_auth = true
   
   kubeconfig_output_path = "./kubeconfig"
     
