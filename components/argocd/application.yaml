@@ -31,7 +31,8 @@ spec:
             pathType: Prefix
             tls:
               - secretName: argocd-tls
-                hosts: argocd.<AWS_HOSTED_ZONE_NAME>
+                hosts: 
+                  - argocd.<AWS_HOSTED_ZONE_NAME>
             https: true
           additionalApplications:
           - name: registry
