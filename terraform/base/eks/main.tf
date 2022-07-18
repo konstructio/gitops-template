@@ -123,7 +123,9 @@ module "eks" {
   enable_irsa     = true 
   # write_kubeconfig = false
   manage_aws_auth = false
-  workers_role_name = "worker-node-role-<CLUSTER_NAME>"
+  
+  # TODO: prevent creation of iam
+  # workers_role_name = "worker-node-role-fever-dreams"
   
   kubeconfig_output_path = "./kubeconfig"
     
@@ -292,7 +294,7 @@ resource "random_string" "random" {
 }
 
 resource "aws_iam_role" "kubefirst_worker_nodes_role" {
-  name = "kubefirst-worker-nodes-role-${random_string.random.result}"
+  name = "kubefirst-worker-nodes-role-<CLUSTER_NAME>"
 
   assume_role_policy = <<EOT
 {
