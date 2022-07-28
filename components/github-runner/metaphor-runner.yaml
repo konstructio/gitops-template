@@ -1,0 +1,9 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: metaphor-runner
+spec:
+  template:
+    spec:
+      repository: <ORG>/<REPO>
+---

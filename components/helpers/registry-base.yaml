@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: registry
+  name: registry-base
   namespace: argocd
 spec:
   destination:
@@ -9,8 +9,8 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: registry
-    repoURL: ssh://soft-serve.soft-serve.svc.cluster.local:22/gitops
+    path: registry/base
+    repoURL: git@github.com:<ORG>/<REPO_GITOPS>.git
     targetRevision: HEAD
   syncPolicy:
     automated:
