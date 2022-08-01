@@ -15,8 +15,6 @@ spec:
       values: |-
         server:
           rbacConfig:
-            policy.csv: |
-              g, admins, role:admin
             policy.default: role:readonly
           ingress:
             enabled: true
