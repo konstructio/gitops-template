@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     path: registry/gitlab
-    repoURL: git@github.com:<ORG>/<REPO_GITOPS>.git
+    repoURL: git@github.com:<GITHUB_OWNER>/<REPO_GITOPS>.git
     targetRevision: HEAD
   syncPolicy:
     automated:

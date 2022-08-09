@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: registry-base
+  name: registry
   namespace: argocd
 spec:
   destination:
@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     path: registry/base
-    repoURL: git@github.com:<ORG>/<REPO_GITOPS>.git
+    repoURL: git@github.com:<GITHUB_OWNER>/<REPO_GITOPS>.git
     targetRevision: HEAD
   syncPolicy:
     automated:
