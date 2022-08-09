@@ -43,3 +43,9 @@ variable "cluster_name" {
 variable "aws_account_id" {
   type = string
 }
+
+variable "lifecycle_nodes" {
+  description = "The lifecycle of a node, can be SPOT or ON_DEMAND"
+  default = "ON_DEMAND"
+  type = string
+}
