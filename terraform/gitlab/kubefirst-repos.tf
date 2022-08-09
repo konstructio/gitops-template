@@ -31,6 +31,19 @@ module "metaphor" {
   remove_source_branch_after_merge      = true
 }
 
+module "metaphor-go" {
+  depends_on = [
+    gitlab_group.kubefirst
+  ]
+  source                                = "./templates/gitlab-repo"
+  group_name                            = gitlab_group.kubefirst.id
+  repo_name                             = "metaphor-go"
+  create_ecr                            = true
+  initialize_with_readme                = false
+  only_allow_merge_if_pipeline_succeeds = false
+  remove_source_branch_after_merge      = true
+}
+
 module "gitops" {
   depends_on = [
     gitlab_group.kubefirst
