@@ -43,7 +43,7 @@ spec:
             - resources-finalizer.argocd.argoproj.io
             project: default
             source:
-              repoURL: ssh://soft-serve.soft-serve.svc.cluster.local:22/gitops
+              repoURL: git@github.com:<GITHUB_OWNER>/<REPO_GITOPS>.git
               targetRevision: HEAD
               path: registry
             destination:
