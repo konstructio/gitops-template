@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://gitlab.<AWS_HOSTED_ZONE_NAME>/kubefirst/gitops
-    path: components/staging/metaphor
+    path: components/staging/metaphor-go
     targetRevision: HEAD
     helm:
       valueFiles:
