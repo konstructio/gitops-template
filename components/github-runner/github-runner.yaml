@@ -3,4 +3,4 @@ kind: Runner
 metadata:
   name: github-runner
 spec:
-  organization: <ORG>
+  organization: <GITHUB_OWNER>
