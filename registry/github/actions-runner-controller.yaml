@@ -20,7 +20,7 @@ spec:
       - CreateNamespace=true
   source:
     repoURL: https://actions-runner-controller.github.io/actions-runner-controller
-    targetRevision: 0.25.2
+    targetRevision: 0.20.2
     chart: actions-runner-controller      
     helm:
       values: |-
