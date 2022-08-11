@@ -9,10 +9,6 @@ metadata:
     argocd.argoproj.io/sync-wave: "20"
 spec:
   project: default
-  source:
-    repoURL: https://actions-runner-controller.github.io/actions-runner-controller
-    targetRevision: 0.25.2
-    chart: actions-runner-controller
   destination:
     server: https://kubernetes.default.svc
     namespace: kube1rst-system
@@ -22,6 +18,10 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+  source:
+    repoURL: https://actions-runner-controller.github.io/actions-runner-controller
+    targetRevision: 0.25.2
+    chart: actions-runner-controller      
     helm:
       values: |-
         labels: {}
