@@ -215,6 +215,8 @@ resource "aws_eks_node_group" "preprod_nodes" {
   ami_type        = "AL2_x86_64"
   disk_size       = 50
 
+  capacity_type = var.lifecycle_nodes
+  
   labels = {
     workload = "preprod"
     ClusterName = "${local.cluster_name}"
@@ -242,6 +244,8 @@ resource "aws_eks_node_group" "mgmt_nodes" {
   ami_type        = "AL2_x86_64"
   disk_size       = 50
 
+  capacity_type = var.lifecycle_nodes
+
   labels = {
     workload = "mgmt"
     ClusterName = "${local.cluster_name}"
@@ -268,6 +272,8 @@ resource "aws_eks_node_group" "production_nodes" {
   subnet_ids      = module.vpc.private_subnets
   ami_type        = "AL2_x86_64"
   disk_size       = 50
+
+  capacity_type = var.lifecycle_nodes
 
   labels = {
     workload = "production"
