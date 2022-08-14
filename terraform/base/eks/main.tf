@@ -14,10 +14,6 @@ provider "null" {
   version = "~> 3.1.0"
 }
 
-provider "template" {
-  version = "~> 2.1"
-}
-
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
