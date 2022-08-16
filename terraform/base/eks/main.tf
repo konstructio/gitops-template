@@ -3,19 +3,15 @@ terraform {
 }
 
 provider "random" {
-  version = "~> 2.1"
+  version = "~> 3.1"
 }
 
 provider "local" {
-  version = "~> 1.2"
+  version = "~> 2.1.0"
 }
 
 provider "null" {
-  version = "~> 2.1"
-}
-
-provider "template" {
-  version = "~> 2.1"
+  version = "~> 3.1.0"
 }
 
 data "aws_eks_cluster" "cluster" {
