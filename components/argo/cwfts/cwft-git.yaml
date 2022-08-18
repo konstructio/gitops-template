@@ -16,7 +16,7 @@ spec:
         default: kubefirst/chubbo:0.1
       - name: gitopsRepoUrl
         value: "{{workflow.parameters.gitopsRepoUrl}}"
-        default: <FULL_REPO_GITOPS_URL_SSH>
+        default: <FULL_REPO_GITOPS_URL>
       - name: gitRepoUrl
       artifacts:
       - name: repo-source

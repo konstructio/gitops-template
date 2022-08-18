@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL_SSH>
+    repoURL: <FULL_REPO_GITOPS_URL>
     path: components/production
     targetRevision: HEAD
   destination:
