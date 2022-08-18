@@ -17,7 +17,7 @@ spec:
   project: default
   source:
     path: registry
-    repoURL: <FULL_REPO_GITOPS_URL_HTTPS>
+    repoURL: <FULL_REPO_GITOPS_URL_SSH>
     targetRevision: HEAD
   syncPolicy:
     syncOptions:
