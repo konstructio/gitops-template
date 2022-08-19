@@ -620,10 +620,6 @@ spec:
       - args:
         - server
         - --secure
-        - --auth-mode
-        - sso
-        - --auth-mode
-        - client
         image: docker.io/argoproj/argocli:v3.1.11
         name: argo-server
         ports:
