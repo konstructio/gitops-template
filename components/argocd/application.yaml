@@ -43,7 +43,7 @@ spec:
             - resources-finalizer.argocd.argoproj.io
             project: default
             source:
-              repoURL: git@github.com:<GITHUB_OWNER>/<REPO_GITOPS>.git
+              repoURL: <FULL_REPO_GITOPS_URL>
               targetRevision: HEAD
               path: registry
             destination:
