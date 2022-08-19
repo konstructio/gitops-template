@@ -19,38 +19,37 @@ locals {
 EOT
   secrets_gitlab = <<EOT
   {
-    "ARGOCD_AUTH_USERNAME": "admin",
-    "ARGOCD_INSECURE": "false",
-    "ARGOCD_SERVER": "argocd.<AWS_HOSTED_ZONE_NAME>:443",
-    "ARGO_SERVER_URL": "argo.<AWS_HOSTED_ZONE_NAME>:443",
-    "ATLANTIS_GITLAB_HOSTNAME": "gitlab.<AWS_HOSTED_ZONE_NAME>",
-    "ATLANTIS_GITLAB_USER": "root",
-    "AWS_DEFAULT_REGION": "<AWS_DEFAULT_REGION>",
-    "AWS_ROLE_TO_ASSUME": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin",
-    "AWS_SESSION_NAME": "GitHubAction",
-    "GITLAB_BASE_URL": "https://gitlab.<AWS_HOSTED_ZONE_NAME>",
-    "GITLAB_TOKEN": "${var.gitlab_token}",
-    "ATLANTIS_GITLAB_TOKEN": "${var.gitlab_token}",
-  
-    "KUBECONFIG": "/.kube/config",
-    "TF_VAR_argo_redirect_uris": "[\"https://argo.<AWS_HOSTED_ZONE_NAME>/oauth2/callback\"]",
-    "TF_VAR_argocd_redirect_uris": "[\"https://argocd.<AWS_HOSTED_ZONE_NAME>/auth/callback\",\"https://argocd.<AWS_HOSTED_ZONE_NAME>/applications\"]",
-    "TF_VAR_aws_account_id": "<AWS_ACCOUNT_ID>",
-    "TF_VAR_aws_region": "<AWS_DEFAULT_REGION>",
-    "TF_VAR_email_address": "${var.email_address}",
-  
-    "TF_VAR_gitlab_redirect_uris": "[\"https://gitlab.<AWS_HOSTED_ZONE_NAME>\"]",
-    "TF_VAR_gitlab_runner_token": "${var.gitlab_runner_token}",
-    "TF_VAR_gitlab_token": "${var.gitlab_token}",
-    "TF_VAR_gitlab_url": "gitlab.<AWS_HOSTED_ZONE_NAME>",
-    "TF_VAR_hosted_zone_id": "${var.hosted_zone_id}",
-    "TF_VAR_hosted_zone_name": "${var.hosted_zone_name}",
-  
-    "TF_VAR_vault_addr": "${var.vault_addr}",
-    "TF_VAR_vault_redirect_uris": "[\"https://vault.<AWS_HOSTED_ZONE_NAME>/ui/vault/auth/oidc/oidc/callback\",\"http://localhost:8200/ui/vault/auth/oidc/oidc/callback\",\"http://localhost:8250/oidc/callback\",\"https://vault.<AWS_HOSTED_ZONE_NAME>:8250/oidc/callback\"]",
-    "TF_VAR_vault_token": "${var.vault_token}",
-    "VAULT_ADDR": "https://vault.<AWS_HOSTED_ZONE_NAME>",
-    "VAULT_TOKEN": "${var.vault_token}"
+    "atlantis": {
+      "ARGOCD_AUTH_USERNAME": "admin",
+      "ARGOCD_INSECURE": "false",
+      "ARGOCD_SERVER": "argocd.<AWS_HOSTED_ZONE_NAME>:443",
+      "ARGO_SERVER_URL": "argo.<AWS_HOSTED_ZONE_NAME>:443",
+      "ATLANTIS_GITLAB_HOSTNAME": "gitlab.<AWS_HOSTED_ZONE_NAME>",
+      "ATLANTIS_GITLAB_USER": "root",
+      "AWS_DEFAULT_REGION": "<AWS_DEFAULT_REGION>",
+      "AWS_ROLE_TO_ASSUME": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin",
+      "AWS_SESSION_NAME": "GitHubAction",
+      "GITLAB_BASE_URL": "https://gitlab.<AWS_HOSTED_ZONE_NAME>",
+      "GITLAB_TOKEN": "${var.gitlab_token}",
+      "ATLANTIS_GITLAB_TOKEN": "${var.gitlab_token}",
+      "KUBECONFIG": "/.kube/config",
+      "TF_VAR_argo_redirect_uris": "[\"https://argo.<AWS_HOSTED_ZONE_NAME>/oauth2/callback\"]",
+      "TF_VAR_argocd_redirect_uris": "[\"https://argocd.<AWS_HOSTED_ZONE_NAME>/auth/callback\",\"https://argocd.<AWS_HOSTED_ZONE_NAME>/applications\"]",
+      "TF_VAR_aws_account_id": "<AWS_ACCOUNT_ID>",
+      "TF_VAR_aws_region": "<AWS_DEFAULT_REGION>",
+      "TF_VAR_email_address": "${var.email_address}",
+      "TF_VAR_gitlab_redirect_uris": "[\"https://gitlab.<AWS_HOSTED_ZONE_NAME>\"]",
+      "TF_VAR_gitlab_runner_token": "${var.gitlab_runner_token}",
+      "TF_VAR_gitlab_token": "${var.gitlab_token}",
+      "TF_VAR_gitlab_url": "gitlab.<AWS_HOSTED_ZONE_NAME>",
+      "TF_VAR_hosted_zone_id": "${var.hosted_zone_id}",
+      "TF_VAR_hosted_zone_name": "${var.hosted_zone_name}",
+      "TF_VAR_vault_addr": "${var.vault_addr}",
+      "TF_VAR_vault_redirect_uris": "[\"https://vault.<AWS_HOSTED_ZONE_NAME>/ui/vault/auth/oidc/oidc/callback\",\"http://localhost:8200/ui/vault/auth/oidc/oidc/callback\",\"http://localhost:8250/oidc/callback\",\"https://vault.<AWS_HOSTED_ZONE_NAME>:8250/oidc/callback\"]",
+      "TF_VAR_vault_token": "${var.vault_token}",
+      "VAULT_ADDR": "https://vault.<AWS_HOSTED_ZONE_NAME>",
+      "VAULT_TOKEN": "${var.vault_token}"
+    }
   }
 EOT
 }
