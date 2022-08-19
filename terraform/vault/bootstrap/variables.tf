@@ -25,3 +25,8 @@ variable "gitlab_token" {
 variable "hosted_zone_name" {
   type = string
 }
+variable "git_provider" {
+  type = string
+  default = "gitlab"
+  description = "Git provider, default gitlab, accepts: gitlab | github"
+}
