@@ -18,7 +18,7 @@ spec:
         - name: ingress.host
           value: atlantis.<AWS_HOSTED_ZONE_NAME>
         - name: orgWhitelist
-          value: gitlab.<AWS_HOSTED_ZONE_NAME>/kubefirst/gitops
+          value: <FULL_REPO_GITOPS_URL_NO_HTTPS>
       values: |-
         serviceAccount:
           create: true
@@ -42,6 +42,9 @@ spec:
         extraVolumeMounts:
           - name: kubeconfig
             mountPath: /.kube
+        github:
+          user: <GITHUB_USER>
+          token: <GITHUB_TOKEN>
         ingress:
           enabled: true
           annotations:
@@ -59,7 +62,7 @@ spec:
         repoConfig: |
           ---
           repos:
-          - id: gitlab.<AWS_HOSTED_ZONE_NAME>/kubefirst/gitops
+          - id: <FULL_REPO_GITOPS_URL_NO_HTTPS>
             workflow: default
             allowed_overrides: [apply_requirements]
             apply_requirements: [approved, mergeable]

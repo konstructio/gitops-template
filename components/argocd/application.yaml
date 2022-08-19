@@ -41,7 +41,7 @@ spec:
             - resources-finalizer.argocd.argoproj.io
             project: default
             source:
-              repoURL: ssh://soft-serve.soft-serve.svc.cluster.local:22/gitops
+              repoURL: <FULL_REPO_GITOPS_URL>
               targetRevision: HEAD
               path: registry
             destination:
@@ -60,12 +60,6 @@ spec:
                   maxDuration: 5m0s
                   factor: 2
           config:
-            oidc.config: |
-              name: Gitlab
-              issuer: https://gitlab.<AWS_HOSTED_ZONE_NAME>
-              clientID: <ARGOCD_OIDC_CLIENT_ID>
-              clientSecret: $oidc.gitlab.clientSecret
-              requestedScopes: ["openid", "email"]
             url: 'https://argocd.<AWS_HOSTED_ZONE_NAME>'        
   destination:
     server: "https://kubernetes.default.svc"

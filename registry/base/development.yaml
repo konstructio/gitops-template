@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gitlab-runner-components
+  name: development
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,21 +10,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab.<AWS_HOSTED_ZONE_NAME>/kubefirst/gitops.git
-    path: components/gitlab-runner
+    repoURL: <FULL_REPO_GITOPS_URL>
+    path: components/development
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: gitlab-runner
+    namespace: development
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        maxDuration: 5m0s
-        factor: 2
