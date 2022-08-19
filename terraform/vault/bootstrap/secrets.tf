@@ -1,26 +1,20 @@
 locals {
   secrets_github = <<EOT
   {
-	"argo": {
-		"ARGOCD_AUTH_USERNAME": "admin",
-		"ARGOCD_INSECURE": "false",
-		"ARGOCD_SERVER": "argocd.<AWS_HOSTED_ZONE_NAME>:443",
-		"ARGO_SERVER_URL": "argo.<AWS_HOSTED_ZONE_NAME>:443"
-	},
-	"atlantis": {
-		"ATLANTIS_GITLAB_HOSTNAME": "gitlab.<AWS_HOSTED_ZONE_NAME>",
-		"ATLANTIS_GITLAB_USER": "root"
-	},
-	"aws": {
-		"AWS_DEFAULT_REGION": "<AWS_DEFAULT_REGION>",
-		"AWS_ROLE_TO_ASSUME": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin",
-		"AWS_SESSION_NAME": "GitHubAction"
-	},
-	"common": {
-		"KUBECONFIG": "/.kube/config",
-		"VAULT_ADDR": "https://vault.<AWS_HOSTED_ZONE_NAME>",
-		"VAULT_TOKEN": "${var.vault_token}"
-	}
+	  "atlantis": {
+  		"ARGOCD_AUTH_USERNAME": "admin",
+  		"ARGOCD_INSECURE": "false",
+  		"ARGOCD_SERVER": "argocd.<AWS_HOSTED_ZONE_NAME>:443",
+  		"ARGO_SERVER_URL": "argo.<AWS_HOSTED_ZONE_NAME>:443",
+  		"ATLANTIS_GITLAB_HOSTNAME": "gitlab.<AWS_HOSTED_ZONE_NAME>",
+  		"ATLANTIS_GITLAB_USER": "root",
+  		"AWS_DEFAULT_REGION": "<AWS_DEFAULT_REGION>",
+  		"AWS_ROLE_TO_ASSUME": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin",
+  		"AWS_SESSION_NAME": "GitHubAction",
+  		"KUBECONFIG": "/.kube/config",
+  		"VAULT_ADDR": "https://vault.<AWS_HOSTED_ZONE_NAME>",
+  		"VAULT_TOKEN": "${var.vault_token}"
+  	}
 }
 EOT
   secrets_gitlab = <<EOT
