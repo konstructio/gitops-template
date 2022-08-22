@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-node-termination-handler
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: 'https://aws.github.io/eks-charts'
+    targetRevision: 0.19.0
+    helm:
+      values: |-
+        enableSpotInterruptionDraining: true
+        enableRebalanceMonitoring: true
+        enableScheduledEventDraining: true
+    chart: aws-node-termination-handler
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
