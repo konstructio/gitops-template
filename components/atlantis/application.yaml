@@ -42,9 +42,6 @@ spec:
         extraVolumeMounts:
           - name: kubeconfig
             mountPath: /.kube
-        github:
-          user: <GITHUB_USER>
-          token: <GITHUB_TOKEN>
         ingress:
           enabled: true
           annotations:
