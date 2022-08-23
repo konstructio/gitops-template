@@ -23,6 +23,8 @@ spec:
       - name: containerRegistryUrl
         value: "{{workflow.parameters.containerRegistryUrl}}"
         default: <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_DEFAULT_REGION>.amazonaws.com
+      - name: dockerFilePath
+        default: Dockerfile
     container:
       image:  "{{inputs.parameters.buildImage}}"
       command: [bash, -c]
@@ -30,7 +32,7 @@ spec:
       # todo need to add auth to trivy ( or put it behind a vpn.. )
       args:
         - until docker ps; do sleep 3; done; 
-          docker build -t "{{inputs.parameters.containerRegistryUrl}}/{{inputs.parameters.appName}}:{{inputs.parameters.ciCommitSha}}" .;
+          docker build -t "{{inputs.parameters.containerRegistryUrl}}/{{inputs.parameters.appName}}:{{inputs.parameters.ciCommitSha}}" -f {{inputs.parameters.dockerFilePath}} .;
           aws ecr get-login-password --region {{inputs.parameters.awsRegion}} | docker login --username AWS --password-stdin {{inputs.parameters.containerRegistryUrl}};
           docker push "{{inputs.parameters.containerRegistryUrl}}/{{inputs.parameters.appName}}:{{inputs.parameters.ciCommitSha}}";
       envFrom:
