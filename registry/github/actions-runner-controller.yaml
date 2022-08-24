@@ -11,7 +11,7 @@ spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube1rst-system
+    namespace: github-runner
   syncPolicy:
     automated:
       prune: true
@@ -35,7 +35,7 @@ spec:
         enableLeaderElection: true
         authSecret:
           enabled: true
-          create: false
+          create: true
           name: "controller-manager"
           annotations: {}
           ### GitHub Apps Configuration
