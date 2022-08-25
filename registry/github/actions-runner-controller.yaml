@@ -6,7 +6,7 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-wave: "40"
 spec:
   project: default
   destination:
@@ -44,7 +44,7 @@ spec:
           #github_app_installation_id: ""
           #github_app_private_key: |
           ### GitHub PAT Configuration
-          #github_token: ""
+          github_token: <GITHUB_TOKEN>
           ### Basic auth for github API proxy
           #github_basicauth_username: ""
           #github_basicauth_password: ""
