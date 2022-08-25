@@ -18,6 +18,9 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - Replace=true
+      - PruneLast=true
   source:
     repoURL: https://actions-runner-controller.github.io/actions-runner-controller
     targetRevision: 0.20.2
