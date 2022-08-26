@@ -28,3 +28,8 @@ variable "hosted_zone_name" {
 variable "vault_redirect_uris" {
   type = list(string)
 }
+variable "git_provider" {
+  type = string
+  default = "gitlab"
+  description = "Git provider, default gitlab, accepts: gitlab | github"
+}

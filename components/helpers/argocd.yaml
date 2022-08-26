@@ -1,21 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: actions-runner-components
-  namespace: github-runner
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  name: argocd-components
+  namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-wave: "100"
 spec:
   project: default
   source:
     repoURL: <FULL_REPO_GITOPS_URL>
-    path: components/github-runner
+    path: components/argocd
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: github-runner
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
