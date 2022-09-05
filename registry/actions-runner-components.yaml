@@ -2,11 +2,12 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: actions-runner-components
-  namespace: github-runner
+  namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-wave: "40"
+    addons.kubefirst.io/name: github
 spec:
   project: default
   source:
@@ -22,6 +23,9 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - Replace=true
+      - PruneLast=true      
     retry:
       limit: 5
       backoff:
