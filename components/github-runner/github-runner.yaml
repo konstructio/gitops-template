@@ -1,6 +1,10 @@
 apiVersion: actions.summerwind.dev/v1alpha1
-kind: Runner
+kind: RunnerDeployment
 metadata:
   name: actions-runner-kubefirst
 spec:
-  organization: <GITHUB_OWNER>
+  # This will deploy 2 runners now
+  replicas: 2
+  template:
+    spec:  
+      organization: <GITHUB_OWNER>
