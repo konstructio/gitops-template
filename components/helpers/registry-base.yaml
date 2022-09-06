@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: registry/base
+    path: registry
     repoURL: git@github.com:<GITHUB_OWNER>/<REPO_GITOPS>.git
     targetRevision: HEAD
   syncPolicy:
