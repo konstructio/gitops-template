@@ -1,6 +1,71 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: github-runner
+  namespace: github-runner
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: actions-runner
+  namespace: github-runner
+
+---
+# NOTE: this policy is still WIP, we're not even there yet
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: actions-runner
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["deployments", "services"]
+  verbs: ["get", "watch", "list", "update", "delete"]
+- apiGroups: ["networking.k8s.io/v1", "extensions/v1"]
+  resources: ["ingresses"]
+  verbs: ["get", "watch", "list", "update", "delete"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "create", "delete"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["get", "create"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get", "list", "watch",]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "list", "create", "delete"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "create", "delete"]
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: actions-runner
+subjects:
+- kind: ServiceAccount
+  name: actions-runner
+  namespace: github-runner
+roleRef:
+  kind: ClusterRole
+  name: actions-runner
+  apiGroup: rbac.authorization.k8s.io
+---
 apiVersion: actions.summerwind.dev/v1alpha1
-kind: Runner
+kind: RunnerDeployment
 metadata:
   name: actions-runner-kubefirst
 spec:
-  organization: <GITHUB_OWNER>
+  # This will deploy 2 runners now
+  replicas: 1
+  template:
+    spec:  
+      organization: <GITHUB_OWNER>
+      image: summerwind/actions-runner-dind
+      serviceAccountName: github-runner
+      dockerdWithinRunnerContainer: true
+      automountServiceAccountToken: true
+      env: []  
