@@ -91,7 +91,7 @@ resource "vault_generic_secret" "ci_secrets" {
   "BASIC_AUTH_USER" : "admin",
   "BASIC_AUTH_PASS" : "${random_password.chartmuseum_user_password.result}",
   "USERNAME" : "kubefirst",
-  "PERSONAL_ACCESS_TOKEN" : "${var.gitlab_token}"
+  "PERSONAL_ACCESS_TOKEN" : "${var.gitlab_token}",
   "SSH_PRIVATE_KEY": "${var.ssh_private_key}"
 }
 EOT
