@@ -1,6 +1,21 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: github-runner
+  namespace: github-runner
+---
 apiVersion: actions.summerwind.dev/v1alpha1
-kind: Runner
+kind: RunnerDeployment
 metadata:
   name: actions-runner-kubefirst
 spec:
-  organization: <GITHUB_OWNER>
+  # This will deploy 2 runners now
+  replicas: 1
+  template:
+    spec:  
+      organization: <GITHUB_ORG>
+      image: summerwind/actions-runner-dind
+      serviceAccountName: github-runner
+      dockerdWithinRunnerContainer: true
+      automountServiceAccountToken: true
+      env: []  

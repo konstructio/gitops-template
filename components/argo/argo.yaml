@@ -554,8 +554,8 @@ subjects:
   name: argo-server
   namespace: argo
 - kind: ServiceAccount
-  name: default
-  namespace: gitlab-runner
+  name: <GIT_REPO_RUNNER_NAME>
+  namespace: <GIT_REPO_RUNNER_NS>
 ---
 apiVersion: v1
 kind: ConfigMap
