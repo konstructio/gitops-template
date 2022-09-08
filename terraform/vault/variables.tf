@@ -33,3 +33,8 @@ variable "git_provider" {
   default = "gitlab"
   description = "Git provider, default gitlab, accepts: gitlab | github"
 }
+variable "ssh_private_key" {
+  type = string
+  default = ""
+  description = "SSH Private Key to auth on git"
+}
