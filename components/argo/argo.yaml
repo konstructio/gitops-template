@@ -554,8 +554,8 @@ subjects:
   name: argo-server
   namespace: argo
 - kind: ServiceAccount
-  name: github-runner
-  namespace: github-runner
+  name: <GIT_REPO_RUNNER_NS>
+  namespace: <GIT_REPO_RUNNER_NAME>
 ---
 apiVersion: v1
 kind: ConfigMap
