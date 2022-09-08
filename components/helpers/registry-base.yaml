@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     path: registry
-    repoURL: ssh://soft-serve.soft-serve.svc.cluster.local:22/gitops
+    repoURL: git@github.com:<GITHUB_OWNER>/<REPO_GITOPS>.git
     targetRevision: HEAD
   syncPolicy:
     automated:
