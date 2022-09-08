@@ -13,7 +13,7 @@ spec:
   replicas: 1
   template:
     spec:  
-      organization: <GITHUB_OWNER>
+      organization: <GITHUB_ORG>
       image: summerwind/actions-runner-dind
       serviceAccountName: github-runner
       dockerdWithinRunnerContainer: true
