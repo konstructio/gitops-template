@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: <FULL_REPO_GITOPS_URL>
-    path: components/argocd
+    path: components/argocd-github
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
