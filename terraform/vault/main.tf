@@ -20,6 +20,7 @@ module "bootstrap" {
   gitlab_runner_token  = var.gitlab_runner_token
   gitlab_token         = var.gitlab_token
   git_provider         = var.git_provider
+  ssh_private_key      = var.ssh_private_key
 }
 
 module "oidc" {
