@@ -7,7 +7,7 @@ resource "gitlab_group" "developer" {
 resource "gitlab_group_share_group" "kubefirst_developer" {
   group_id       = data.gitlab_group.kubefirst.id
   share_group_id = gitlab_group.developer.id
-  group_access   = "developer"
+  group_access   = "maintainer"
 }
 
 module "developer_one" {
