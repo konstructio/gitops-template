@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "<AWS_DEFAULT_REGION>"
+}
+
 resource "aws_ecr_repository" "ecr_repo_metaphor" {
   name                 = "metaphor-<CLUSTER_NAME>"
   image_tag_mutability = "IMMUTABLE"
