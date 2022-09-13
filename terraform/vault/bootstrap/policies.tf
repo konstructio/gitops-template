@@ -40,6 +40,16 @@ path "sys/mounts/*" {
 path "sys/mounts" {
   capabilities = [ "read", "list" ]
 }
+  
+# allow admins to manage auth methods
+path "/sys/auth*" {
+    capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+}
+
+# allow admins to manage auth methods
+path "sys/auth/*" {
+  capabilities = [ "create", "read", "update", "delete", "list" ]
+}
 
 # Allow tokens to look up their own properties
 path "auth/token/lookup-self" {
