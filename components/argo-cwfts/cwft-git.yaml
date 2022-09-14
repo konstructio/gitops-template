@@ -16,7 +16,7 @@ spec:
         default: kubefirst/chubbo:0.1
       - name: gitopsRepoUrl
         value: "{{workflow.parameters.gitopsRepoUrl}}"
-        default: "ssh://git@github.com/org-demo-6za/gitops.git"
+        default: "<FULL_REPO_GITOPS_URL>"
       - name: gitRepoUrl
       artifacts:
       - name: repo-source
@@ -31,7 +31,7 @@ spec:
       - name: gitops-source
         path: /src/gitops
         git:
-          repo: "ssh://git@github.com/org-demo-6za/gitops.git"
+          repo: "ssh://<FULL_REPO_GITOPS_URL_SSH>"
           revision: "main"
           insecureIgnoreHostKey: true
           sshPrivateKeySecret:
@@ -148,7 +148,7 @@ spec:
         - name: commitMessage
         - name: repoPath
           value: "{{workflow.parameters.repoPath}}"
-          default: github.com/org-demo-6za/gitops
+          default: <FULL_REPO_GITOPS_URL_SSH>
         - name: gitUserEmail
           value: "{{workflow.parameters.gitUserEmail}}"
           default: cesar@kubeshop.io
