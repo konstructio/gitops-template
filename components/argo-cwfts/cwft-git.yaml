@@ -16,7 +16,7 @@ spec:
         default: kubefirst/chubbo:0.1
       - name: gitopsRepoUrl
         value: "{{workflow.parameters.gitopsRepoUrl}}"
-        default: "<FULL_REPO_GITOPS_URL>"
+        default: "ssh://<FULL_REPO_GITOPS_URL>"
       - name: gitRepoUrl
       artifacts:
       - name: repo-source
@@ -148,7 +148,7 @@ spec:
         - name: commitMessage
         - name: repoPath
           value: "{{workflow.parameters.repoPath}}"
-          default: <FULL_REPO_GITOPS_URL_SSH>
+          default: ssh://<FULL_REPO_GITOPS_URL_SSH>
         - name: gitUserEmail
           value: "{{workflow.parameters.gitUserEmail}}"
           default: <EMAIL_ADDRESS>
@@ -175,7 +175,7 @@ spec:
           echo "  IdentitiesOnly yes" >> $HOME/.ssh/config;          
           echo "  UserKnownHostsFile /dev/null" >> $HOME/.ssh/config;  
           cat $HOME/.ssh/config;     
-          git remote set-url origin ssh://{{inputs.parameters.repoPath}} 2>/dev/null;
+          git remote set-url origin {{inputs.parameters.repoPath}} 2>/dev/null;
           git remote -v;
           git config --global user.email '{{inputs.parameters.gitUserEmail}}';
           git config --global user.name '{{inputs.parameters.gitUsername}}';
