@@ -151,7 +151,7 @@ spec:
           default: <FULL_REPO_GITOPS_URL_SSH>
         - name: gitUserEmail
           value: "{{workflow.parameters.gitUserEmail}}"
-          default: cesar@kubeshop.io
+          default: <EMAIL_ADDRESS>
         - name: gitUsername
           value: "{{workflow.parameters.gitUsername}}"
           default: gitlab-bot
