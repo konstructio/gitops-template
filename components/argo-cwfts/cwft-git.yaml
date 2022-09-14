@@ -175,7 +175,6 @@ spec:
           echo "  IdentitiesOnly yes" >> $HOME/.ssh/config;          
           echo "  UserKnownHostsFile /dev/null" >> $HOME/.ssh/config;  
           cat $HOME/.ssh/config;     
-          git config -l;
           git remote set-url origin ssh://{{inputs.parameters.repoPath}} 2>/dev/null;
           git remote -v;
           git config --global user.email '{{inputs.parameters.gitUserEmail}}';
