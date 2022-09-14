@@ -178,7 +178,7 @@ spec:
         with open('./{{inputs.parameters.chartDir}}/Chart.yaml') as f:
             chart_yaml = yaml.load(f, Loader=yaml.FullLoader)    
             chart_version = semver.parse('{{inputs.parameters.chartVersion}}')
-            next_chart_version = '{}.{}.{}'.format(chart_version['major'],chart_version['minor'],chart_version['patch']+1)
+            next_chart_version = '{}.{}.{}'.format(chart_version['major'],chart_version['minor']+1,chart_version['patch'])
             chart_yaml['version'] = next_chart_version
         with open('./{{inputs.parameters.chartDir}}/Chart.yaml', 'w') as f:
             yaml.dump(chart_yaml, f)
