@@ -16,7 +16,7 @@ spec:
         default: kubefirst/chubbo:0.1
       - name: gitopsRepoUrl
         value: "{{workflow.parameters.gitopsRepoUrl}}"
-        default: "ssh://git@github.com/org-demo-6za/gitops.git"
+        default: "<FULL_REPO_GITOPS_URL>"
       - name: gitRepoUrl
       artifacts:
       - name: repo-source
@@ -31,7 +31,7 @@ spec:
       - name: gitops-source
         path: /src/gitops
         git:
-          repo: "ssh://git@github.com/org-demo-6za/gitops.git"
+          repo: "ssh://<FULL_REPO_GITOPS_URL_SSH>"
           revision: "main"
           insecureIgnoreHostKey: true
           sshPrivateKeySecret:
@@ -132,6 +132,65 @@ spec:
       envFrom:
       - secretRef:
           name: ci-secrets
+
+  - name: git-commit-ssh
+    volumes:
+     - name: ssh-key
+       secret:
+          defaultMode: 256
+          secretName: ci-secrets
+    inputs:
+      artifacts:
+      - name: repo-source
+        path: /src
+      parameters: 
+        - name: appDir
+        - name: commitMessage
+        - name: repoPath
+          value: "{{workflow.parameters.repoPath}}"
+          default: <FULL_REPO_GITOPS_URL_SSH>
+        - name: gitUserEmail
+          value: "{{workflow.parameters.gitUserEmail}}"
+          default: <EMAIL_ADDRESS>
+        - name: gitUsername
+          value: "{{workflow.parameters.gitUsername}}"
+          default: gitlab-bot
+    container:
+      workingDir: "{{inputs.parameters.appDir}}"
+      image: golang:latest
+      command: ["/bin/sh", "-c"]
+      # todo is this remote set-url good enough?   
+      volumeMounts:
+        - mountPath: "/mnt/secrets"
+          name: ssh-key
+          readOnly: true         
+      args: 
+        - ls -la /mnt/secrets;
+          mkdir $HOME/.ssh;
+          ls -la  $HOME/.ssh/;
+          echo "Host *" >> $HOME/.ssh/config;
+          echo "  IdentityFile  /mnt/secrets/SSH_PRIVATE_KEY" >> $HOME/.ssh/config;
+          echo "  StrictHostKeyChecking no" >> $HOME/.ssh/config;
+          echo "  User git" >> $HOME/.ssh/config;
+          echo "  IdentitiesOnly yes" >> $HOME/.ssh/config;          
+          echo "  UserKnownHostsFile /dev/null" >> $HOME/.ssh/config;  
+          cat $HOME/.ssh/config;     
+          git remote set-url origin ssh://{{inputs.parameters.repoPath}} 2>/dev/null;
+          git remote -v;
+          git config --global user.email '{{inputs.parameters.gitUserEmail}}';
+          git config --global user.name '{{inputs.parameters.gitUsername}}';
+          git status;
+          git pull;
+          git add .;
+          git commit -m "{{inputs.parameters.commitMessage}}";
+          git push
+
+      envFrom:
+      - secretRef:
+          name: ci-secrets
+
+          
+          
 
   - name: git-short-sha
     inputs:
