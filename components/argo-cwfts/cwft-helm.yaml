@@ -6,6 +6,8 @@ spec:
   entrypoint: helm-publish-chart
   templates:
   - name: helm-publish-chart
+    retryStrategy:
+      limit: "3"  
     inputs:
       artifacts:
       - name: repo-source
