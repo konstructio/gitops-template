@@ -5,6 +5,32 @@ metadata:
 spec:
   entrypoint: helm-publish-chart
   templates:
+  - name: helm-check-chart-museum
+    retryStrategy:
+      limit: "10"  
+    inputs:
+      artifacts:
+      - name: repo-source
+        path: /src
+      parameters: 
+      - name: appDir
+      - name: buildImage
+        value: "{{workflow.parameters.buildImage}}"
+        default: kubefirst/chubbo:0.1
+      - name: chartDir
+      - name: chartRepoName
+        value: "{{workflow.parameters.chartRepoName}}"
+        default: kubefirst
+      - name: chartRepoUrl
+        value: "{{workflow.parameters.chartRepoUrl}}"
+        default: https://chartmuseum.<AWS_HOSTED_ZONE_NAME>
+    container:
+      image: "{{inputs.parameters.buildImage}}"
+      command: [bash, -c]
+      workingDir: "{{inputs.parameters.appDir}}"
+      args:
+      - curl "{{inputs.parameters.chartRepoUrl}}/index.yaml" || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+      
   - name: helm-publish-chart
     retryStrategy:
       limit: "3"  
