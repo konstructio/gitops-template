@@ -7,7 +7,7 @@ spec:
   templates:
   - name: helm-check-chart-museum
     retryStrategy:
-      limit: "10"  
+      limit: "30"  
     inputs:
       artifacts:
       - name: repo-source
