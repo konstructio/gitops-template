@@ -1,5 +1,11 @@
 provider "aws" {
   region = "<AWS_DEFAULT_REGION>"
+  
+  default_tags {
+    tags = {
+      ClusterName = "<CLUSTER_NAME>"
+    }
+  }
 }
 
 resource "aws_ecr_repository" "ecr_repo_metaphor" {
