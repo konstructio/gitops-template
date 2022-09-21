@@ -33,7 +33,7 @@ spec:
       
   - name: helm-publish-chart
     retryStrategy:
-      limit: "3"  
+      limit: "5"  
     inputs:
       artifacts:
       - name: repo-source
@@ -55,8 +55,8 @@ spec:
       command: [bash, -c]
       workingDir: "{{inputs.parameters.appDir}}"
       args:
-      - helm repo add {{inputs.parameters.chartRepoName}} {{inputs.parameters.chartRepoUrl}} --username $BASIC_AUTH_USER --password $BASIC_AUTH_PASS;
-        helm push {{inputs.parameters.chartDir}} {{inputs.parameters.chartRepoName}};
+      - helm repo add {{inputs.parameters.chartRepoName}} {{inputs.parameters.chartRepoUrl}} --username $BASIC_AUTH_USER --password $BASIC_AUTH_PASS || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+        helm push {{inputs.parameters.chartDir}} {{inputs.parameters.chartRepoName}} || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
       envFrom:
       - secretRef:
           name: ci-secrets
