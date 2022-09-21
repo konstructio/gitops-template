@@ -22,6 +22,10 @@ variable "gitlab_runner_token" {
 variable "gitlab_token" {
   type = string
 }
+variable "atlantis_github_webhook_token" {
+  description = "GitHub Webhook token to be used on atlantis"
+  type = string
+}
 variable "hosted_zone_name" {
   type = string
 }

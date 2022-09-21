@@ -21,6 +21,7 @@ module "bootstrap" {
   gitlab_token         = var.gitlab_token
   git_provider         = var.git_provider
   ssh_private_key      = var.ssh_private_key
+  atlantis_github_webhook_token = var.atlantis_github_webhook_token
 }
 
 module "oidc" {
