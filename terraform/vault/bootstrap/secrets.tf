@@ -9,7 +9,7 @@ locals {
   		"ATLANTIS_GH_HOSTNAME": "<GITHUB_HOST>",
   		"ATLANTIS_GH_TOKEN": "<GITHUB_TOKEN>",
   		"ATLANTIS_GH_USER": "<GITHUB_USER>",		 
-      "ATLANTIS_GH_SECRET":  "${var.atlantis_github_webhook_token}",
+  		"ATLANTIS_GH_SECRET":  "${var.atlantis_github_webhook_token}",
   		"AWS_DEFAULT_REGION": "<AWS_DEFAULT_REGION>",
   		"AWS_ROLE_TO_ASSUME": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin",
   		"AWS_SESSION_NAME": "GitHubAction",
