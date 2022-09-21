@@ -33,7 +33,7 @@ spec:
       
   - name: helm-publish-chart
     retryStrategy:
-      limit: "3"  
+      limit: "5"  
     inputs:
       artifacts:
       - name: repo-source
