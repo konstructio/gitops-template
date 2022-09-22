@@ -98,6 +98,8 @@ spec:
         path: /src
 
   - name: git-commit
+    retryStrategy:
+      limit: "5"    
     inputs:
       artifacts:
       - name: repo-source
@@ -127,13 +129,15 @@ spec:
           git status;
           git pull;
           git add .;
-          git commit -m "{{inputs.parameters.commitMessage}}";
-          git push
+          git commit -m "{{inputs.parameters.commitMessage}}" || echo "Assuming this was committed on previous run, not erroring out" ;
+          git push || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
       envFrom:
       - secretRef:
           name: ci-secrets
 
   - name: git-commit-ssh
+    retryStrategy:
+      limit: "5"      
     volumes:
      - name: ssh-key
        secret:
@@ -182,8 +186,8 @@ spec:
           git status;
           git pull;
           git add .;
-          git commit -m "{{inputs.parameters.commitMessage}}";
-          git push
+          git commit -m "{{inputs.parameters.commitMessage}}"  || echo "Assuming this was committed on previous run, not erroring out" ;
+          git push || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
 
       envFrom:
       - secretRef:
