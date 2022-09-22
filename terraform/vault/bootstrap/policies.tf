@@ -1,3 +1,4 @@
+# todo need to add read to aws path 
 resource "vault_policy" "admin" {
   name = "admin"
 
