@@ -8,6 +8,12 @@ data "terraform_remote_state" "eks" {
 }
 provider "aws" {
   region = "<AWS_DEFAULT_REGION>"
+  default_tags {
+    tags = {
+      ClusterName = "<CLUSTER_NAME>"
+    }
+  }
+
 }
 
 data "aws_eks_cluster" "cluster" {
