@@ -82,6 +82,50 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
 }
 EOT
 }
+data "vault_identity_oidc_client_creds" "argo_creds" {
+  name = module.argo.vault_oidc_app_name
+}
+
+resource "vault_generic_secret" "argo_creds" {
+  path = "${vault_mount.secret.path}/oidc/${module.argo.vault_oidc_app_name}"
+
+  data_json = <<EOT
+{
+  "client_id" : ${data.vault_identity_oidc_client_creds.argo_creds.client_id},
+  "client_secret" : ${data.vault_identity_oidc_client_creds.argo_creds.client_secret}
+}
+EOT
+}
+
+data "vault_identity_oidc_client_creds" "argocd_creds" {
+  name = module.argocd.vault_oidc_app_name
+}
+
+resource "vault_generic_secret" "argocd_creds" {
+  path = "${vault_mount.secret.path}/oidc/${module.argo.vault_oidc_app_name}"
+
+  data_json = <<EOT
+{
+  "client_id" : ${data.vault_identity_oidc_client_creds.argo_creds.client_id},
+  "client_secret" : ${data.vault_identity_oidc_client_creds.argo_creds.client_secret}
+}
+EOT
+}
+
+data "vault_identity_oidc_client_creds" "gitlab_creds" {
+  name = module.gitlab.vault_oidc_app_name
+}
+
+resource "vault_generic_secret" "gitlab_creds" {
+  path = "${vault_mount.secret.path}/oidc/${module.argo.vault_oidc_app_name}"
+
+  data_json = <<EOT
+{
+  "client_id" : ${data.vault_identity_oidc_client_creds.argo_creds.client_id},
+  "client_secret" : ${data.vault_identity_oidc_client_creds.argo_creds.client_secret}
+}
+EOT
+}
 
 resource "vault_generic_secret" "gitlab_runner_secrets" {
   path = "${vault_mount.secret.path}/gitlab-runner"

@@ -23,6 +23,10 @@ resource "vault_identity_oidc_client" "app" {
   client_type      = "confidential"
 }
 
+output "vault_oidc_app_name" {
+  value = vault_identity_oidc_client.app.name
+}
+
 variable "app_name" {
   type = string
 }
