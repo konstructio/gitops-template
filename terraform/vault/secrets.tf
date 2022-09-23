@@ -102,7 +102,7 @@ data "vault_identity_oidc_client_creds" "argocd_creds" {
 }
 
 resource "vault_generic_secret" "argocd_creds" {
-  path = "${vault_mount.secret.path}/oidc/${module.argo.vault_oidc_app_name}"
+  path = "${vault_mount.secret.path}/oidc/${module.argocd.vault_oidc_app_name}"
 
   data_json = <<EOT
 {
@@ -117,7 +117,7 @@ data "vault_identity_oidc_client_creds" "gitlab_creds" {
 }
 
 resource "vault_generic_secret" "gitlab_creds" {
-  path = "${vault_mount.secret.path}/oidc/${module.argo.vault_oidc_app_name}"
+  path = "${vault_mount.secret.path}/oidc/${module.gitlab.vault_oidc_app_name}"
 
   data_json = <<EOT
 {
