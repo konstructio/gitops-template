@@ -111,7 +111,7 @@ EOT
 resource "vault_generic_secret" "atlantis_secrets" {
   path = "${vault_mount.secret.path}/atlantis"
 
-  data_json = "${var.git_provider == "github" ? local.secrets_github : local.secrets_gitlab}"
+  data_json = var.git_provider == "github" ? local.secrets_github : local.secrets_gitlab
 }
 
 resource "vault_generic_secret" "development_metaphor" {

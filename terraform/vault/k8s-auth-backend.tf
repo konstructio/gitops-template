@@ -6,6 +6,7 @@ data "terraform_remote_state" "eks" {
     region = "<AWS_DEFAULT_REGION>"
   }
 }
+
 provider "aws" {
   region = "<AWS_DEFAULT_REGION>"
   default_tags {
@@ -37,14 +38,14 @@ resource "vault_auth_backend" "k8s" {
 
 data "kubernetes_service_account" "external_secrets" {
   metadata {
-    name = "external-secrets"
+    name      = "external-secrets"
     namespace = "external-secrets-operator"
   }
 }
 
 data "kubernetes_secret" "external_secrets_token_secret" {
   metadata {
-    name = data.kubernetes_service_account.external_secrets.default_secret_name
+    name      = data.kubernetes_service_account.external_secrets.default_secret_name
     namespace = "external-secrets-operator"
   }
 }

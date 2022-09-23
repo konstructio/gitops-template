@@ -1,29 +1,29 @@
-variable username { 
-  type = string 
+variable "username" {
+  type        = string
   description = "a distinct username that is unique to this user throughout the kubefirst ecosystem"
 }
-variable fullname {
-  type = string 
+variable "fullname" {
+  type        = string
   description = "example: Jane Doe"
 }
-variable email { 
-  type = string
+variable "email" {
+  type        = string
   description = "jane.doe@yourdomain.com"
 }
-variable is_admin { 
-  default = false 
+variable "is_admin" {
+  default     = false
   description = "setting to true will add the user to the admins group, granting them admin access to our apps. setting to false will add the user to the developer group, granting them developer access to our apps"
 }
-variable enabled {
-  default = true
+variable "enabled" {
+  default     = true
   description = "setting to false allows you to destroy all resources so you can cleanly remove the user before removing them from terraform"
 }
-variable admins_group_id {
-  type = string
+variable "admins_group_id" {
+  type        = string
   description = "for admin group assignment when is_admin"
 }
-variable developer_group_id {
-  type = string
+variable "developer_group_id" {
+  type        = string
   description = "for developer group assignment when not is_admin"
 }
 
@@ -43,7 +43,7 @@ resource "gitlab_user" "user" {
   projects_limit   = 100
   can_create_group = true
   is_external      = false
-  reset_password   = false 
+  reset_password   = false
   # initial gitlab password are stored in vault. to allow gitlab to manage passwords,
   # you should remove `password` and change `reset_password` to true. however, you'll need to
   # enable gitlab email before setting to reset_password to true. see this link for config settings:
@@ -53,15 +53,15 @@ resource "gitlab_user" "user" {
 }
 
 resource "gitlab_group_membership" "user_admin_group" {
-  count = var.enabled ? 1 : 0
+  count        = var.enabled ? 1 : 0
   group_id     = var.is_admin ? var.admins_group_id : var.developer_group_id
   user_id      = gitlab_user.user[count.index].id
   access_level = "maintainer"
 }
 
 resource "vault_generic_secret" "user_password" {
-  count = var.enabled ? 1 : 0 # keep secret in vault if user is enabled
-  path = "users/${gitlab_user.user[count.index].username}"
+  count     = var.enabled ? 1 : 0 # keep secret in vault if user is enabled
+  path      = "users/${gitlab_user.user[count.index].username}"
   data_json = <<EOT
 {
   "PASSWORD" : "${random_password.user.result}"

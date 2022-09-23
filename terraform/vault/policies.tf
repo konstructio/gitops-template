@@ -1,4 +1,3 @@
-# todo need to add read to aws path 
 resource "vault_policy" "admin" {
   name = "admin"
 
@@ -24,7 +23,7 @@ path "secret/*" {
     capabilities = ["create", "read", "update", "delete", "list"]
 }
 
-path "client-pro/*" {
+path "aws/*" {
     capabilities = ["create", "read", "update", "delete", "list"]
 }
 
@@ -79,7 +78,6 @@ path "identity/entity/id/{{identity.entity.id}}" {
 path "identity/entity/name/{{identity.entity.name}}" {
   capabilities = ["read"]
 }
-
 
 # Allow a token to look up its resultant ACL from all policies. This is useful
 # for UIs. It is an internal path because the format may change at any time
@@ -150,6 +148,10 @@ resource "vault_policy" "developer" {
 # Obviously it's your vault now, feel free to change the rules
 path "secret/*" {
     capabilities = ["create", "read", "update", "list"]
+}
+
+path "aws/creds/KubernetesDeveloper" {
+    capabilities = ["read"]
 }
 
 # List available secrets engines to retrieve accessor ID
