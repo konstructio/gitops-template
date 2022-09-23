@@ -15,14 +15,6 @@ provider "aws" {
   }
 }
 
-resource "gitlab_group" "kubefirst" {
-  name                   = "kubefirst"
-  path                   = "kubefirst"
-  description            = "a private group for kubefirst repositories"
-  request_access_enabled = false
-  visibility_level       = "private"
-}
-
 module "metaphor" {
   depends_on = [
     gitlab_group.kubefirst
