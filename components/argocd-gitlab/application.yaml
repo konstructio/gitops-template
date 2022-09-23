@@ -61,11 +61,12 @@ spec:
                   factor: 2
           config:
             oidc.config: |
-              name: Gitlab
-              issuer: https://gitlab.<AWS_HOSTED_ZONE_NAME>
+              name: Vault
+              issuer: https://vault.<AWS_HOSTED_ZONE_NAME>/v1/identity/oidc/provider/kubefirst
               clientID: <ARGOCD_OIDC_CLIENT_ID>
-              clientSecret: $oidc.gitlab.clientSecret
-              requestedScopes: ["openid", "email"]
+              clientSecret: $oidc.vault.clientSecret
+              requestedScopes: ["openid", "groups", "user", "profile", "email"]
+              requestedIDTokenClaims: {"groups": {"essential": true}}
             url: 'https://argocd.<AWS_HOSTED_ZONE_NAME>'        
   destination:
     server: "https://kubernetes.default.svc"
