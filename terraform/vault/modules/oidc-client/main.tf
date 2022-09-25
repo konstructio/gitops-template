@@ -38,3 +38,19 @@ variable "oidc_provider_key_name" {
 variable "redirect_uris" {
   type = list(string)
 }
+
+
+data "vault_identity_oidc_client_creds" "creds" {
+  name = var.app_name
+}
+
+resource "vault_generic_secret" "creds" {
+  path = "${vault_mount.secret.path}/oidc/${var.app_name}"
+
+  data_json = <<EOT
+{
+  "client_id" : ${data.vault_identity_oidc_client_creds.creds.client_id},
+  "client_secret" : ${data.vault_identity_oidc_client_creds.creds.client_secret}
+}
+EOT
+}
