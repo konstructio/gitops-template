@@ -105,5 +105,4 @@ variable "team_id" {
 resource "github_team_membership" "admins_team_membership" {
   team_id  = var.team_id
   username = var.github_username
-  role     = var.role
 }

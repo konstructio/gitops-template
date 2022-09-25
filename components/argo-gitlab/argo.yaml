@@ -588,10 +588,12 @@ data:
     # be in the form <argo-server-root-url>/oauth2/callback. It must be
     # browser-accessible.
     redirectUrl: https://argo.<AWS_HOSTED_ZONE_NAME>/oauth2/callback
-    # Additional scopes to request. Typically needed for SSO RBAC. >= v2.12
     scopes:
       - email
       - openid
+      - groups
+      - user
+      - profile
     # RBAC Config. >= v2.12
     rbac:
       enabled: true
