@@ -55,14 +55,14 @@ resource "vault_generic_secret" "user" {
 EOT
 }
 
-resource "aws_iam_user" "user" {
-  name = var.username
-  path = "/"
+# resource "aws_iam_user" "user" {
+#   name = var.username
+#   path = "/"
 
-  tags = {
-    ManagedBy = "terraform"
-  }
-}
+#   tags = {
+#     ManagedBy = "terraform"
+#   }
+# }
 
 variable "acl_policies" {
   type = list(string)
