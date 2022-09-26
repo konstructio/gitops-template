@@ -42,15 +42,24 @@ variable "redirect_uris" {
 
 data "vault_identity_oidc_client_creds" "creds" {
   name = var.app_name
+
+  depends_on = [
+    vault_identity_oidc_client.app
+  ]
+  
 }
 
 resource "vault_generic_secret" "creds" {
   path = "${vault_mount.secret.path}/oidc/${var.app_name}"
 
+  depends_on = [
+    vault_identity_oidc_client.app
+  ]
+
   data_json = <<EOT
 {
-  "client_id" : ${data.vault_identity_oidc_client_creds.creds.client_id},
-  "client_secret" : ${data.vault_identity_oidc_client_creds.creds.client_secret}
+  "client_id" : "${data.vault_identity_oidc_client_creds.creds.client_id}",
+  "client_secret" : "${data.vault_identity_oidc_client_creds.creds.client_secret}"
 }
 EOT
 }
