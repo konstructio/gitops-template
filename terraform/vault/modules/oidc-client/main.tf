@@ -39,6 +39,9 @@ variable "redirect_uris" {
   type = list(string)
 }
 
+variable "secret_mount_path" {
+  type = string
+}
 
 data "vault_identity_oidc_client_creds" "creds" {
   name = var.app_name
@@ -50,7 +53,7 @@ data "vault_identity_oidc_client_creds" "creds" {
 }
 
 resource "vault_generic_secret" "creds" {
-  path = "${vault_mount.secret.path}/oidc/${var.app_name}"
+  path = "${var.secret_mount_path}/oidc/${var.app_name}"
 
   depends_on = [
     vault_identity_oidc_client.app
