@@ -13,6 +13,11 @@ variable "default_branch_name" {
   default = "main"
 }
 
+variable "create_ecr" {
+  type = bool
+  default = false
+}
+
 variable "delete_branch_on_merge" {
   type    = bool
   default = true
@@ -54,10 +59,10 @@ variable "visibility" {
   default = "private"
 }
 
-variable "team_engineers" {
+variable "team_developers_id" {
   type = string
 }
-variable "team_admins" {
+variable "team_admins_id" {
   type = string
 }
 
