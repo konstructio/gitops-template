@@ -90,11 +90,23 @@ variable "github_username" {
   type = string
 }
 
-variable "role" {
+variable "email" {
   type = string
 }
 
-variable "email" {
+variable "first_name" {
+  type = string
+}
+
+variable "last_name" {
+  type = string
+}
+
+variable "username" {
+  type = string
+}
+
+variable "fullname" {
   type = string
 }
 
