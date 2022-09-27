@@ -14,7 +14,7 @@ terraform {
 }
 
 module "gitops" {
-  source = "./templates/repository"
+  source = "./modules/repository"
 
   repo_name          = "gitops"
   archive_on_destroy = false
@@ -44,7 +44,7 @@ variable "atlantis_repo_webhook_secret" {
 }
 
 module "metaphor" {
-  source = "./templates/repository"
+  source = "./modules/repository"
 
   repo_name          = "metaphor"
   archive_on_destroy = false
@@ -54,7 +54,7 @@ module "metaphor" {
 }
 
 module "metaphor_go" {
-  source = "./templates/repository"
+  source = "./modules/repository"
 
   repo_name          = "metaphor-go"
   archive_on_destroy = false
@@ -64,7 +64,7 @@ module "metaphor_go" {
 }
 
 module "metaphor_frontend" {
-  source = "./templates/repository"
+  source = "./modules/repository"
 
   repo_name          = "metaphor-frontend"
   archive_on_destroy = false
