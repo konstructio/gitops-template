@@ -18,6 +18,9 @@ resource "aws_ecr_repository" "repo" {
   }
 }
 
+output "repo_name" {
+  value = github_repository.repo.name
+}
 
 resource "github_repository" "repo" {
   name        = var.repo_name

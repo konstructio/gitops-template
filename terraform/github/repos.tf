@@ -23,6 +23,26 @@ module "gitops" {
   team_admins        = github_team.admins.id
 }
 
+resource "github_repository_webhook" "gitops_atlantis_webhook" {
+    repository = module.gitops.repo_name
+  
+    name = module.gitops.repo_name
+    configuration {
+      url          = "https://atlantis.<AWS_HOSTED_ZONE_NAME>/events"
+      content_type = "json"
+      insecure_ssl = false
+      secret       = var.atlantis_repo_webhook_secret
+    }
+  
+    active = true
+  
+    events = ["pull_request_review", "push", "issue_comment", "pull_request"]
+}
+variable "atlantis_repo_webhook_secret" {
+  type = string
+  default = ""
+}
+
 module "metaphor" {
   source = "./templates/repository"
 
