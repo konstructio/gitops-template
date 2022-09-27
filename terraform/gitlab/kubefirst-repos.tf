@@ -19,7 +19,7 @@ module "metaphor" {
   depends_on = [
     gitlab_group.kubefirst
   ]
-  source                                = "./templates/gitlab-repo"
+  source                                = "./modules/repository"
   group_name                            = gitlab_group.kubefirst.id
   repo_name                             = "metaphor"
   create_ecr                            = true
@@ -32,7 +32,7 @@ module "metaphor-go" {
   depends_on = [
     gitlab_group.kubefirst
   ]
-  source                                = "./templates/gitlab-repo"
+  source                                = "./modules/repository"
   group_name                            = gitlab_group.kubefirst.id
   repo_name                             = "metaphor-go"
   create_ecr                            = true
@@ -45,7 +45,7 @@ module "metaphor-frontend" {
   depends_on = [
     gitlab_group.kubefirst
   ]
-  source                                = "./templates/gitlab-repo"
+  source                                = "./modules/repository"
   group_name                            = gitlab_group.kubefirst.id
   repo_name                             = "metaphor-frontend"
   create_ecr                            = true
@@ -58,7 +58,7 @@ module "gitops" {
   depends_on = [
     gitlab_group.kubefirst
   ]
-  source                                = "./templates/gitlab-repo"
+  source                                = "./modules/repository"
   group_name                            = gitlab_group.kubefirst.id
   repo_name                             = "gitops"
   create_ecr                            = true
