@@ -16,7 +16,7 @@ resource "gitlab_project" "repo" {
   remove_source_branch_after_merge                 = var.remove_source_branch_after_merge
 }
 
-resource "aws_ecr_repository" "ecr_repo" {
+resource "aws_ecr_repository" "repo" {
   count                = var.create_ecr != true ? 0 : 1
   name                 = "${var.repo_name}-<CLUSTER_NAME>"
   image_tag_mutability = "IMMUTABLE"
