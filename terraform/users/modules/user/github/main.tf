@@ -102,10 +102,6 @@ variable "last_name" {
   type = string
 }
 
-variable "username" {
-  type = string
-}
-
 variable "fullname" {
   type = string
 }
