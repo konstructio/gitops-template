@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    gitlab = {
-      source = "gitlabhq/gitlab"
-    }
-  }
-}
-
 resource "vault_identity_entity" "user" {
   name     = var.username
   disabled = var.user_disabled
@@ -104,6 +96,11 @@ variable "last_name" {
 
 variable "fullname" {
   type = string
+}
+
+variable "initial_password" {
+  type = string
+  default = ""
 }
 
 variable "team_id" {

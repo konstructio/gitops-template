@@ -13,7 +13,7 @@ resource "vault_identity_group_member_entity_ids" "developers_membership" {
 }
 
 module "oernetes" {
-  source = "../../github/modules/repository"
+  source = "./modules/user/github"
 
   acl_policies            = ["developer"]
   aws_secret_backend_path = data.vault_auth_backend.aws.accessor

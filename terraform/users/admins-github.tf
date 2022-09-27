@@ -13,7 +13,7 @@ resource "vault_identity_group_member_entity_ids" "admins_membership" {
 }
 
 module "pernetes" {
-  source = "../../github/modules/repository"
+  source = "./modules/user/github"
 
   acl_policies            = ["admin"]
   aws_secret_backend_path = data.vault_auth_backend.aws.accessor
