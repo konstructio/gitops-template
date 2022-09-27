@@ -203,35 +203,6 @@ resource "aws_eks_addon" "vpc_cni" {
   resolve_conflicts = "OVERWRITE"
 }
 
-resource "aws_eks_node_group" "preprod_nodes" {
-  cluster_name    = module.eks.cluster_id
-  node_group_name = "preprod-nodes"
-  node_role_arn   = aws_iam_role.kubefirst_worker_nodes_role.arn
-  subnet_ids      = module.vpc.private_subnets
-  ami_type        = "AL2_x86_64"
-  disk_size       = 50
-
-  capacity_type = var.lifecycle_nodes
-  
-  labels = {
-    workload = "preprod"
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
-  }
-
-  scaling_config {
-    desired_size = 3
-    max_size     = 3
-    min_size     = 3
-  }
-
-  # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
-  # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
-  depends_on = [
-    module.eks
-  ]
-}
-
 resource "aws_eks_node_group" "mgmt_nodes" {
   cluster_name    = module.eks.cluster_id
   node_group_name = "mgmt-nodes"
@@ -249,38 +220,9 @@ resource "aws_eks_node_group" "mgmt_nodes" {
   }
 
   scaling_config {
-    desired_size = 2
-    max_size     = 2
-    min_size     = 2
-  }
-
-  # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
-  # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
-  depends_on = [
-    module.eks
-  ]
-}
-
-resource "aws_eks_node_group" "production_nodes" {
-  cluster_name    = module.eks.cluster_id
-  node_group_name = "production-nodes"
-  node_role_arn   = aws_iam_role.kubefirst_worker_nodes_role.arn
-  subnet_ids      = module.vpc.private_subnets
-  ami_type        = "AL2_x86_64"
-  disk_size       = 50
-
-  capacity_type = var.lifecycle_nodes
-
-  labels = {
-    workload = "production"
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
-  }
-
-  scaling_config {
-    desired_size = 2
-    max_size     = 2
-    min_size     = 2
+    desired_size = 7
+    max_size     = 7
+    min_size     = 7
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
