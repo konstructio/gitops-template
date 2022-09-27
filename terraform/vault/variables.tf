@@ -18,13 +18,16 @@ variable "hosted_zone_id" {
 }
 variable "gitlab_runner_token" {
   type = string
+  default = ""
 }
 variable "gitlab_token" {
   type = string
+  default = ""
 }
 variable "atlantis_github_webhook_token" {
   description = "GitHub Webhook token to be used on atlantis"
   type        = string
+  default = ""
 }
 variable "hosted_zone_name" {
   type = string
