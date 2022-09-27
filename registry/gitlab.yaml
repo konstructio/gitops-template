@@ -1,3 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gitlab
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

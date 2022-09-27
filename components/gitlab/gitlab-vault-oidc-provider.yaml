@@ -1,0 +1,19 @@
+name: openid_connect
+label: Vault
+icon: https://www.pngitem.com/pimgs/m/329-3299659_hashicorp-vault-logo-hd-png-download.png
+args:
+  name: openid_connect
+  scope:
+    - openid
+    - profile
+    - email
+    - groups
+  response_type: code
+  issuer: https://vault.<AWS_HOSTED_ZONE_NAME>/v1/identity/oidc/provider/kubefirst
+  client_auth_method: basic
+  discovery: true
+  uid_field: email
+  client_options:
+    identifier: value-replaced-during-kubefirst-cluster-create
+    secret: value-replaced-during-kubefirst-cluster-create
+    redirect_uri: https://gitlab.<AWS_HOSTED_ZONE_NAME>/users/auth/openid_connect/callback

@@ -11,6 +11,11 @@ projects:
     autoplan:
       enabled: true
       when_modified: ["./**/*.tf", "*.tf*"]
+  - dir: terraform/github
+    terraform_version: 1.0.11
+    autoplan:
+      enabled: true
+      when_modified: ["./**/*.tf", "*.tf*"]
   - dir: terraform/gitlab
     terraform_version: 1.0.11
     autoplan:
