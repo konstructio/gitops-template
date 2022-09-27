@@ -19,6 +19,15 @@ spec:
           registry:
               enabled: false
           appConfig:
+            omniauth:
+              enabled: true
+              # autoSignInWithProvider: openid_connect
+              syncProfileFromProvider: true
+              syncProfileAttributes: [openid, email, profile]
+              allowSingleSignOn: [openid_connect]
+              autoLinkUser: true
+              providers:
+              - secret: gitlab-vault-oidc
             defaultProjectsFeatures:
               containerRegistry: false
           hosts:
