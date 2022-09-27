@@ -117,8 +117,8 @@ variable "group_id" {
   description = "the group assignment for the user"
 }
 
-data "vault_identity_group" "admin_group" {
-  group_name = "admin"
+data "vault_identity_group" "admins" {
+  group_name = "admins"
 }
 
 data "gitlab_group" "admins" {
@@ -135,7 +135,7 @@ resource "gitlab_user" "user" {
   username         = var.username
   password         = var.initial_password == "" ? random_password.password.result : var.initial_password
   email            = var.email
-  is_admin         = var.group_id == data.vault_identity_group.admin_group.group_id ? true : false
+  is_admin         = var.group_id == data.vault_identity_group.admins.group_id ? true : false
   projects_limit   = 100
   can_create_group = true
   is_external      = false
@@ -150,7 +150,7 @@ resource "gitlab_user" "user" {
 
 resource "gitlab_group_membership" "user_admin_group" {
   count        = var.enabled ? 1 : 0
-  group_id     = var.group_id == data.vault_identity_group.admin_group.group_id ? data.gitlab_group.admins.id : data.gitlab_group.developers.id
+  group_id     = var.group_id == data.vault_identity_group.admins.group_id ? data.gitlab_group.admins.id : data.gitlab_group.developers.id
   user_id      = gitlab_user.user[count.index].id
-  access_level = var.group_id == data.vault_identity_group.admin_group.group_id ? "owner" : "maintainer"
+  access_level = var.group_id == data.vault_identity_group.admins.group_id ? "owner" : "maintainer"
 }

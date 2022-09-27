@@ -1,5 +1,5 @@
-data "vault_identity_group" "admin_group" {
-  group_name = "admin"
+data "vault_identity_group" "admins" {
+  group_name = "admins"
 }
 
 resource "vault_identity_group_member_entity_ids" "admin_membership" {
@@ -9,7 +9,7 @@ resource "vault_identity_group_member_entity_ids" "admin_membership" {
 
   # exclusive = true?
 
-  group_id = data.vault_identity_group.admin_group.group_id
+  group_id = data.vault_identity_group.admins.group_id
 }
 
 module "zernetes" {
@@ -20,7 +20,7 @@ module "zernetes" {
   email                   = "zernetes@kubefirst.com"
   first_name              = "Zoug"
   fullname                = "Zoug Ernetes"
-  group_id                = data.vault_identity_group.admin_group.group_id
+  group_id                = data.vault_identity_group.admins.group_id
   last_name               = "Ernetes"
   initial_password        = var.initial_password
   username                = "zernetes"

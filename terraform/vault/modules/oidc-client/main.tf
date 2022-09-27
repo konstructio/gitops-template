@@ -1,14 +1,14 @@
-data "vault_identity_group" "admin" {
-  group_name = "admin"
+data "vault_identity_group" "admins" {
+  group_name = "admins"
 }
 
-data "vault_identity_group" "developer" {
-  group_name = "developer"
+data "vault_identity_group" "developers" {
+  group_name = "developers"
 }
 
 resource "vault_identity_oidc_assignment" "app" {
   name      = var.app_name
-  group_ids = [data.vault_identity_group.admin.group_id, data.vault_identity_group.developer.group_id]
+  group_ids = [data.vault_identity_group.admins.group_id, data.vault_identity_group.developers.group_id]
 }
 
 resource "vault_identity_oidc_client" "app" {

@@ -1,4 +1,4 @@
-data "vault_identity_group" "admins_group" {
+data "vault_identity_group" "admins" {
   group_name = "admins"
 }
 
@@ -9,7 +9,7 @@ resource "vault_identity_group_member_entity_ids" "admins_membership" {
 
   # exclusive = true?
 
-  group_id = data.vault_identity_group.admins_group.group_id
+  group_id = data.vault_identity_group.admins.group_id
 }
 
 module "pernetes" {
@@ -23,7 +23,7 @@ module "pernetes" {
   github_username         = "kube1st"
   last_name               = "Ernetes"
   initial_password        = var.initial_password
-  team_id                 = github_team.admins.id
+  team_id                 = data.github_team.admins.id
   username                = "pernetes"
   user_disabled           = false
   userpass_accessor       = data.vault_auth_backend.userpass.accessor

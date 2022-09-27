@@ -1,4 +1,4 @@
-resource "vault_identity_group" "developer" {
+resource "vault_identity_group" "developers" {
   name     = "developers"
   type     = "internal"
   policies = ["developer"]
@@ -15,7 +15,7 @@ resource "vault_identity_group" "developer" {
   }
 }
 
-resource "vault_identity_group" "admin" {
+resource "vault_identity_group" "admins" {
   name     = "admins"
   type     = "internal"
   policies = ["admin"]

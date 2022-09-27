@@ -1,5 +1,5 @@
-data "vault_identity_group" "developer_group" {
-  group_name = "developer"
+data "vault_identity_group" "developers" {
+  group_name = "developers"
 }
 
 resource "vault_identity_group_member_entity_ids" "developer_membership" {
@@ -8,7 +8,7 @@ resource "vault_identity_group_member_entity_ids" "developer_membership" {
   ]
   # exclusive = true?
 
-  group_id = data.vault_identity_group.developer_group.group_id
+  group_id = data.vault_identity_group.developers.group_id
 }
 
 module "qernetes" {
@@ -19,7 +19,7 @@ module "qernetes" {
   email                   = "qernetes@kubefirst.com"
   first_name              = "Qoug"
   fullname                = "Qoug Ernetes"
-  group_id                = data.vault_identity_group.developer_group.group_id
+  group_id                = data.vault_identity_group.developers.group_id
   last_name               = "Ernetes"
   username                = "qernetes"
   user_disabled           = false
