@@ -11,7 +11,7 @@ locals {
   		"ATLANTIS_GH_USER": "<GITHUB_USER>",		 
   		"ATLANTIS_GH_WEBHOOK_SECRET":  "${var.atlantis_github_webhook_token}",
   		"GITHUB_TOKEN": "<GITHUB_TOKEN>",
-  		"GITHUB_OWNER": "<GITHUB_USER>",		 
+  		"GITHUB_OWNER": "<GITHUB_OWNER>",
   		"AWS_DEFAULT_REGION": "<AWS_DEFAULT_REGION>",
   		"AWS_ROLE_TO_ASSUME": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin",
   		"AWS_SESSION_NAME": "GitHubAction",
