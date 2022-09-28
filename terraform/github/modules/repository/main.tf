@@ -56,13 +56,13 @@ resource "github_repository" "repo" {
   }
 }
 
-resource "github_team_repository" "team_repo_admins" {
+resource "github_team_repository" "team_admins" {
   team_id    = var.team_admins_id
   repository = github_repository.repo.name
   permission = "admin"
 }
 
-resource "github_team_repository" "team_repo_developers" {
+resource "github_team_repository" "team_developers" {
   team_id    = var.team_developers_id
   repository = github_repository.repo.name
   permission = "maintain"
