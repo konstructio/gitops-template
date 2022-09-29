@@ -31,9 +31,6 @@ variable "github_token" {
 variable "hosted_zone_name" {
   type = string
 }
-variable "vault_redirect_uris" {
-  type = list(string)
-}
 variable "git_provider" {
   type        = string
   default     = "gitlab"
