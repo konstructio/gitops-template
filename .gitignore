@@ -1,7 +1,6 @@
 **/*.env
-**/node_modules/*
-**/.terraform/*
+**/.env
+**/.terraform/
+**/.terraform.lock.hcl
 .vscode
-**/cypress/screenshots/*
-**/cypress/videos/*
 .DS_Store

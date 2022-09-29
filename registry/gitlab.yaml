@@ -4,6 +4,7 @@ metadata:
   name: gitlab
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    addons.kubefirst.io/name: gitlab
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -104,6 +105,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "21"
+    addons.kubefirst.io/name: gitlab
 spec:
   template:
     spec:
