@@ -15,6 +15,9 @@ spec:
       values: |-
         server:
           rbacConfig:
+            policy.csv: |
+              g, admins, role:admin
+              g, developers, role:readonly
             policy.default: role:readonly
           ingress:
             enabled: true
@@ -63,7 +66,7 @@ spec:
             oidc.config: |
               name: Vault
               issuer: https://vault.<AWS_HOSTED_ZONE_NAME>/v1/identity/oidc/provider/kubefirst
-              clientID: <ARGOCD_OIDC_CLIENT_ID>
+              clientID: $argocd-oidc-secret:clientId
               clientSecret: $argocd-oidc-secret:clientSecret
               requestedScopes: ["openid", "groups", "user", "profile", "email"]
               requestedIDTokenClaims: {"groups": {"essential": true}}

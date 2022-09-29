@@ -24,16 +24,12 @@ variable "gitlab_token" {
   type = string
   default = ""
 }
-variable "atlantis_github_webhook_token" {
-  description = "GitHub Webhook token to be used on atlantis"
-  type        = string
+variable "github_token" {
+  type = string
   default = ""
 }
 variable "hosted_zone_name" {
   type = string
-}
-variable "vault_redirect_uris" {
-  type = list(string)
 }
 variable "git_provider" {
   type        = string
@@ -44,4 +40,14 @@ variable "ssh_private_key" {
   type        = string
   default     = ""
   description = "SSH Private Key to auth on git"
+}
+
+variable "kubefirst_bot_ssh_public_key" {
+  default = ""
+  type = string 
+}
+
+variable "atlantis_repo_webhook_secret" {
+  default = ""
+  type = string 
 }

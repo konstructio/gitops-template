@@ -7,10 +7,10 @@ locals {
   		"ARGOCD_SERVER": "argocd.<AWS_HOSTED_ZONE_NAME>:443",
   		"ARGO_SERVER_URL": "argo.<AWS_HOSTED_ZONE_NAME>:443",
   		"ATLANTIS_GH_HOSTNAME": "<GITHUB_HOST>",
-  		"ATLANTIS_GH_TOKEN": "<GITHUB_TOKEN>",
-  		"ATLANTIS_GH_USER": "<GITHUB_USER>",		 
-  		"ATLANTIS_GH_WEBHOOK_SECRET":  "${var.atlantis_github_webhook_token}",
-  		"GITHUB_TOKEN": "<GITHUB_TOKEN>",
+  		"ATLANTIS_GH_TOKEN": "${var.github_token}",
+  		"ATLANTIS_GH_USER": "<GITHUB_USER>",
+      		"ATLANTIS_GH_WEBHOOK_SECRET":  "${var.atlantis_repo_webhook_secret}",
+  		"GITHUB_TOKEN": "${var.github_token}",
   		"GITHUB_OWNER": "<GITHUB_OWNER>",
   		"AWS_DEFAULT_REGION": "<AWS_DEFAULT_REGION>",
   		"AWS_ROLE_TO_ASSUME": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin",
@@ -18,15 +18,14 @@ locals {
   		"KUBECONFIG": "/.kube/config",
   		"VAULT_ADDR": "https://vault.<AWS_HOSTED_ZONE_NAME>",
   		"VAULT_TOKEN": "${var.vault_token}",
-  		"TF_VAR_argo_redirect_uris": "[\"https://argo.<AWS_HOSTED_ZONE_NAME>/oauth2/callback\"]",
-  		"TF_VAR_argocd_redirect_uris": "[\"https://argocd.<AWS_HOSTED_ZONE_NAME>/auth/callback\",\"https://argocd.<AWS_HOSTED_ZONE_NAME>/applications\"]",
+      		"TF_VAR_kubefirst_bot_ssh_public_key": "${var.kubefirst_bot_ssh_public_key}",
+      		"TF_VAR_atlantis_repo_webhook_secret": "${var.atlantis_repo_webhook_secret}",
   		"TF_VAR_aws_account_id": "<AWS_ACCOUNT_ID>",
   		"TF_VAR_aws_region": "<AWS_DEFAULT_REGION>",
   		"TF_VAR_email_address": "${var.email_address}",
   		"TF_VAR_hosted_zone_id": "${var.hosted_zone_id}",
   		"TF_VAR_hosted_zone_name": "${var.hosted_zone_name}",
   		"TF_VAR_vault_addr": "${var.vault_addr}",
-  		"TF_VAR_vault_redirect_uris": "[\"https://vault.<AWS_HOSTED_ZONE_NAME>/ui/vault/auth/oidc/oidc/callback\",\"http://localhost:8200/ui/vault/auth/oidc/oidc/callback\",\"http://localhost:8250/oidc/callback\",\"https://vault.<AWS_HOSTED_ZONE_NAME>:8250/oidc/callback\"]",
   		"TF_VAR_vault_token": "${var.vault_token}"
   	}
 }
@@ -47,19 +46,15 @@ EOT
       "GITLAB_TOKEN": "${var.gitlab_token}",
       "ATLANTIS_GITLAB_TOKEN": "${var.gitlab_token}",
       "KUBECONFIG": "/.kube/config",
-      "TF_VAR_argo_redirect_uris": "[\"https://argo.<AWS_HOSTED_ZONE_NAME>/oauth2/callback\"]",
-      "TF_VAR_argocd_redirect_uris": "[\"https://argocd.<AWS_HOSTED_ZONE_NAME>/auth/callback\",\"https://argocd.<AWS_HOSTED_ZONE_NAME>/applications\"]",
       "TF_VAR_aws_account_id": "<AWS_ACCOUNT_ID>",
       "TF_VAR_aws_region": "<AWS_DEFAULT_REGION>",
       "TF_VAR_email_address": "${var.email_address}",
-      "TF_VAR_gitlab_redirect_uris": "[\"https://gitlab.<AWS_HOSTED_ZONE_NAME>\"]",
       "TF_VAR_gitlab_runner_token": "${var.gitlab_runner_token}",
       "TF_VAR_gitlab_token": "${var.gitlab_token}",
       "TF_VAR_gitlab_url": "gitlab.<AWS_HOSTED_ZONE_NAME>",
       "TF_VAR_hosted_zone_id": "${var.hosted_zone_id}",
       "TF_VAR_hosted_zone_name": "${var.hosted_zone_name}",
       "TF_VAR_vault_addr": "${var.vault_addr}",
-      "TF_VAR_vault_redirect_uris": "[\"https://vault.<AWS_HOSTED_ZONE_NAME>/ui/vault/auth/oidc/oidc/callback\",\"http://localhost:8200/ui/vault/auth/oidc/oidc/callback\",\"http://localhost:8250/oidc/callback\",\"https://vault.<AWS_HOSTED_ZONE_NAME>:8250/oidc/callback\"]",
       "TF_VAR_vault_token": "${var.vault_token}",
       "VAULT_ADDR": "https://vault.<AWS_HOSTED_ZONE_NAME>",
       "VAULT_TOKEN": "${var.vault_token}"
@@ -118,7 +113,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
 
 resource "vault_generic_secret" "development_metaphor" {
   path = "${vault_mount.secret.path}/development/metaphor"
-  # note: these secrets are not actually sensitive. 
+  # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
 {
@@ -130,7 +125,7 @@ EOT
 
 resource "vault_generic_secret" "staging_metaphor" {
   path = "${vault_mount.secret.path}/staging/metaphor"
-  # note: these secrets are not actually sensitive. 
+  # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
 {
@@ -142,7 +137,7 @@ EOT
 
 resource "vault_generic_secret" "production_metaphor" {
   path = "${vault_mount.secret.path}/production/metaphor"
-  # note: these secrets are not actually sensitive. 
+  # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
 {
