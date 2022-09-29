@@ -8,7 +8,7 @@ locals {
   		"ARGO_SERVER_URL": "argo.<AWS_HOSTED_ZONE_NAME>:443",
   		"ATLANTIS_GH_HOSTNAME": "<GITHUB_HOST>",
   		"ATLANTIS_GH_TOKEN": "${var.github_token}",
-  		"ATLANTIS_GH_USER": "<GITHUB_USER>",		 
+  		"ATLANTIS_GH_USER": "<GITHUB_USER>",
       "ATLANTIS_GH_WEBHOOK_SECRET":  "${var.atlantis_repo_webhook_secret}",
   		"GITHUB_TOKEN": "${var.github_token}",
   		"GITHUB_OWNER": "<GITHUB_OWNER>",
@@ -113,7 +113,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
 
 resource "vault_generic_secret" "development_metaphor" {
   path = "${vault_mount.secret.path}/development/metaphor"
-  # note: these secrets are not actually sensitive. 
+  # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
 {
@@ -125,7 +125,7 @@ EOT
 
 resource "vault_generic_secret" "staging_metaphor" {
   path = "${vault_mount.secret.path}/staging/metaphor"
-  # note: these secrets are not actually sensitive. 
+  # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
 {
@@ -137,7 +137,7 @@ EOT
 
 resource "vault_generic_secret" "production_metaphor" {
   path = "${vault_mount.secret.path}/production/metaphor"
-  # note: these secrets are not actually sensitive. 
+  # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
 {
