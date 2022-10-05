@@ -5,11 +5,10 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "25"
-    addons.kubefirst.io/name: console
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL>
+    repoURL: https://gitlab.jessica.kube1st.com/kubefirst/gitops.git
     path: components/console
     targetRevision: HEAD
   destination:

@@ -1,23 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: console
+  name: console-components
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
-    repoURL: 'https://kubefirst.github.io/charts'
-    chart: console
+    repoURL: https://kubefirst.github.io/charts
     targetRevision: 0.2.1
-  chart: console
+    chart: console
   destination:
     server: https://kubernetes.default.svc
     namespace: console
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
