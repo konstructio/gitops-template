@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubeshop.github.io/helm-charts
-    chart: kusk
+    chart: kusk-gateway
     targetRevision: 0.0.44
   destination:
     server: https://kubernetes.default.svc
