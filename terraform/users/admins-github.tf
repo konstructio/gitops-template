@@ -4,7 +4,7 @@ data "vault_identity_group" "admins" {
 
 resource "vault_identity_group_member_entity_ids" "admins_membership" {
   member_entity_ids = [
-    module.pernetes.vault_identity_entity_id
+    module.kubefirst_bot.vault_identity_entity_id
   ]
 
   # exclusive = true?
