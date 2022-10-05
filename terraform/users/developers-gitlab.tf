@@ -11,17 +11,20 @@ resource "vault_identity_group_member_entity_ids" "developer_membership" {
   group_id = data.vault_identity_group.developers.group_id
 }
 
-module "qernetes" {
-  source = "./modules/user/gitlab"
+#  TODO: ADD DEVELOPERS HERE AFTER INSTALL:
 
-  acl_policies            = ["developer"]
-  aws_secret_backend_path = data.vault_auth_backend.aws.accessor
-  email                   = "qernetes@kubefirst.com"
-  first_name              = "Qoug"
-  fullname                = "Qoug Ernetes"
-  group_id                = data.vault_identity_group.developers.group_id
-  last_name               = "Ernetes"
-  username                = "qernetes"
-  user_disabled           = false
-  userpass_accessor       = data.vault_auth_backend.userpass.accessor
-}
+# module "developer_one" {
+#   source = "./modules/user/gitlab"
+# 
+#   acl_policies            = ["developer"]
+#   aws_secret_backend_path = data.vault_auth_backend.aws.accessor
+#   email                   = "dev.one@<AWS_HOSTED_ZONE_NAME>"
+#   first_name              = "Dev"
+#   fullname                = "Dev One"
+#   group_id                = data.vault_identity_group.developers.group_id
+#   last_name               = "One"
+#   team_id                 = data.github_team.developers.id
+#   username                = "done"
+#   user_disabled           = false
+#   userpass_accessor       = data.vault_auth_backend.userpass.accessor
+# }

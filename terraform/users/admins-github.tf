@@ -12,19 +12,19 @@ resource "vault_identity_group_member_entity_ids" "admins_membership" {
   group_id = data.vault_identity_group.admins.group_id
 }
 
-module "pernetes" {
+module "kubefirst_bot" {
   source = "./modules/user/github"
 
   acl_policies            = ["admin"]
   aws_secret_backend_path = data.vault_auth_backend.aws.accessor
-  email                   = "pernetes@kubefirst.com"
-  first_name              = "Poug"
-  fullname                = "Poug Ernetes"
-  github_username         = "kube1st"
-  last_name               = "Ernetes"
+  email                   = "<EMAIL_ADDRESS>"
+  first_name              = "Kubefirst"
+  fullname                = "Kubefirst Bot"
+  github_username         = "<GITHUB_USER>"
+  last_name               = "Bot"
   initial_password        = var.initial_password
   team_id                 = data.github_team.admins.id
-  username                = "pernetes"
+  username                = "kbot"
   user_disabled           = false
   userpass_accessor       = data.vault_auth_backend.userpass.accessor
 }
