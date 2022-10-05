@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: console
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+    addons.kubefirst.io/name: console
+spec:
+  project: default
+  source:
+    repoURL: <FULL_REPO_GITOPS_URL>
+    path: components/console
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: console
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
