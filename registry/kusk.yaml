@@ -4,7 +4,8 @@ metadata:
   name: kusk
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "25"
+    addons.kubefirst.io/name: kusk
 spec:
   project: default
   source:
