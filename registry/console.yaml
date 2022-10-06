@@ -11,6 +11,23 @@ spec:
     repoURL: <FULL_REPO_GITOPS_URL>
     path: components/console
     targetRevision: HEAD
+  helm:
+    values: |-
+      ingress:
+        enabled: true
+        className: "ngnix"
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        hosts:
+          - host: kubefirst.<AWS_HOSTED_ZONE>
+            paths:
+              - path: /
+                pathType: ImplementationSpecific
+        tls:
+          - secretName: kubefirst-tls
+            hosts:
+              - kubefirst.<AWS_HOSTED_ZONE>
   destination:
     server: https://kubernetes.default.svc
     namespace: console
