@@ -18,4 +18,3 @@ spec:
       serviceAccountName: github-runner
       dockerdWithinRunnerContainer: true
       automountServiceAccountToken: true
-      env: []  
