@@ -39,9 +39,7 @@ spec:
         enableLeaderElection: true
         authSecret:
           enabled: true
-          create: true
           name: "controller-manager"
-          annotations: {}
 
         dockerRegistryMirror: ""
         image:
