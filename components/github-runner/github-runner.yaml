@@ -4,6 +4,23 @@ metadata:
   name: github-runner
   namespace: github-runner
 ---
+apiVersion: external-secrets.io/v1alpha1
+kind: ExternalSecret
+metadata:
+  name: controller-manager
+  namespace: github-runner
+spec:
+  target:
+    name: controller-manager
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-secrets-backend
+  data:
+  - remoteRef:
+      key: ci-secrets
+      property: PERSONAL_ACCESS_TOKEN
+    secretKey: github_token
+---
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
@@ -18,4 +35,3 @@ spec:
       serviceAccountName: github-runner
       dockerdWithinRunnerContainer: true
       automountServiceAccountToken: true
-      env: []  
