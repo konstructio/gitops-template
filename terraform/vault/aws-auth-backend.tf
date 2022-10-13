@@ -15,7 +15,7 @@ resource "vault_aws_secret_backend_role" "admin" {
   name            = "KubernetesAdmin"
   credential_type = "assumed_role"
 
-  role_arns = ["arn:aws:iam::126827061464:role/KubernetesAdmin"]
+  role_arns = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"]
 }
 
 resource "vault_aws_secret_backend_role" "developer" {
@@ -23,5 +23,5 @@ resource "vault_aws_secret_backend_role" "developer" {
   name            = "KubernetesDeveloper"
   credential_type = "assumed_role"
 
-  role_arns = ["arn:aws:iam::126827061464:role/KubernetesDeveloper"]
+  role_arns = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesDeveloper"]
 }

@@ -39,19 +39,7 @@ spec:
         enableLeaderElection: true
         authSecret:
           enabled: true
-          create: true
           name: "controller-manager"
-          annotations: {}
-          ### GitHub Apps Configuration
-          ## NOTE: IDs MUST be strings, use quotes
-          #github_app_id: ""
-          #github_app_installation_id: ""
-          #github_app_private_key: |
-          ### GitHub PAT Configuration
-          github_token: <GITHUB_TOKEN>
-          ### Basic auth for github API proxy
-          #github_basicauth_username: ""
-          #github_basicauth_password: ""
 
         dockerRegistryMirror: ""
         image:

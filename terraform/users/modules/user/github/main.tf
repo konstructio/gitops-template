@@ -31,7 +31,7 @@ resource "vault_generic_endpoint" "user" {
   data_json = jsonencode(
     {
       policies  = var.acl_policies,
-      password  = random_password.password.result
+      password  = var.initial_password != "" ? var.initial_password : random_password.password.result
       token_ttl = "1h"
     }
   )
@@ -42,7 +42,7 @@ resource "vault_generic_secret" "user" {
 
   data_json = <<EOT
 {
-  "initial-password": "${random_password.password.result}"
+  "initial-password": "${var.initial_password != "" ? var.initial_password : random_password.password.result}"
 }
 EOT
 }
