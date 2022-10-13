@@ -9,11 +9,15 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 0.2.4
+    targetRevision: 0.2.6
     chart: console
     helm:
       values: |-
         env:
+          ADMIN_EMAIL:
+            value: "<EMAIL_ADDRESS>"
+          CLUSTER_NAME:
+            value: "<CLUSTER_NAME>"
           HOSTED_ZONE_NAME:
             value: "<AWS_HOSTED_ZONE_NAME>"
           GITHUB_HOST:
