@@ -4,7 +4,7 @@ metadata:
   name: argocd-components
   namespace: argocd
   annotations:
-    addons.kubefirst.io/name: gitlab
+    addons.kubefirst.io/name: none
     argocd.argoproj.io/sync-wave: "100"
 spec:
   project: default
