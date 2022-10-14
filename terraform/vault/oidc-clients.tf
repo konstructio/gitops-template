@@ -43,4 +43,19 @@ module "gitlab" {
   secret_mount_path = vault_mount.secret.path
 }
 
+module "console" {
+  source = "./modules/oidc-client"
+
+  depends_on = [
+    vault_identity_oidc_provider.kubefirst
+  ]
+
+  app_name               = "console"
+  oidc_provider_key_name = vault_identity_oidc_key.key.name
+  redirect_uris = [
+    "https://vouch.<AWS_HOSTED_ZONE_NAME>/auth",
+  ]
+  secret_mount_path = vault_mount.secret.path
+}
+
 # todo kubectl-oidc
