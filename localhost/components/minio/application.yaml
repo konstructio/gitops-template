@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    repoURL: 'https://charts.min.io/'
+    targetRevision: 4.0.15
+    helm:
+      values: |-
+        replicas: 1
+        rootUser: k-ray
+        rootPassword: feedkraystars # todo secret
+        persistence:
+          enabled: false
+        resources:
+          requests:
+            memory: 500Mi
+        gateway:
+          replicas: 1
+        mode: standalone
+        buckets:
+        - name: chartmuseum
+          # try `public` as a fallback
+          policy: none
+          # Purge if bucket exists already
+          purge: true
+          versioning: false
+          objectlocking: false
+        - name: argo-artifacts
+          # try `public` as a fallback
+          policy: public
+          # Purge if bucket exists already
+          purge: true
+          versioning: false
+          objectlocking: false
+        - name: gitlab-backup
+          # try `public` as a fallback
+          policy: none
+          # Purge if bucket exists already
+          purge: true
+          versioning: false
+          objectlocking: false
+    chart: minio
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: minio
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

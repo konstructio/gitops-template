@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: miller-registry
+  labels:
+    app: miller-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: miller-registry
+  template:
+    metadata:
+      labels:
+        app: miller-registry
+    spec:
+      containers:
+      - name: miller-registry
+        #* note we `docker push localhost:63630/miller:1.0.0`
+        image: k3d-<CLUSTER_NAME>-registry:63630/miller:1.0.2
+        ports:
+        - containerPort: 80

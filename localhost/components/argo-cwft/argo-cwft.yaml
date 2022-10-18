@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: cwft-local
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  templates:
+  - name: git-checkout
+    inputs:
+      # parameters: 
+      # - name: appDir
+      # - name: branch
+      #   value: "{{workflow.parameters.branch}}"
+      #   default: main
+      artifacts:
+      - name: gitops-source
+        path: /src/miller
+        git:
+          repo: https://<GITHUB_HOST>/<GITHUB_OWNER>/miller
+          revision: main
+    container:
+      image: golang:latest
+      command: ["/bin/sh", "-c"]
+      args: 
+      - ls -la /src/miller
+    outputs:
+      artifacts:
+      - name: repo-source
+        path: /src
+        
+  - name: docker-build
+    inputs:
+      artifacts:
+      - name: repo-source
+        path: /src
+      parameters: 
+      - name: appDir
+      - name: appName
+    container:
+      image:  kubefirst/chubbo:0.1
+      command: [bash, -c]
+      workingDir: /src/miller
+      args:
+        - printenv;
+          until docker ps; do sleep 3; done;
+          docker build -t k3d-<CLUSTER_NAME>-registry:5000/miller:1.0.3 .;
+          docker push k3d-<CLUSTER_NAME>-registry:5000/miller:1.0.3;
+      env:
+      - name: DOCKER_HOST
+        value: "tcp://localhost:2375"
+    sidecars:
+    - name: dind
+      image: docker:19.03.13-dind
+      command: [sh, -c]
+      workingDir: /root
+      args:
+        - ls -la /etc/;
+          ls -la /etc/services;
+          cat /etc/docker/daemon.json;
+      # env:
+        # - name: DOCKER_TLS_CERTDIR
+        #   value: ""
+        # - name: DOCKER_OPTS
+        #   value: "--tlsverify=false"
+      securityContext:
+        privileged: true
+      mirrorVolumeMounts: true
+    #   volumeMounts:
+    #   - mountPath: /etc/docker
+    #     name: docker-config
+    # volumes:
+    #   - configMap:
+    #       name: docker-config-cm
+    #     name: docker-config
