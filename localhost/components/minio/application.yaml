@@ -25,23 +25,22 @@ spec:
         mode: standalone
         buckets:
         - name: chartmuseum
-          # try `public` as a fallback
           policy: none
-          # Purge if bucket exists already
           purge: true
           versioning: false
           objectlocking: false
         - name: argo-artifacts
-          # try `public` as a fallback
           policy: public
-          # Purge if bucket exists already
           purge: true
           versioning: false
           objectlocking: false
         - name: gitlab-backup
-          # try `public` as a fallback
           policy: none
-          # Purge if bucket exists already
+          purge: true
+          versioning: false
+          objectlocking: false
+        - name: kubefirst-state-store
+          policy: none
           purge: true
           versioning: false
           objectlocking: false
