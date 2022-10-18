@@ -10,7 +10,7 @@ module "argo" {
   redirect_uris = [
     "https://argo.<AWS_HOSTED_ZONE_NAME>/oauth2/callback",
   ]
-  secret_mount_path = vault_mount.secret.path
+  secret_mount_path = "secret"
 }
 
 module "argocd" {
@@ -25,7 +25,7 @@ module "argocd" {
   redirect_uris = [
     "https://argocd.<AWS_HOSTED_ZONE_NAME>/auth/callback",
   ]
-  secret_mount_path = vault_mount.secret.path
+  secret_mount_path = "secret"
 }
 
 module "gitlab" {
@@ -40,7 +40,7 @@ module "gitlab" {
   redirect_uris = [
     "https://gitlab.<AWS_HOSTED_ZONE_NAME>/users/auth/openid_connect/callback",
   ]
-  secret_mount_path = vault_mount.secret.path
+  secret_mount_path = "secret"
 }
 
 module "console" {
@@ -55,7 +55,7 @@ module "console" {
   redirect_uris = [
     "https://vouch.<AWS_HOSTED_ZONE_NAME>/auth",
   ]
-  secret_mount_path = vault_mount.secret.path
+  secret_mount_path = "secret"
 }
 
 # todo kubectl-oidc
