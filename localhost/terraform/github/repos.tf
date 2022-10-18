@@ -1,4 +1,5 @@
 terraform {
+  backend "s3" {
     bucket = "kubefirst-state-store"
     key     = "terraform/github/tfstate.tf"
     endpoint = "http://127.0.0.1:9000"
