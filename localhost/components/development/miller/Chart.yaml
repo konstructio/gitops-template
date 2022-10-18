@@ -1,0 +1,9 @@
+apiVersion: v2
+dependencies:
+- name: miller
+  repository: http://chartmuseum.chartmuseum.svc.cluster.local:8080
+  version: 0.1.0
+description: miller instance
+name: miller-development
+type: application
+version: 1.0.0

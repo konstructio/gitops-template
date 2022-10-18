@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: docker-config-cm
+  namespace: argo
+data: 
+  daemon.json: |
+    {
+      "insecure-registries": ["k3d-<CLUSTER_NAME>-registry:5000"],
+      "debug": true,
+      "tls": false,
+      "experimental": true
+    }

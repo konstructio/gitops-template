@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  namespace: argo
+  generateName: testing-123-
+spec:
+  entrypoint: main
+  arguments:
+    # parameters:
+    #   - name: appDir
+    #     value: /src/{{workflow.parameters.appName}}
+  serviceAccountName: argo-server
+  templates:
+    - name: main
+      steps:
+      - - name: checkout
+          templateRef:
+            name: cwft-local
+            template: git-checkout
+            clusterScope: true
+      - - name: publish-container
+          templateRef:
+            name: cwft-local
+            template: docker-build
+            clusterScope: true
+          arguments:
+            artifacts:
+            - name: repo-source
+              from: "{{steps.checkout.outputs.artifacts.repo-source}}"
+            parameters:
+            - name: appDir
+              value: "miller"
+            - name: appName
+              value: "miller"
