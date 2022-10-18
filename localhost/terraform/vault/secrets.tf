@@ -5,7 +5,7 @@ resource "random_password" "chartmuseum_user_password" {
 }
 
 resource "vault_generic_secret" "chartmuseum_secrets" {
-  path = "${vault_mount.secret.path}/chartmuseum"
+  path = "secret/chartmuseum"
 
   data_json = <<EOT
 {
@@ -16,7 +16,7 @@ EOT
 }
 
 resource "vault_generic_secret" "development_metaphor" {
-  path = "${vault_mount.secret.path}/development/metaphor"
+  path = "secret/development/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -28,7 +28,7 @@ EOT
 }
 
 resource "vault_generic_secret" "staging_metaphor" {
-  path = "${vault_mount.secret.path}/staging/metaphor"
+  path = "secret/staging/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -40,7 +40,7 @@ EOT
 }
 
 resource "vault_generic_secret" "production_metaphor" {
-  path = "${vault_mount.secret.path}/production/metaphor"
+  path = "secret/production/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
