@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <FULL_REPO_GITOPS_URL_HTTPS>
-    #TODO: We need to change this
+    #TODO:jedwards We need to change this
     path: localhost/jedwards
     targetRevision: HEAD
   destination:
