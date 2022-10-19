@@ -32,7 +32,7 @@ spec:
           #   BASIC_AUTH_PASS: BASIC_AUTH_PASS
           #   AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
           #   AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY            
-          existingSecret: chartmuseum-secrets
+          # existingSecret: chartmuseum-secrets
     chart: chartmuseum
   destination: 
     server: https://kubernetes.default.svc
