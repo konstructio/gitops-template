@@ -1,5 +1,5 @@
 resource "vault_generic_secret" "ci_secrets" {
-  path = "${vault_mount.secret.path}/ci-secrets"
+  path = "secret/ci-secrets"
 
   data_json = jsonencode(
     {
@@ -13,7 +13,7 @@ resource "vault_generic_secret" "ci_secrets" {
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
-  path = "${vault_mount.secret.path}/atlantis"
+  path = "secret/atlantis"
 
   data_json = jsonencode(
   {
