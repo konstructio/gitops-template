@@ -14,7 +14,7 @@ resource "github_repository_webhook" "gitops_atlantis_webhook" {
   
     configuration {
       #TODO:jedwards  We need to change this to be an ngrok route!!!
-      url          = "https://atlantis.<AWS_HOSTED_ZONE_NAME>/events"
+      url          = var.atlantis_repo_webhook_url
       content_type = "json"
       insecure_ssl = false
       secret       = var.atlantis_repo_webhook_secret
@@ -27,4 +27,7 @@ resource "github_repository_webhook" "gitops_atlantis_webhook" {
 variable "atlantis_repo_webhook_secret" {
   type = string
   default = ""
+}
+variable "atlantis_repo_webhook_url" {
+  type = string
 }
