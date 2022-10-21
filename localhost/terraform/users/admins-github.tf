@@ -7,19 +7,20 @@ resource "vault_identity_group_member_entity_ids" "admins_membership" {
     module.kubefirst_bot.vault_identity_entity_id
   ]
 
-  # exclusive = true?
-
   group_id = data.vault_identity_group.admins.group_id
+}
+
+variable "initial_password" {
+  type    = string
+  default = ""
 }
 
 module "kubefirst_bot" {
   source = "./modules/user/github"
 
   acl_policies            = ["admin"]
-  aws_secret_backend_path = data.vault_auth_backend.aws.accessor
   email                   = "<EMAIL_ADDRESS>"
   first_name              = "Kubefirst"
-  fullname                = "Kubefirst Bot"
   github_username         = "<GITHUB_USER>"
   last_name               = "Bot"
   initial_password        = var.initial_password
@@ -29,7 +30,16 @@ module "kubefirst_bot" {
   userpass_accessor       = data.vault_auth_backend.userpass.accessor
 }
 
-variable "initial_password" {
-  type    = string
-  default = ""
-}
+# module "admin_one" {
+#   source = "./modules/user/github"
+
+#   acl_policies            = ["admin"]
+#   email                   = "admin@your-company-io.com"
+#   first_name              = "Admin"
+#   github_username         = "admin_one_github_username"
+#   last_name               = "One"
+#   team_id                 = data.github_team.admins.id
+#   username                = "aone"
+#   user_disabled           = false
+#   userpass_accessor       = data.vault_auth_backend.userpass.accessor
+# }

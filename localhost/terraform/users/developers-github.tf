@@ -13,7 +13,6 @@ data "vault_identity_group" "developers" {
 #   source = "./modules/user/github"
 # 
 #   acl_policies            = ["developer"]
-#   aws_secret_backend_path = data.vault_auth_backend.aws.accessor
 #   email                   = "dev.one@<AWS_HOSTED_ZONE_NAME>"
 #   first_name              = "Dev"
 #   fullname                = "Dev One"

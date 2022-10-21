@@ -47,15 +47,6 @@ resource "vault_generic_secret" "user" {
 EOT
 }
 
-# resource "aws_iam_user" "user" {
-#   name = var.username
-#   path = "/"
-
-#   tags = {
-#     ManagedBy = "terraform"
-#   }
-# }
-
 variable "acl_policies" {
   type = list(string)
 }
@@ -74,10 +65,6 @@ variable "userpass_accessor" {
   type = string
 }
 
-variable "aws_secret_backend_path" {
-  type = string
-}
-
 variable "github_username" {
   type = string
 }
@@ -91,10 +78,6 @@ variable "first_name" {
 }
 
 variable "last_name" {
-  type = string
-}
-
-variable "fullname" {
   type = string
 }
 

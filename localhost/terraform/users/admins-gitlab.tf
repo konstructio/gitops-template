@@ -7,16 +7,18 @@ resource "vault_identity_group_member_entity_ids" "admin_membership" {
     module.kubefirst_bot.vault_identity_entity_id
   ]
 
-  # exclusive = true?
-
   group_id = data.vault_identity_group.admins.group_id
+}
+
+variable "initial_password" {
+  type    = string
+  default = ""
 }
 
 module "kubefirst_bot" {
   source = "./modules/user/gitlab"
 
   acl_policies            = ["admin"]
-  aws_secret_backend_path = data.vault_auth_backend.aws.accessor
   email                   = "<EMAIL_ADDRESS>"
   first_name              = "Kubefirst"
   fullname                = "Kubefirst Bot"
@@ -28,9 +30,16 @@ module "kubefirst_bot" {
   userpass_accessor       = data.vault_auth_backend.userpass.accessor
 }
 
-# TODO: add your additional admins like the kubefirst_bot module is above, but with their information
+# module "admin_one" {
+#   source = "./modules/user/github"
 
-variable "initial_password" {
-  type    = string
-  default = ""
-}
+#   acl_policies            = ["admin"]
+#   email                   = "admin@your-company-io.com"
+#   first_name              = "Admin"
+#   fullname                = "Admin One"
+#   group_id                = data.vault_identity_group.admins.group_id
+#   last_name               = "One"
+#   username                = "aone"
+#   user_disabled           = false
+#   userpass_accessor       = data.vault_auth_backend.userpass.accessor
+# }

@@ -55,15 +55,6 @@ resource "vault_generic_secret" "user" {
 EOT
 }
 
-# resource "aws_iam_user" "user" {
-#   name = var.username
-#   path = "/"
-
-#   tags = {
-#     ManagedBy = "terraform"
-#   }
-# }
-
 variable "acl_policies" {
   type = list(string)
 }
@@ -97,10 +88,6 @@ variable "userpass_accessor" {
 variable "initial_password" {
   type    = string
   default = ""
-}
-
-variable "aws_secret_backend_path" {
-  type = string
 }
 
 variable "email" {

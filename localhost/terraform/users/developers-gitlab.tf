@@ -6,7 +6,6 @@ data "vault_identity_group" "developers" {
 #  member_entity_ids = [
 #    module.developer_one.vault_identity_entity_id
 #  ]
-  # exclusive = true?
 
 #  group_id = data.vault_identity_group.developers.group_id
 # }
@@ -17,7 +16,6 @@ data "vault_identity_group" "developers" {
 #   source = "./modules/user/gitlab"
 # 
 #   acl_policies            = ["developer"]
-#   aws_secret_backend_path = data.vault_auth_backend.aws.accessor
 #   email                   = "dev.one@<AWS_HOSTED_ZONE_NAME>"
 #   first_name              = "Dev"
 #   fullname                = "Dev One"
