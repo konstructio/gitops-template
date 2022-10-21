@@ -44,6 +44,11 @@ spec:
           purge: true
           versioning: false
           objectlocking: false
+        - name: vault-backend
+          policy: none
+          purge: true
+          versioning: false
+          objectlocking: false
     chart: minio
   destination:
     server: https://kubernetes.default.svc
