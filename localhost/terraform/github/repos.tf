@@ -1,6 +1,6 @@
 module "gitops" {
   source = "./modules/repository"
-  visibility = "public"
+  visibility         = "private"
   repo_name          = "gitops"
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
