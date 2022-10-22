@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vouch-components
+  name: kubefirst-components
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "100"
@@ -9,11 +9,11 @@ spec:
   project: default
   source:
     repoURL: <FULL_REPO_GITOPS_URL>
-    path: components/vouch
+    path: components/kubefirst
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: vouch
+    namespace: kubefirst
   syncPolicy:
     automated:
       prune: true

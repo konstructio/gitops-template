@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: console
+  name: kubefirst-console
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -47,7 +47,7 @@ spec:
                 - kubefirst.<AWS_HOSTED_ZONE_NAME>
   destination:
     server: https://kubernetes.default.svc
-    namespace: console
+    namespace: kubefirst
   syncPolicy:
     automated:
       prune: true
