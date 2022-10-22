@@ -42,7 +42,7 @@ jobs:
           -p appRepoUrl="" \
           -p ciCommitSha="${GITHUB_SHA}" \
           -p branch="${GITHUB_REF_NAME}" \
-          -p dockerFilePath="Dockerfile" \
+          -p dockerFilePath="build/Dockerfile" \
           -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART}" \
           -p gitServerUrl="${GITHUB_SERVER_URL}" \
           -p gitopsRepoUrl="" \
