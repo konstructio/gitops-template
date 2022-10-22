@@ -4,7 +4,7 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   data_json = <<EOT
 {
   "BASIC_AUTH_USER" : "k-ray",
-  "BASIC_AUTH_PASS" : "feedkraystars"
+  "BASIC_AUTH_PASS" : "feedkraystars",
   "AWS_ACCESS_KEY_ID" : "k-ray",
   "AWS_SECRET_ACCESS_KEY" : "feedkraystars"
 }
