@@ -23,7 +23,7 @@ EOT
 }
 
 resource "vault_generic_secret" "external_secrets_token" {
-  path = "secret/external-secret-store"
+  path = "secret/external-secrets-store"
 
   data_json = <<EOT
 {
