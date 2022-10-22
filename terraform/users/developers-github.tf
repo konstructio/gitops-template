@@ -15,6 +15,7 @@ data "vault_identity_group" "developers" {
 #   acl_policies            = ["developer"]
 #   email                   = "dev.one@<AWS_HOSTED_ZONE_NAME>"
 #   first_name              = "Dev"
+#   fullname                = "Dev One"
 #   github_username         = "dev-ones-github-handle"
 #   last_name               = "One"
 #   team_id                 = data.github_team.developers.id

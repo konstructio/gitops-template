@@ -21,6 +21,7 @@ module "kubefirst_bot" {
   acl_policies            = ["admin"]
   email                   = "<EMAIL_ADDRESS>"
   first_name              = "Kubefirst"
+  fullname                = "Kubefirst Bot"
   github_username         = "<GITHUB_USER>"
   last_name               = "Bot"
   initial_password        = var.initial_password
