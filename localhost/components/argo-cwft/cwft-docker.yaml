@@ -25,6 +25,7 @@ spec:
       args:
       - until docker ps; do sleep 3; done;
         docker login ghcr.io --username ${username} --password ${password};
+        echo building {{inputs.parameters.imageTag}};
         docker build -t {{inputs.parameters.imageTag}} -f {{inputs.parameters.dockerFilePath}} .;
         docker push {{inputs.parameters.imageTag}};
       env:
