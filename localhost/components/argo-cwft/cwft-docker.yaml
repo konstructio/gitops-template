@@ -24,7 +24,7 @@ spec:
       workingDir: "/src/{{inputs.parameters.appName}}"
       args:
       - until docker ps; do sleep 3; done;
-        docker login ghcr.io --username ${dockerLoginPassword} --password ${dockerLoginUser};
+        docker login ghcr.io --username ${username} --password ${password};
         docker build -t {{inputs.parameters.imageTag}} -f {{inputs.parameters.dockerFilePath}} .;
         docker push {{inputs.parameters.imageTag}};
       env:
