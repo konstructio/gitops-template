@@ -1,9 +1,3 @@
-resource "random_password" "chartmuseum_user_password" {
-  length           = 16
-  special          = true
-  override_special = "!@"
-}
-
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
@@ -28,7 +22,7 @@ resource "vault_generic_secret" "minio_creds" {
 EOT
 }
 
-resource "vault_generic_secret" "minio_creds" {
+resource "vault_generic_secret" "external_secrets_token" {
   path = "secret/external-secret-store"
 
   data_json = <<EOT
