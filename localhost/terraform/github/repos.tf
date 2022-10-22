@@ -13,7 +13,6 @@ resource "github_repository_webhook" "gitops_atlantis_webhook" {
     repository = module.gitops.repo_name
   
     configuration {
-      #TODO:jedwards  We need to change this to be an ngrok route!!!
       url          = var.atlantis_repo_webhook_url
       content_type = "json"
       insecure_ssl = false

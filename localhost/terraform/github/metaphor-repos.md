@@ -1,4 +1,3 @@
-#TODO:jedwards Do we want all repos?
 module "metaphor" {
   source = "./modules/repository"
 

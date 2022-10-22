@@ -1,6 +1,3 @@
-# if you put the value in a CWFT as a workflow.param.$value then you are not allowed to
-# change the value that was submitted from the cli invocation of the workflow
-# todo need a secret for ci-secrets with keys for cloning (manually create with other K3D secrets)
 apiVersion: argoproj.io/v1alpha1
 kind: ClusterWorkflowTemplate
 metadata:

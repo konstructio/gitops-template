@@ -10,8 +10,6 @@ data "vault_identity_group" "developers" {
 #  group_id = data.vault_identity_group.developers.group_id
 # }
 
-#  TODO: ADD DEVELOPERS HERE AFTER INSTALL:
-
 # module "developer_one" {
 #   source = "./modules/user/gitlab"
 # 

@@ -18,8 +18,8 @@ resource "vault_generic_secret" "atlantis_secrets" {
   {
 	ARGOCD_AUTH_USERNAME = "admin",
 	ARGOCD_INSECURE = "true",
-	ARGOCD_SERVER = "http://localhost:8080", # todo is this port correct
-	ARGO_SERVER_URL = "argo.argo.svc.cluster.local:443", # todo is this port correct
+	ARGOCD_SERVER = "http://localhost:8080",
+	ARGO_SERVER_URL = "argo.argo.svc.cluster.local:2746",
 	ATLANTIS_GH_HOSTNAME = "github.com",
 	ATLANTIS_GH_TOKEN = var.github_token,
 	ATLANTIS_GH_USER = "<GITHUB_USER>",

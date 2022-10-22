@@ -14,7 +14,7 @@ spec:
       values: |-
         replicas: 1
         rootUser: k-ray
-        rootPassword: feedkraystars # todo secret
+        rootPassword: feedkraystars
         persistence:
           enabled: false
         resources:
