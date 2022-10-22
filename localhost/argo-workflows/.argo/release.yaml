@@ -3,28 +3,6 @@ kind: Workflow
 spec:
   entrypoint: main
   serviceAccountName: argo-server
-  arguments:
-    parameters:
-      - name: appDir
-        value: /src/{{workflow.parameters.appName}}
-      - name: appName
-        value: "{{workflow.parameters.appName}}"
-      - name: branch
-        value: "{{workflow.parameters.branch}}"
-      - name: chartDir
-        value: charts/{{workflow.parameters.appName}}
-      - name: ciCommitSha
-        value: "{{workflow.parameters.ciCommitSha}}"
-      - name: environment
-        value: "{{workflow.parameters.environment}}"
-      - name: fullChartPath
-        value: "components/{{workflow.parameters.environment}}/{{workflow.parameters.appName}}/Chart.yaml"
-      - name: gitRepoUrl
-        value: "{{workflow.parameters.gitRepoUrl}}"
-      - name: gitRepoPath
-        value: "{{workflow.parameters.gitRepoPath}}"        
-      - name: shortSha
-        value: "{{workflow.parameters.shortSha}}"
   templates:
   - name: main
     steps:
@@ -35,8 +13,8 @@ spec:
           clusterScope: true
     - - name: get-initial-chart-version
         templateRef:
-          name: cwft-local
-          template: helm-get-chart-version
+          name: cwft-helm
+          template: get-chart-version
           clusterScope: true
         arguments:
           artifacts:
@@ -47,8 +25,8 @@ spec:
             value: "charts/{{workflow.parameters.appName}}"
     - - name: set-chart-versions
         templateRef:
-          name: cwft-local
-          template: helm-set-chart-versions
+          name: cwft-helm
+          template: set-chart-versions
           clusterScope: true
         arguments:
           artifacts:
@@ -61,8 +39,8 @@ spec:
             value: "{{steps.get-initial-chart-version.outputs.result}}"
     - - name: publish-helm-chart
         templateRef:
-          name: cwft-local
-          template: helm-publish-chart
+          name: cwft-helm
+          template: publish-chart
           clusterScope: true
         arguments:
           artifacts:
@@ -73,8 +51,8 @@ spec:
             value: "charts/{{workflow.parameters.appName}}"
     - - name: set-environment-version
         templateRef:
-          name: cwft-local
-          template: helm-set-environment-version
+          name: cwft-helm
+          template: set-environment-version
           clusterScope: true
         arguments:
           artifacts:
@@ -89,7 +67,7 @@ spec:
             value: "{{workflow.parameters.environment}}"
     - - name: commit-production
         templateRef:
-          name: cwft-local
+          name: cwft-git
           template: pull-commit-push
           clusterScope: true
         arguments:
@@ -103,8 +81,8 @@ spec:
             value: "setting {{workflow.parameters.appName}} {{workflow.parameters.environment}} to chart version {{steps.get-initial-chart-version.outputs.result}}"
     - - name: increment-chart-minor
         templateRef:
-          name: cwft-local
-          template: helm-increment-chart-minor
+          name: cwft-helm
+          template: increment-chart-minor
           clusterScope: true
         arguments:
           artifacts:
@@ -119,8 +97,8 @@ spec:
             value: "{{steps.get-initial-chart-version.outputs.result}}"
     - - name: get-published-chart-version
         templateRef:
-          name: cwft-local
-          template: helm-get-chart-version
+          name: cwft-helm
+          template: get-chart-version
           clusterScope: true
         arguments:
           artifacts:
@@ -131,7 +109,7 @@ spec:
             value: "charts/{{workflow.parameters.appName}}"
     - - name: commit-chart-increment
         templateRef:
-          name: cwft-local
+          name: cwft-git
           template: pull-commit-push
           clusterScope: true
         arguments:

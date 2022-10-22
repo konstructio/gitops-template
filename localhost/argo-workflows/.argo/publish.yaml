@@ -24,8 +24,8 @@ spec:
             from: "{{steps.checkout.outputs.artifacts.repo-source}}"
     - - name: get-initial-chart-version
         templateRef:
-          name: cwft-local
-          template: helm-get-chart-version
+          name: cwft-helm
+          template: get-chart-version
           clusterScope: true
         arguments:
           artifacts:
@@ -36,8 +36,8 @@ spec:
             value: "charts/{{workflow.parameters.appName}}"
     - - name: set-chart-versions
         templateRef:
-          name: cwft-local
-          template: helm-set-chart-versions
+          name: cwft-helm
+          template: set-chart-versions
           clusterScope: true
         arguments:
           artifacts:
@@ -50,8 +50,8 @@ spec:
             value: "{{steps.get-initial-chart-version.outputs.result}}-rc.{{workflow.parameters.shortSha}}"
     - - name: publish-helm-chart
         templateRef:
-          name: cwft-local
-          template: helm-publish-chart
+          name: cwft-helm
+          template: publish-chart
           clusterScope: true
         arguments:
           artifacts:
