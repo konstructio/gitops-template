@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  namespace: argo
+spec:
+  entrypoint: main
+  serviceAccountName: argo-server
+  templates:
+  - name: main
+    steps:
+    - - name: checkout
+        templateRef:
+          name: cwft-git
+          template: checkout-with-gitops
+          clusterScope: true
+    - - name: publish-container
+        templateRef:
+          name: cwft-docker
+          template: login-build-push
+          clusterScope: true
+        arguments:
+          artifacts:
+          - name: repo-source
+            from: "{{steps.checkout.outputs.artifacts.repo-source}}"
+    - - name: get-initial-chart-version
+        templateRef:
+          name: cwft-local
+          template: helm-get-chart-version
+          clusterScope: true
+        arguments:
+          artifacts:
+          - name: repo-source
+            from: "{{steps.checkout.outputs.artifacts.repo-source}}"
+          parameters:
+          - name: chartDir
+            value: "charts/{{workflow.parameters.appName}}"
+    - - name: set-chart-versions
+        templateRef:
+          name: cwft-local
+          template: helm-set-chart-versions
+          clusterScope: true
+        arguments:
+          artifacts:
+          - name: repo-source
+            from: "{{steps.checkout.outputs.artifacts.repo-source}}"
+          parameters:
+          - name: chartDir
+            value: "charts/{{workflow.parameters.appName}}"
+          - name: chartVersion
+            value: "{{steps.get-initial-chart-version.outputs.result}}-rc.{{workflow.parameters.shortSha}}"
+    - - name: publish-helm-chart
+        templateRef:
+          name: cwft-local
+          template: helm-publish-chart
+          clusterScope: true
+        arguments:
+          artifacts:
+          - name: repo-source
+            from: "{{steps.set-chart-versions.outputs.artifacts.repo-source}}"
+          parameters:
+          - name: chartDir
+            value: "charts/{{workflow.parameters.appName}}"
