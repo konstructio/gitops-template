@@ -13,7 +13,7 @@ spec:
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: console
+    namespace: kubefirst
   syncPolicy:
     automated:
       prune: true

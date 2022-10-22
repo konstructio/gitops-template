@@ -35,7 +35,7 @@ spec:
         
   destination:
     server: https://kubernetes.default.svc
-    namespace: api
+    namespace: kubefirst
   syncPolicy:
     automated:
       prune: true

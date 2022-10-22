@@ -27,7 +27,7 @@ spec:
         existingSecretName: "kubefirst-console-secrets"
   destination:
     server: https://kubernetes.default.svc
-    namespace: vouch
+    namespace: kubefirst
   syncPolicy:
     automated:
       prune: true
