@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "0"
 spec:
   templates:
-  - name: git-checkout-with-gitops
+  - name: checkout-with-gitops
     inputs:
       parameters:
       - name: appName
