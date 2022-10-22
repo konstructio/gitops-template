@@ -9,8 +9,31 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
 
   data_json = <<EOT
 {
-  "BASIC_AUTH_USER" : "admin",
-  "BASIC_AUTH_PASS" : "${random_password.chartmuseum_user_password.result}"
+  "BASIC_AUTH_USER" : "k-ray",
+  "BASIC_AUTH_PASS" : "feedkraystars"
+  "AWS_ACCESS_KEY_ID" : "k-ray",
+  "AWS_SECRET_ACCESS_KEY" : "feedkraystars"
+}
+EOT
+}
+
+resource "vault_generic_secret" "minio_creds" {
+  path = "secret/minio"
+
+  data_json = <<EOT
+{
+  "accesskey" : "k-ray",
+  "secretkey" : "feedkraystars"
+}
+EOT
+}
+
+resource "vault_generic_secret" "minio_creds" {
+  path = "secret/external-secret-store"
+
+  data_json = <<EOT
+{
+  "token" : "k1_local_vault_token"
 }
 EOT
 }
