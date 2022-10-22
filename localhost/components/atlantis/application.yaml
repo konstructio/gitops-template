@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: 'https://runatlantis.github.io/helm-charts'
     chart: atlantis
-    targetRevision: 3.15.0 # todo look for update
+    targetRevision: 3.15.0
     helm:
       parameters:
         - name: orgWhitelist

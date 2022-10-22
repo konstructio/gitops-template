@@ -1,17 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: miller-development
+  name: metaphor-development
   namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "40"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL_HTTPS>
-    #TODO:jedwards We need to change this
-    path: localhost/jedwards
+    repoURL: <FULL_REPO_GITOPS_URL>
+    path: components/development/metaphor
     targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: development
@@ -21,9 +25,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        maxDuration: 5m0s
-        factor: 2
