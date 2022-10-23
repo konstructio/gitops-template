@@ -13,7 +13,7 @@ data "vault_identity_group" "developers" {
 #   source = "./modules/user/github"
 # 
 #   acl_policies            = ["developer"]
-#   email                   = "dev.one@<AWS_HOSTED_ZONE_NAME>"
+#   email                   = "dev.one@example.com"
 #   first_name              = "Dev"
 #   fullname                = "Dev One"
 #   github_username         = "dev-ones-github-handle"
