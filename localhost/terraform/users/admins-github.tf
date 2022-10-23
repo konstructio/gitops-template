@@ -19,12 +19,11 @@ module "kubefirst_bot" {
   source = "./modules/user/github"
 
   acl_policies            = ["admin"]
-  email                   = "<EMAIL_ADDRESS>"
+  email                   = "k-ray@example.com"
   first_name              = "Kubefirst"
   github_username         = "<GITHUB_USER>"
   last_name               = "Bot"
   initial_password        = var.initial_password
-  team_id                 = data.github_team.admins.id
   username                = "kbot"
   user_disabled           = false
   userpass_accessor       = data.vault_auth_backend.userpass.accessor
@@ -38,7 +37,6 @@ module "kubefirst_bot" {
 #   first_name              = "Admin"
 #   github_username         = "admin_one_github_username"
 #   last_name               = "One"
-#   team_id                 = data.github_team.admins.id
 #   username                = "aone"
 #   user_disabled           = false
 #   userpass_accessor       = data.vault_auth_backend.userpass.accessor
