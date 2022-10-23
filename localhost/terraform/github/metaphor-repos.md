@@ -1,3 +1,4 @@
+# todo add organization support
 module "metaphor" {
   source = "./modules/repository"
 
@@ -5,8 +6,6 @@ module "metaphor" {
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
   create_ecr         = false
-  team_developers_id = github_team.developers.id
-  team_admins_id     = github_team.admins.id
 }
 
 module "metaphor_go" {
@@ -16,8 +15,6 @@ module "metaphor_go" {
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
   create_ecr         = false
-  team_developers_id = github_team.developers.id
-  team_admins_id     = github_team.admins.id
 }
 
 module "metaphor_frontend" {
@@ -27,6 +24,4 @@ module "metaphor_frontend" {
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
   create_ecr         = false
-  team_developers_id = github_team.developers.id
-  team_admins_id     = github_team.admins.id
 }

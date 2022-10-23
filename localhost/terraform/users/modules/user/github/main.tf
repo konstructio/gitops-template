@@ -86,11 +86,12 @@ variable "initial_password" {
   default = ""
 }
 
-variable "team_id" {
-  description = "the github team id to place the user"
-}
+# todo add organization support
+# variable "team_id" {
+#   description = "the github team id to place the user"
+# }
 
-resource "github_team_membership" "admins_team_membership" {
-  team_id  = var.team_id
-  username = var.github_username
-}
+# resource "github_team_membership" "admins_team_membership" {
+#   team_id  = var.team_id
+#   username = var.github_username
+# }
