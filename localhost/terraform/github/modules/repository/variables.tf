@@ -59,12 +59,14 @@ variable "visibility" {
   default = "private"
 }
 
-variable "team_developers_id" {
-  type = string
-}
-variable "team_admins_id" {
-  type = string
-}
+# todo add organization support
+# variable "team_developers_id" {
+#   type = string
+# }
+
+# variable "team_admins_id" {
+#   type = string
+# }
 
 variable "topics" {
   type    = list(string)
@@ -75,18 +77,22 @@ variable "has_downloads" {
   type    = bool
   default = false
 }
+
 variable "has_issues" {
   type    = bool
   default = true
 }
+
 variable "has_projects" {
   type    = bool
   default = false
 }
+
 variable "has_wiki" {
   type    = bool
   default = false
 }
+
 variable "vulnerability_alerts" {
   type    = bool
   default = false
