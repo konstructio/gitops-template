@@ -14,7 +14,7 @@ data "vault_identity_group" "developers" {
 #   source = "./modules/user/gitlab"
 # 
 #   acl_policies            = ["developer"]
-#   email                   = "dev.one@<AWS_HOSTED_ZONE_NAME>"
+#   email                   = "dev.one@example.com"
 #   first_name              = "Dev"
 #   fullname                = "Dev One"
 #   group_id                = data.vault_identity_group.developers.group_id

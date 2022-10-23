@@ -42,7 +42,6 @@ resource "vault_generic_secret" "atlantis_secrets" {
       KUBECONFIG = "/.kube/config",
       TF_VAR_aws_account_id = "<AWS_ACCOUNT_ID>",
       TF_VAR_aws_region = "<AWS_DEFAULT_REGION>",
-      TF_VAR_email_address = var.email_address,
       TF_VAR_gitlab_runner_token = var.gitlab_runner_token,
       TF_VAR_gitlab_token = var.gitlab_token,
       TF_VAR_gitlab_url = "gitlab.<AWS_HOSTED_ZONE_NAME>",
