@@ -16,6 +16,7 @@ spec:
         - name: orgWhitelist
           value: <FULL_REPO_GITOPS_URL_NO_HTTPS>
       values: |-
+        atlantisUrl: http://localhost:4141
         serviceAccount:
           create: true
           mount: true
