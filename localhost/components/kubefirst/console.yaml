@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubefirst-console
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://kubefirst.github.io/charts
+    targetRevision: 1.0.0
+    chart: console
+    helm:
+      values: |-
+        env:
+          ADMIN_EMAIL:
+            value: "<EMAIL_ADDRESS>"
+          CLUSTER_NAME:
+            value: "<CLUSTER_NAME>"
+          HOSTED_ZONE_NAME:
+            value: "<AWS_HOSTED_ZONE_NAME>"
+          GITHUB_HOST:
+            value: "<GITHUB_HOST>"
+          GITHUB_OWNER:
+            value: "<GITHUB_OWNER>"
+        ingress:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kubefirst
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
