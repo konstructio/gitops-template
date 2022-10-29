@@ -4,6 +4,14 @@ metadata:
   namespace: argo
 spec:
   entrypoint: main
+  volumeClaimTemplates:
+    - metadata:
+        name: work
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 64Mi
   serviceAccountName: argo-server
   templates:
   - name: main
