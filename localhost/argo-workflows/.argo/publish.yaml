@@ -4,24 +4,28 @@ metadata:
   namespace: argo
 spec:
   entrypoint: main
+  volumeClaimTemplates:
+    - metadata:
+        name: work
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 64Mi
   serviceAccountName: argo-server
   templates:
   - name: main
     steps:
+    - - name: publish-container
+        templateRef:
+          name: cwft-buildkit
+          template: build-push
+          clusterScope: true
     - - name: checkout
         templateRef:
           name: cwft-git
           template: checkout-with-gitops
           clusterScope: true
-    - - name: publish-container
-        templateRef:
-          name: cwft-docker
-          template: login-build-push
-          clusterScope: true
-        arguments:
-          artifacts:
-          - name: repo-source
-            from: "{{steps.checkout.outputs.artifacts.repo-source}}"
     - - name: get-initial-chart-version
         templateRef:
           name: cwft-helm
