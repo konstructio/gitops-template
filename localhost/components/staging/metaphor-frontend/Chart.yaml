@@ -1,7 +1,7 @@
 apiVersion: v2
 dependencies:
 - name: metaphor-frontend
-  repository: https://chartmuseum.<AWS_HOSTED_ZONE_NAME>
+  repository: http://chartmuseum.chartmuseum.svc.cluster.local:8080
   version: 0.1.0
 description: metaphor frontend instance
 name: metaphor-frontend-staging
