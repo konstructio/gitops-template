@@ -11,3 +11,8 @@ variable "atlantis_repo_webhook_secret" {
   default = ""
   type = string 
 }
+
+variable "atlantis_repo_webhook_url" {
+  default = ""
+  type = string 
+}
