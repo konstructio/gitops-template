@@ -29,6 +29,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       GITHUB_OWNER                        = "<GITHUB_OWNER>",
       GITHUB_TOKEN                        = var.github_token,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
+      TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       TF_VAR_github_token                 = var.github_token,
       TF_VAR_kubefirst_bot_ssh_public_key = var.kubefirst_bot_ssh_public_key,
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
