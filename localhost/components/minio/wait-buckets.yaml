@@ -20,7 +20,13 @@ spec:
         - /bin/sh
         - -c
         - |
-          aws --endpoint-url http://minio.minio.svc.cluster.local:9000  s3  ls 
+          aws --endpoint-url http://minio.minio.svc.cluster.local:9000  s3  ls | wc -l 
+          export FOUND=`aws --endpoint-url http://minio.minio.svc.cluster.local:9000  s3  ls | wc -l` 
+          echo $FOUND
+          export MISSING_BUCKETS=`expr $FOUND - 5`
+          echo $MISSING_BUCKETS          
+          sleep 15
+          exit $MISSING_BUCKETS
         volumeMounts:
         - mountPath: /tmp
           name: tmp-dir
