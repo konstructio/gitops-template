@@ -20,7 +20,7 @@ spec:
         - /bin/sh
         - -c
         - |
-          aws --endpoint-url http://minio.minio.svc.cluster.local:9000  s3  ls | wc -l 
+          aws --endpoint-url http://minio.minio.svc.cluster.local:9000  s3  ls
           export FOUND=`aws --endpoint-url http://minio.minio.svc.cluster.local:9000  s3  ls | wc -l` 
           echo "Buckets Found: $FOUND"
           export MISSING_BUCKETS=`expr $FOUND - 5`
