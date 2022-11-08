@@ -11,7 +11,7 @@ spec:
       serviceAccountName: vault-unseal-sa
       containers:
       - name: unseal-vault
-        image: rancher/kubectl:v1.20.15
+        image: portainer/kubectl-shell:latest-v1.21.1-arm64
         command:
         - /bin/sh
         - -c
