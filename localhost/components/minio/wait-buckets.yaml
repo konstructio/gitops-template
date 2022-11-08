@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: wait-buckets
-  namespace: vault
+  namespace: minio
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
