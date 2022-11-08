@@ -14,8 +14,8 @@ spec:
   project: default
   source:
     chart: external-dns
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 6.5.4
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    targetRevision: 1.11.0
     helm:
       releaseName: external-dns
       values: |
