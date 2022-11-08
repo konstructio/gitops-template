@@ -209,7 +209,7 @@ resource "aws_eks_node_group" "mgmt_nodes" {
   node_role_arn   = aws_iam_role.kubefirst_worker_nodes_role.arn
   subnet_ids      = module.vpc.private_subnets
   ami_type        = "AL2_ARM_64"
-  instance_types  = ["m6g.medium"]
+  #instance_types  = ["m6g.medium"]
   disk_size       = 50
 
   capacity_type = var.lifecycle_nodes
