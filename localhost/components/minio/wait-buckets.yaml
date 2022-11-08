@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-buckets
+  namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  template:
+    spec:
+      serviceAccountName: argocd-server
+      containers:
+      - name: wait
+        image: amazon/aws-cli
+        env: 
+        - name: AWS_ACCESS_KEY_ID
+          value: k-ray
+        - name: AWS_SECRET_ACCESS_KEY
+          value: feedkraystars                     
+        command:
+        - /bin/sh
+        - -c
+        - |
+          while ! aws --endpoint-url http://minio.minio.svc.cluster.local:9000  s3  ls ; do echo "waiting for buckets, sleeping 10 seconds"; sleep 5; done
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
+      restartPolicy: Never
+      volumes:
+      - name: tmp-dir
+        emptyDir: {}
+  backoffLimit: 2
