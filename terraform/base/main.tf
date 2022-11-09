@@ -22,6 +22,8 @@ module "eks" {
   aws_account_id = var.aws_account_id
   cluster_name   = "<CLUSTER_NAME>"
   lifecycle_nodes = var.lifecycle_nodes
+  ami_type        = var.ami_type
+  instance_types  = [var.instance_type]
 }
 
 module "kms" {
