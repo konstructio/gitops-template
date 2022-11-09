@@ -50,7 +50,7 @@ variable "lifecycle_nodes" {
   type = string
 }
 
-variable "instance_types" {
+variable "instance_type" {
   description = "The instance type of node group"
   default = "t3.medium"
   type = string
