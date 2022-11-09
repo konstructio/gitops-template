@@ -58,6 +58,6 @@ variable "instance_types" {
 
 variable "ami_type" {
   description = "The chipset of nodes"
-  default = ["AL2_x86_64"]
-  type = list(string)
+  default = "AL2_x86_64"
+  type = string
 }
