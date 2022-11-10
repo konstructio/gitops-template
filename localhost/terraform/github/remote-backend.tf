@@ -12,4 +12,12 @@ terraform {
     skip_region_validation      = true
     force_path_style            = true
   }
+  required_providers {
+    github = {
+      source  = "integrations/github"
+      version = "4.26.0"
+    }
+  }
 }
+
+
