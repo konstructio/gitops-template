@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 1.0.5
+    targetRevision: 2.0.0
     chart: console
     helm:
       values: |-
@@ -50,6 +50,8 @@ spec:
             value: "<METAPHOR_GO_PROD>"
           METAPHOR_FRONT_PROD:
             value: "<METAPHOR_FRONT_PROD>"
+          KUBEFIRST_VERSION:
+            value: "<KUBEFIRST_VERSION>"
         ingress:
           enabled: false
   destination:
