@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL>
+    repoURL: <FULL_REPO_GITOPS_URL_HTTPS>
     path: components/production/metaphor
     targetRevision: HEAD
     helm:
