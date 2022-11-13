@@ -1,21 +1,3 @@
 metaphor-frontend:
   ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    hosts:
-      - host: metaphor-frontend-production.<AWS_HOSTED_ZONE_NAME>
-        paths:
-          - /
-    tls:
-    - secretName: metaphor-frontend-tls
-      hosts:
-        - metaphor-frontend-production.<AWS_HOSTED_ZONE_NAME>
-
-metaphor:
-  host: metaphor-production.<AWS_HOSTED_ZONE_NAME>
-
-metaphorGo:
-  host: metaphor-go-production.<AWS_HOSTED_ZONE_NAME>
-
+    enabled: false
