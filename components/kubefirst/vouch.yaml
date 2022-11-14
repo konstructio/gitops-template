@@ -15,7 +15,7 @@ spec:
       values: |-
         image:
           repository: voucher/vouch-proxy
-          tag: latest-arm
+          tag: <VOUCH_DOCKER_TAG>
           pullPolicy: IfNotPresent
         ingress:
           enabled: true
