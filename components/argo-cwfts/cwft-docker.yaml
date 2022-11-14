@@ -18,7 +18,7 @@ spec:
         default: <AWS_DEFAULT_REGION>
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: kubefirst/chubbo:0.1
+        default: pagottoo/ci-tools:v3
       - name: ciCommitSha
       - name: containerRegistryUrl
         value: "{{workflow.parameters.containerRegistryUrl}}"
@@ -33,7 +33,7 @@ spec:
       args:
         - until docker ps; do sleep 3; done; 
           docker build -t "{{inputs.parameters.containerRegistryUrl}}/{{inputs.parameters.appName}}:{{inputs.parameters.ciCommitSha}}" -f {{inputs.parameters.dockerFilePath}} .;
-          aws ecr get-login-password --region {{inputs.parameters.awsRegion}} | docker login --username AWS --password-stdin {{inputs.parameters.containerRegistryUrl}};
+          docker login -u AWS -p $(aws ecr get-login-password --region {{inputs.parameters.awsRegion}}) {{inputs.parameters.containerRegistryUrl}};
           docker push "{{inputs.parameters.containerRegistryUrl}}/{{inputs.parameters.appName}}:{{inputs.parameters.ciCommitSha}}";
       envFrom:
       - secretRef:
