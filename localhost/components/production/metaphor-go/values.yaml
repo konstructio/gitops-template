@@ -1,4 +1,8 @@
 metaphor-go:
+  image:
+    repository: ghcr.io/<GITHUB_OWNER>/metaphor-go
+  imagePullSecrets:
+  - name: docker-config
   ingress:
     enabled: false
   vaultMountPoint: kubefirst
