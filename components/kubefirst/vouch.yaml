@@ -14,7 +14,7 @@ spec:
     helm:
       values: |-
         image:
-          repository: voucher/vouch-proxy
+          repository: <VOUCH_DOCKER_REGISTRY>
           tag: <VOUCH_DOCKER_TAG>
           pullPolicy: IfNotPresent
         ingress:
