@@ -26,7 +26,7 @@ The [kubefirst/nebulous](https://hub.docker.com/repository/docker/kubefirst/nebu
 | Cert Manager             | cert-manager     | Certificate Automation Utility              |                                                     |
 | Certificate Issuers      | clusterwide      | Let's Encrypt browser-trusted certificates  |                                                     |
 | External Secrets         | external-secrets | Syncs Kubernetes secrets with Vault secrets |                                                     |
-| GitLab Runner            | gitlab-runner    | GitLab CI Executor                          |                                                     |
+| <GIT_RUNNER>             | <GIT_RUNNER_NS>  | <GIT_RUNNER_DESCRIPTION>                    |                                                     |
 
 ## argocd registry
 
