@@ -9,7 +9,7 @@ The `gitops` repository has 2 main section
 
 ## kubefirst apps
 
-The [kubefirst/nebulous](https://hub.docker.com/repository/docker/kubefirst/nebulous) installation has established the following applications:
+The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the following applications:
 
 | Application              | Namespace        | Description                                 | URL (where applicable)                              |
 |--------------------------|------------------|---------------------------------------------|-----------------------------------------------------|
