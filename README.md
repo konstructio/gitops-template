@@ -32,7 +32,7 @@ The [kubefirst/nebulous](https://hub.docker.com/repository/docker/kubefirst/nebu
 
 The argocd configurations in this repo can be found in the [registry directory](./registry). The applications that you build and release on the kubefirst platform will also be registered here in the development, staging, and production folders. The `metaphor` app can be found there to serve as an example to follow.
 
-The `main` branch of this repo represents the desired state all apps registered with kubernetes. Argo CD will automatically try to converge your desired state with the actual state in kubernetes with a process called Argo Sync. You can see the Sync status of all of your apps in the [argo cd ui](<ARGO_WORKFLOWS_URL>).
+The `main` branch of this repo represents the desired state all apps registered with kubernetes. Argo CD will automatically try to converge your desired state with the actual state in kubernetes with a process called Argo Sync. You can see the Sync status of all of your apps in the [argo cd ui](<ARGO_CD_URL>).
 
 ## terraform infrastructure as code
 
