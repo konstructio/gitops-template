@@ -48,6 +48,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_gitlab_url = "gitlab.<AWS_HOSTED_ZONE_NAME>",
       TF_VAR_hosted_zone_id = var.hosted_zone_id,
       TF_VAR_hosted_zone_name = var.hosted_zone_name,
+      TF_VAR_ssh_private_key = var.ssh_private_key,
       TF_VAR_vault_addr = var.vault_addr,
       TF_VAR_vault_token = var.vault_token,
       VAULT_ADDR = "https://vault.<AWS_HOSTED_ZONE_NAME>",
