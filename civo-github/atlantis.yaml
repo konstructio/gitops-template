@@ -1,0 +1,23 @@
+version: 3
+automerge: true
+projects:
+  - dir: terraform/civo
+    terraform_version: 1.0.11 # todo need to update to latest terraform
+    autoplan:
+      enabled: true
+      when_modified: ["./**/*.tf", "*.tf*"]
+  - dir: terraform/github
+    terraform_version: 1.0.11
+    autoplan:
+      enabled: true
+      when_modified: ["./**/*.tf", "*.tf*"]
+  - dir: terraform/users
+    terraform_version: 1.0.11
+    autoplan:
+      enabled: true
+      when_modified: ["./**/*.tf", "*.tf*"]
+  - dir: terraform/vault
+    terraform_version: 1.0.11
+    autoplan:
+      enabled: true
+      when_modified: ["./**/*.tf", "*.tf*"]
