@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vault
+  namespace: vault
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`vault.<LOCAL_DNS>`)
+    services:
+    - name: vault
+      port: 80
+  tls:
+    secretName: vault-tls

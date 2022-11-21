@@ -1004,22 +1004,21 @@ server:
 
   ingress:
     # -- Enable an ingress resource for the Argo CD server
-    enabled: false
+    enabled: true
     # -- Additional ingress annotations
-    annotations: {}
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "false"
     # -- Additional ingress labels
     labels: {}
     # -- Defines which ingress controller will implement the resource
     ingressClassName: ""
-
     # -- List of ingress hosts
     ## Argo Ingress.
     ## Hostnames must be provided if Ingress is enabled.
     ## Secrets must be manually created in the namespace
     hosts:
-      []
+      - argocd.localhost
       # - argocd.example.com
-
     # -- List of ingress paths
     paths:
       - /
@@ -1040,14 +1039,12 @@ server:
       #       name: ssl-redirect
       #       port:
       #         name: use-annotation
-
     # -- Ingress TLS configuration
     tls:
       []
       # - secretName: argocd-tls-certificate
       #   hosts:
       #     - argocd.example.com
-
     # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
     https: false
 

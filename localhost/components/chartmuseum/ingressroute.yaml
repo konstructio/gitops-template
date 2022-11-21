@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: chartmuseum
+  namespace: chartmuseum
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`chartmuseum.<LOCAL_DNS>`)
+    services:
+    - name: chartmuseum
+      port: 80
+  tls:
+    secretName: chartmuseum-tls

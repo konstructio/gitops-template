@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argo
+  namespace: argo
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`argo.<LOCAL_DNS>`)
+    services:
+    - name: argo
+      port: 80
+  tls:
+    secretName: argo-tls

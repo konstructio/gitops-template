@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: atlantis
+  namespace: atlantis
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`atlantis.<LOCAL_DNS>`)
+    services:
+    - name: atlantis
+      port: 80
+  tls:
+    secretName: atlantis-tls

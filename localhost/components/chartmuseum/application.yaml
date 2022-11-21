@@ -12,6 +12,16 @@ spec:
     targetRevision: 3.9.1
     helm:
       values: |-
+        ingress:
+          enabled: true
+          annotations:
+            ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+          hosts:
+            - name: chartmuseum.<LOCAL_DNS>
+              path: /
+              pathType: Prefix
+              tls: enable
+              tlsSecret: chartmuseum-tls
         env:
           open:
             AUTH_ANONYMOUS_GET: true
