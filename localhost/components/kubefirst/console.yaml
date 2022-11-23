@@ -63,7 +63,7 @@ spec:
                 - path: /
                   pathType: Prefix
           tls:
-            - secretName: console-tls
+            - secretName: kubefirst-console-tls
               hosts:
                 - kubefirst-console.<LOCAL_DNS>
   destination:

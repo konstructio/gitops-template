@@ -43,7 +43,7 @@ jobs:
           -p ciCommitSha="${GITHUB_SHA}" \
           -p branch="${GITHUB_REF_NAME}" \
           -p dockerFilePath="build/Dockerfile" \
-          -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART}" \
+          -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
           -p gitServerUrl="${GITHUB_SERVER_URL}" \
           -p gitopsRepoUrl="" \
           -p shortSha="${GITHUB_SHA_SHORT}" \
@@ -82,7 +82,7 @@ jobs:
             -p branch="${GITHUB_REF_NAME}" \
             -p environment="development" \
             -p gitopsRepoUrl="" \
-            -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART}" \
+            -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p gitServerUrl="${GITHUB_SERVER_URL}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
@@ -120,7 +120,7 @@ jobs:
             -p branch="${GITHUB_REF_NAME}" \
             -p environment="staging" \
             -p gitopsRepoUrl="" \
-            -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART}" \
+            -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p gitServerUrl="${GITHUB_SERVER_URL}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
@@ -159,7 +159,7 @@ jobs:
             -p branch="${GITHUB_REF_NAME}" \
             -p environment="production" \
             -p gitopsRepoUrl="" \
-            -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART}" \
+            -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p gitServerUrl="${GITHUB_SERVER_URL}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
