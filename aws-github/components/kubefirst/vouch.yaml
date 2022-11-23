@@ -19,11 +19,11 @@ spec:
             kubernetes.io/ingress.class: nginx
             cert-manager.io/cluster-issuer: "letsencrypt-prod"
           hosts:
-            - vouch.<AWS_HOSTED_ZONE_NAME>
+            -  <VOUCH_INGRESS_URL_NO_HTTPS>
           tls:
             - secretName: vouch-tls
               hosts:
-                - vouch.<AWS_HOSTED_ZONE_NAME>
+                -  <VOUCH_INGRESS_URL_NO_HTTPS>
         existingSecretName: "kubefirst-console-secrets"
   destination:
     server: https://kubernetes.default.svc

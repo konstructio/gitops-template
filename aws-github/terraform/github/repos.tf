@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket  = "<TF_STATE_BUCKET>"
+    bucket  = "<KUBEFIRST_STATE_STORE_BUCKET>"
     key     = "terraform/github/tfstate.tf"
     region  = "<AWS_DEFAULT_REGION>"
     encrypt = true
@@ -27,7 +27,7 @@ resource "github_repository_webhook" "gitops_atlantis_webhook" {
     repository = module.gitops.repo_name
   
     configuration {
-      url          = "https://atlantis.<AWS_HOSTED_ZONE_NAME>/events"
+      url          = "<ATLANTIS_WEBHOOK_URL>"
       content_type = "json"
       insecure_ssl = false
       secret       = var.atlantis_repo_webhook_secret

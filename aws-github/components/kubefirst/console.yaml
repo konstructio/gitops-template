@@ -25,31 +25,31 @@ spec:
           GITHUB_OWNER:
             value: "<GITHUB_OWNER>"
           ARGO_WORKFLOWS_URL:
-            value: "<ARGO_WORKFLOWS_URL>"
+            value: "<ARGO_WORKFLOWS_INGRESS_URL>"
           VAULT_URL:
-            value: "<VAULT_URL>"
+            value: "<VAULT_INGRESS_URL>"
           ARGO_CD_URL:
-            value: "<ARGO_CD_URL>"
+            value: "<ARGOCD_INGRESS_URL>"
           ATLANTIS_URL:
-            value: "<ATLANTIS_URL>"
+            value: "<ATLANTIS_INGRESS_URL>"
           METAPHOR_DEV:
-            value: "<METAPHOR_DEV>"
+            value: "<METAPHOR_DEVELOPMENT_INGRESS_URL>"
           METAPHOR_GO_DEV:
-            value: "<METAPHOR_GO_DEV>"
+            value: "<METAPHOR_GO_DEVELOPMENT_INGRESS_URL>"
           METAPHOR_FRONT_DEV:
-            value: "<METAPHOR_FRONT_DEV>"
+            value: "<METAPHOR_FRONTEND_DEVELOPMENT_INGRESS_URL>"
           METAPHOR_STAGING:
-            value: "<METAPHOR_STAGING>"
+            value: "<METAPHOR_STAGING_INGRESS_URL>"
           METAPHOR_GO_STAGING:
-            value: "<METAPHOR_GO_STAGING>"
+            value: "<METAPHOR_GO_STAGING_INGRESS_URL>"
           METAPHOR_FRONT_STAGING:
-            value: "<METAPHOR_FRONT_STAGING>"
+            value: "<METAPHOR_FRONTEND_STAGING_INGRESS_URL>"
           METAPHOR_PROD:
-            value: "<METAPHOR_PROD>"
+            value: "<METAPHOR_PRODUCTION_INGRESS_URL>"
           METAPHOR_GO_PROD:
-            value: "<METAPHOR_GO_PROD>"
+            value: "<METAPHOR_GO_PRODUCTION_INGRESS_URL>"
           METAPHOR_FRONT_PROD:
-            value: "<METAPHOR_FRONT_PROD>"
+            value: "<METAPHOR_FRONTEND_PRODUCTION_INGRESS_URL>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
         ingress:
@@ -57,22 +57,22 @@ spec:
           annotations:
             kubernetes.io/ingress.class: nginx
             cert-manager.io/cluster-issuer: "letsencrypt-prod"
-            nginx.ingress.kubernetes.io/auth-signin: "https://vouch.<AWS_HOSTED_ZONE_NAME>/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
-            nginx.ingress.kubernetes.io/auth-url: https://vouch.<AWS_HOSTED_ZONE_NAME>/validate
+            nginx.ingress.kubernetes.io/auth-signin: "<VOUCH_INGRESS_URL>/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
+            nginx.ingress.kubernetes.io/auth-url: <VOUCH_INGRESS_URL>/validate
             nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
             nginx.ingress.kubernetes.io/auth-snippet: |
               auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
               auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
               auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
           hosts:
-            - host: kubefirst.<AWS_HOSTED_ZONE_NAME>
+            - host: <KUBEFIRST_INGRESS_URL_NO_HTTPS>
               paths:
                 - path: /
                   pathType: ImplementationSpecific
           tls:
             - secretName: kubefirst-tls
               hosts:
-                - kubefirst.<AWS_HOSTED_ZONE_NAME>
+                - <KUBEFIRST_INGRESS_URL_NO_HTTPS>
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst

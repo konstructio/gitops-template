@@ -16,11 +16,6 @@ spec:
     repoURL: 'https://helm.releases.hashicorp.com'
     targetRevision: 0.18.0
     helm:
-      parameters:
-        - name: server.route.host
-          value: vault.<AWS_HOSTED_ZONE_NAME>
-        - name: 'server.ingress.hosts[0].host'
-          value: vault.<AWS_HOSTED_ZONE_NAME>
       values: |-
         server:
           image:
@@ -71,11 +66,11 @@ spec:
               kubernetes.io/ingress.class: nginx
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
             path: /
-            host: vault.<AWS_HOSTED_ZONE_NAME>
+            host: <VAULT_INGRESS_URL>
             tls:
              - secretName: vault-tls
                hosts:
-                 - vault.<AWS_HOSTED_ZONE_NAME>
+                 - <VAULT_INGRESS_URL>
         injector:
           enabled: true
     chart: vault

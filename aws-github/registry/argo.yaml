@@ -7,12 +7,11 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
   annotations:
     argocd.argoproj.io/sync-wave: "40"
-    addons.kubefirst.io/name: github
 spec:
   project: default
   source:
     repoURL: <FULL_GITOPS_REPO_GIT_URL>
-    path: components/argo-github
+    path: components/argo
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

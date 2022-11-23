@@ -5,12 +5,12 @@ metaphor:
       kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
     hosts:
-      - host: metaphor-production.<AWS_HOSTED_ZONE_NAME>
+      - host: <METAPHOR_PRODUCTION_INGRESS_URL_NO_HTTPS>
         paths:
           - /
     tls:
     - secretName: metaphor-tls
       hosts:
-        - metaphor-production.<AWS_HOSTED_ZONE_NAME>
+        - <METAPHOR_PRODUCTION_INGRESS_URL_NO_HTTPS>
   vaultMountPoint: kubefirst
   vaultSecretPath: production/metaphor
