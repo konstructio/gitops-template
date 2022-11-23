@@ -23,7 +23,7 @@ module "argocd" {
   app_name               = "argocd"
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
-    "https://argocd.<AWS_HOSTED_ZONE_NAME>/auth/callback",
+    "<ARGOCD_INGRESS_URL>/auth/callback",
   ]
   secret_mount_path = vault_mount.secret.path
 }

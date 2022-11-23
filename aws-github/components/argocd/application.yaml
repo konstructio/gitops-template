@@ -26,14 +26,14 @@ spec:
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
               nginx.ingress.kubernetes.io/ssl-passthrough: "true"
             hosts:
-              - argocd.<AWS_HOSTED_ZONE_NAME>
+              - <ARGOCD_INGRESS_URL_NO_HTTPS>
             paths:
               - /
             pathType: Prefix
             tls:
               - secretName: argocd-server-tls
                 hosts: 
-                  - argocd.<AWS_HOSTED_ZONE_NAME>
+                  - <ARGOCD_INGRESS_URL_NO_HTTPS>
             https: true
           additionalApplications:
           - name: registry
@@ -44,7 +44,7 @@ spec:
             - resources-finalizer.argocd.argoproj.io
             project: default
             source:
-              repoURL: <FULL_REPO_GITOPS_URL>
+              repoURL: <FULL_GITOPS_REPO_GIT_URL>
               targetRevision: HEAD
               path: registry
             destination:
@@ -65,12 +65,12 @@ spec:
           config:
             oidc.config: |
               name: Vault
-              issuer: https://vault.<AWS_HOSTED_ZONE_NAME>/v1/identity/oidc/provider/kubefirst
+              issuer: <VAULT_INGRESS_URL>/v1/identity/oidc/provider/kubefirst
               clientID: $argocd-oidc-secret:clientId
               clientSecret: $argocd-oidc-secret:clientSecret
               requestedScopes: ["openid", "groups", "user", "profile", "email"]
               requestedIDTokenClaims: {"groups": {"essential": true}}
-            url: 'https://argocd.<AWS_HOSTED_ZONE_NAME>'        
+            url: '<ARGOCD_INGRESS_URL>'
   destination:
     server: "https://kubernetes.default.svc"
     namespace: argocd

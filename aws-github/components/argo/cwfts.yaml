@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL>
+    repoURL: <FULL_GITOPS_REPO_GIT_URL>
     path: components/argo-cwfts
     targetRevision: HEAD
   destination:

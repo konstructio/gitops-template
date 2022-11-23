@@ -16,7 +16,7 @@ spec:
         default: kubefirst/chubbo:0.1
       - name: gitopsRepoUrl
         value: "{{workflow.parameters.gitopsRepoUrl}}"
-        default: "ssh://<FULL_REPO_GITOPS_URL>"
+        default: <FULL_GITOPS_REPO_GIT_URL>
       - name: gitRepoUrl
       artifacts:
       - name: repo-source
@@ -31,7 +31,7 @@ spec:
       - name: gitops-source
         path: /src/gitops
         git:
-          repo: "ssh://<FULL_REPO_GITOPS_URL_SSH>"
+          repo: <FULL_GITOPS_REPO_GIT_URL>
           revision: "main"
           insecureIgnoreHostKey: true
           sshPrivateKeySecret:
@@ -61,7 +61,7 @@ spec:
         default: kubefirst/chubbo:0.1
       - name: gitopsRepoUrl
         value: "{{workflow.parameters.gitopsRepoUrl}}"
-        default: <FULL_REPO_GITOPS_URL>
+        default: <FULL_GITOPS_REPO_GIT_URL>
       - name: gitRepoUrl
       artifacts:
       - name: repo-source
@@ -109,7 +109,8 @@ spec:
         - name: commitMessage
         - name: repoPath
           value: "{{workflow.parameters.repoPath}}"
-          default: <FULL_REPO_GITOPS_URL_NO_HTTPS>
+          # todo look here, this might be better to make a git url?
+          default: <FULL_GITOPS_REPO_URL_NO_HTTPS> 
         - name: gitUserEmail
           value: "{{workflow.parameters.gitUserEmail}}"
           default: <EMAIL_ADDRESS>
@@ -152,7 +153,7 @@ spec:
         - name: commitMessage
         - name: repoPath
           value: "{{workflow.parameters.repoPath}}"
-          default: ssh://<FULL_REPO_GITOPS_URL_SSH>
+          default: <FULL_GITOPS_REPO_URL_NO_HTTPS>
         - name: gitUserEmail
           value: "{{workflow.parameters.gitUserEmail}}"
           default: <EMAIL_ADDRESS>
