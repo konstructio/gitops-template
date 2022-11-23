@@ -32,7 +32,7 @@ The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the 
 
 The argocd configurations in this repo can be found in the [registry directory](./registry). The applications that you build and release on the kubefirst platform will also be registered here in the development, staging, and production folders. The `metaphor` app can be found there to serve as an example to follow.
 
-The `main` branch of this repo represents the desired state all apps registered with kubernetes. Argo CD will automatically try to converge your desired state with the actual state in kubernetes with a process called Argo Sync. You can see the Sync status of all of your apps in the [argo cd ui](<ARGO_CD_URL>).
+The `main` branch of this repo represents the desired state all apps registered with kubernetes. Argo CD will automatically try to converge your desired state with the actual state in kubernetes with a process called Argo Sync. You can see the Sync status of all of your apps in the [argo cd ui](<ARGOCD_INGRESS_URL>).
 
 ## terraform infrastructure as code
 
@@ -51,7 +51,7 @@ In addition to infrastructure terraform, the `gitops` repository also contains c
 
 ## engineering onboarding
 
-Your kubefirst platform comes with some terraform in place for managing [admins](./terraform/users/admins-github.tf) and [developers](./terraform/users/developers-github.tf). At the top of these two files, you'll find a list of sample admins and developers. Replace this list with the list of actual users you want added to the admin and developer groups and open a pull request. The pull request will show you the user changes in the terraform plan. When approved, have atlantis apply the plan with an `atlantis apply` comment in the pull request.
+Your kubefirst platform comes with some terraform in place for managing [admins](./terraform/users/admins.tf) and [developers](./terraform/users/developers.tf). At the top of these two files, you'll find a list of sample admins and developers. Replace this list with the list of actual users you want added to the admin and developer groups and open a pull request. The pull request will show you the user changes in the terraform plan. When approved, have atlantis apply the plan with an `atlantis apply` comment in the pull request.
 
 Your new users will have temporary passwords generated for them and stored in Vault in the `/users` secret store.
 
