@@ -14,3 +14,13 @@ spec:
       port: 80
   tls:
     secretName: chartmuseum-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: chartmuseum
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
