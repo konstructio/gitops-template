@@ -14,14 +14,14 @@ The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the 
 | Application              | Namespace        | Description                                 | URL (where applicable)                              |
 |--------------------------|------------------|---------------------------------------------|-----------------------------------------------------|
 | <GIT_PROVIDER>           | <GIT_NAMESPACE>  | <GIT_DESCRIPTION>                           | <GIT_URL>                                           |
-| Vault                    | vault            | Secrets Management                          | <VAULT_URL>                                         |
-| Argo CD                  | argocd           | GitOps Continuous Delivery                  | <ARGO_CD_URL>                                       |
-| Argo Workflows           | argo             | Application Continuous Integration          | <ARGO_WORKFLOWS_URL>                                |
-| Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_URL>                                      |
-| Chart Museum             | chartmuseum      | Helm Chart Registry                         | <CHARTMUSEUM_URL>                                   |
-| Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_FRONT_DEV>                                |
-| Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_FRONT_STAGING>                            |
-| Metaphor Production      | production       | Production instance of sample application   | <METAPHOR_FRONT_PROD>                               |
+| Vault                    | vault            | Secrets Management                          | <VAULT_INGRESS_URL>                                 |
+| Argo CD                  | argocd           | GitOps Continuous Delivery                  | <ARGOCD_INGRESS_URL>                                |
+| Argo Workflows           | argo             | Application Continuous Integration          | <ARGO_WORKFLOWS_INGRESS_URL>                        |
+| Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_INGRESS_URL>                              |
+| Chart Museum             | chartmuseum      | Helm Chart Registry                         | <CHARTMUSEUM_INGRESS_URL>                           |
+| Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_FRONTEND_DEVELOPMENT_INGRESS_URL>         |
+| Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_FRONTEND_STAGING_INGRESS_URL>             |
+| Metaphor Production      | production       | Production instance of sample application   | <METAPHOR_FRONTEND_PRODUCTION_INGRESS_URL>          |
 | Nginx Ingress Controller | ingress-nginx    | Ingress Controller                          |                                                     |
 | Cert Manager             | cert-manager     | Certificate Automation Utility              |                                                     |
 | Certificate Issuers      | clusterwide      | Let's Encrypt browser-trusted certificates  |                                                     |
