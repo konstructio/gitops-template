@@ -5,3 +5,6 @@
 **/terraform.tfstate
 .vscode
 .DS_Store
+# todo remove before merge
+gcp 
+k0s
