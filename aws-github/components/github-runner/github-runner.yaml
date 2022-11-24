@@ -26,8 +26,7 @@ kind: RunnerDeployment
 metadata:
   name: actions-runner-kubefirst
 spec:
-  # This will deploy 2 runners now
-  replicas: 1
+  replicas: 3
   template:
     spec:  
       organization: <GITHUB_OWNER>
@@ -41,14 +40,12 @@ kind: HorizontalRunnerAutoscaler
 metadata:
   name: actions-runner-kubefirst-autoscaler
 spec:
-  # Runners in the targeted RunnerDeployment won't be scaled down
-  # for 5 minutes instead of the default 10 minutes now
   scaleDownDelaySecondsAfterScaleOut: 300
   scaleTargetRef:
     kind: RunnerDeployment
     name: actions-runner-kubefirst
-  minReplicas: 1
-  maxReplicas: 5
+  minReplicas: 3
+  maxReplicas: 6
   metrics:
   - type: PercentageRunnersBusy
     scaleUpThreshold: '0.75'

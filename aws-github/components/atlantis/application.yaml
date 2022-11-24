@@ -30,16 +30,6 @@ spec:
           requests:
             cpu: 400m
             memory: 1Gi
-        extraVolumes:
-          - name: kubeconfig
-            configMap:
-              name: kubeconfig
-              items:
-                - key: config
-                  path: config
-        extraVolumeMounts:
-          - name: kubeconfig
-            mountPath: /.kube
         ingress:
           enabled: true
           annotations:
