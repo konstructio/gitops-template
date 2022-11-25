@@ -13,6 +13,10 @@ spec:
     chart: vouch
     helm:
       values: |-
+        image:
+          repository: <VOUCH_DOCKER_REGISTRY>
+          tag: <VOUCH_DOCKER_TAG>
+          pullPolicy: IfNotPresent
         ingress:
           enabled: true
           annotations:
