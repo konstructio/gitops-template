@@ -5,7 +5,8 @@ metadata:
   namespace: atlantis
 spec:
   entryPoints:
-    - websecure
+    tcpep:
+      address: ":3179"
   routes:
   - kind: Rule
     match: Host(`atlantis.<LOCAL_DNS>`)
