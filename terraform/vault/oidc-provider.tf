@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    gitlab = {
-      source = "gitlabhq/gitlab"
-    }
-  }
-}
-
 resource "vault_identity_oidc_key" "key" {
   name               = "kubefirst"
   algorithm          = "RS256"
