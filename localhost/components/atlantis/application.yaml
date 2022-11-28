@@ -26,7 +26,7 @@ spec:
             traefik.ingress.kubernetes.io/router.middlewares: atlantis-redirect-to-https@kubernetescrd
           path: /
           pathType: Prefix
-          host: <NGROK_HOST>
+          host: tcp://<NGROK_HOST>
           tls:
             - secretName: atlantis-tls
               hosts:
