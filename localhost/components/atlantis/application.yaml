@@ -31,7 +31,7 @@ spec:
             - secretName: atlantis-tls
               hosts:
                 - atlantis.<LOCAL_DNS>
-        atlantisUrl: tcp://atlantis.<LOCAL_DNS>
+        atlantisUrl: atlantis.<LOCAL_DNS>
         serviceAccount:
           create: true
           mount: true
