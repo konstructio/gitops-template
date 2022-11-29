@@ -26,5 +26,5 @@ spec:
             path: /
   tls:
     - hosts:
-        - chartmuseum.<AWS_HOSTED_ZONE_NAME>
+        - "*.<AWS_HOSTED_ZONE_NAME>"
       secretName: chartmuseum-tls
