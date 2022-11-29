@@ -31,7 +31,7 @@ module "kubefirst_bot" {
 }
 
 # module "admin_one" {
-#   source = "./modules/user/github"
+#   source = "./modules/user/gitlab"
 
 #   acl_policies            = ["admin"]
 #   email                   = "admin@your-company-io.com"
