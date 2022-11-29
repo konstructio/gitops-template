@@ -4,9 +4,6 @@ metadata:
   name: atlantis
   namespace: atlantis
 spec:
-  entryPoints:
-    tcpep:
-      address: ":3179"
   routes:
   - kind: Rule
     match: Host(`atlantis.<LOCAL_DNS>`)
@@ -25,3 +22,26 @@ spec:
   redirectScheme:
     scheme: https
     permanent: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: atlantis
+spec:
+  entryPoints:                  
+    - tcpAtlantis
+  routes:                       
+  - match: HostSNI(`*`)         
+    priority: 10                
+    middlewares:
+    - name: atlantistcp       
+      namespace: atlantis      
+    services:                 
+    - name: foo               
+      port: 8080              
+      weight: 10              
+      terminationDelay: 400   
+      proxyProtocol:          
+        version: 1
+  tls:
+    secretName: atlantis-tls
