@@ -18,7 +18,7 @@ spec:
         default: <AWS_DEFAULT_REGION>
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: pagottoo/ci-tools:v3
+        default: kubefirst/ci-tools:39e6cb
       - name: ciCommitSha
       - name: containerRegistryUrl
         value: "{{workflow.parameters.containerRegistryUrl}}"
