@@ -16,7 +16,7 @@ spec:
       - name: appDir
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: pagottoo/ci-tools:v3
+        default: kubefirst/ci-tools:39e6cb
       - name: chartDir
       - name: chartRepoName
         value: "{{workflow.parameters.chartRepoName}}"
@@ -42,7 +42,7 @@ spec:
       - name: appDir
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: kubefirst/chubbo:0.1
+        default: kubefirst/ci-tools:39e6cb
       - name: chartDir
       - name: chartRepoName
         value: "{{workflow.parameters.chartRepoName}}"
@@ -102,7 +102,7 @@ spec:
       - name: appDir
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: pagottoo/ci-tools:v3
+        default: kubefirst/ci-tools:39e6cb
       - name: chartDir
       - name: chartVersion
       - name: ciCommitSha
@@ -145,7 +145,7 @@ spec:
         - name: appDir
         - name: buildImage
           value: "{{workflow.parameters.buildImage}}"
-          default: pagottoo/ci-tools:v3
+          default: kubefirst/ci-tools:39e6cb
         - name: chartDir
     script:
       image: "{{inputs.parameters.buildImage}}"
@@ -165,7 +165,7 @@ spec:
       parameters: 
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: pagottoo/ci-tools:v3
+        default: kubefirst/ci-tools:39e6cb
       - name: fullChartPath
       - name: chartVersion
       - name: environment
@@ -193,7 +193,7 @@ spec:
       - name: appDir
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: pagottoo/ci-tools:v3
+        default: kubefirst/ci-tools:39e6cb
       - name: chartDir
       - name: chartVersion
     # version bumps the patch verison of the helm chart version
