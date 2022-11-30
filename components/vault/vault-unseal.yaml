@@ -11,7 +11,7 @@ spec:
       serviceAccountName: vault-unseal-sa
       containers:
       - name: unseal-vault
-        image: public.ecr.aws/bitnami/kubectl:1.20
+        image: portainer/kubectl-shell:latest
         command:
         - /bin/sh
         - -c
