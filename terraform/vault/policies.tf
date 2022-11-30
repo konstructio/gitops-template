@@ -246,5 +246,19 @@ path "sys/tools/hash/*" {
 path "sys/control-group/request" {
     capabilities = ["update"]
 }
+
+# Allow developers to update their password at: access/userpass/item/user
+# Access -> Auth Methods ->  userpass/ -> user  
+path "sys/auth" {
+  capabilities = ["read"]
+}
+path "auth/userpass/users/*" {
+  capabilities = ["list"]
+}
+
+path "auth/userpass/users/{{identity.entity.name}}" {
+  capabilities = ["read", "update"]
+}  
+  
 EOT
 }
