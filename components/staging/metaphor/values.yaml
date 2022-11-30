@@ -11,6 +11,6 @@ metaphor:
     tls:
     - secretName: metaphor-tls
       hosts:
-        - "*.<AWS_HOSTED_ZONE_NAME>"
+        - metaphor-staging.<AWS_HOSTED_ZONE_NAME>
   vaultMountPoint: kubefirst
   vaultSecretPath: staging/metaphor
