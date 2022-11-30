@@ -75,7 +75,7 @@ spec:
             tls:
              - secretName: vault-tls
                hosts:
-                 - "*.<AWS_HOSTED_ZONE_NAME>"
+                 - vault.<AWS_HOSTED_ZONE_NAME>
         injector:
           enabled: true
     chart: vault

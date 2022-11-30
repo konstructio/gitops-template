@@ -11,4 +11,4 @@ metaphor-frontend:
     tls:
     - secretName: metaphor-frontend-tls
       hosts:
-        - "*.<AWS_HOSTED_ZONE_NAME>"
+        - metaphor-frontend-development.<AWS_HOSTED_ZONE_NAME>

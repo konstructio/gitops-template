@@ -17,5 +17,5 @@ spec:
               servicePort: 2746
   tls:
   - hosts:
-    - "*.<AWS_HOSTED_ZONE_NAME>"
+    - argo.<AWS_HOSTED_ZONE_NAME>
     secretName: argo-secret
