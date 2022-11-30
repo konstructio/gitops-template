@@ -22,3 +22,16 @@ spec:
   redirectScheme:
     scheme: https
     permanent: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: atlantis-events
+  namespace: atlantis
+spec:
+  routes:
+  - kind: Rule
+    match: Host(`<NGROK_URL>`) && Path(`/events`)
+    services:
+    - name: atlantis
+      port: 80
