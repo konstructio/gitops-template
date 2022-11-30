@@ -49,7 +49,7 @@ spec:
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
             tls:
               enabled: true
-              secretName: gitlab-tls       
+              secretName: gitlab-tls
         gitlab:
           sidekiq:
             registry:

@@ -27,7 +27,7 @@ spec:
           tls:
             - secretName: vouch-tls
               hosts:
-                - vouch.<AWS_HOSTED_ZONE_NAME>
+                - "*.<AWS_HOSTED_ZONE_NAME>"
         existingSecretName: "kubefirst-console-secrets"
   destination:
     server: https://kubernetes.default.svc

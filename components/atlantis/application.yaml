@@ -53,7 +53,7 @@ spec:
           tls:
            - secretName: atlantis-tls
              hosts:
-               - atlantis.<AWS_HOSTED_ZONE_NAME>
+               - "*.<AWS_HOSTED_ZONE_NAME>"
         loadEnvFromSecrets:
           - atlantis-secrets
         repoConfig: |
