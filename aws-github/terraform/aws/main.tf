@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket  = "<KUBEFIRST_STATE_STORE_BUCKET>"
-    key     = "terraform/base/tfstate.tf"
+    key     = "terraform/aws/tfstate.tf"
     region  = "<AWS_DEFAULT_REGION>"
     encrypt = true
   }
@@ -24,15 +24,18 @@ module "eks" {
   lifecycle_nodes = var.lifecycle_nodes
 }
 
-module "kms" {
-  source = "./kms"
-}
-
 module "dynamodb" {
   source = "./dynamodb"
 }
 
+module "kms" {
+  source = "./kms"
+}
+
+module "s3" {
+  source = "./s3"
+}
+
 output "vault_unseal_kms_key" {
-// todo https://github.com/terraform-aws-modules/terraform-aws-iam/tree/v4.0.0/examples/iam-assumable-role-with-oidcoutput "vault_unseal_kms_key" {
   value = module.kms.vault_unseal_kms_key
 }
