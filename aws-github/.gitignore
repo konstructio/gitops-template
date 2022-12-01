@@ -1,0 +1,10 @@
+**/*.env
+**/.env
+**/.terraform/
+**/.terraform.lock.hcl
+**/terraform.tfstate
+.vscode
+.DS_Store
+# todo remove before merge
+gcp 
+k0s
