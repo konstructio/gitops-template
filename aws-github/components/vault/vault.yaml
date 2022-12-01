@@ -51,7 +51,7 @@ spec:
         
               seal "awskms" {
                  region     = "<AWS_DEFAULT_REGION>"
-                 kms_key_id = <AWS_KMS_KEY_ID>
+                 kms_key_id = <AWS_VAULT_KMS_KEY_ID>
               }
               service_registration "kubernetes" {}
         
