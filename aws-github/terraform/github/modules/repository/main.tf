@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    github = {
-      source  = "integrations/github"
-      version = "4.26.0"
-    }
-  }
-}
-
 resource "aws_ecr_repository" "repo" {
   count                = var.create_ecr != true ? 0 : 1
   name                 = "${var.repo_name}-<CLUSTER_NAME>"

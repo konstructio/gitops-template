@@ -10,11 +10,6 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
-  default_tags {
-    tags = {
-      ClusterName = "<CLUSTER_NAME>"
-    }
-  }
 }
 module "eks" {
   source = "./eks"
