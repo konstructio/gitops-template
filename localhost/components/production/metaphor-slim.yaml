@@ -1,24 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metaphor-go-development
+  name: metaphor-slim-production
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL_HTTPS>
-    path: components/development/metaphor-go
+    repoURL:  <FULL_REPO_GITOPS_URL_HTTPS>
+    path: components/production/metaphor-slim
     targetRevision: HEAD
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: development
+    namespace: production
   syncPolicy:
     automated:
       prune: true

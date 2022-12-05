@@ -1,9 +1,12 @@
-metaphor-go:
+metaphor-frontend:
   image:
-    repository: ghcr.io/<GITHUB_OWNER>/metaphor-go
+    repository: ghcr.io/<GITHUB_OWNER>/metaphor-frontend
   imagePullSecrets:
   - name: docker-config
   ingress:
     enabled: false
+  metaphor:
+    host: http://localhost:3002/api
   vaultMountPoint: kubefirst
   vaultSecretPath: production/metaphor
+

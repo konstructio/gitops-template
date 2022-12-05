@@ -1,9 +1,11 @@
-metaphor:
+metaphor-frontend:
   image:
-    repository: ghcr.io/<GITHUB_OWNER>/metaphor
+    repository: ghcr.io/<GITHUB_OWNER>/metaphor-frontend
   imagePullSecrets:
   - name: docker-config
   ingress:
     enabled: false
+  metaphor:
+    host: http://localhost:3001/api
   vaultMountPoint: kubefirst
   vaultSecretPath: staging/metaphor
