@@ -13,8 +13,12 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: argo-server
-              servicePort: 2746
+              service:
+                name: argo-server
+                port:
+                  number: 2746
+            path: /
+            pathType: Prefix
   tls:
   - hosts:
     - argo.<AWS_HOSTED_ZONE_NAME>
