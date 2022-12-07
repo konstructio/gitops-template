@@ -1,0 +1,9 @@
+metaphor:
+  image:
+    repository: ghcr.io/<GITHUB_OWNER>/metaphor
+  imagePullSecrets:
+  - name: docker-config
+  ingress:
+    enabled: false
+  vaultMountPoint: kubefirst
+  vaultSecretPath: staging/metaphor
