@@ -33,7 +33,7 @@ resource "github_repository_webhook" "gitops_atlantis_webhook" {
     repository = module.gitops.repo_name
   
     configuration {
-      url          = "<ATLANTIS_WEBHOOK_URL>"
+      url          = "<GITOPS_REPO_ATLANTIS_WEBHOOK_URL>"
       content_type = "json"
       insecure_ssl = false
       secret       = var.atlantis_repo_webhook_secret

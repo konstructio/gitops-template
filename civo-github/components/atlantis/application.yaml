@@ -14,7 +14,7 @@ spec:
     helm:
       parameters:
         - name: orgWhitelist
-          value: <FULL_REPO_GITOPS_URL_NO_HTTPS>
+          value: <GITOPS_REPO_URL_NO_HTTPS>
       values: |-
         atlantisUrl: http://localhost:4141
         serviceAccount:
@@ -32,7 +32,7 @@ spec:
         repoConfig: |
           ---
           repos:
-          - id: <FULL_REPO_GITOPS_URL_NO_HTTPS>
+          - id: <GITOPS_REPO_URL_NO_HTTPS>
             workflow: default
             allowed_overrides: [apply_requirements]
             apply_requirements: [mergeable]

@@ -19,7 +19,7 @@ module "kubefirst_bot" {
   source = "./modules/user/gitlab"
 
   acl_policies            = ["admin"]
-  email                   = "<EMAIL_ADDRESS>"
+  email                   = "<ADMIN_EMAIL_ADDRESS>"
   first_name              = "Kubefirst"
   fullname                = "Kubefirst Bot"
   group_id                = data.vault_identity_group.admins.group_id

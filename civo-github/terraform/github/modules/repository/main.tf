@@ -1,18 +1,3 @@
-resource "aws_ecr_repository" "repo" {
-  count                = var.create_ecr != true ? 0 : 1
-  name                 = "${var.repo_name}-<CLUSTER_NAME>"
-  image_tag_mutability = "IMMUTABLE"
-  force_delete         = true
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-}
-
-output "repo_name" {
-  value = github_repository.repo.name
-}
-
 resource "github_repository" "repo" {
   name        = var.repo_name
   description = var.description
