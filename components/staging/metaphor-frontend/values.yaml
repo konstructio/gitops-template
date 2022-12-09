@@ -12,10 +12,8 @@ metaphor-frontend:
     - secretName: metaphor-frontend-tls
       hosts:
         - metaphor-frontend-staging.<AWS_HOSTED_ZONE_NAME>
-
-metaphor:
-  host: metaphor-staging.<AWS_HOSTED_ZONE_NAME>
-
-metaphorGo:
-  host: metaphor-go-staging.<AWS_HOSTED_ZONE_NAME>
+  metaphor:
+    host: https://metaphor-staging.<AWS_HOSTED_ZONE_NAME>
+  metaphorGo:
+    host: https://metaphor-go-staging.<AWS_HOSTED_ZONE_NAME>
 

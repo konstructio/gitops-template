@@ -14,11 +14,16 @@ spec:
   project: default
   source:
     chart: external-dns
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 6.5.4
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    targetRevision: 1.11.0
     helm:
       releaseName: external-dns
       values: |
+        serviceAccount:
+          create: true
+          name: external-dns
+          annotations:
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/external-dns-<CLUSTER_NAME>'
         domainFilters:
           - <AWS_HOSTED_ZONE_NAME>
   syncPolicy:
