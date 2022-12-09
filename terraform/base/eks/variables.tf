@@ -46,7 +46,7 @@ variable "aws_account_id" {
 
 variable "lifecycle_nodes" {
   description = "The lifecycle of a node, can be SPOT or ON_DEMAND"
-  default = "ON_DEMAND"
+  default = "<AWS_LIFECYCLE_NODES>"
   type = string
 }
 
