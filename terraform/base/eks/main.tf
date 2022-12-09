@@ -110,9 +110,6 @@ module "eks" {
   # write_kubeconfig = false
   manage_aws_auth = false
   
-  # TODO: prevent creation of iam
-  # workers_role_name = "worker-node-<CLUSTER_NAME>"
-  
   kubeconfig_output_path = "./kubeconfig"
     
   tags = {
@@ -121,21 +118,6 @@ module "eks" {
   }
 
   vpc_id = module.vpc.vpc_id
-
-  map_roles = concat(var.map_roles, [{
-    rolearn  = "arn:aws:iam::${var.aws_account_id}:role/KubernetesAdmin"
-    username = "admin"
-    groups   = ["system:masters"]
-    }, {
-    rolearn  = "arn:aws:iam::${var.aws_account_id}:role/atlantis-${local.cluster_name}"
-    username = "admin"
-    groups   = ["system:masters"]
-    }, {
-    rolearn  = aws_iam_role.kubefirst_worker_nodes_role.arn
-    username = "system:node:{{EC2PrivateDNSName}}"
-    groups   = ["system:bootstrappers", "system:nodes"]
-  }])
-  map_accounts = var.map_accounts
 }
 
 module "iam_assumable_role_argo_admin" {

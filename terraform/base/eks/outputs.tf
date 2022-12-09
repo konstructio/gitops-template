@@ -21,6 +21,10 @@ output "config_map_aws_auth" {
   description = "A kubernetes configuration to authenticate to this EKS cluster."
   value       = module.eks.config_map_aws_auth
 }
+output "eks_node_role_arn" {
+  description = "the arn of the eks nodes role"
+  value       = module.eks.node_group_arn
+}
 
 output "kubefirst_vpc_default_sg" {
   value = module.vpc.default_security_group_id
