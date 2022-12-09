@@ -2,10 +2,6 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
-provider "random" {
-  version = "~> 3.1"
-}
-
 provider "local" {
   version = "~> 2.1.0"
 }
@@ -28,12 +24,6 @@ data "aws_availability_zones" "available" {
 locals {
   cluster_name = "<CLUSTER_NAME>"
 }
-
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-}
-
 resource "aws_security_group" "worker_group_mgmt_one" {
   name_prefix = "worker_group_mgmt_one"
   vpc_id      = module.vpc.vpc_id
@@ -152,48 +142,73 @@ module "iam_assumable_role_argo_admin" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
   version = "4.0.0"
-
   create_role = true
-
+  oidc_fully_qualified_subjects = ["system:serviceaccount:argo:argo"]
+  provider_url  = module.eks.cluster_oidc_issuer_url
   role_name = "argo-${local.cluster_name}"
-
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
   tags = {
     Role = "Argo"
     ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
-
-  provider_url  = module.eks.cluster_oidc_issuer_url
-
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
-  ]
-
-  oidc_fully_qualified_subjects = ["system:serviceaccount:argo:argo"]
 }
   
 module "iam_assumable_role_atlantis_admin" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
   version = "4.0.0"
-
   create_role = true
-
+  oidc_fully_qualified_subjects = ["system:serviceaccount:atlantis:atlantis"]
+  provider_url  = module.eks.cluster_oidc_issuer_url
   role_name = "atlantis-${local.cluster_name}"
-
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
   tags = {
     Role = "Atlantis"
     ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
+}
 
+module "iam_assumable_role_chartmuseum_s3" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+
+  version = "4.0.0"
+  create_role = true
+  oidc_fully_qualified_subjects = ["system:serviceaccount:chartmuseum:chartmuseum"]
   provider_url  = module.eks.cluster_oidc_issuer_url
-
+  role_name = "chartmuseum-${local.cluster_name}"
   role_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
   ]
+  tags = {
+    Role = "Chartmuseum"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
+  }
+}
 
-  oidc_fully_qualified_subjects = ["system:serviceaccount:atlantis:atlantis"]
+module "iam_assumable_role_vault_dynamo_kms" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+
+  version = "4.0.0"
+  create_role = true
+  oidc_fully_qualified_subjects = ["system:serviceaccount:vault:vault"]
+  provider_url  = module.eks.cluster_oidc_issuer_url
+  role_name = "vault-${local.cluster_name}"
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+    "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+  ]
+  tags = {
+    Role = "Vault"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
+  }
 }
 
 resource "aws_eks_addon" "vpc_cni" {
@@ -231,49 +246,4 @@ resource "aws_eks_node_group" "mgmt_nodes" {
   depends_on = [
     module.eks
   ]
-}
-
-resource "random_string" "random" {
-  length  = 16
-  special = false
-}
-
-resource "aws_iam_role" "kubefirst_worker_nodes_role" {
-  name = "kubefirst-worker-nodes-role-<CLUSTER_NAME>"
-
-  assume_role_policy = <<EOT
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": { 
-        "AWS": [
-          "arn:aws:iam::${var.aws_account_id}:root"
-        ]
-      },
-      "Action": "sts:AssumeRole"
-    },
-    {
-      "Sid": "EKSWorkerAssumeRole",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOT
-}
-
-resource "aws_iam_role_policy_attachment" "admin_policy_attach" {
-  role       = aws_iam_role.kubefirst_worker_nodes_role.name
-  policy_arn = var.k8s_admin
-}
-
-resource "aws_iam_role_policy_attachment" "worker_policy_attach" {
-  count      = length(var.k8s_worker_node_policy_arns)
-  role       = aws_iam_role.kubefirst_worker_nodes_role.name
-  policy_arn = var.k8s_worker_node_policy_arns[count.index]
 }

@@ -26,16 +26,6 @@ variable "map_users" {
   default = []
 }
 
-variable "k8s_admin" {
-  type    = string
-  default = "arn:aws:iam::aws:policy/AdministratorAccess"
-}
-
-variable "k8s_worker_node_policy_arns" {
-  type    = list(string)
-  default = ["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy", "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly", "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser", "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy", "arn:aws:iam::aws:policy/AdministratorAccess"]
-}
-
 variable "cluster_name" {
   type = string
 }
