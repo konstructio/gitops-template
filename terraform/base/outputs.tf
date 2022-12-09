@@ -6,6 +6,6 @@ output "eks_node_role_arn" {
   value = module.eks.eks_node_role_arn
 }
 
-  output "eks_module" {
+output "eks_module" {
   value = module.eks
 }
