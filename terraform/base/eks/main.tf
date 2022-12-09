@@ -111,7 +111,7 @@ module "eks" {
   manage_aws_auth = false
   
   # TODO: prevent creation of iam
-  # workers_role_name = "worker-node-role-fever-dreams"
+  # workers_role_name = "worker-node-<CLUSTER_NAME>"
   
   kubeconfig_output_path = "./kubeconfig"
     
@@ -174,6 +174,57 @@ module "iam_assumable_role_atlantis_admin" {
   }
 }
 
+module "iam_assumable_role_cert_manager_route53" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+
+  version = "4.0.0"
+  create_role = true
+  oidc_fully_qualified_subjects = ["system:serviceaccount:cert-manager:cert-manager"]
+  provider_url  = module.eks.cluster_oidc_issuer_url
+  role_name = "cert-manager-${local.cluster_name}"
+  role_policy_arns = [
+    aws_iam_policy.cert_manager.arn,
+  ]
+  tags = {
+    Role = "CertManager"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
+  }
+}
+
+resource "aws_iam_policy" "cert_manager" {
+  name        = "cert-manager-<CLUSTER_NAME>"
+  path        = "/"
+  description = "policy for external dns to access route53 resources"
+
+  policy = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "route53:GetChange",
+      "Resource": "arn:aws:route53:::change/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets",
+        "route53:ListResourceRecordSets"
+      ],
+      "Resource": "arn:aws:route53:::hostedzone/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "route53:ListHostedZonesByName",
+      "Resource": "*"
+    }
+  ]
+}
+EOT
+}
+
+
 module "iam_assumable_role_chartmuseum_s3" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
@@ -190,6 +241,57 @@ module "iam_assumable_role_chartmuseum_s3" {
     ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
+}
+
+module "iam_assumable_role_external_dns_route53" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+
+  version = "4.0.0"
+  create_role = true
+  oidc_fully_qualified_subjects = ["system:serviceaccount:external-dns:external-dns"]
+  provider_url  = module.eks.cluster_oidc_issuer_url
+  role_name = "external-dns-${local.cluster_name}"
+  role_policy_arns = [
+    aws_iam_policy.external_dns.arn,
+  ]
+  tags = {
+    Role = "ExternalDns"
+    ClusterName = "${local.cluster_name}"
+    ProvisionedBy = "kubefirst"
+  }
+}
+
+resource "aws_iam_policy" "external_dns" {
+  name        = "external-dns-<CLUSTER_NAME>"
+  path        = "/"
+  description = "policy for external dns to access route53 resources"
+
+  policy = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets"
+      ],
+      "Resource": [
+        "arn:aws:route53:::hostedzone/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListHostedZones",
+        "route53:ListResourceRecordSets"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
+EOT
 }
 
 module "iam_assumable_role_vault_dynamo_kms" {
