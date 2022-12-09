@@ -19,6 +19,11 @@ spec:
     helm:
       releaseName: external-dns
       values: |
+        serviceAccount:
+          create: true
+          name: external-dns
+          annotations:
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/external-dns-<CLUSTER_NAME>'
         domainFilters:
           - <AWS_HOSTED_ZONE_NAME>
   syncPolicy:

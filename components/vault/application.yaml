@@ -23,6 +23,11 @@ spec:
           value: vault.<AWS_HOSTED_ZONE_NAME>
       values: |-
         server:
+          serviceAccount:
+            create: true
+            name: vault
+            annotations:
+              eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/vault-<CLUSTER_NAME>'
           image:
             repository: "vault"
             tag: "1.11.2"
