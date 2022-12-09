@@ -27,6 +27,7 @@ module "argocd" {
   ]
   secret_mount_path = "secret"
 }
+
 module "console" {
   source = "./modules/oidc-client"
 
