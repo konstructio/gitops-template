@@ -23,7 +23,7 @@ output "config_map_aws_auth" {
 }
 output "eks_node_role_arn" {
   description = "the arn of the eks nodes role"
-  value       = module.eks.node_group_arn
+  value       = module.eks.worker_iam_role_arn
 }
 
 output "kubefirst_vpc_default_sg" {

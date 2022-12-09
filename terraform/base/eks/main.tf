@@ -305,7 +305,7 @@ resource "aws_eks_addon" "vpc_cni" {
 resource "aws_eks_node_group" "mgmt_nodes" {
   cluster_name    = module.eks.cluster_id
   node_group_name = "mgmt-nodes"
-  node_role_arn   = aws_iam_role.kubefirst_worker_nodes_role.arn
+  node_role_arn   = module.eks.worker_iam_role_arn
   subnet_ids      = module.vpc.private_subnets
   ami_type        = var.ami_type
   instance_types  = [var.instance_type]
