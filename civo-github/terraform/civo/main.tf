@@ -25,7 +25,7 @@ provider "civo" {
 }
 
 locals {
-  cluster_name = "bugfix-cluster-test"
+  cluster_name = "<CLUSTER_NAME>"
 }
 
 resource "civo_network" "kubefirst" {
