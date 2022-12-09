@@ -14,6 +14,11 @@ spec:
     targetRevision: 3.4.0
     helm:
       values: |-
+        serviceAccount:
+          create: true
+          name: chartmuseum
+          annotations:
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/chartmuseum-<CLUSTER_NAME>'
         env:
           open:
             AUTH_ANONYMOUS_GET: true
