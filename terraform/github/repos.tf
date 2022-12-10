@@ -24,10 +24,13 @@ module "gitops" {
 }
 
 resource "github_repository_webhook" "gitops_atlantis_webhook" {
+  depends_on = [
+    module.gitops
+  ]
     repository = module.gitops.repo_name
 
     configuration {
-      url          = "https://atlantis.<AWS_HOSTED_ZONE_NAME>/events"
+      url          = "<ATLANTIS_INGRESS_URL>/events"
       content_type = "json"
       insecure_ssl = false
       secret       = var.atlantis_repo_webhook_secret
