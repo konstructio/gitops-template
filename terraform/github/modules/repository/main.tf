@@ -17,9 +17,8 @@ resource "aws_ecr_repository" "repo" {
     scan_on_push = true
   }
 }
-
 output "repo_name" {
-  value = github_repository.repo.name
+    value = github_repository.repo.name
 }
 
 resource "github_repository" "repo" {
