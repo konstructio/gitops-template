@@ -1,9 +1,0 @@
-apiVersion: v2
-dependencies:
-- name: metaphor-go
-  repository: http://chartmuseum.chartmuseum.svc.cluster.local:8080
-  version: 0.1.0
-description: metaphor go instance
-name: metaphor-go-development
-type: application
-version: 1.0.0
