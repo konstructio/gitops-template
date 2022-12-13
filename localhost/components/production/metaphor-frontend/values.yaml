@@ -6,6 +6,7 @@ metaphor-frontend:
   ingress:
     enabled: false
   metaphor:
-    host: http://localhost:3002
-  metaphorGo:
-    host: http://localhost:5002
+    host: http://localhost:4002/api
+  vaultMountPoint: kubefirst
+  vaultSecretPath: production/metaphor
+  isLocal: true
