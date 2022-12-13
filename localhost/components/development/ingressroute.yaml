@@ -13,7 +13,7 @@ spec:
     - name: metaphor-slim-development
       port: 80
   tls:
-    secretName: metaphor-slim-development-tls
+    secretName: metaphor-slim-tls
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
