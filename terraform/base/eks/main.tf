@@ -287,6 +287,7 @@ module "iam_assumable_role_vault_dynamo_kms" {
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
     "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    aws_iam_policy.vault_server.arn
   ]
   tags = {
     Role = "Vault"
@@ -294,6 +295,46 @@ module "iam_assumable_role_vault_dynamo_kms" {
     ProvisionedBy = "kubefirst"
   }
 }
+
+resource "aws_iam_policy" "vault_server" {
+  name        = "vault-unseal-<CLUSTER_NAME>"
+  path        = "/"
+  description = "policy for external dns to access route53 resources"
+
+  policy = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VaultAWSAuthMethod",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "iam:GetInstanceProfile",
+        "iam:GetUser",
+        "iam:GetRole"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "VaultKMSUnseal",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
+EOT
+}
+
 
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name = module.eks.cluster_id
@@ -305,7 +346,7 @@ resource "aws_eks_addon" "vpc_cni" {
 resource "aws_eks_node_group" "mgmt_nodes" {
   cluster_name    = module.eks.cluster_id
   node_group_name = "mgmt-nodes"
-  node_role_arn   = aws_iam_role.kubefirst_worker_nodes_role.arn
+  node_role_arn   = module.eks.worker_iam_role_arn
   subnet_ids      = module.vpc.private_subnets
   ami_type        = var.ami_type
   instance_types  = [var.instance_type]
