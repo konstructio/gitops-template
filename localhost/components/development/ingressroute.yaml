@@ -1,25 +1,25 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: kubefirst-console
-  namespace: kubefirst
+  name: metaphor-slim-development
+  namespace: development
 spec:
   entryPoints:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`kubefirst.<LOCAL_DNS>`)
+    match: Host(`metaphor.<LOCAL_DNS>`)
     services:
-    - name: kubefirst-console
+    - name: metaphor-slim-development
       port: 80
   tls:
-    secretName: kubefirst-tls
+    secretName: metaphor-slim-development-tls
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: redirect-to-https
-  namespace: kubefirst
+  namespace: development
 spec:
   redirectScheme:
     scheme: https
