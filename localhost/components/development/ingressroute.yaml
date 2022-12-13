@@ -8,9 +8,9 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`metaphor.<LOCAL_DNS>`)
+    match: Host(`metaphor-slim.<LOCAL_DNS>`)
     services:
-    - name: metaphor-slim-development
+    - name: metaphor-slim-development-metaphor-frontend
       port: 80
   tls:
     secretName: metaphor-slim-tls
