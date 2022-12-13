@@ -287,6 +287,7 @@ module "iam_assumable_role_vault_dynamo_kms" {
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
     "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    "arn:aws:iam::aws:policy/AdministratorAccess" # todo create an issue and link here if this fixes
   ]
   tags = {
     Role = "Vault"
