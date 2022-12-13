@@ -287,6 +287,7 @@ module "iam_assumable_role_vault_dynamo_kms" {
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
     "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    "arn:aws:iam::aws:policy/AdministratorAccess" # todo address this policy https://github.com/kubefirst/kubefirst/issues/861
   ]
   tags = {
     Role = "Vault"
@@ -294,6 +295,7 @@ module "iam_assumable_role_vault_dynamo_kms" {
     ProvisionedBy = "kubefirst"
   }
 }
+
 
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name = module.eks.cluster_id
