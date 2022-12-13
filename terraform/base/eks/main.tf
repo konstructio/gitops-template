@@ -288,7 +288,6 @@ module "iam_assumable_role_vault_dynamo_kms" {
     "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
     "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
     aws_iam_policy.vault_server.arn
-    # "arn:aws:iam::aws:policy/AdministratorAccess" # todo address this policy https://github.com/kubefirst/kubefirst/issues/861
   ]
   tags = {
     Role = "Vault"
