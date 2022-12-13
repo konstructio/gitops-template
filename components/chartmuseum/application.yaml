@@ -22,6 +22,7 @@ spec:
         env:
           open:
             AUTH_ANONYMOUS_GET: true
+            AWS_SDK_LOAD_CONFIG: true
             STORAGE: amazon
             STORAGE_AMAZON_BUCKET: <CHARTMUSEUM_BUCKET>
             STORAGE_AMAZON_PREFIX: kubefirst-charts
