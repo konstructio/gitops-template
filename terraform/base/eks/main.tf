@@ -287,12 +287,53 @@ module "iam_assumable_role_vault_dynamo_kms" {
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
     "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    "arn:aws:iam::aws:policy/AdministratorAccess" # todo address this policy https://github.com/kubefirst/kubefirst/issues/861
+    # aws_iam_policy.vault_kms.arn
   ]
   tags = {
     Role = "Vault"
     ClusterName = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
+}
+
+resource "aws_iam_policy" "vault_kms" {
+  name        = "vault-unseal-<CLUSTER_NAME>"
+  path        = "/"
+  description = "policy for external dns to access route53 resources"
+
+  policy = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VaultAWSAuthMethod",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "iam:GetInstanceProfile",
+        "iam:GetUser",
+        "iam:GetRole"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "VaultKMSUnseal",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
+EOT
 }
 
 resource "aws_eks_addon" "vpc_cni" {

@@ -16,5 +16,5 @@ data:
     - "groups":
       - "system:bootstrappers"
       - "system:nodes"
-      "rolearn": "<EKS_NODE_GROUP_ARN>"
+      "rolearn": "<EKS_NODE_GROUP_ROLE_ARN>"
       "username": "system:node:{{EC2PrivateDNSName}}"
