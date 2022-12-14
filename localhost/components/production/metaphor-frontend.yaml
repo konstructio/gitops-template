@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metaphor-slim-production
+  name: metaphor-frontend-production
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL:  <FULL_REPO_GITOPS_URL_HTTPS>
+    repoURL: <FULL_REPO_GITOPS_URL_HTTPS>
     path: components/production/metaphor-frontend
     targetRevision: HEAD
     helm:
