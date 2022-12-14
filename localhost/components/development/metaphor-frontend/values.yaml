@@ -18,7 +18,7 @@ metaphor-frontend:
         hosts:
           - metaphor-slim.<LOCAL_DNS>
   metaphor:
-    host: https//metaphor-slim.<LOCAL_DNS>/api
+    host: https://metaphor-slim.<LOCAL_DNS>/api
   vaultMountPoint: kubefirst
   vaultSecretPath: development/metaphor
   isLocal: true
