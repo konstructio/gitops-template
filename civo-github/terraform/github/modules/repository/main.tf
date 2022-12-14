@@ -32,6 +32,11 @@ resource "github_repository" "repo" {
   }
 }
 
+output "repo_name" {
+    value = github_repository.repo.name
+}
+
+
 resource "github_team_repository" "team_admins" {
   team_id    = var.team_admins_id
   repository = github_repository.repo.name
