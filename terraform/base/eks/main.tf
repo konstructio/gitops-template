@@ -101,10 +101,10 @@ module "vpc" {
 }
 
 module "eks" {
-  version         = "17.20.0"
+  version         = "17.24.0"
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = local.cluster_name
-  cluster_version = "1.20"
+  cluster_version = "1.22"
   subnets         = module.vpc.private_subnets
   enable_irsa     = true 
   # write_kubeconfig = false
@@ -339,7 +339,7 @@ EOT
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name = module.eks.cluster_id
   addon_name   = "vpc-cni"
-  addon_version = "v1.11.2-eksbuild.1"
+  addon_version = "v1.12.0-eksbuild.1"
   resolve_conflicts = "OVERWRITE"
 }
 
