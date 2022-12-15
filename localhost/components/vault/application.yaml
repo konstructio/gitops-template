@@ -18,8 +18,6 @@ spec:
         server:
           ingress:
             enabled: true
-            annotations:
-              traefik.ingress.kubernetes.io/router.middlewares: vault-redirect-to-https@kubernetescrd
             hosts:
               - host: vault.<LOCAL_DNS>
             pathType: Prefix
