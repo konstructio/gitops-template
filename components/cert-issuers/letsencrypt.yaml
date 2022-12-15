@@ -28,4 +28,4 @@ spec:
     name: letsencrypt-wildcard
   commonName: "*.<AWS_HOSTED_ZONE_NAME>"
   dnsNames:
-    - "*.kubernickels.com"
+    - "*.<AWS_HOSTED_ZONE_NAME>"
