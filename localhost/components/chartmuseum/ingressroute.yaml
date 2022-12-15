@@ -13,7 +13,7 @@ spec:
     - name: chartmuseum
       port: 80
   tls:
-    secretName: chartmuseum-tls
+    secretName: wildcard-tls
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware

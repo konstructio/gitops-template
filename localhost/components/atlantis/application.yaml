@@ -24,7 +24,7 @@ spec:
           pathType: Prefix
           host: atlantis.<LOCAL_DNS>
           tls:
-            - secretName: atlantis-tls
+            - secretName: wildcard-tls
               hosts:
                 - atlantis.<LOCAL_DNS>
         atlantisUrl: https://atlantis.<LOCAL_DNS>

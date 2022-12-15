@@ -3,13 +3,13 @@ metaphor:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      cert-manager.io/cluster-issuer: "letsencrypt-wildcard"
     hosts:
       - host: metaphor-development.<AWS_HOSTED_ZONE_NAME>
         paths:
           - /
     tls:
-    - secretName: metaphor-tls
+    - secretName: wildcard-tls
       hosts:
         - metaphor-development.<AWS_HOSTED_ZONE_NAME>
   vaultMountPoint: kubefirst

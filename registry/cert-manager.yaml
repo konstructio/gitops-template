@@ -13,12 +13,14 @@ spec:
     targetRevision: 1.6.1
     helm:
       values: |-
+        installCRDs: true
         serviceAccount:
           create: true
           name: cert-manager
           annotations:
            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/cert-manager-<CLUSTER_NAME>'
-        installCRDs: true
+        securityContext:
+          fsGroup: 1001
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

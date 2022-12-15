@@ -23,7 +23,7 @@ spec:
             enabled: true
             annotations:
               kubernetes.io/ingress.class: nginx
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              cert-manager.io/cluster-issuer: "letsencrypt-wildcard"
               nginx.ingress.kubernetes.io/ssl-passthrough: "true"
             hosts:
               - argocd.<AWS_HOSTED_ZONE_NAME>
@@ -31,7 +31,7 @@ spec:
               - /
             pathType: Prefix
             tls:
-              - secretName: argocd-server-tls
+              - secretName: wildcard-tls
                 hosts: 
                   - argocd.<AWS_HOSTED_ZONE_NAME>
             https: true

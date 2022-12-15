@@ -21,7 +21,7 @@ spec:
             - name: chartmuseum.<LOCAL_DNS>
               path: /
               tls: enable
-              tlsSecret: chartmuseum-tls
+              tlsSecret: wildcard-tls
         env:
           open:
             AUTH_ANONYMOUS_GET: true

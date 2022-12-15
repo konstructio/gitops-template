@@ -926,7 +926,7 @@ server:
     # -- Certificate manager additional hosts
     additionalHosts: []
     # -- Certificate manager secret name
-    secretName: argocd-server-tls
+    secretName: wildcard-tls
 
   ## Server service configuration
   service:

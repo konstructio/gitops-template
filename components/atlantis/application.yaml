@@ -47,11 +47,11 @@ spec:
           annotations:
             # kubernetes.io/tls-acme: "true"
             kubernetes.io/ingress.class: nginx
-            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            cert-manager.io/cluster-issuer: "letsencrypt-wildcard"
           path: /
           host: atlantis.<AWS_HOSTED_ZONE_NAME>
           tls:
-           - secretName: atlantis-tls
+           - secretName: wildcard-tls
              hosts:
                - atlantis.<AWS_HOSTED_ZONE_NAME>
         loadEnvFromSecrets:

@@ -33,12 +33,12 @@ spec:
           enabled: true
           pathType: "Prefix"
           annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            cert-manager.io/cluster-issuer: "letsencrypt-wildcard"
           hosts:
             - name: chartmuseum.<AWS_HOSTED_ZONE_NAME>
               path: /
               tls: true
-              tlsSecret: chartmuseum-tls
+              tlsSecret: wildcard-tls
           ingressClassName: nginx
     chart: chartmuseum
   destination:

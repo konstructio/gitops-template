@@ -74,7 +74,7 @@ spec:
             enabled: true
             annotations:
               kubernetes.io/ingress.class: nginx
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              cert-manager.io/cluster-issuer: "letsencrypt-wildcard"
             path: /
             host: vault.<AWS_HOSTED_ZONE_NAME>
             tls:
