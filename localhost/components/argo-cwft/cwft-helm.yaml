@@ -70,7 +70,7 @@ spec:
       workingDir: "/src/{{inputs.parameters.appName}}"
       args:
       - helm repo add kubefirst http://chartmuseum.chartmuseum.svc.cluster.local:8080 --username k-ray --password feedkraystars || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
-        helm push {{inputs.parameters.chartDir}} kubefirst || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+        helm cm-push {{inputs.parameters.chartDir}} kubefirst || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
   - name: set-environment-version
     inputs:
       artifacts:
