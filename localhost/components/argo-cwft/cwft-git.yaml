@@ -77,7 +77,7 @@ spec:
       - git remote set-url origin https://${username}:${password}@github.com/{{inputs.parameters.gitOwner}}/{{inputs.parameters.repoName}}.git >/dev/null 2>&1;
         git remote -v;
         git config --global user.email 'k-ray@example.com';
-        git config --global user.name 'kuebfirst-bot';
+        git config --global user.name 'kubefirst-bot';
         git status;
         git pull --ff-only;
         git add .;

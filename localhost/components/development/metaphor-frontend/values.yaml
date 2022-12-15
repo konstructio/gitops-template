@@ -4,9 +4,21 @@ metaphor-frontend:
   imagePullSecrets:
   - name: docker-config
   ingress:
-    enabled: false
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.middlewares: development-redirect-to-https@kubernetescrd
+    className: ""
+    hosts:
+      - host: metaphor-frontend-development.<LOCAL_DNS>
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: metaphor-frontend-development-tls
+        hosts:
+          - metaphor-frontend-development.<LOCAL_DNS>
   metaphor:
-    host: http://localhost:4000/api
+    host: https://metaphor-frontend-development.<LOCAL_DNS>/api
   vaultMountPoint: kubefirst
   vaultSecretPath: development/metaphor
   isLocal: true
