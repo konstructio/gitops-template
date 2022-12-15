@@ -58,8 +58,6 @@ spec:
             value: "<MACHINE_ID>"
         ingress:
           enabled: true
-          annotations:
-            traefik.ingress.kubernetes.io/router.middlewares: kubefirst-redirect-to-https@kubernetescrd
           className: ""
           hosts:
             - host: kubefirst-console.<LOCAL_DNS>

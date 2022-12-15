@@ -30,10 +30,6 @@ kind: Ingress
 metadata:
   name: argocd-redirect
   namespace: argocd
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
-    traefik.ingress.kubernetes.io/router.middlewares: argocd-redirect-to-https@kubernetescrd
-
 spec:
   rules:
     - host: argocd.<LOCAL_DNS>

@@ -18,8 +18,6 @@ spec:
       values: |-
         ingress:
           enabled: true
-          annotations:
-            traefik.ingress.kubernetes.io/router.middlewares: atlantis-redirect-to-https@kubernetescrd
           path: /
           pathType: Prefix
           host: atlantis.<LOCAL_DNS>
