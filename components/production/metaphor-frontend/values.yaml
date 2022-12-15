@@ -11,7 +11,7 @@ metaphor-frontend:
     tls:
     - secretName: wildcard-tls
       hosts:
-        - metaphor-frontend-production.<AWS_HOSTED_ZONE_NAME>
+        - "*.<AWS_HOSTED_ZONE_NAME>"
   metaphor:
     host: https://metaphor-production.<AWS_HOSTED_ZONE_NAME>
   metaphorGo:

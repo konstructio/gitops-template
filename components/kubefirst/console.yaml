@@ -78,7 +78,7 @@ spec:
           tls:
             - secretName: wildcard-tls
               hosts:
-                - kubefirst.<AWS_HOSTED_ZONE_NAME>
+                - "*.<AWS_HOSTED_ZONE_NAME>"
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst
