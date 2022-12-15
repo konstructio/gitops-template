@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.0.1
+    targetRevision: 2.0.2
     chart: console
     helm:
       values: |-
@@ -56,18 +56,20 @@ spec:
             value: "<USE_TELEMETRY>"
           MACHINE_ID:
             value: "<MACHINE_ID>"
+          IS_LOCAL:
+            value: "true"
         ingress:
           enabled: true
           className: ""
           hosts:
-            - host: kubefirst-console.<LOCAL_DNS>
+            - host: kubefirst.<LOCAL_DNS>
               paths:
                 - path: /
                   pathType: Prefix
           tls:
-            - secretName: kubefirst-console-tls
+            - secretName: kubefirst-tls
               hosts:
-                - kubefirst-console.<LOCAL_DNS>
+                - kubefirst.<LOCAL_DNS>
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst
