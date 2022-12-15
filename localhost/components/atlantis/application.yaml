@@ -16,7 +16,18 @@ spec:
         - name: orgWhitelist
           value: <FULL_REPO_GITOPS_URL_NO_HTTPS>
       values: |-
-        atlantisUrl: http://localhost:4141
+        ingress:
+          enabled: true
+          annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: atlantis-redirect-to-https@kubernetescrd
+          path: /
+          pathType: Prefix
+          host: atlantis.<LOCAL_DNS>
+          tls:
+            - secretName: atlantis-tls
+              hosts:
+                - atlantis.<LOCAL_DNS>
+        atlantisUrl: https://atlantis.<LOCAL_DNS>
         serviceAccount:
           create: true
           mount: true

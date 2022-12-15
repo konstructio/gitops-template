@@ -17,6 +17,19 @@ spec:
           extraArgs:
           - --auth-mode=client
           - --auth-mode=server
+          ingress:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.middlewares: argo-redirect-to-https@kubernetescrd
+            hosts:
+              - argo.<LOCAL_DNS>
+            paths: 
+              - /
+            pathType: Prefix
+            tls:
+              - secretName: argo-tls
+                hosts:
+                  - argo.<LOCAL_DNS>
         useDefaultArtifactRepo: true
         useStaticCredentials: true
         artifactRepository:

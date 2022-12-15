@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.0.0
+    targetRevision: 2.0.1
     chart: console
     helm:
       values: |-
@@ -52,8 +52,24 @@ spec:
             value: "<METAPHOR_FRONT_PROD>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
+          USE_TELEMETRY:
+            value: "<USE_TELEMETRY>"
+          MACHINE_ID:
+            value: "<MACHINE_ID>"
         ingress:
-          enabled: false
+          enabled: true
+          annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: kubefirst-redirect-to-https@kubernetescrd
+          className: ""
+          hosts:
+            - host: kubefirst-console.<LOCAL_DNS>
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: kubefirst-console-tls
+              hosts:
+                - kubefirst-console.<LOCAL_DNS>
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst

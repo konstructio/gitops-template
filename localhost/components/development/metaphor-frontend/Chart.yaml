@@ -3,7 +3,7 @@ dependencies:
 - name: metaphor-frontend
   repository: http://chartmuseum.chartmuseum.svc.cluster.local:8080
   version: 0.1.0
-description: metaphor frontend instance
-name: metaphor-frontend-development
+description: metaphor slim instance
+name: metaphor-slim-development
 type: application
 version: 1.0.0
