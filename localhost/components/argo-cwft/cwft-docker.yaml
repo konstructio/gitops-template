@@ -19,7 +19,7 @@ spec:
       - name: imageTag
         value: "ghcr.io/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}:{{workflow.parameters.ciCommitSha}}"
     container:
-      image:  kubefirst/chubbo:0.2
+      image:  docker:latest
       command: ["bash", "-c"]
       workingDir: "/src/{{inputs.parameters.appName}}"
       args:

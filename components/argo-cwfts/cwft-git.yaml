@@ -13,7 +13,7 @@ spec:
         default: main
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: kubefirst/chubbo:0.1
+        default: kubefirst/kubefirst-builder:0.1
       - name: gitopsRepoUrl
         value: "{{workflow.parameters.gitopsRepoUrl}}"
         default: "ssh://<FULL_REPO_GITOPS_URL>"
@@ -58,7 +58,7 @@ spec:
         default: main
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: kubefirst/chubbo:0.1
+        default: kubefirst/kubefirst-builder:0.1
       - name: gitopsRepoUrl
         value: "{{workflow.parameters.gitopsRepoUrl}}"
         default: <FULL_REPO_GITOPS_URL>

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metaphor-frontend-staging
+  name: metaphor-slim-production
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -11,14 +11,14 @@ spec:
   project: default
   source:
     repoURL: <FULL_REPO_GITOPS_URL_HTTPS>
-    path: components/staging/metaphor-frontend
+    path: components/production/metaphor-frontend
     targetRevision: HEAD
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: staging
+    namespace: production
   syncPolicy:
     automated:
       prune: true

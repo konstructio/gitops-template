@@ -15,7 +15,7 @@ spec:
       - name: appDir
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: kubefirst/chubbo:0.1
+        default: node:14.16-buster
     container:
       image:  "{{inputs.parameters.buildImage}}"
       command: [bash, -c]
@@ -36,7 +36,7 @@ spec:
       - name: appDir
       - name: buildImage
         value: "{{workflow.parameters.buildImage}}"
-        default: kubefirst/chubbo:0.1
+        default: node:14.16-buster
       - name: npmRunScript
     container:
       image: "{{inputs.parameters.buildImage}}"

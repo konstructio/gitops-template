@@ -82,6 +82,10 @@ resource "aws_kms_key" "vault_unseal" {
   ]
 }
 EOT
+  
+  tags = {
+    Name = "<CLUSTER_NAME>"
+  }
 }
 
 resource "aws_kms_alias" "vault_unseal" {

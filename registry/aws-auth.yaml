@@ -16,5 +16,5 @@ data:
     - "groups":
       - "system:bootstrappers"
       - "system:nodes"
-      "rolearn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/kubefirst-worker-nodes-role-<CLUSTER_NAME>"
+      "rolearn": "<EKS_NODE_GROUP_ROLE_ARN>"
       "username": "system:node:{{EC2PrivateDNSName}}"
