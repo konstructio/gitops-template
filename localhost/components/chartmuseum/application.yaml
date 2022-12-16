@@ -14,6 +14,8 @@ spec:
       values: |-
         ingress:
           enabled: true
+          annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: chartmuseum-redirect-to-https@kubernetescrd
           pathType: Prefix
           hosts:
             - name: chartmuseum.<LOCAL_DNS>

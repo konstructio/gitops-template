@@ -19,6 +19,8 @@ spec:
           - --auth-mode=server
           ingress:
             enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.middlewares: argo-redirect-to-https@kubernetescrd
             hosts:
               - argo.<LOCAL_DNS>
             paths: 
