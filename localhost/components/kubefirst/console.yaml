@@ -8,8 +8,10 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.0.2
+    repoURL: https://cristhianf7.github.io/helm-charts/
+    targetRevision: 2.1.4
+#    repoURL: https://kubefirst.github.io/charts
+#    targetRevision: 2.0.2
     chart: console
     helm:
       values: |-
