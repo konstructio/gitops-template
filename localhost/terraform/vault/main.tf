@@ -1,7 +1,3 @@
-provider "vault" {
-  ca_cert_file = "../../tools/certs/vault-cert.pem"
-}
-
 terraform {
   backend "s3" {
     bucket = "kubefirst-state-store"
