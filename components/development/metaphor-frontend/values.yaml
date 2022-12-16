@@ -7,8 +7,9 @@ metaphor-frontend:
     hosts:
       - host: metaphor-frontend-development.<AWS_HOSTED_ZONE_NAME>
         paths:
-          - /
+          - path: /
+            pathType: Prefix
     tls:
-    - secretName: metaphor-frontend-tls
-      hosts:
-        - metaphor-frontend-development.<AWS_HOSTED_ZONE_NAME>
+      - secretName: metaphor-frontend-tls
+        hosts:
+          - metaphor-frontend-development.<AWS_HOSTED_ZONE_NAME>
