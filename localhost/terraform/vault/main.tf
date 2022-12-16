@@ -1,5 +1,5 @@
 provider "vault" {
-  skip_tls_verify = true
+  ca_cert_file = "../../tools/certs/vault-cert.pem"
 }
 
 terraform {
