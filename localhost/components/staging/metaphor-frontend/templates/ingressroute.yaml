@@ -15,12 +15,13 @@ spec:
   tls:
     secretName: metaphor-frontend-staging-tls
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: staging
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
+# todo: technical debt: https://github.com/kubefirst/kubefirst/issues/941
+{{/*apiVersion: traefik.containo.us/v1alpha1*/}}
+{{/*kind: Middleware*/}}
+{{/*metadata:*/}}
+{{/*  name: redirect-to-https*/}}
+{{/*  namespace: staging*/}}
+{{/*spec:*/}}
+{{/*  redirectScheme:*/}}
+{{/*    scheme: https*/}}
+{{/*    permanent: true*/}}

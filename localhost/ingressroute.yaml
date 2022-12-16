@@ -15,15 +15,16 @@ spec:
   tls:
     secretName: argocd-tls
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: argocd
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
+# todo: technical debt: https://github.com/kubefirst/kubefirst/issues/941
+#apiVersion: traefik.containo.us/v1alpha1
+#kind: Middleware
+#metadata:
+#  name: redirect-to-https
+#  namespace: argocd
+#spec:
+#  redirectScheme:
+#    scheme: https
+#    permanent: true
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

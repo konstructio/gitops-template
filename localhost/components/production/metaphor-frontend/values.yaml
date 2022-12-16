@@ -5,8 +5,9 @@ metaphor-frontend:
   - name: docker-config
   ingress:
     enabled: true
-    annotations:
-      traefik.ingress.kubernetes.io/router.middlewares: production-redirect-to-https@kubernetescrd
+# todo: technical debt: https://github.com/kubefirst/kubefirst/issues/941
+#    annotations:
+#      traefik.ingress.kubernetes.io/router.middlewares: production-redirect-to-https@kubernetescrd
     className: ""
     hosts:
       - host: metaphor-frontend-production.<LOCAL_DNS>
