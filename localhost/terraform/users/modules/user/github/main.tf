@@ -1,6 +1,4 @@
-provider "vault" {
-  skip_tls_verify="true"
-}
+
 
 resource "vault_identity_entity" "user" {
   name     = var.username
