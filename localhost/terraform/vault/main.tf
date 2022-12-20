@@ -1,3 +1,7 @@
+provider "vault" {
+  skip_tls_verify="true"
+}
+
 terraform {
   backend "s3" {
     bucket = "kubefirst-state-store"
