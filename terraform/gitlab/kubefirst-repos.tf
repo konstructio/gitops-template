@@ -11,6 +11,7 @@ provider "aws" {
   default_tags {
     tags = {
       ClusterName = "<CLUSTER_NAME>"
+      ProvisionedBy = "kubefirst"
     }
   }
 }
