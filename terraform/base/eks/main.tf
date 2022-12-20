@@ -94,10 +94,6 @@ module "vpc" {
     "kubernetes.io/role/internal-elb"             = "1"
   }
 
-  vpc_tags = {
-    "ClusterName"   = "${local.cluster_name}"
-    "ProvisionedBy" = "kubefirst"
-  }
 }
 
 module "eks" {
@@ -112,11 +108,6 @@ module "eks" {
   
   kubeconfig_output_path = "./kubeconfig"
     
-  tags = {
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
-  }
-
   vpc_id = module.vpc.vpc_id
 }
 
@@ -133,8 +124,6 @@ module "iam_assumable_role_argo_admin" {
   ]
   tags = {
     Role = "Argo"
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
   }
 }
   
@@ -151,8 +140,6 @@ module "iam_assumable_role_atlantis_admin" {
   ]
   tags = {
     Role = "Atlantis"
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
   }
 }
 
@@ -169,8 +156,6 @@ module "iam_assumable_role_cert_manager_route53" {
   ]
   tags = {
     Role = "CertManager"
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
   }
 }
 
@@ -220,8 +205,6 @@ module "iam_assumable_role_chartmuseum_s3" {
   ]
   tags = {
     Role = "Chartmuseum"
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
   }
 }
 
@@ -238,8 +221,6 @@ module "iam_assumable_role_external_dns_route53" {
   ]
   tags = {
     Role = "ExternalDns"
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
   }
 }
 
@@ -291,8 +272,6 @@ module "iam_assumable_role_vault_dynamo_kms" {
   ]
   tags = {
     Role = "Vault"
-    ClusterName = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
   }
 }
 
