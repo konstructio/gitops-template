@@ -1,14 +1,14 @@
-variable "ami_type" {
-  description = "The chipset of nodes"
-  default = "AL2_x86_64"
-  type = string
-}
-
 variable "aws_account_id" {
   type = string
 }
 
 variable "cluster_name" {
+  type = string
+}
+
+variable "ami_type" {
+  description = "The chipset of nodes"
+  default = "AL2_x86_64"
   type = string
 }
 

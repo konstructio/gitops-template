@@ -47,3 +47,14 @@ variable "atlantis_repo_webhook_secret" {
   default = ""
   type = string 
 }
+variable "ami_type" {
+  description = "The chipset of nodes"
+  default = "AL2_x86_64"
+  type = string
+}
+
+variable "instance_type" {
+  description = "The instance type of node group"
+  default = "t3.medium"
+  type = string
+}
