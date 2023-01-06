@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes-sigs.github.io/external-dns
+    targetRevision: 1.13.1
+    helm:
+      releaseName: external-dns
+      values: |
+        image:
+          repository: kubefirst/external-dns
+          tag: "0.0.2-civo-support"
+        serviceAccount:
+          create: true
+          name: external-dns
+        provider: civo
+        sources:
+        - ingress
+        domainFilters:
+        - k-ray.space
+        env:
+        - name: CIVO_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: civo-creds
+              key: civo-token
+    chart: external-dns
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: external-dns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

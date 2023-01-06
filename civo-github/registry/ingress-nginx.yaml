@@ -1,25 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: ingres-nginx-components
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
-    repoURL: https://charts.jetstack.io
-    targetRevision: v1.10.1
-    helm:
-      values: |-
-        serviceAccount:
-          create: true
-          name: cert-manager
-        installCRDs: true
-    chart: cert-manager
+    repoURL: <GITOPS_REPO_GIT_URL>
+    path: components/ingres-nginx
+    targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: cert-manager
+    namespace: ingres-nginx
   syncPolicy:
     automated:
       prune: true

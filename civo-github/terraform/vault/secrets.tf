@@ -11,6 +11,16 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
 EOT
 }
 
+resource "vault_generic_secret" "external_dns_secrets" {
+  path = "secret/external-dns"
+
+  data_json = jsonencode(
+    {
+      civo-token = var.civo_token,
+    }
+  )
+}
+
 resource "vault_generic_secret" "minio_creds" {
   path = "secret/minio"
 
