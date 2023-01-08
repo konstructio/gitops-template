@@ -48,3 +48,8 @@ resource "civo_kubernetes_cluster" "kubefirst" {
         node_count = 5
     }
 }
+
+resource "local_file" "kubeconfig" {
+    content  = civo_kubernetes_cluster.kubefirst.kubeconfig
+    filename = "$HOME/.k1/kubeconfig"
+}
