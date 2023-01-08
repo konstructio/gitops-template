@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: 'https://chartmuseum.github.io/charts'
-    targetRevision: 3.4.0
+    targetRevision: 3.9.0
     helm:
       values: |-
         serviceAccount:
@@ -29,6 +29,17 @@ spec:
             STORAGE_AMAZON_REGION: <AWS_DEFAULT_REGION>
             DISABLE_API: false
           existingSecret: chartmuseum-secrets
+        ingress:
+          enabled: true
+          pathType: "Prefix"
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          hosts:
+            - name: chartmuseum.<AWS_HOSTED_ZONE_NAME>
+              path: /
+              tls: true
+              tlsSecret: chartmuseum-tls
+          ingressClassName: nginx
     chart: chartmuseum
   destination:
     server: 'https://kubernetes.default.svc'

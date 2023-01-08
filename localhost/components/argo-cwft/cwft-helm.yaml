@@ -16,7 +16,7 @@ spec:
         value: "{{workflow.parameters.appName}}"
       - name: chartDir
     script:
-      image: kubefirst/chubbo:0.2
+      image: kubefirst/kubefirst-builder:0.1
       command: [python3]
       workingDir: "/src/{{inputs.parameters.appName}}"
       source: |
@@ -37,7 +37,7 @@ spec:
         value: "{{workflow.parameters.ciCommitSha}}"
       - name: chartVersion
     script:
-      image: kubefirst/chubbo:0.2
+      image: kubefirst/kubefirst-builder:0.1
       command: [bash]
       workingDir: "/src/{{inputs.parameters.appName}}"
       source: |
@@ -65,12 +65,12 @@ spec:
         value: "{{workflow.parameters.appName}}"
       - name: chartDir
     container:
-      image: kubefirst/chubbo:0.2
+      image: kubefirst/kubefirst-builder:0.1
       command: ["bash", "-c"]
       workingDir: "/src/{{inputs.parameters.appName}}"
       args:
       - helm repo add kubefirst http://chartmuseum.chartmuseum.svc.cluster.local:8080 --username k-ray --password feedkraystars || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
-        helm push {{inputs.parameters.chartDir}} kubefirst || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+        helm cm-push {{inputs.parameters.chartDir}} kubefirst || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
   - name: set-environment-version
     inputs:
       artifacts:
@@ -81,7 +81,7 @@ spec:
       - name: environment
       - name: fullChartPath
     script:
-      image: kubefirst/chubbo:0.2
+      image: kubefirst/kubefirst-builder:0.1
       command: [bash]
       workingDir: "/src/gitops"
       source: |
@@ -103,7 +103,7 @@ spec:
       - name: chartDir
       - name: chartVersion
     script:
-      image: kubefirst/chubbo:0.2
+      image: kubefirst/kubefirst-builder:0.1
       command: [python3]
       workingDir: "/src/{{inputs.parameters.appName}}"
       source: |

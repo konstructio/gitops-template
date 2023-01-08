@@ -42,6 +42,8 @@ resource "vault_generic_secret" "atlantis_secrets" {
 	TF_VAR_ssh_private_key = var.ssh_private_key
 	TF_VAR_vault_addr = var.vault_addr,
 	TF_VAR_vault_token = var.vault_token,
+	TF_VAR_ami_type = var.ami_type,
+	TF_VAR_instance_type = var.instance_type,
 	VAULT_ADDR = "https://vault.<AWS_HOSTED_ZONE_NAME>",
 	VAULT_TOKEN = var.vault_token,
 }

@@ -2,9 +2,12 @@ terraform {
   required_providers {
     gitlab = {
       source = "gitlabhq/gitlab"
+      version = "3.20.0"
     }
   }
 }
+
+
 
 resource "vault_identity_entity" "user" {
   name     = var.username

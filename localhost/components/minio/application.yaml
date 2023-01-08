@@ -12,6 +12,28 @@ spec:
     targetRevision: 4.0.15
     helm:
       values: |-
+        environment:
+          MINIO_BROWSER_REDIRECT_URL: https://minio-console.<LOCAL_DNS>
+        ingress:
+          enabled: true
+          path: /
+          hosts:
+            - minio.<LOCAL_DNS>
+          tls:
+            - secretName: minio-tls
+              hosts:
+                - minio.<LOCAL_DNS>
+        consoleIngress:
+          enabled: true
+          annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: minio-redirect-to-https@kubernetescrd
+          path: /
+          hosts:
+            - minio-console.<LOCAL_DNS>
+          tls:
+            - secretName: minio-console-tls
+              hosts:
+                - minio-console.<LOCAL_DNS>
         replicas: 1
         rootUser: k-ray
         rootPassword: feedkraystars

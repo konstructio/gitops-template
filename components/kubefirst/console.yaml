@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.0.0
+    targetRevision: 2.0.3
     chart: console
     helm:
       values: |-
@@ -52,6 +52,12 @@ spec:
             value: "<METAPHOR_FRONT_PROD>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
+          USE_TELEMETRY:
+            value: "<USE_TELEMETRY>"
+          MACHINE_ID:
+            value: "<MACHINE_ID>"
+          IS_LOCAL:
+            value: "false"
         ingress:
           enabled: true
           annotations:
