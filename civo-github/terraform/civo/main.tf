@@ -51,5 +51,6 @@ resource "civo_kubernetes_cluster" "kubefirst" {
 
 resource "local_file" "kubeconfig" {
     content  = civo_kubernetes_cluster.kubefirst.kubeconfig
-    filename = "$HOME/.k1/kubeconfig"
+    filename = "../../../kubeconfig"
 }
+
