@@ -1,17 +1,18 @@
 terraform {
-  # backend "s3" {
-  #   bucket = "kubefirst-state-store"
-  #   key     = "terraform/civo/tfstate.tf"
-  #   endpoint = "http://127.0.0.1:9000"
+  backend "s3" {
+    bucket = "<KUBEFIRST_STATE_STORE_BUCKET>"
+    key     = "terraform/civo/tfstate.tf"
+    endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
 
-  #   access_key="k-ray"
-  #   secret_key="feedkraystars"
-  #   region = "us-k3d-1"
-  #   skip_credentials_validation = true
-  #   skip_metadata_api_check = true
-  #   skip_region_validation = true
-  #   force_path_style = true
-  # }
+    # access_key = ""
+    # secret_key = ""
+    region = "<CLOUD_REGION>"
+
+    skip_credentials_validation = true
+    skip_metadata_api_check = true
+    skip_region_validation = true
+    force_path_style = true
+  }
   required_providers {
     civo = {
       source = "civo/civo"
@@ -21,7 +22,7 @@ terraform {
 
 # export CIVO_TOKEN=$MYTOKEN is set 
 provider "civo" {
-  region = "NYC1"
+  region = "<CLOUD_REGION>"
 }
 
 locals {
