@@ -63,8 +63,13 @@ module "metaphor_frontend" {
   team_admins_id     = github_team.admins.id
 }
 
-resource "github_actions_secret" "example_secret" {
-  repository       = module.metaphor_frontend.repo_name
-  secret_name      = "GH_TOKEN"
-  plaintext_value  = var.github_token
-}
+# todo evaluate publishing a container with a new github action
+# resource "github_actions_secret" "example_secret" {
+#   repository       = module.metaphor_frontend.repo_name
+#   secret_name      = "GH_TOKEN"
+#   plaintext_value  = var.github_token
+# }
+
+# variable "github_token" {
+#   type = string
+# }
