@@ -4,8 +4,6 @@ terraform {
     key     = "terraform/vault/tfstate.tf"
     endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
 
-    # access_key = ""
-    # secret_key = ""
     region = "<CLOUD_REGION>"
 
     skip_credentials_validation = true
