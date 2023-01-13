@@ -4,8 +4,6 @@ terraform {
     key     = "terraform/github/tfstate.tf"
     endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
 
-    # access_key = ""
-    # secret_key = ""
     region = "<CLOUD_REGION>"
 
     skip_credentials_validation = true
@@ -24,8 +22,6 @@ terraform {
     }
   }
 }
-
-
 
 module "gitops" {
   source = "./modules/repository"
@@ -56,29 +52,6 @@ variable "atlantis_repo_webhook_secret" {
   default = ""
 }
 
-
-module "metaphor" {
-  source = "./modules/repository"
-
-  repo_name          = "metaphor"
-  archive_on_destroy = false
-  auto_init          = false # set to false if importing an existing repository
-  create_ecr         = true
-  team_developers_id = github_team.developers.id
-  team_admins_id     = github_team.admins.id
-}
-
-module "metaphor_go" {
-  source = "./modules/repository"
-
-  repo_name          = "metaphor-go"
-  archive_on_destroy = false
-  auto_init          = false # set to false if importing an existing repository
-  create_ecr         = true
-  team_developers_id = github_team.developers.id
-  team_admins_id     = github_team.admins.id
-}
-
 module "metaphor_frontend" {
   source = "./modules/repository"
 
@@ -88,4 +61,10 @@ module "metaphor_frontend" {
   create_ecr         = true
   team_developers_id = github_team.developers.id
   team_admins_id     = github_team.admins.id
+}
+
+resource "github_actions_secret" "example_secret" {
+  repository       = module.metaphor_frontend.repo_name
+  secret_name      = "GH_TOKEN"
+  plaintext_value  = var.github_token
 }

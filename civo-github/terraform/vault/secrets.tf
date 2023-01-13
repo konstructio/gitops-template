@@ -102,6 +102,8 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ARGOCD_INSECURE                     = "true",
       ARGOCD_SERVER                       = "http://localhost:8080",
       ARGO_SERVER_URL                     = "argo.argo.svc.cluster.local:2746",
+      AWS_ACCESS_KEY_ID                   = var.aws_access_key_id,
+      AWS_SECRET_ACCESS_KEY               = var.aws_secret_access_key,
       ATLANTIS_GH_HOSTNAME                = "github.com",
       ATLANTIS_GH_TOKEN                   = var.github_token,
       ATLANTIS_GH_USER                    = "<GITHUB_OWNER>",
