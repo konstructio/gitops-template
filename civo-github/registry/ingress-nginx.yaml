@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingres-nginx-components
+  name: ingress-nginx-components
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "10"
@@ -9,11 +9,11 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/ingres-nginx
+    path: components/ingress-nginx
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: ingres-nginx
+    namespace: ingress-nginx
   syncPolicy:
     automated:
       prune: true
