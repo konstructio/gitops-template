@@ -35,6 +35,17 @@ spec:
                 path = "/vault-backend"
               }
               service_registration "kubernetes" {}
+          ingress:
+            enabled: true
+            annotations:
+              kubernetes.io/ingress.class: nginx
+              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            path: /
+            host: vault.<DOMAIN_NAME>
+            tls:
+             - secretName: vault-tls
+               hosts:
+                 - vault.<DOMAIN_NAME>
           ui:
             enabled: true
             serviceType: "ClusterIP"
