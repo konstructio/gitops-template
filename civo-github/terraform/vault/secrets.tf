@@ -1,14 +1,15 @@
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
-  data_json = <<EOT
-{
-  "BASIC_AUTH_USER" : "k-ray",
-  "BASIC_AUTH_PASS" : "feedkraystars",
-  "AWS_ACCESS_KEY_ID" : "k-ray",
-  "AWS_SECRET_ACCESS_KEY" : "feedkraystars"
-}
-EOT
+# todo need to fix this user and password to be sensitive
+  data_json = jsonencode(
+    {
+      BASIC_AUTH_USER       = "k-ray",
+      BASIC_AUTH_PASS       = "feedkraystars",
+      AWS_ACCESS_KEY_ID = var.aws_access_key_id,
+      AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
+    }
+  )
 }
 
 resource "vault_generic_secret" "external_dns_secrets" {

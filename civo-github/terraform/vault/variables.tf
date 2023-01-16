@@ -20,3 +20,13 @@ variable "atlantis_repo_webhook_url" {
   default = ""
   type = string 
 }
+
+variable "aws_access_key_id" {
+  default = ""
+  type = string 
+}
+
+variable "aws_secret_access_key" {
+  default = ""
+  type = string 
+}
