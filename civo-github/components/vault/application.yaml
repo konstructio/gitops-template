@@ -37,15 +37,19 @@ spec:
               service_registration "kubernetes" {}
           ingress:
             enabled: true
-            annotations:
-              kubernetes.io/ingress.class: nginx
+            annotations: 
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
-            path: /
-            host: vault.<DOMAIN_NAME>
+            ingressClassName: "nginx"
+            pathType: Prefix
+            # When HA mode is enabled and K8s service registration is being used,
+            # configure the ingress to point to the Vault active service.
+            # activeService: true
+            hosts:
+              - host: vault.<DOMAIN_NAME>
             tls:
-             - secretName: vault-tls
-               hosts:
-                 - vault.<DOMAIN_NAME>
+              - secretName: vault-tls
+                hosts:
+                  - vault.<DOMAIN_NAME>
           ui:
             enabled: true
             serviceType: "ClusterIP"
