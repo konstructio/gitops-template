@@ -108,7 +108,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       AWS_SECRET_ACCESS_KEY               = var.aws_secret_access_key,
       ATLANTIS_GH_HOSTNAME                = "github.com",
       ATLANTIS_GH_TOKEN                   = var.github_token,
-      ATLANTIS_GH_USER                    = "<GITHUB_OWNER>",
+      ATLANTIS_GH_USER                    = "<GITHUB_USER>",
       ATLANTIS_GH_WEBHOOK_SECRET          = var.atlantis_repo_webhook_secret,
       GITHUB_OWNER                        = "<GITHUB_OWNER>",
       GITHUB_TOKEN                        = var.github_token,
