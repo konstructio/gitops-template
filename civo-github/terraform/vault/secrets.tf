@@ -22,15 +22,16 @@ resource "vault_generic_secret" "external_dns_secrets" {
   )
 }
 
-resource "vault_generic_secret" "minio_creds" {
-  path = "secret/minio"
+resource "vault_generic_secret" "civo_creds" {
+  path = "secret/argo"
 
-  data_json = <<EOT
-{
-  "accesskey" : "k-ray",
-  "secretkey" : "feedkraystars"
-}
-EOT
+# todo need to fix this user and password to be sensitive
+  data_json = jsonencode(
+    {
+      accesskey = var.aws_access_key_id,
+      secretkey = var.aws_secret_access_key,
+    }
+  )
 }
 
 resource "vault_generic_secret" "external_secrets_token" {
