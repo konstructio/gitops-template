@@ -38,7 +38,8 @@ spec:
         rootUser: k-ray
         rootPassword: feedkraystars
         persistence:
-          enabled: false
+          enabled: true
+          existingClaim: minio-pv-claim
         resources:
           requests:
             memory: 500Mi
