@@ -5,6 +5,7 @@ data "vault_identity_group" "admins" {
 resource "vault_identity_group_member_entity_ids" "admins_membership" {
   member_entity_ids = [
     module.kubefirst_bot.vault_identity_entity_id
+#    module.admin_one.vault_identity_entity_id
   ]
 
   group_id = data.vault_identity_group.admins.group_id
