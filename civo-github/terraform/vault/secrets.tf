@@ -91,6 +91,7 @@ resource "vault_generic_secret" "ci_secrets" {
       PERSONAL_ACCESS_TOKEN = var.github_token,
       username              = "<GITHUB_USER>",
       password              = var.github_token,
+      SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
     }
   )
 }

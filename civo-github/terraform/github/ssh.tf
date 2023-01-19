@@ -1,5 +1,5 @@
 resource "github_user_ssh_key" "kubefirst_bot" {
-  title = "kubefirst-bot"
+  title = "kubefirst-bot-<CLUSTER_NAME>"
   key   = var.kubefirst_bot_ssh_public_key
 }
 
