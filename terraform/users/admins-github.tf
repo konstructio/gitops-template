@@ -37,7 +37,7 @@ module "kubefirst_bot" {
 #   acl_policies            = ["admin"]
 #   email                   = "admin@your-company-io.com"
 #   first_name              = "Admin"
-#   github_username         = "admin_one_github_username"
+#   github_username         = "admin_one"
 #   last_name               = "One"
 #   team_id                 = data.github_team.admins.id
 #   username                = "aone"
