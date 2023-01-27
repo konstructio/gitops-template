@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/chartmuseum-components
+    path: registry/components/chartmuseum-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

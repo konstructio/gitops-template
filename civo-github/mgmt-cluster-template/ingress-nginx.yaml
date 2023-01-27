@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/ingress-nginx-components
+    path: registry/components/ingress-nginx-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
