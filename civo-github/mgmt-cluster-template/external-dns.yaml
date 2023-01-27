@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/mgmt/external-dns-components
+    path: components/external-dns-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

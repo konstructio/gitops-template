@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/mgmt/actions-runner-controller-components
+    path: components/actions-runner-controller-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

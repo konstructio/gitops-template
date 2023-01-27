@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/mgmt/cert-issuers-components
+    path: components/cert-issuers-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
