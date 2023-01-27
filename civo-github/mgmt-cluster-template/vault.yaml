@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/components/vault-components
+    path: registry/<CLUSTER_NAME>/components/vault-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/components/production-components
+    path: registry/<CLUSTER_NAME>/components/production-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
