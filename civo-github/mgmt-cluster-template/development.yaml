@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: staging
+  name: development
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -11,11 +11,11 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/staging
+    path: registry/mgmt/development-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: staging
+    namespace: development
   syncPolicy:
     automated:
       prune: true

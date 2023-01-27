@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: chartmuseum-components
+  name: cert-manager-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "50"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/chartmuseum
+    path: registry/mgmt/cert-manager-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: chartmuseum
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true

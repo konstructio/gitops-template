@@ -1,27 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: atlantis-components
+  name: actions-runner-controller-components
   namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "40"
+    argocd.argoproj.io/sync-wave: "20"
+    addons.kubefirst.io/name: github
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL>
-    path: components/atlantis
+    repoURL: <GITOPS_REPO_GIT_URL>
+    path: registry/mgmt/actions-runner-controller-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: atlantis
+    namespace: github-runner
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - Replace=true
+      - PruneLast=true
     retry:
       limit: 5
       backoff:

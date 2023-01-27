@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: atlantis-components
+  name: cert-issuers
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "50"
+    argocd.argoproj.io/sync-wave: "20"
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/atlantis
+    path: registry/mgmt/cert-issuers-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: atlantis
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true

@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-secrets-operator-components
+  name: ingress-nginx-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "50"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/external-secrets-operator
+    path: registry/mgmt/ingress-nginx-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: external-secrets-operator
+    namespace: ingress-nginx
   syncPolicy:
     automated:
       prune: true

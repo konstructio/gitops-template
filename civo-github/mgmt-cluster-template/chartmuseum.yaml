@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-secrets-store
+  name: chartmuseum-components
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "50"
@@ -9,20 +9,14 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/external-secrets-operator-store
+    path: registry/mgmt/chartmuseum-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: external-secrets-store
+    namespace: chartmuseum
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        maxDuration: 5m0s
-        factor: 2
