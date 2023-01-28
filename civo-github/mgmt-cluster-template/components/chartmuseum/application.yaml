@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://chartmuseum.github.io/charts'
+    repoURL: https://chartmuseum.github.io/charts
     targetRevision: 3.9.1
     helm:
       values: |-

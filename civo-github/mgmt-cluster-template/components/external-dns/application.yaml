@@ -32,7 +32,7 @@ spec:
               key: civo-token
     chart: external-dns
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
     namespace: external-dns
   syncPolicy:
     automated:
