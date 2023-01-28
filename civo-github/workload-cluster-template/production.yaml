@@ -1,28 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: registry
+  name: production
   namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "40"
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/<CLUSTER_NAME>/components
+    path: registry/<CLUSTER_NAME>/components/production-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: production
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        maxDuration: 5m0s
-        factor: 2

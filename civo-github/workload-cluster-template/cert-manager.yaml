@@ -1,28 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: registry
+  name: cert-manager-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/<CLUSTER_NAME>/components
+    path: registry/<CLUSTER_NAME>/components/cert-manager-components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        maxDuration: 5m0s
-        factor: 2

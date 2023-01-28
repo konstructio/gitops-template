@@ -5,3 +5,4 @@
 **/terraform.tfstate
 .vscode
 .DS_Store
+argocd-values.yaml
