@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: registry
+  name: registry-<CLUSTER_NAME>
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
