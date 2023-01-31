@@ -54,8 +54,8 @@ spec:
             value: "<KUBEFIRST_VERSION>"
           USE_TELEMETRY:
             value: "<USE_TELEMETRY>"
-          MACHINE_ID:
-            value: "<MACHINE_ID>"
+          CLUSTER_ID:
+            value: "<CLUSTER_ID>"
           IS_LOCAL:
             value: "false"
         ingress:
