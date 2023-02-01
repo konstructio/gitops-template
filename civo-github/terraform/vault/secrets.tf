@@ -25,7 +25,6 @@ resource "vault_generic_secret" "external_dns_secrets" {
 resource "vault_generic_secret" "civo_creds" {
   path = "secret/argo"
 
-# todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
       accesskey = var.aws_access_key_id,
@@ -35,8 +34,9 @@ resource "vault_generic_secret" "civo_creds" {
 }
 
 resource "vault_generic_secret" "external_secrets_token" {
-  path = "secret/external-secrets-store"
+  path = "secret/vault"
 
+# todo need to update this token
   data_json = <<EOT
 {
   "token" : "k1_local_vault_token"
