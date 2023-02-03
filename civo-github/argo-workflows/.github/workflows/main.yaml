@@ -80,6 +80,7 @@ jobs:
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p appRepoUrl="" \
             -p branch="${GITHUB_REF_NAME}" \
+            -p clusterName="<CLUSTER_NAME>" \
             -p environment="development" \
             -p gitopsRepoUrl="" \
             -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
@@ -118,6 +119,7 @@ jobs:
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p appRepoUrl="" \
             -p branch="${GITHUB_REF_NAME}" \
+            -p clusterName="<CLUSTER_NAME>" \
             -p environment="staging" \
             -p gitopsRepoUrl="" \
             -p gitOwner="${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
@@ -156,6 +158,7 @@ jobs:
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p appRepoUrl="" \
             -p ciCommitSha="${GITHUB_SHA}" \
+            -p clusterName="<CLUSTER_NAME>" \
             -p branch="${GITHUB_REF_NAME}" \
             -p environment="production" \
             -p gitopsRepoUrl="" \
