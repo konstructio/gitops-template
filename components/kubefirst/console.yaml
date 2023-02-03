@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.0.6
+    targetRevision: 2.0.8
     chart: console
     helm:
       values: |-
@@ -58,6 +58,14 @@ spec:
             value: "<CLUSTER_ID>"
           IS_LOCAL:
             value: "false"
+          KUBEFIRST_TEAM:
+            value: "<KUBEFIRST_TEAM>"
+          CLUSTER_TYPE:
+            value: "<CLUSTER_TYPE>"
+          GIT_PROVIDER:
+            value: "<GIT_PROVIDER>"
+          CLOUD:
+            value: "<CLOUD>"
         ingress:
           enabled: true
           annotations:
