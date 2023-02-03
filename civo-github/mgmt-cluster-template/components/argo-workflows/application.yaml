@@ -37,14 +37,14 @@ spec:
           archiveLogs: false
           s3:
             accessKeySecret:
-              name: civo-creds
+              name: ci-secrets
               key: accesskey
             secretKeySecret:
-              name: civo-creds
+              name: ci-secrets
               key: secretkey
             insecure: false
             bucket: <KUBEFIRST_STATE_STORE_BUCKET>
-            endpoint: https://objectstore.<CLOUD_REGION>.civo.com
+            endpoint: objectstore.<CLOUD_REGION>.civo.com
             region: <CLOUD_REGION>
             useSDKCreds: false
             encryptionOptions:
