@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: atlantis-components
+  name: staging
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,21 +10,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL>
-    path: components/atlantis
+    repoURL: <GITOPS_REPO_GIT_URL>
+    path: registry/<CLUSTER_NAME>/components/staging
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: atlantis
+    namespace: staging
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        maxDuration: 5m0s
-        factor: 2
