@@ -13,7 +13,6 @@ spec:
         path: /src
       parameters:
       - name: appName
-        value: "{{workflow.parameters.appName}}"
       - name: chartDir
     script:
       image: kubefirst/chubbo:0.2
@@ -31,11 +30,9 @@ spec:
         path: /src
       parameters:
       - name: appName
-        value: "{{workflow.parameters.appName}}"
       - name: chartDir
-      - name: ciCommitSha
-        value: "{{workflow.parameters.ciCommitSha}}"
       - name: chartVersion
+      - name: shortSha
     script:
       image: kubefirst/chubbo:0.2
       command: [bash]
@@ -45,8 +42,8 @@ spec:
         NEW_CHART_VERSION={{inputs.parameters.chartVersion}}
         echo "setting ./{{inputs.parameters.chartDir}}/Chart.yaml to version: ${NEW_CHART_VERSION}"
         sed -i "s/version:.*/version: ${NEW_CHART_VERSION}/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
-        echo "setting ./{{inputs.parameters.chartDir}}/Chart.yaml to appVersion: {{inputs.parameters.ciCommitSha}}"
-        sed -i "s/appVersion:.*/appVersion: {{inputs.parameters.ciCommitSha}}/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
+        echo "setting ./{{inputs.parameters.chartDir}}/Chart.yaml to appVersion: {{inputs.parameters.shortSha}}"
+        sed -i "s/appVersion:.*/appVersion: {{inputs.parameters.shortSha}}/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
         echo "adjusted chart:"
         cat /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
     outputs:
@@ -62,8 +59,8 @@ spec:
         path: /src
       parameters:
       - name: appName
-        value: "{{workflow.parameters.appName}}"
       - name: chartDir
+      # todo need to address username and password for chartmuseum
     container:
       image: kubefirst/chubbo:0.2
       command: ["bash", "-c"]

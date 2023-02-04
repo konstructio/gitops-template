@@ -6,7 +6,7 @@ spec:
   entrypoint: main
   volumeClaimTemplates:
     - metadata:
-        name: work
+        name: src
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
@@ -21,11 +21,29 @@ spec:
           name: cwft-buildkit
           template: build-push
           clusterScope: true
+        arguments:
+          parameters:
+          - name: appName
+            value: "{{workflow.parameters.appName}}"
+          - name: branch
+            value: "{{workflow.parameters.branch}}"
+          - name: containerRegistryURL
+            value: "{{workflow.parameters.containerRegistryURL}}"
+          - name: gitUrlNoProtocol
+            value: "{{workflow.parameters.gitUrlNoProtocol}}"
     - - name: checkout
         templateRef:
           name: cwft-git
           template: checkout-with-gitops
           clusterScope: true
+        arguments:
+          parameters:
+          - name: appName
+            value: "{{workflow.parameters.appName}}"
+          - name: branch
+            value: "{{workflow.parameters.branch}}"
+          - name: gitUrlNoProtocol
+            value: "{{workflow.parameters.gitUrlNoProtocol}}"
     - - name: get-initial-chart-version
         templateRef:
           name: cwft-helm
@@ -36,6 +54,8 @@ spec:
           - name: repo-source
             from: "{{steps.checkout.outputs.artifacts.repo-source}}"
           parameters:
+          - name: appName
+            value: "{{workflow.parameters.appName}}"
           - name: chartDir
             value: "charts/{{workflow.parameters.appName}}"
     - - name: set-chart-versions
@@ -48,10 +68,14 @@ spec:
           - name: repo-source
             from: "{{steps.checkout.outputs.artifacts.repo-source}}"
           parameters:
+          - name: appName
+            value: "{{workflow.parameters.appName}}"
           - name: chartDir
             value: "charts/{{workflow.parameters.appName}}"
           - name: chartVersion
             value: "{{steps.get-initial-chart-version.outputs.result}}-rc.{{workflow.parameters.shortSha}}"
+          - name: shortSha
+            value: "{{workflow.parameters.shortSha}}"
     - - name: publish-helm-chart
         templateRef:
           name: cwft-helm
@@ -62,5 +86,7 @@ spec:
           - name: repo-source
             from: "{{steps.set-chart-versions.outputs.artifacts.repo-source}}"
           parameters:
+          - name: appName
+            value: "{{workflow.parameters.appName}}"
           - name: chartDir
             value: "charts/{{workflow.parameters.appName}}"
