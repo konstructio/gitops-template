@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://chartmuseum.github.io/charts
-    targetRevision: 3.9.1
+    targetRevision: 3.9.3
     helm:
       values: |-
         env:
