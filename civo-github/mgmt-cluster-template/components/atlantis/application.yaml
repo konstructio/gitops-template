@@ -10,13 +10,11 @@ spec:
   source:
     repoURL: https://runatlantis.github.io/helm-charts
     chart: atlantis
-    targetRevision: 3.19.0
+    targetRevision: 4.10.3
     helm:
-      parameters:
-        - name: orgWhitelist
-          value: <GITOPS_REPO_NO_HTTPS_URL>
       values: |-
-        atlantisUrl: https://atlantis.k-ray.space
+        atlantisUrl: https://atlantis.<DOMAIN_NAME>
+        orgAllowlist: github.com/<GITHUB_OWNER>/*
         serviceAccount:
           create: true
           mount: true
@@ -32,12 +30,12 @@ spec:
           annotations:
             cert-manager.io/cluster-issuer: "letsencrypt-staging"
           path: /
-          host: atlantis.k-ray.space
+          host: atlantis.<DOMAIN_NAME>
           ingressClassName: "nginx"
           tls:
             - secretName: atlantis-tls
               hosts:
-                - atlantis.k-ray.space
+                - atlantis.<DOMAIN_NAME>
         loadEnvFromSecrets:
           - atlantis-secrets
         repoConfig: |
