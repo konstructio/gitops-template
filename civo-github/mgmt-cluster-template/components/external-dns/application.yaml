@@ -23,7 +23,7 @@ spec:
         sources:
         - ingress
         domainFilters:
-        - k-ray.space
+        - <DOMAIN_NAME>
         env:
         - name: CIVO_TOKEN
           valueFrom:
