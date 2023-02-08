@@ -4,7 +4,19 @@ metaphor-frontend:
   imagePullSecrets:
   - name: docker-config
   ingress:
-    enabled: false
+    className: nginx
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    hosts:
+      - host: metaphor-frontend-staging.<DOMAIN_NAME>
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: metaphor-frontend-tls
+        hosts:
+          - metaphor-frontend-staging.<DOMAIN_NAME>
   metaphor:
     host: http://localhost:3001
   metaphorGo:
