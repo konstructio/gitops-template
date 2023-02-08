@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.0.8
+    targetRevision: 2.0.9
     chart: console
     helm:
       values: |-
@@ -65,7 +65,7 @@ spec:
           GIT_PROVIDER:
             value: "<GIT_PROVIDER>"
           CLOUD:
-            value: "<CLOUD>"
+            value: "<CLOUD_PROVIDER>"
         ingress:
           enabled: true
           annotations:
