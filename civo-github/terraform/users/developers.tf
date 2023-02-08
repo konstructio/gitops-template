@@ -16,6 +16,7 @@ data "vault_identity_group" "developers" {
 #   email                   = "dev.one@example.com"
 #   first_name              = "Dev"
 #   github_username         = "dev-ones-github-handle"
+#   team_id                 = data.github_team.developers.id
 #   last_name               = "One"
 #   username                = "done"
 #   user_disabled           = false
