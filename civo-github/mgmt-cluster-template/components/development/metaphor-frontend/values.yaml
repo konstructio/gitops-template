@@ -18,6 +18,5 @@ metaphor-frontend:
         hosts:
           - metaphor-frontend-development.<DOMAIN_NAME>
   metaphor:
-    host: http://localhost:3000
-  metaphorGo:
-    host: http://localhost:5000
+    host: https://metaphor-frontend-development.<DOMAIN_NAME>/api
+  isLocal: true
