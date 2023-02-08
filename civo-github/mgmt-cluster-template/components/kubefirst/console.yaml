@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.0.3
+    targetRevision: 2.0.9
     chart: console
     # todo need to fix HOSTED_ZONE_NAME with DOMAIN_NAME or something more generic
     helm:
@@ -55,6 +55,14 @@ spec:
             value: "<KUBEFIRST_VERSION>"
           IS_LOCAL:
             value: "true" # todo need to change to IS_SLIM
+          KUBEFIRST_TEAM:
+            value: "<KUBEFIRST_TEAM>"
+          CLUSTER_TYPE:
+            value: "<CLUSTER_TYPE>"
+          GIT_PROVIDER:
+            value: "<GIT_PROVIDER>"
+          CLOUD:
+            value: "<CLOUD>"
         ingress:
           enabled: true
           annotations:
