@@ -31,7 +31,7 @@ spec:
           enabled: true
           pathType: "Prefix"
           annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-staging"
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
           hosts:
             - name: chartmuseum.<DOMAIN_NAME>
               path: /
