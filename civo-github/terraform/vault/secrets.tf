@@ -39,7 +39,7 @@ resource "vault_generic_secret" "external_secrets_token" {
 # todo need to update this token
   data_json = <<EOT
 {
-  "token" : "k1_local_vault_token"
+  "VAULT_TOKEN" : "k1_local_vault_token"
 }
 EOT
 }
