@@ -62,7 +62,7 @@ spec:
           GIT_PROVIDER:
             value: "<GIT_PROVIDER>"
           CLOUD:
-            value: "<CLOUD>"
+            value: "<CLOUD_PROVIDER>"
         ingress:
           enabled: true
           annotations:
