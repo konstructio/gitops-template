@@ -14,7 +14,7 @@ spec:
     helm:
       values: |-
         atlantisUrl: https://atlantis.<DOMAIN_NAME>
-        orgAllowlist: <GITOPS_REPO_NO_HTTPS_URL>
+        orgAllowlist: <ATLANTIS_ALLOW_LIST>
         hidePrevPlanComments: true
         serviceAccount:
           create: true
@@ -42,7 +42,7 @@ spec:
         repoConfig: |
           ---
           repos:
-          - id: <GITOPS_REPO_NO_HTTPS_URL>
+          - id: <ATLANTIS_ALLOW_LIST>
             workflow: default
             allowed_overrides: [apply_requirements]
             apply_requirements: [mergeable]
