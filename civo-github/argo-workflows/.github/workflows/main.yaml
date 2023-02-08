@@ -73,7 +73,7 @@ jobs:
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-development-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
-            -p clusterName="kubefirst" \
+            -p clusterName="<CLUSTER_NAME>" \
             -p environment="development" \
             -p gitUrlNoProtocol="git@github.com:${GITHUB_REPOSITORY_OWNER_PART}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
@@ -109,7 +109,7 @@ jobs:
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-staging-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
-            -p clusterName="kubefirst" \
+            -p clusterName="<CLUSTER_NAME>" \
             -p environment="staging" \
             -p gitUrlNoProtocol="git@github.com:${GITHUB_REPOSITORY_OWNER_PART}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
@@ -146,7 +146,7 @@ jobs:
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-release-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
-            -p clusterName="kubefirst" \
+            -p clusterName="<CLUSTER_NAME>" \
             -p environment="production" \
             -p gitUrlNoProtocol="git@github.com:${GITHUB_REPOSITORY_OWNER_PART}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
