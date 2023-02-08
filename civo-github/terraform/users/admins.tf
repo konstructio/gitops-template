@@ -23,6 +23,7 @@ module "kubefirst_bot" {
   first_name              = "Kubefirst"
   github_username         = "<GITHUB_USER>"
   last_name               = "Bot"
+  team_id                 = data.github_team.admins.id
   initial_password        = var.initial_password
   username                = "kbot"
   user_disabled           = false
@@ -37,6 +38,7 @@ module "kubefirst_bot" {
 #   first_name              = "Admin"
 #   github_username         = "admin_one_github_username"
 #   last_name               = "One"
+#   team_id                 = data.github_team.admins.id
 #   username                = "aone"
 #   user_disabled           = false
 #   userpass_accessor       = data.vault_auth_backend.userpass.accessor

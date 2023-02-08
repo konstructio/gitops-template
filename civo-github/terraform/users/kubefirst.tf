@@ -19,11 +19,10 @@ terraform {
   }
 }
 
-# todo add organization support
-# data "github_team" "admins" {
-#   slug = "admins"
-# }
+data "github_team" "admins" {
+  slug = "admins"
+}
 
-# data "github_team" "developers" {
-#   slug = "developers"
-# }
+data "github_team" "developers" {
+  slug = "developers"
+}
