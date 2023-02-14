@@ -17,15 +17,15 @@ variable "hosted_zone_id" {
   type = string
 }
 variable "gitlab_runner_token" {
-  type = string
+  type    = string
   default = ""
 }
 variable "gitlab_token" {
-  type = string
+  type    = string
   default = ""
 }
 variable "github_token" {
-  type = string
+  type    = string
   default = ""
 }
 variable "hosted_zone_name" {
@@ -40,21 +40,21 @@ variable "ssh_private_key" {
 
 variable "kubefirst_bot_ssh_public_key" {
   default = ""
-  type = string 
+  type    = string
 }
 
 variable "atlantis_repo_webhook_secret" {
   default = ""
-  type = string 
+  type    = string
 }
 variable "ami_type" {
   description = "The chipset of nodes"
-  default = "AL2_x86_64"
-  type = string
+  default     = "AL2_x86_64"
+  type        = string
 }
 
 variable "instance_type" {
   description = "The instance type of node group"
-  default = "t3.medium"
-  type = string
+  default     = "t3.medium"
+  type        = string
 }

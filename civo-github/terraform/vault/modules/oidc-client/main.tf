@@ -6,9 +6,11 @@ data "vault_identity_group" "developers" {
   group_name = "developers"
 }
 
+
+
 resource "vault_identity_oidc_assignment" "app" {
   name      = var.app_name
-  group_ids = [data.vault_identity_group.admins.group_id, data.vault_identity_group.developers.group_id]
+  group_ids = var.identity_group_ids
 }
 
 resource "vault_identity_oidc_client" "app" {
@@ -31,6 +33,10 @@ variable "app_name" {
   type = string
 }
 
+variable "identity_group_ids" {
+  type = list(string)
+}
+
 variable "oidc_provider_key_name" {
   type = string
 }
@@ -49,7 +55,7 @@ data "vault_identity_oidc_client_creds" "creds" {
   depends_on = [
     vault_identity_oidc_client.app
   ]
-  
+
 }
 
 resource "vault_generic_secret" "creds" {

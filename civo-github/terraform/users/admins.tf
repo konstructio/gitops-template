@@ -18,16 +18,16 @@ variable "initial_password" {
 module "kubefirst_bot" {
   source = "./modules/user/github"
 
-  acl_policies            = ["admin"]
-  email                   = "k-ray@example.com"
-  first_name              = "Kubefirst"
-  github_username         = "<GITHUB_USER>"
-  last_name               = "Bot"
-  team_id                 = data.github_team.admins.id
-  initial_password        = var.initial_password
-  username                = "kbot"
-  user_disabled           = false
-  userpass_accessor       = data.vault_auth_backend.userpass.accessor
+  acl_policies      = ["admin"]
+  email             = "k-ray@example.com"
+  first_name        = "Kubefirst"
+  github_username   = "<GITHUB_USER>"
+  last_name         = "Bot"
+  team_id           = data.github_team.admins.id
+  initial_password  = var.initial_password
+  username          = "kbot"
+  user_disabled     = false
+  userpass_accessor = data.vault_auth_backend.userpass.accessor
 }
 
 # module "admin_one" {

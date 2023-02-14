@@ -4,6 +4,6 @@ resource "github_user_ssh_key" "kubefirst_bot" {
 }
 
 variable "kubefirst_bot_ssh_public_key" {
-  type = string
+  type    = string
   default = ""
 }

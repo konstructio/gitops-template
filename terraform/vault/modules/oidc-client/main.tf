@@ -49,7 +49,7 @@ data "vault_identity_oidc_client_creds" "creds" {
   depends_on = [
     vault_identity_oidc_client.app
   ]
-  
+
 }
 
 resource "vault_generic_secret" "creds" {

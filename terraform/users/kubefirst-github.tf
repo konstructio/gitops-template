@@ -1,6 +1,6 @@
 
 terraform {
-    backend "s3" {
+  backend "s3" {
     bucket  = "<TF_STATE_BUCKET>"
     key     = "terraform/users/tfstate.tf"
     region  = "<AWS_DEFAULT_REGION>"
@@ -8,7 +8,7 @@ terraform {
   }
   required_providers {
     github = {
-      source = "integrations/github"
+      source  = "integrations/github"
       version = "5.3.0"
     }
   }

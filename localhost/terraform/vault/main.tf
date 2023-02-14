@@ -1,19 +1,19 @@
 provider "vault" {
-  skip_tls_verify="true"
+  skip_tls_verify = "true"
 }
 
 terraform {
   backend "s3" {
-    bucket = "kubefirst-state-store"
-    key     = "terraform/vault/tfstate.tf"
+    bucket   = "kubefirst-state-store"
+    key      = "terraform/vault/tfstate.tf"
     endpoint = "http://minio.localdev.me"
 
-    access_key="k-ray"
-    secret_key="feedkraystars"
-    region = "us-k3d-1"
+    access_key                  = "k-ray"
+    secret_key                  = "feedkraystars"
+    region                      = "us-k3d-1"
     skip_credentials_validation = true
-    skip_metadata_api_check = true
-    skip_region_validation = true
-    force_path_style = true
+    skip_metadata_api_check     = true
+    skip_region_validation      = true
+    force_path_style            = true
   }
 }

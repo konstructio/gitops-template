@@ -4,15 +4,15 @@ variable "github_token" {
 
 variable "kubefirst_bot_ssh_public_key" {
   default = ""
-  type = string 
+  type    = string
 }
 
 variable "atlantis_repo_webhook_secret" {
   default = ""
-  type = string 
+  type    = string
 }
 
 variable "atlantis_repo_webhook_url" {
   default = ""
-  type = string 
+  type    = string
 }
