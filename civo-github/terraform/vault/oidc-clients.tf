@@ -6,7 +6,7 @@ module "argo" {
   ]
 
   app_name               = "argo"
-  identity_group_ids     = [vault_identity_group.admins.group_id, vault_identity_group.developers.group_id]
+  identity_group_ids     = [vault_identity_group.admins.id, vault_identity_group.developers.id]
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
     "<ARGO_WORKFLOWS_INGRESS_URL>/oauth2/callback",
@@ -22,7 +22,7 @@ module "argocd" {
   ]
 
   app_name               = "argocd"
-  identity_group_ids     = [vault_identity_group.admins.group_id, vault_identity_group.developers.group_id]
+  identity_group_ids     = [vault_identity_group.admins.id, vault_identity_group.developers.id]
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
     "<ARGO_CD_INGRESS_URL>/auth/callback",
@@ -38,7 +38,7 @@ module "console" {
   ]
 
   app_name               = "console"
-  identity_group_ids     = [vault_identity_group.admins.group_id, vault_identity_group.developers.group_id]
+  identity_group_ids     = [vault_identity_group.admins.id, vault_identity_group.developers.id]
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
     "<VOUCH_INGRESS_URL>/auth",
