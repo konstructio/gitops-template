@@ -1,13 +1,3 @@
-data "vault_identity_group" "admins" {
-  group_name = "admins"
-}
-
-data "vault_identity_group" "developers" {
-  group_name = "developers"
-}
-
-
-
 resource "vault_identity_oidc_assignment" "app" {
   name      = var.app_name
   group_ids = var.identity_group_ids
