@@ -10,7 +10,7 @@ provider "aws" {
   region = "<AWS_DEFAULT_REGION>"
   default_tags {
     tags = {
-      ClusterName = "<CLUSTER_NAME>"
+      ClusterName   = "<CLUSTER_NAME>"
       ProvisionedBy = "kubefirst"
     }
   }

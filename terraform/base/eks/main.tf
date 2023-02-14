@@ -102,23 +102,23 @@ module "eks" {
   cluster_name    = local.cluster_name
   cluster_version = "1.22"
   subnets         = module.vpc.private_subnets
-  enable_irsa     = true 
+  enable_irsa     = true
   # write_kubeconfig = false
   manage_aws_auth = false
-  
+
   kubeconfig_output_path = "./kubeconfig"
-    
+
   vpc_id = module.vpc.vpc_id
 }
 
 module "iam_assumable_role_argo_admin" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
-  version = "4.0.0"
-  create_role = true
+  version                       = "4.0.0"
+  create_role                   = true
   oidc_fully_qualified_subjects = ["system:serviceaccount:argo:argo"]
-  provider_url  = module.eks.cluster_oidc_issuer_url
-  role_name = "argo-${local.cluster_name}"
+  provider_url                  = module.eks.cluster_oidc_issuer_url
+  role_name                     = "argo-${local.cluster_name}"
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AdministratorAccess",
   ]
@@ -126,15 +126,15 @@ module "iam_assumable_role_argo_admin" {
     Role = "Argo"
   }
 }
-  
-module "iam_assumable_role_atlantis_admin" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
-  version = "4.0.0"
-  create_role = true
+module "iam_assumable_role_atlantis_admin" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+
+  version                       = "4.0.0"
+  create_role                   = true
   oidc_fully_qualified_subjects = ["system:serviceaccount:atlantis:atlantis"]
-  provider_url  = module.eks.cluster_oidc_issuer_url
-  role_name = "atlantis-${local.cluster_name}"
+  provider_url                  = module.eks.cluster_oidc_issuer_url
+  role_name                     = "atlantis-${local.cluster_name}"
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AdministratorAccess",
   ]
@@ -144,13 +144,13 @@ module "iam_assumable_role_atlantis_admin" {
 }
 
 module "iam_assumable_role_cert_manager_route53" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
-  version = "4.0.0"
-  create_role = true
+  version                       = "4.0.0"
+  create_role                   = true
   oidc_fully_qualified_subjects = ["system:serviceaccount:cert-manager:cert-manager"]
-  provider_url  = module.eks.cluster_oidc_issuer_url
-  role_name = "cert-manager-${local.cluster_name}"
+  provider_url                  = module.eks.cluster_oidc_issuer_url
+  role_name                     = "cert-manager-${local.cluster_name}"
   role_policy_arns = [
     aws_iam_policy.cert_manager.arn,
   ]
@@ -193,13 +193,13 @@ EOT
 
 
 module "iam_assumable_role_chartmuseum_s3" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
-  version = "4.0.0"
-  create_role = true
+  version                       = "4.0.0"
+  create_role                   = true
   oidc_fully_qualified_subjects = ["system:serviceaccount:chartmuseum:chartmuseum"]
-  provider_url  = module.eks.cluster_oidc_issuer_url
-  role_name = "chartmuseum-${local.cluster_name}"
+  provider_url                  = module.eks.cluster_oidc_issuer_url
+  role_name                     = "chartmuseum-${local.cluster_name}"
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
   ]
@@ -209,13 +209,13 @@ module "iam_assumable_role_chartmuseum_s3" {
 }
 
 module "iam_assumable_role_external_dns_route53" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
-  version = "4.0.0"
-  create_role = true
+  version                       = "4.0.0"
+  create_role                   = true
   oidc_fully_qualified_subjects = ["system:serviceaccount:external-dns:external-dns"]
-  provider_url  = module.eks.cluster_oidc_issuer_url
-  role_name = "external-dns-${local.cluster_name}"
+  provider_url                  = module.eks.cluster_oidc_issuer_url
+  role_name                     = "external-dns-${local.cluster_name}"
   role_policy_arns = [
     aws_iam_policy.external_dns.arn,
   ]
@@ -258,13 +258,13 @@ EOT
 }
 
 module "iam_assumable_role_vault_dynamo_kms" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
-  version = "4.0.0"
-  create_role = true
+  version                       = "4.0.0"
+  create_role                   = true
   oidc_fully_qualified_subjects = ["system:serviceaccount:vault:vault"]
-  provider_url  = module.eks.cluster_oidc_issuer_url
-  role_name = "vault-${local.cluster_name}"
+  provider_url                  = module.eks.cluster_oidc_issuer_url
+  role_name                     = "vault-${local.cluster_name}"
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
     "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
@@ -316,9 +316,9 @@ EOT
 
 
 resource "aws_eks_addon" "vpc_cni" {
-  cluster_name = module.eks.cluster_id
-  addon_name   = "vpc-cni"
-  addon_version = "v1.12.0-eksbuild.1"
+  cluster_name      = module.eks.cluster_id
+  addon_name        = "vpc-cni"
+  addon_version     = "v1.12.0-eksbuild.1"
   resolve_conflicts = "OVERWRITE"
 }
 
@@ -334,8 +334,8 @@ resource "aws_eks_node_group" "mgmt_nodes" {
   capacity_type = var.lifecycle_nodes
 
   labels = {
-    workload = "mgmt"
-    ClusterName = "${local.cluster_name}"
+    workload      = "mgmt"
+    ClusterName   = "${local.cluster_name}"
     ProvisionedBy = "kubefirst"
   }
 

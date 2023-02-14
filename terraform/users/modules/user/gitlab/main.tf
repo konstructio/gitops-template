@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     gitlab = {
-      source = "gitlabhq/gitlab"
+      source  = "gitlabhq/gitlab"
       version = "3.20.0"
     }
   }
@@ -36,10 +36,10 @@ resource "random_password" "password" {
 resource "vault_generic_endpoint" "user" {
   path                 = "auth/userpass/users/${var.username}"
   ignore_absent_fields = true
-  
+
   lifecycle {
-    ignore_changes = [ data_json ] 
-   }
+    ignore_changes = [data_json]
+  }
 
   data_json = jsonencode(
     {
@@ -52,10 +52,10 @@ resource "vault_generic_endpoint" "user" {
 
 resource "vault_generic_secret" "user" {
   path = "users/${var.username}"
-  
+
   lifecycle {
-    ignore_changes = [ data_json ] 
-   }
+    ignore_changes = [data_json]
+  }
   data_json = <<EOT
 {
   "initial-password": "${var.initial_password != "" ? var.initial_password : random_password.password.result}"

@@ -5,7 +5,7 @@ data "vault_identity_group" "admins" {
 resource "vault_identity_group_member_entity_ids" "admins_membership" {
   member_entity_ids = [
     module.kubefirst_bot.vault_identity_entity_id
-#    module.admin_one.vault_identity_entity_id
+    #    module.admin_one.vault_identity_entity_id
   ]
 
   group_id = data.vault_identity_group.admins.group_id
@@ -19,15 +19,15 @@ variable "initial_password" {
 module "kubefirst_bot" {
   source = "./modules/user/github"
 
-  acl_policies            = ["admin"]
-  email                   = "k-ray@example.com"
-  first_name              = "Kubefirst"
-  github_username         = "<GITHUB_USER>"
-  last_name               = "Bot"
-  initial_password        = var.initial_password
-  username                = "kbot"
-  user_disabled           = false
-  userpass_accessor       = data.vault_auth_backend.userpass.accessor
+  acl_policies      = ["admin"]
+  email             = "k-ray@example.com"
+  first_name        = "Kubefirst"
+  github_username   = "<GITHUB_USER>"
+  last_name         = "Bot"
+  initial_password  = var.initial_password
+  username          = "kbot"
+  user_disabled     = false
+  userpass_accessor = data.vault_auth_backend.userpass.accessor
 }
 
 # module "admin_one" {

@@ -27,21 +27,21 @@ resource "github_repository_webhook" "gitops_atlantis_webhook" {
   depends_on = [
     module.gitops
   ]
-    repository = module.gitops.repo_name
+  repository = module.gitops.repo_name
 
-    configuration {
-      url          = "<ATLANTIS_INGRESS_URL>/events"
-      content_type = "json"
-      insecure_ssl = false
-      secret       = var.atlantis_repo_webhook_secret
-    }
+  configuration {
+    url          = "<ATLANTIS_INGRESS_URL>/events"
+    content_type = "json"
+    insecure_ssl = false
+    secret       = var.atlantis_repo_webhook_secret
+  }
 
-    active = true
+  active = true
 
-    events = ["pull_request_review", "push", "issue_comment", "pull_request"]
+  events = ["pull_request_review", "push", "issue_comment", "pull_request"]
 }
 variable "atlantis_repo_webhook_secret" {
-  type = string
+  type    = string
   default = ""
 }
 

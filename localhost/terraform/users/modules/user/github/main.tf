@@ -84,7 +84,7 @@ variable "last_name" {
 }
 
 variable "initial_password" {
-  type = string
+  type    = string
   default = ""
 }
 

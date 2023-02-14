@@ -1,15 +1,15 @@
 terraform {
   backend "s3" {
-    bucket = "<KUBEFIRST_STATE_STORE_BUCKET>"
-    key     = "terraform/github/tfstate.tf"
+    bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
+    key      = "terraform/github/tfstate.tf"
     endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
 
     region = "<CLOUD_REGION>"
 
     skip_credentials_validation = true
-    skip_metadata_api_check = true
-    skip_region_validation = true
-    force_path_style = true
+    skip_metadata_api_check     = true
+    skip_region_validation      = true
+    force_path_style            = true
   }
   required_providers {
     github = {
@@ -34,21 +34,21 @@ module "gitops" {
 }
 
 resource "github_repository_webhook" "gitops_atlantis_webhook" {
-    repository = module.gitops.repo_name
-  
-    configuration {
-      url          = "<GITOPS_REPO_ATLANTIS_WEBHOOK_URL>"
-      content_type = "json"
-      insecure_ssl = false
-      secret       = var.atlantis_repo_webhook_secret
-    }
-  
-    active = true
-  
-    events = ["pull_request_review", "push", "issue_comment", "pull_request"]
+  repository = module.gitops.repo_name
+
+  configuration {
+    url          = "<GITOPS_REPO_ATLANTIS_WEBHOOK_URL>"
+    content_type = "json"
+    insecure_ssl = false
+    secret       = var.atlantis_repo_webhook_secret
+  }
+
+  active = true
+
+  events = ["pull_request_review", "push", "issue_comment", "pull_request"]
 }
 variable "atlantis_repo_webhook_secret" {
-  type = string
+  type    = string
   default = ""
 }
 

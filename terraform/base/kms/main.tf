@@ -82,7 +82,7 @@ resource "aws_kms_key" "vault_unseal" {
   ]
 }
 EOT
-  
+
 }
 
 resource "aws_kms_alias" "vault_unseal" {

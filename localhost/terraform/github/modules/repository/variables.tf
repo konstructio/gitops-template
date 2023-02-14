@@ -14,7 +14,7 @@ variable "default_branch_name" {
 }
 
 variable "create_ecr" {
-  type = bool
+  type    = bool
   default = false
 }
 

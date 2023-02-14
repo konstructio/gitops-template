@@ -1,12 +1,12 @@
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
-# todo need to fix this user and password to be sensitive
+  # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
       BASIC_AUTH_USER       = "k-ray",
       BASIC_AUTH_PASS       = "feedkraystars",
-      AWS_ACCESS_KEY_ID = var.aws_access_key_id,
+      AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
     }
   )
@@ -36,7 +36,7 @@ resource "vault_generic_secret" "civo_creds" {
 resource "vault_generic_secret" "external_secrets_token" {
   path = "secret/vault"
 
-# todo need to update this token
+  # todo need to update this token
   data_json = <<EOT
 {
   "VAULT_TOKEN" : "k1_local_vault_token"
@@ -85,11 +85,11 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      accesskey             = var.aws_access_key_id,
-      secretkey             = var.aws_secret_access_key,
-      BASIC_AUTH_USER       = "k-ray",
-      BASIC_AUTH_PASS       = "feedkraystars",
-      SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
+      accesskey       = var.aws_access_key_id,
+      secretkey       = var.aws_secret_access_key,
+      BASIC_AUTH_USER = "k-ray",
+      BASIC_AUTH_PASS = "feedkraystars",
+      SSH_PRIVATE_KEY = var.kubefirst_bot_ssh_private_key,
     }
   )
 }
