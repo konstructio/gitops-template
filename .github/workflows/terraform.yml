@@ -1,0 +1,17 @@
+name: Terraform
+on:
+  push:
+  pull_request:
+jobs:
+  terraform-actions:
+    name: Workflow
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.8
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check

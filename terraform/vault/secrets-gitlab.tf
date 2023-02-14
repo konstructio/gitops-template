@@ -22,6 +22,7 @@ resource "vault_generic_secret" "ci_secrets" {
     }
   )
 }
+
 resource "vault_generic_secret" "atlantis_secrets" {
   path = "${vault_mount.secret.path}/atlantis"
 
