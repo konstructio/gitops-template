@@ -1,36 +1,36 @@
-| Token              | Value        |
-|:----|:---|
-|CLUSTER_NAME: | <CLUSTER_NAME>|
-|AWS_ACCOUNT_ID: | <AWS_ACCOUNT_ID>|
-|AWS_DEFAULT_REGION: | <AWS_DEFAULT_REGION>|
-|AWS_HOSTED_ZONE_ID | <AWS_HOSTED_ZONE_ID>|
-|AWS_HOSTED_ZONE_NAME: | <AWS_HOSTED_ZONE_NAME>|
-|ARGO_ARTIFACT_BUCKET: | <ARGO_ARTIFACT_BUCKET>|
-|GITLAB_BACKUP_BUCKET: | <GITLAB_BACKUP_BUCKET>|
-|CHARTMUSEUM_BUCKET: | <CHARTMUSEUM_BUCKET>|
-|TF_STATE_BUCKET: | <TF_STATE_BUCKET>|
-|FULL_REPO_GITOPS_URL_HTTPS | <FULL_REPO_GITOPS_URL_HTTPS>|
-|FULL_REPO_GITOPS_URL_SSH | <FULL_REPO_GITOPS_URL_SSH>|
-|FULL_REPO_GITOPS_URL_NO_HTTPS | <FULL_REPO_GITOPS_URL_NO_HTTPS>|
-|FULL_REPO_GITOPS_URL | <FULL_REPO_GITOPS_URL>|
-|EMAIL_ADDRESS | <EMAIL_ADDRESS>|
-| ORG | <ORG> |
-|GITHUB_HOST|<GITHUB_HOST>|  
-|GITHUB_OWNER | <GITHUB_OWNER>|
-|GITHUB_USER | <GITHUB_USER>|
-|GITHUB_ORG|<GITHUB_ORG> | 
-|CHECKOUT_CWFT_TEMPLATE | <CHECKOUT_CWFT_TEMPLATE>|
-|COMMIT_CWFT_TEMPLATE|<COMMIT_CWFT_TEMPLATE>|
-|GIT_REPO_RUNNER_NS | <GIT_REPO_RUNNER_NS>|
-|GIT_REPO_RUNNER_NAME | <GIT_REPO_RUNNER_NAME>|  
-|REPO_GITOPS | <REPO_GITOPS>|
-|KMS_KEY_ID | <KMS_KEY_ID>|
-|SOFT_SERVE_INITIAL_ADMIN_PUBLIC_KEY | <SOFT_SERVE_INITIAL_ADMIN_PUBLIC_KEY>|
-|KUBEFIRST_VERSION | <KUBEFIRST_VERSION>|
-|USE_TELEMETRY | <USE_TELEMETRY>|
-|CLUSTER_ID | <CLUSTER_ID>|
-|IS_LOCAL | <IS_LOCAL>|
-|KUBEFIRST_TEAM | <KUBEFIRST_TEAM>|
-|CLUSTER_TYPE | <CLUSTER_TYPE>|
-|GIT_PROVIDER | <GIT_PROVIDER>|
-|CLOUD | <CLOUD_PROVIDER>|
+| Token                               | Value                                 |
+| :---------------------------------- | :------------------------------------ |
+| CLUSTER_NAME:                       | <CLUSTER_NAME>                        |
+| AWS_ACCOUNT_ID:                     | <AWS_ACCOUNT_ID>                      |
+| AWS_DEFAULT_REGION:                 | <AWS_DEFAULT_REGION>                  |
+| AWS_HOSTED_ZONE_ID                  | <AWS_HOSTED_ZONE_ID>                  |
+| AWS_HOSTED_ZONE_NAME:               | <AWS_HOSTED_ZONE_NAME>                |
+| ARGO_ARTIFACT_BUCKET:               | <ARGO_ARTIFACT_BUCKET>                |
+| GITLAB_BACKUP_BUCKET:               | <GITLAB_BACKUP_BUCKET>                |
+| CHARTMUSEUM_BUCKET:                 | <CHARTMUSEUM_BUCKET>                  |
+| TF_STATE_BUCKET:                    | <TF_STATE_BUCKET>                     |
+| FULL_REPO_GITOPS_URL_HTTPS          | <FULL_REPO_GITOPS_URL_HTTPS>          |
+| FULL_REPO_GITOPS_URL_SSH            | <FULL_REPO_GITOPS_URL_SSH>            |
+| FULL_REPO_GITOPS_URL_NO_HTTPS       | <FULL_REPO_GITOPS_URL_NO_HTTPS>       |
+| FULL_REPO_GITOPS_URL                | <FULL_REPO_GITOPS_URL>                |
+| EMAIL_ADDRESS                       | <EMAIL_ADDRESS>                       |
+| ORG                                 | <ORG>                                 |
+| GITHUB_HOST                         | <GITHUB_HOST>                         |
+| GITHUB_OWNER                        | <GITHUB_OWNER>                        |
+| GITHUB_USER                         | <GITHUB_USER>                         |
+| GITHUB_ORG                          | <GITHUB_ORG>                          |
+| CHECKOUT_CWFT_TEMPLATE              | <CHECKOUT_CWFT_TEMPLATE>              |
+| COMMIT_CWFT_TEMPLATE                | <COMMIT_CWFT_TEMPLATE>                |
+| GIT_REPO_RUNNER_NS                  | <GIT_REPO_RUNNER_NS>                  |
+| GIT_REPO_RUNNER_NAME                | <GIT_REPO_RUNNER_NAME>                |
+| REPO_GITOPS                         | <REPO_GITOPS>                         |
+| KMS_KEY_ID                          | <KMS_KEY_ID>                          |
+| SOFT_SERVE_INITIAL_ADMIN_PUBLIC_KEY | <SOFT_SERVE_INITIAL_ADMIN_PUBLIC_KEY> |
+| KUBEFIRST_VERSION                   | <KUBEFIRST_VERSION>                   |
+| USE_TELEMETRY                       | <USE_TELEMETRY>                       |
+| CLUSTER_ID                          | <CLUSTER_ID>                          |
+| IS_LOCAL                            | <IS_LOCAL>                            |
+| KUBEFIRST_TEAM                      | <KUBEFIRST_TEAM>                      |
+| CLUSTER_TYPE                        | <CLUSTER_TYPE>                        |
+| GIT_PROVIDER                        | <GIT_PROVIDER>                        |
+| CLOUD                               | <CLOUD_PROVIDER>                      |
