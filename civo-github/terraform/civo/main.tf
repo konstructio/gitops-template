@@ -24,7 +24,8 @@ provider "civo" {
 }
 
 locals {
-  cluster_name = "<CLUSTER_NAME>"
+  cluster_name         = "<CLUSTER_NAME>"
+  kube_config_filename = "../../../kubeconfig"
 }
 
 resource "civo_network" "kubefirst" {
@@ -50,39 +51,14 @@ resource "civo_kubernetes_cluster" "kubefirst" {
 
 resource "local_file" "kubeconfig" {
   content  = civo_kubernetes_cluster.kubefirst.kubeconfig
-  filename = "../../../kubeconfig"
+  filename = local.kube_config_filename
 }
 
-// Create in-cluster Secret containing kubeconfig
-// Referenced by dependent apps during setup
-provider "kubernetes" {
-  config_path = "../../../kubeconfig"
-}
+module "secrets" {
+  source = "./modules/secrets"
 
-// Kubefirst
-resource "kubernetes_secret_v1" "civo_cluster_kubeconfig_kubefirst_ns" {
-  metadata {
-    name      = "kube-config-ref"
-    namespace = "kubefirst"
-  }
+  kube_config_content = civo_kubernetes_cluster.kubefirst.kubeconfig
+  kube_config_path    = local.kube_config_filename
 
-  data = {
-    ".kubeconfig" = civo_kubernetes_cluster.kubefirst.kubeconfig
-  }
-
-  type = "Opaque"
-}
-
-// Atlantis
-resource "kubernetes_secret_v1" "civo_cluster_kubeconfig_atlantis_ns" {
-  metadata {
-    name      = "kube-config-ref"
-    namespace = "atlantis"
-  }
-
-  data = {
-    ".kubeconfig" = civo_kubernetes_cluster.kubefirst.kubeconfig
-  }
-
-  type = "Opaque"
+  depends_on = local_file.kubeconfig
 }
