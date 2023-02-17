@@ -18,7 +18,7 @@ terraform {
   }
 }
 
-# export CIVO_TOKEN=$MYTOKEN is set 
+# export CIVO_TOKEN=$MYTOKEN is set
 provider "civo" {
   region = "<CLOUD_REGION>"
 }
@@ -53,3 +53,21 @@ resource "local_file" "kubeconfig" {
   filename = "../../../kubeconfig"
 }
 
+// Create in-cluster Secret containing kubeconfig
+// Referenced by dependent apps during setup
+provider "kubernetes" {
+  config_path = "../../../kubeconfig"
+}
+
+resource "kubernetes_secret_v1" "example" {
+  metadata {
+    name      = "kube-config-ref"
+    namespace = "kubefirst"
+  }
+
+  data = {
+    ".kubeconfig" = civo_kubernetes_cluster.kubefirst.kubeconfig
+  }
+
+  type = "Opaque"
+}

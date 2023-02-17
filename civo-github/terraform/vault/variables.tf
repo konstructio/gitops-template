@@ -1,3 +1,7 @@
+locals {
+  cluster_name = "<CLUSTER_NAME>"
+}
+
 variable "civo_token" {
   type = string
 }
