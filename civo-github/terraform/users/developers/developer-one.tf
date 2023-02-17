@@ -1,14 +1,3 @@
-data "vault_identity_group" "developers" {
-  group_name = "developers"
-}
-
-# resource "vault_identity_group_member_entity_ids" "developers_membership" {
-#   member_entity_ids = [
-#     module.developer_one.vault_identity_entity_id
-#   ]
-#   group_id = data.vault_identity_group.developers.group_id
-# }
-
 # module "developer_one" {
 #   source = "./modules/user/github"
 # 
