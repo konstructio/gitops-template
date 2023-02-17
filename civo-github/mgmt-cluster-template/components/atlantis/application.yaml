@@ -17,7 +17,7 @@ spec:
         orgAllowlist: <ATLANTIS_ALLOW_LIST>
         hidePrevPlanComments: true
         serviceAccount:
-          create: true
+          create: false
           mount: true
         resources:
           limits:
