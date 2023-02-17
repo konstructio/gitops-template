@@ -59,7 +59,7 @@ provider "kubernetes" {
   config_path = "../../../kubeconfig"
 }
 
-resource "kubernetes_secret_v1" "example" {
+resource "kubernetes_secret_v1" "civo_cluster_kubeconfig" {
   metadata {
     name      = "kube-config-ref"
     namespace = "kubefirst"
