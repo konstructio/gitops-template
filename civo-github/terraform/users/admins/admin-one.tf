@@ -1,8 +1,6 @@
-# # note: when you uncomment and change admin_one below 
-# # to your admin's firstname_lastname, you must also uncomment 
-# # and change the "admins_membership" list above to match your
-# # individual's firstname_lastname. create as many admin modules
-# # as you have admin personnel.
+# # note: uncomment the below to create a new admin, and be sure to
+# # adjust module name admin_one below to your admin's firstname_lastname.
+# # create as many admin modules files as you have admin personnel.
   
 # module "admin_one" {
 #   source = "./modules/user/github"
