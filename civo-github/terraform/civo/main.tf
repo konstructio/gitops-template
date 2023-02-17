@@ -60,5 +60,5 @@ module "secrets" {
   kube_config_content = civo_kubernetes_cluster.kubefirst.kubeconfig
   kube_config_path    = local.kube_config_filename
 
-  depends_on = local_file.kubeconfig
+  depends_on = [local_file.kubeconfig]
 }

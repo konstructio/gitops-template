@@ -1,7 +1,7 @@
 # # note: uncomment the below to create a new admin, and be sure to
 # # adjust module name admin_one below to your admin's firstname_lastname.
 # # create as many admin modules files as you have admin personnel.
-  
+
 # module "admin_one" {
 #   source = "./modules/user/github"
 
