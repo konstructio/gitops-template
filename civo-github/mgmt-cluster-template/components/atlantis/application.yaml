@@ -4,7 +4,7 @@ metadata:
   name: atlantis
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "60"
+    argocd.argoproj.io/sync-wave: '60'
 spec:
   project: default
   source:
@@ -26,6 +26,16 @@ spec:
           requests:
             cpu: 400m
             memory: 512Mi
+        extraVolumes:
+          - name: kubeconfig
+            secret:
+              secretName: kube-config-ref
+              items:
+                - key: .kubeconfig
+                  path: config
+        extraVolumeMounts:
+          - name: kubeconfig
+            mountPath: /.kube
         ingress:
           enabled: true
           annotations:
@@ -47,7 +57,7 @@ spec:
             allowed_overrides: [apply_requirements]
             apply_requirements: [mergeable]
   destination:
-    server: "https://kubernetes.default.svc"
+    server: 'https://kubernetes.default.svc'
     namespace: atlantis
   syncPolicy:
     automated:
