@@ -1,7 +1,3 @@
-provider "civo" {
-  region = "<CLOUD_REGION>"
-}
-
 provider "kubernetes" {
   config_path = "<KUBE_CONFIG_PATH>"
 }
