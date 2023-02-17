@@ -1,13 +1,6 @@
-data "vault_identity_group" "developers" {
-  group_name = "developers"
-}
-
-# resource "vault_identity_group_member_entity_ids" "developers_membership" {
-#   member_entity_ids = [
-#     module.developer_one.vault_identity_entity_id
-#   ]
-#   group_id = data.vault_identity_group.developers.group_id
-# }
+# # note: uncomment the below to create a new developer, and be sure to
+# # adjust module name developer_one below to your developer's firstname_lastname.
+# # create as many developer module files as you have developer personnel.
 
 # module "developer_one" {
 #   source = "./modules/user/github"
@@ -15,7 +8,7 @@ data "vault_identity_group" "developers" {
 #   acl_policies            = ["developer"]
 #   email                   = "dev.one@example.com"
 #   first_name              = "Dev"
-#   github_username         = "dev-ones-github-handle"
+#   github_username         = "developer-ones-github-username"
 #   team_id                 = data.github_team.developers.id
 #   last_name               = "One"
 #   username                = "done"
