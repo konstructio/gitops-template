@@ -40,15 +40,14 @@ variable "initial_password" {
   default = ""
 }
 
-
 module "admins" {
   source = "./admins"
+
+  initial_password = var.initial_password
 }
 
 resource "vault_identity_group_member_entity_ids" "admins_membership" {
-  member_entity_ids = [
-    module.admins[*].vault_identity_entity_id
-  ]
+  member_entity_ids = module.admins.vault_identity_entity_ids
 
   group_id = data.vault_identity_group.admins.group_id
 }
@@ -67,8 +66,6 @@ resource "vault_identity_group_member_entity_ids" "admins_membership" {
 # }
 
 # resource "vault_identity_group_member_entity_ids" "developers_membership" {
-#   member_entity_ids = [
-#     module.developers[*].vault_identity_entity_id
-#   ]
+#   member_entity_ids = module.developers.vault_identity_entity_ids
 #   group_id = data.vault_identity_group.developers.group_id
 # }

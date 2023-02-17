@@ -10,6 +10,8 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
     }
   )
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "external_dns_secrets" {
@@ -20,6 +22,8 @@ resource "vault_generic_secret" "external_dns_secrets" {
       civo-token = var.civo_token,
     }
   )
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "civo_creds" {
@@ -33,17 +37,6 @@ resource "vault_generic_secret" "civo_creds" {
   )
 }
 
-resource "vault_generic_secret" "external_secrets_token" {
-  path = "secret/vault"
-
-  # todo need to update this token
-  data_json = <<EOT
-{
-  "VAULT_TOKEN" : "k1_local_vault_token"
-}
-EOT
-}
-
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
   # note: these secrets are not actually sensitive.
@@ -54,6 +47,8 @@ resource "vault_generic_secret" "development_metaphor" {
   "SECRET_TWO" : "development secret 2"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "staging_metaphor" {
@@ -66,6 +61,8 @@ resource "vault_generic_secret" "staging_metaphor" {
   "SECRET_TWO" : "staging secret 2"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "production_metaphor" {
@@ -78,6 +75,8 @@ resource "vault_generic_secret" "production_metaphor" {
   "SECRET_TWO" : "production secret 2"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "ci_secrets" {
@@ -92,6 +91,8 @@ resource "vault_generic_secret" "ci_secrets" {
       SSH_PRIVATE_KEY = var.kubefirst_bot_ssh_private_key,
     }
   )
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
@@ -126,4 +127,6 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_vault_token                   = "k1_local_vault_token",
     }
   )
+
+  depends_on = [vault_mount.secret]
 }

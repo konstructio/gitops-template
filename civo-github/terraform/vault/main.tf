@@ -11,6 +11,14 @@ terraform {
     skip_region_validation      = true
     force_path_style            = true
   }
+  required_providers {
+    civo = {
+      source = "civo/civo"
+    }
+    vault = {
+      source = "hashicorp/vault"
+    }
+  }
 }
 
 # export CIVO_TOKEN=$MYTOKEN is set 

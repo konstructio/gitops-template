@@ -3,7 +3,7 @@
 # # create as many developer module files as you have developer personnel.
 
 # module "developer_one" {
-#   source = "./modules/user/github"
+#   source = "../modules/user/github"
 # 
 #   acl_policies            = ["developer"]
 #   email                   = "dev.one@example.com"
@@ -15,3 +15,13 @@
 #   user_disabled           = false
 #   userpass_accessor       = data.vault_auth_backend.userpass.accessor
 # }
+#
+
+# Uncomment this and add all admin module entity_id addresses to it
+#output "vault_identity_entity_ids" {
+#  value = [module.developer_one.vault_identity_entity_id]
+#}
+
+output "vault_identity_entity_ids" {
+  value = []
+}
