@@ -4,7 +4,7 @@ module "kbot" {
   source = "./modules/user/github"
 
   acl_policies      = ["admin"]
-  email             = "kbot-email@your-company.io"
+  email             = "<ALERTS_EMAIL>"
   first_name        = "K"
   github_username   = "<GITHUB_USER>"
   last_name         = "Bot"
