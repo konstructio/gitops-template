@@ -4,7 +4,7 @@ metadata:
   name: vault
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-wave: '20'
 spec:
   project: default
   source:
@@ -16,25 +16,21 @@ spec:
           affinity: ""
           ha:
             enabled: true
-          dev:
-            enabled: true
-            devRootToken: "k1_local_vault_token"
-          image:
-            config: |
-              ui = true
-              listener "tcp" {
-                tls_disable = 1
-                address = "[::]:8200"
-                cluster_address = "[::]:8201"
-              }
-              storage "s3" {
-                bucket     = "<KUBEFIRST_STATE_STORE_BUCKET>"
-                endpoint   = "https://objectstore.<CLOUD_REGION>.civo.com"
-                region     = "<CLOUD_REGION>"
-                s3_force_path_style = true
-                path = "/vault-backend"
-              }
-              service_registration "kubernetes" {}
+            replicas: 3
+            raft:
+              enabled: true
+              setNodeId: true
+              config: |
+                ui = true
+                listener "tcp" {
+                  tls_disable     = 1
+                  address         = "[::]:8200"
+                  cluster_address = "[::]:8201"
+                }
+                storage "raft" {
+                  path = "/vault/data"
+                }
+                service_registration "kubernetes" {}
           ingress:
             enabled: true
             annotations: 
@@ -66,7 +62,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
   ignoreDifferences:
-  - group: admissionregistration.k8s.io
-    kind: MutatingWebhookConfiguration
-    jsonPointers:
-    - /webhooks
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+      jsonPointers:
+        - /webhooks

@@ -12,3 +12,12 @@ terraform {
     force_path_style            = true
   }
 }
+
+# export CIVO_TOKEN=$MYTOKEN is set 
+provider "civo" {
+  region = "<CLOUD_REGION>"
+}
+
+provider "vault" {
+  skip_tls_verify = "true"
+}
