@@ -59,10 +59,25 @@ provider "kubernetes" {
   config_path = "../../../kubeconfig"
 }
 
-resource "kubernetes_secret_v1" "civo_cluster_kubeconfig" {
+// Kubefirst
+resource "kubernetes_secret_v1" "civo_cluster_kubeconfig_kubefirst_ns" {
   metadata {
     name      = "kube-config-ref"
     namespace = "kubefirst"
+  }
+
+  data = {
+    ".kubeconfig" = civo_kubernetes_cluster.kubefirst.kubeconfig
+  }
+
+  type = "Opaque"
+}
+
+// Atlantis
+resource "kubernetes_secret_v1" "civo_cluster_kubeconfig_atlantis_ns" {
+  metadata {
+    name      = "kube-config-ref"
+    namespace = "atlantis"
   }
 
   data = {
