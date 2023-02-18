@@ -21,10 +21,23 @@ resource "github_repository_webhook" "gitops_atlantis_webhook" {
 
   events = ["pull_request_review", "push", "issue_comment", "pull_request"]
 }
+
+
+module "metaphor_frontend" {
+  source = "./modules/repository"
+
+  repo_name          = "metaphor-frontend"
+  archive_on_destroy = false
+  auto_init          = false # set to false if importing an existing repository
+  create_ecr         = false
+}
+
+
 variable "atlantis_repo_webhook_secret" {
   type    = string
   default = ""
 }
+
 variable "atlantis_repo_webhook_url" {
   type = string
 }
