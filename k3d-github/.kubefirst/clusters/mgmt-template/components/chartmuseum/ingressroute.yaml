@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`chartmuseum.<LOCAL_DNS>`)
+    match: Host(`chartmuseum.<DOMAIN_NAME>`)
     services:
     - name: chartmuseum
       port: 80

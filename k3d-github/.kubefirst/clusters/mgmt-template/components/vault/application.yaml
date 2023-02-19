@@ -13,7 +13,7 @@ spec:
     helm:
       parameters:
         - name: 'server.ingress.hosts[0].host'
-          value: vault.<LOCAL_DNS>
+          value: vault.<DOMAIN_NAME>
       values: |-
         server:
           ingress:
@@ -21,12 +21,12 @@ spec:
             annotations:
               traefik.ingress.kubernetes.io/router.middlewares: vault-redirect-to-https@kubernetescrd
             hosts:
-              - host: vault.<LOCAL_DNS>
+              - host: vault.<DOMAIN_NAME>
             pathType: Prefix
             tls:
               - secretName: vault-tls
                 hosts:
-                  - vault.<LOCAL_DNS>
+                  - vault.<DOMAIN_NAME>
           affinity: ""
           ha:
             enabled: true

@@ -13,7 +13,7 @@ spec:
     targetRevision: 4.10.3
     helm:
       values: |-
-        atlantisUrl: https://atlantis.<LOCAL_DNS>
+        atlantisUrl: https://atlantis.<DOMAIN_NAME>
         orgAllowList: <ATLANTIS_ALLOW_LIST>
         ingress:
           enabled: true
@@ -21,11 +21,11 @@ spec:
             traefik.ingress.kubernetes.io/router.middlewares: atlantis-redirect-to-https@kubernetescrd
           path: /
           pathType: Prefix
-          host: atlantis.<LOCAL_DNS>
+          host: atlantis.<DOMAIN_NAME>
           tls:
             - secretName: atlantis-tls
               hosts:
-                - atlantis.<LOCAL_DNS>
+                - atlantis.<DOMAIN_NAME>
         serviceAccount:
           create: true
           mount: true

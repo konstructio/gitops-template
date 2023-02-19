@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`vault.<LOCAL_DNS>`)
+    match: Host(`vault.<DOMAIN_NAME>`)
     services:
     - name: vault
       port: 80

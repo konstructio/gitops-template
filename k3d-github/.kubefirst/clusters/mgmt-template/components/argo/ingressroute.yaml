@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`argo.<LOCAL_DNS>`)
+    match: Host(`argo.<DOMAIN_NAME>`)
     services:
     - name: argo
       port: 80

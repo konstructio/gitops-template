@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`kubefirst.<LOCAL_DNS>`)
+    match: Host(`kubefirst.<DOMAIN_NAME>`)
     services:
     - name: kubefirst-console
       port: 80

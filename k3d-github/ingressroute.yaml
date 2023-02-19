@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`argocd.<LOCAL_DNS>`)
+    match: Host(`argocd.<DOMAIN_NAME>`)
     services:
     - name: argocd
       port: 80
@@ -36,7 +36,7 @@ metadata:
 
 spec:
   rules:
-    - host: argocd.<LOCAL_DNS>
+    - host: argocd.<DOMAIN_NAME>
       http:
         paths:
           - backend:

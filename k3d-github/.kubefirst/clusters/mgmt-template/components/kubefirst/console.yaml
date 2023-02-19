@@ -15,49 +15,45 @@ spec:
       values: |-
         env:
           ADMIN_EMAIL:
-            value: "<EMAIL_ADDRESS>"
+            value: "<ADMIN_EMAIL_ADDRESS>"
           CLUSTER_NAME:
             value: "<CLUSTER_NAME>"
           HOSTED_ZONE_NAME:
-            value: "<AWS_HOSTED_ZONE_NAME>"
+            value: "<DOMAIN_NAME>"
           GITHUB_HOST:
             value: "<GITHUB_HOST>"
           GITHUB_OWNER:
             value: "<GITHUB_OWNER>"
           ARGO_WORKFLOWS_URL:
-            value: "<ARGO_WORKFLOWS_URL>"
+            value: "<ARGO_WORKFLOWS_INGRESS_URL>"
           VAULT_URL:
-            value: "<VAULT_URL>"
+            value: "<VAULT_INGRESS_URL>"
           ARGO_CD_URL:
-            value: "<ARGO_CD_URL>"
+            value: "<ARGO_CD_INGRESS_URL>"
           ATLANTIS_URL:
-            value: "<ATLANTIS_URL>"
+            value: "<ATLANTIS_INGRESS_URL>"
           METAPHOR_DEV:
-            value: "<METAPHOR_DEV>"
+            value: "<METAPHOR_DEVELPOMENT_INGRESS_URL>"
           METAPHOR_GO_DEV:
-            value: "<METAPHOR_GO_DEV>"
+            value: "<METAPHOR_GO_DEVELOPMENT_INGRESS_URL>"
           METAPHOR_FRONT_DEV:
-            value: "<METAPHOR_FRONT_DEV>"
+            value: "<METAPHOR_FRONT_DEVELOPMENT_INGRESS_URL>"
           METAPHOR_STAGING:
-            value: "<METAPHOR_STAGING>"
+            value: "<METAPHOR_STAGING_INGRESS_URL>"
           METAPHOR_GO_STAGING:
-            value: "<METAPHOR_GO_STAGING>"
+            value: "<METAPHOR_GO_STAGING_INGRESS_URL>"
           METAPHOR_FRONT_STAGING:
-            value: "<METAPHOR_FRONT_STAGING>"
+            value: "<METAPHOR_FRONT_STAGING_INGRESS_URL>"
           METAPHOR_PROD:
-            value: "<METAPHOR_PROD>"
+            value: "<METAPHOR_PRODUCTION_INGRESS_URL>"
           METAPHOR_GO_PROD:
-            value: "<METAPHOR_GO_PROD>"
+            value: "<METAPHOR_GO_PRODUCTION_INGRESS_URL>"
           METAPHOR_FRONT_PROD:
-            value: "<METAPHOR_FRONT_PROD>"
+            value: "<METAPHOR_FRONT_PRODUCTION_INGRESS_URL>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
-          USE_TELEMETRY:
-            value: "<USE_TELEMETRY>"
-          CLUSTER_ID:
-            value: "<CLUSTER_ID>"
           IS_LOCAL:
-            value: "true"
+            value: "true" # todo need to change to IS_SLIM
           KUBEFIRST_TEAM:
             value: "<KUBEFIRST_TEAM>"
           CLUSTER_TYPE:
@@ -72,14 +68,14 @@ spec:
             traefik.ingress.kubernetes.io/router.middlewares: kubefirst-redirect-to-https@kubernetescrd
           className: ""
           hosts:
-            - host: kubefirst.<LOCAL_DNS>
+            - host: kubefirst.<DOMAIN_NAME>
               paths:
                 - path: /
                   pathType: Prefix
           tls:
             - secretName: kubefirst-tls
               hosts:
-                - kubefirst.<LOCAL_DNS>
+                - kubefirst.<DOMAIN_NAME>
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst

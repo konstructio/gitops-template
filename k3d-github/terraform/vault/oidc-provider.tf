@@ -17,7 +17,7 @@ resource "vault_identity_oidc_key" "key" {
 resource "vault_identity_oidc_provider" "kubefirst" {
   name          = "kubefirst"
   https_enabled = true
-  issuer_host   = "vault.<LOCAL_DNS>"
+  issuer_host   = "vault.<DOMAIN_NAME>"
   allowed_client_ids = [
     "*" # todo make explicit list of client ids
   ]

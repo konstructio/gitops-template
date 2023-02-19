@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`metaphor-frontend-production.<LOCAL_DNS>`)
+    match: Host(`metaphor-frontend-production.<DOMAIN_NAME>`)
     services:
     - name: metaphor-frontend-production
       port: 80

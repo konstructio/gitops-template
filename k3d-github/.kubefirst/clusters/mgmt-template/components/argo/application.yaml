@@ -22,14 +22,14 @@ spec:
             annotations:
               traefik.ingress.kubernetes.io/router.middlewares: argo-redirect-to-https@kubernetescrd
             hosts:
-              - argo.<LOCAL_DNS>
+              - argo.<DOMAIN_NAME>
             paths: 
               - /
             pathType: Prefix
             tls:
               - secretName: argo-tls
                 hosts:
-                  - argo.<LOCAL_DNS>
+                  - argo.<DOMAIN_NAME>
         useDefaultArtifactRepo: true
         useStaticCredentials: true
         artifactRepository:

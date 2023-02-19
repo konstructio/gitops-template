@@ -18,7 +18,7 @@ spec:
             traefik.ingress.kubernetes.io/router.middlewares: chartmuseum-redirect-to-https@kubernetescrd
           pathType: Prefix
           hosts:
-            - name: chartmuseum.<LOCAL_DNS>
+            - name: chartmuseum.<DOMAIN_NAME>
               path: /
               tls: enable
               tlsSecret: chartmuseum-tls

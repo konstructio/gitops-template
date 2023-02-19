@@ -6,7 +6,7 @@ metadata:
 spec:
   routes:
   - kind: Rule
-    match: Host(`atlantis.<LOCAL_DNS>`)
+    match: Host(`atlantis.<DOMAIN_NAME>`)
     services:
     - name: atlantis
       port: 80

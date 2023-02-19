@@ -8,7 +8,7 @@ module "argo" {
   app_name               = "argo"
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
-    "https://argo.<LOCAL_DNS>/oauth2/callback",
+    "https://argo.<DOMAIN_NAME>/oauth2/callback",
   ]
   secret_mount_path = "secret"
 }
@@ -23,7 +23,7 @@ module "argocd" {
   app_name               = "argocd"
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
-    "https://argocd.<LOCAL_DNS>/auth/callback",
+    "https://argocd.<DOMAIN_NAME>/auth/callback",
   ]
   secret_mount_path = "secret"
 }
@@ -38,7 +38,7 @@ module "gitlab" {
   app_name               = "gitlab"
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
-    "https://gitlab.<LOCAL_DNS>/users/auth/openid_connect/callback",
+    "https://gitlab.<DOMAIN_NAME>/users/auth/openid_connect/callback",
   ]
   secret_mount_path = "secret"
 }
@@ -53,7 +53,7 @@ module "console" {
   app_name               = "console"
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
-    "https://vouch.<LOCAL_DNS>/auth",
+    "https://vouch.<DOMAIN_NAME>/auth",
   ]
   secret_mount_path = "secret"
 }
