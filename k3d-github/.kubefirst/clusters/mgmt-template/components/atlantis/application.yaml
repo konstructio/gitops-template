@@ -10,12 +10,11 @@ spec:
   source:
     repoURL: 'https://runatlantis.github.io/helm-charts'
     chart: atlantis
-    targetRevision: 3.19.0
+    targetRevision: 4.10.3
     helm:
-      parameters:
-        - name: orgWhitelist
-          value: <FULL_REPO_GITOPS_URL_NO_HTTPS>
       values: |-
+        atlantisUrl: https://atlantis.<LOCAL_DNS>
+        orgAllowList: <ATLANTIS_ALLOW_LIST>
         ingress:
           enabled: true
           annotations:
@@ -27,7 +26,6 @@ spec:
             - secretName: atlantis-tls
               hosts:
                 - atlantis.<LOCAL_DNS>
-        atlantisUrl: https://atlantis.<LOCAL_DNS>
         serviceAccount:
           create: true
           mount: true
@@ -43,7 +41,7 @@ spec:
         repoConfig: |
           ---
           repos:
-          - id: <FULL_REPO_GITOPS_URL_NO_HTTPS>
+          - id: <ATLANTIS_ALLOW_LIST>
             workflow: default
             allowed_overrides: [apply_requirements]
             apply_requirements: [mergeable]

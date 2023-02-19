@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <FULL_REPO_GITOPS_URL_HTTPS>
+    repoURL: <GITOPS_REPO_GIT_URL>
     path: components/development/metaphor-frontend
     targetRevision: HEAD
     helm:
