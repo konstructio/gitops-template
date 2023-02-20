@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/minio
+    path: registry/<CLUSTER_NAME>/components/minio
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

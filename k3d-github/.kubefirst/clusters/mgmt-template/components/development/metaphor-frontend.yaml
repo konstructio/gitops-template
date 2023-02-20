@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: components/development/metaphor-frontend
+    path: registry/<CLUSTER_NAME>/components/development/metaphor-frontend
     targetRevision: HEAD
     helm:
       valueFiles:
