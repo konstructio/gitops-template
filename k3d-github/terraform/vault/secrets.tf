@@ -81,7 +81,7 @@ resource "vault_generic_secret" "ci_secrets" {
     }
   )
 
-  depends_on = [vault_mount.secret]
+  # depends_on = [vault_mount.secret] #! this will be added back in when vault is not in development mode
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
