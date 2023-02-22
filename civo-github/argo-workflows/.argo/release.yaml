@@ -135,7 +135,7 @@ spec:
         arguments:
           artifacts:
           - name: repo-source
-            from: "{{steps.set-environment-version.outputs.artifacts.repo-source}}"
+            from: "{{steps.increment-chart-minor.outputs.artifacts.repo-source}}"
           parameters:
           - name: repoName
             value: "{{workflow.parameters.appName}}"
