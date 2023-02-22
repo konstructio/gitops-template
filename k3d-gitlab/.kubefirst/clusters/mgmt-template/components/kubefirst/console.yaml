@@ -4,7 +4,7 @@ metadata:
   name: kubefirst-console
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: '1'
 spec:
   project: default
   source:
@@ -20,10 +20,10 @@ spec:
             value: "<CLUSTER_NAME>"
           HOSTED_ZONE_NAME:
             value: "<DOMAIN_NAME>"
-          GITHUB_HOST:
-            value: "<GITHUB_HOST>"
-          GITHUB_OWNER:
-            value: "<GITHUB_OWNER>"
+          GITLAB_HOST:
+            value: "<GITLAB_HOST>"
+          GITLAB_OWNER:
+            value: "<GITLAB_OWNER>"
           ARGO_WORKFLOWS_URL:
             value: "<ARGO_WORKFLOWS_INGRESS_URL>"
           VAULT_URL:

@@ -13,18 +13,18 @@ spec:
           - name: appRepoUrl
             value: https://github.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}
         artifacts:
-        - name: app-source
-          path: "/work/{{workflow.parameters.appName}}"
-          git:
-            repo: "{{inputs.parameters.appRepoUrl}}"
-            branch: "{{workflow.parameters.branch}}"
-            singleBranch: true
-            usernameSecret:
-              name: ci-secrets
-              key: username
-            passwordSecret:
-              name: ci-secrets
-              key: password
+          - name: app-source
+            path: '/work/{{workflow.parameters.appName}}'
+            git:
+              repo: '{{inputs.parameters.appRepoUrl}}'
+              branch: '{{workflow.parameters.branch}}'
+              singleBranch: true
+              usernameSecret:
+                name: ci-secrets
+                key: username
+              passwordSecret:
+                name: ci-secrets
+                key: password
       # Mount the configuration so we can push the image.
       # This should create the /.docker/config.json file.
       volumes:

@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: github-runner-components
+  name: gitlab-runner-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "60"
-    addons.kubefirst.io/name: github
+    argocd.argoproj.io/sync-wave: '60'
+    addons.kubefirst.io/name: gitlab
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/<CLUSTER_NAME>/components/github-runner
+    path: registry/<CLUSTER_NAME>/components/gitlab-runner
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: github-runner
+    namespace: gitlab-runner
   syncPolicy:
     automated:
       prune: true

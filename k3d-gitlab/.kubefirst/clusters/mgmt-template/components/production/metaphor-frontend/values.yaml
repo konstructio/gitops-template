@@ -1,13 +1,13 @@
 metaphor-frontend:
   image:
-    repository: ghcr.io/<GITHUB_OWNER>/metaphor-frontend
+    repository: ghcr.io/<GITLAB_OWNER>/metaphor-frontend
   imagePullSecrets:
-  - name: docker-config
+    - name: docker-config
   ingress:
     enabled: true
     annotations:
       traefik.ingress.kubernetes.io/router.middlewares: production-redirect-to-https@kubernetescrd
-    className: ""
+    className: ''
     hosts:
       - host: metaphor-frontend-production.<DOMAIN_NAME>
         paths:

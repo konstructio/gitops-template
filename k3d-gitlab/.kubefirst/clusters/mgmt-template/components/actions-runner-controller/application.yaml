@@ -4,12 +4,12 @@ metadata:
   name: actions-runner-contoller
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
-    addons.kubefirst.io/name: github
+    argocd.argoproj.io/sync-wave: '20'
+    addons.kubefirst.io/name: gitlab
 spec:
   project: default
   source:
-    repoURL: 'https://actions-runner-controller.github.io/actions-runner-controller'
+    repoURL: 'https://actions-runner-controller.gitlab.io/actions-runner-controller'
     targetRevision: 0.20.2
     helm:
       values: |-
@@ -123,7 +123,7 @@ spec:
     chart: actions-runner-controller
   destination:
     server: https://kubernetes.default.svc
-    namespace: github-runner
+    namespace: gitlab-runner
   syncPolicy:
     automated:
       prune: true
