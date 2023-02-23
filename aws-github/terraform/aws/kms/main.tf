@@ -11,7 +11,7 @@ resource "aws_kms_key" "vault_unseal" {
       "Sid": "Enable IAM User Permissions",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:root"
+        "AWS": <AWS_IAM_ARN_ACCOUNT_ROOT>
       },
       "Action": "kms:*",
       "Resource": "*"
@@ -21,7 +21,7 @@ resource "aws_kms_key" "vault_unseal" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::<AWS_ACCOUNT_ID>:root"
+          <AWS_IAM_ARN_ACCOUNT_ROOT>
         ]
       },
       "Action": [
@@ -47,7 +47,7 @@ resource "aws_kms_key" "vault_unseal" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::<AWS_ACCOUNT_ID>:root"
+          <AWS_IAM_ARN_ACCOUNT_ROOT>
         ]
       },
       "Action": [
@@ -64,7 +64,7 @@ resource "aws_kms_key" "vault_unseal" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::<AWS_ACCOUNT_ID>:root"
+          <AWS_IAM_ARN_ACCOUNT_ROOT>
         ]
       },
       "Action": [
