@@ -16,7 +16,7 @@ spec:
       values: |-
         env:
           ADMIN_EMAIL:
-            value: "<ADMIN_EMAIL_ADDRESS>"
+            value: "<ALERTS_EMAIL>"
           CLUSTER_NAME:
             value: "<CLUSTER_NAME>"
           HOSTED_ZONE_NAME:
