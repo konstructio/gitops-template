@@ -35,6 +35,8 @@ resource "vault_generic_secret" "civo_creds" {
       secretkey = var.aws_secret_access_key,
     }
   )
+  
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "development_metaphor" {
