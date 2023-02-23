@@ -18,7 +18,7 @@ variable "instance_type" {
   type        = string
 }
 
-variable "lifecycle_nodes" {
+variable "node_capacity_type" {
   description = "The lifecycle of a node, can be SPOT or ON_DEMAND"
   default     = "ON_DEMAND"
   type        = string
