@@ -13,10 +13,9 @@ spec:
         path: /src
       parameters:
       - name: appName
-        value: "{{workflow.parameters.appName}}"
       - name: chartDir
     script:
-      image: kubefirst/kubefirst-builder:0.1
+      image: kubefirst/chubbo:0.2
       command: [python3]
       workingDir: "/src/{{inputs.parameters.appName}}"
       source: |
@@ -31,13 +30,11 @@ spec:
         path: /src
       parameters:
       - name: appName
-        value: "{{workflow.parameters.appName}}"
       - name: chartDir
-      - name: ciCommitSha
-        value: "{{workflow.parameters.ciCommitSha}}"
       - name: chartVersion
+      - name: shortSha
     script:
-      image: kubefirst/kubefirst-builder:0.1
+      image: kubefirst/chubbo:0.2
       command: [bash]
       workingDir: "/src/{{inputs.parameters.appName}}"
       source: |
@@ -45,8 +42,8 @@ spec:
         NEW_CHART_VERSION={{inputs.parameters.chartVersion}}
         echo "setting ./{{inputs.parameters.chartDir}}/Chart.yaml to version: ${NEW_CHART_VERSION}"
         sed -i "s/version:.*/version: ${NEW_CHART_VERSION}/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
-        echo "setting ./{{inputs.parameters.chartDir}}/Chart.yaml to appVersion: {{inputs.parameters.ciCommitSha}}"
-        sed -i "s/appVersion:.*/appVersion: {{inputs.parameters.ciCommitSha}}/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
+        echo "setting ./{{inputs.parameters.chartDir}}/Chart.yaml to appVersion: {{inputs.parameters.shortSha}}"
+        sed -i "s/appVersion:.*/appVersion: {{inputs.parameters.shortSha}}/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
         echo "adjusted chart:"
         cat /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
     outputs:
@@ -62,15 +59,15 @@ spec:
         path: /src
       parameters:
       - name: appName
-        value: "{{workflow.parameters.appName}}"
       - name: chartDir
+      # todo need to address username and password for chartmuseum
     container:
-      image: kubefirst/kubefirst-builder:0.1
+      image: kubefirst/chubbo:0.2
       command: ["bash", "-c"]
       workingDir: "/src/{{inputs.parameters.appName}}"
       args:
       - helm repo add kubefirst http://chartmuseum.chartmuseum.svc.cluster.local:8080 --username k-ray --password feedkraystars || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
-        helm cm-push {{inputs.parameters.chartDir}} kubefirst || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+        helm push {{inputs.parameters.chartDir}} kubefirst || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
   - name: set-environment-version
     inputs:
       artifacts:
@@ -81,7 +78,7 @@ spec:
       - name: environment
       - name: fullChartPath
     script:
-      image: kubefirst/kubefirst-builder:0.1
+      image: kubefirst/chubbo:0.2
       command: [bash]
       workingDir: "/src/gitops"
       source: |
@@ -103,7 +100,7 @@ spec:
       - name: chartDir
       - name: chartVersion
     script:
-      image: kubefirst/kubefirst-builder:0.1
+      image: kubefirst/chubbo:0.2
       command: [python3]
       workingDir: "/src/{{inputs.parameters.appName}}"
       source: |

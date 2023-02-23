@@ -8,25 +8,21 @@ spec:
     - name: build-push
       inputs:
         parameters:
-          - name: imageTag
-            value: ghcr.io/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}:{{workflow.parameters.ciCommitSha}}
-          - name: appRepoUrl
-            value: https://github.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}
+          - name: appName
+          - name: branch
+          - name: containerRegistryURL
+          - name: gitUrlNoProtocol
         artifacts:
         - name: app-source
-          path: "/work/{{workflow.parameters.appName}}"
+          path: "/src/{{inputs.parameters.appName}}"
           git:
-            repo: "{{inputs.parameters.appRepoUrl}}"
-            branch: "{{workflow.parameters.branch}}"
+            repo: "{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.appName}}.git"
+            branch: "{{inputs.parameters.branch}}"
             singleBranch: true
-            usernameSecret:
+            insecureIgnoreHostKey: true
+            sshPrivateKeySecret:
               name: ci-secrets
-              key: username
-            passwordSecret:
-              name: ci-secrets
-              key: password
-      # Mount the configuration so we can push the image.
-      # This should create the /.docker/config.json file.
+              key: SSH_PRIVATE_KEY
       volumes:
         - name: docker-config
           secret:
@@ -34,11 +30,11 @@ spec:
       container:
         image: moby/buildkit:v0.9.3-rootless
         volumeMounts:
-          - name: work
-            mountPath: /work
+          - name: src
+            mountPath: /src
           - name: docker-config
             mountPath: /.docker
-        workingDir: /work/{{workflow.parameters.appName}}
+        workingDir: /src/{{inputs.parameters.appName}}
         env:
           - name: BUILDKITD_FLAGS
             value: --oci-worker-no-process-sandbox
@@ -55,4 +51,4 @@ spec:
           - --local
           - dockerfile=build
           - --output
-          - type=image,name={{inputs.parameters.imageTag}},push=true
+          - type=image,name={{inputs.parameters.containerRegistryURL}},push=true

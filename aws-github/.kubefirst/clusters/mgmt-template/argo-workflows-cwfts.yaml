@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: minio-components
+  name: argo-cwft-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "55"
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_GIT_URL>
-    path: registry/<CLUSTER_NAME>/components/minio
+    path: registry/<CLUSTER_NAME>/components/argo-workflows/cwfts
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: minio
+    namespace: argo
   syncPolicy:
     automated:
       prune: true

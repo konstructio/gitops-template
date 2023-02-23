@@ -4,21 +4,19 @@ metaphor-frontend:
   imagePullSecrets:
   - name: docker-config
   ingress:
+    className: nginx
     enabled: true
     annotations:
-      traefik.ingress.kubernetes.io/router.middlewares: production-redirect-to-https@kubernetescrd
-    className: ""
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
     hosts:
       - host: metaphor-frontend-production.<DOMAIN_NAME>
         paths:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: metaphor-frontend-production-tls
+      - secretName: metaphor-frontend-tls
         hosts:
           - metaphor-frontend-production.<DOMAIN_NAME>
   metaphor:
     host: https://metaphor-frontend-production.<DOMAIN_NAME>/api
-  vaultMountPoint: kubefirst
-  vaultSecretPath: production/metaphor
   isLocal: true

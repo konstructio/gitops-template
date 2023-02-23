@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://argoproj.github.io/argo-helm'
+    repoURL: https://argoproj.github.io/argo-helm
     targetRevision: 0.20.1
     helm:
       values: |-
@@ -19,8 +19,9 @@ spec:
           - --auth-mode=server
           ingress:
             enabled: true
+            ingressClassName: nginx
             annotations:
-              traefik.ingress.kubernetes.io/router.middlewares: argo-redirect-to-https@kubernetescrd
+              cert-manager.io/cluster-issuer: "letsencrypt-prod"
             hosts:
               - argo.<DOMAIN_NAME>
             paths: 
@@ -36,15 +37,15 @@ spec:
           archiveLogs: false
           s3:
             accessKeySecret:
-              name: minio-creds
+              name: ci-secrets
               key: accesskey
             secretKeySecret:
-              name: minio-creds
+              name: ci-secrets
               key: secretkey
-            insecure: true
-            bucket: argo-artifacts
-            endpoint: minio.minio.svc.cluster.local:9000
-            region: us-k3d-1
+            insecure: false
+            bucket: <KUBEFIRST_STATE_STORE_BUCKET>
+            endpoint: objectstore.<CLOUD_REGION>.civo.com
+            region: <CLOUD_REGION>
             useSDKCreds: false
             encryptionOptions:
               enableEncryption: false

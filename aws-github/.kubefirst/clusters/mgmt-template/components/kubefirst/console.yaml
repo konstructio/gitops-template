@@ -11,11 +11,12 @@ spec:
     repoURL: https://kubefirst.github.io/charts
     targetRevision: 2.0.10
     chart: console
+    # todo need to fix HOSTED_ZONE_NAME with DOMAIN_NAME or something more generic
     helm:
       values: |-
         env:
           ADMIN_EMAIL:
-            value: "<ALERTS_EMAIL>"
+            value: "<ADMIN_EMAIL_ADDRESS>"
           CLUSTER_NAME:
             value: "<CLUSTER_NAME>"
           HOSTED_ZONE_NAME:
@@ -29,7 +30,7 @@ spec:
           VAULT_URL:
             value: "<VAULT_INGRESS_URL>"
           ARGO_CD_URL:
-            value: "<ARGO_CD_INGRESS_URL>"
+            value: "<ARGOCD_INGRESS_URL>"
           ATLANTIS_URL:
             value: "<ATLANTIS_INGRESS_URL>"
           METAPHOR_DEV:
@@ -65,13 +66,20 @@ spec:
         ingress:
           enabled: true
           annotations:
-            traefik.ingress.kubernetes.io/router.middlewares: kubefirst-redirect-to-https@kubernetescrd
-          className: ""
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            # nginx.ingress.kubernetes.io/auth-signin: "https://vouch.<DOMAIN_NAME>/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
+            # nginx.ingress.kubernetes.io/auth-url: https://vouch.<DOMAIN_NAME>/validate
+            # nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
+            # nginx.ingress.kubernetes.io/auth-snippet: |
+            #   auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+            #   auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+            #   auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
           hosts:
             - host: kubefirst.<DOMAIN_NAME>
               paths:
                 - path: /
-                  pathType: Prefix
+                  pathType: ImplementationSpecific
           tls:
             - secretName: kubefirst-tls
               hosts:
