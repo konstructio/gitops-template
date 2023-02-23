@@ -20,6 +20,6 @@ variable "instance_type" {
 
 variable "lifecycle_nodes" {
   description = "The lifecycle of a node, can be SPOT or ON_DEMAND"
-  default     = "<AWS_LIFECYCLE_NODES>"
+  default     = "ON_DEMAND"
   type        = string
 }

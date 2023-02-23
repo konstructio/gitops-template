@@ -10,12 +10,6 @@ variable "hosted_zone_name" {
   type = string
 }
 
-variable "lifecycle_nodes" {
-  description = "The lifecycle of a node, can be SPOT or ON_DEMAND"
-  default     = "<AWS_LIFECYCLE_NODES>"
-  type        = string
-}
-
 variable "instance_type" {
   description = "The instance type of node group"
   default     = "t3.medium"
