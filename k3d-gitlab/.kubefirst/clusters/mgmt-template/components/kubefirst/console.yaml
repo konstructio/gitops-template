@@ -36,11 +36,11 @@ spec:
             value: "<KUBEFIRST_VERSION>"
           KUBEFIRST_TEAM:
             value: "<KUBEFIRST_TEAM>"
-          METAPHOR_FRONT_DEV:
+          METAPHOR_DEVELOPMENT_URL:
             value: "<METAPHOR_DEVELOPMENT_INGRESS_URL>"
-          METAPHOR_FRONT_STAGING:
+          METAPHOR_STAGING_URL:
             value: "<METAPHOR_STAGING_INGRESS_URL>"
-          METAPHOR_FRONT_PROD:
+          METAPHOR_PRODUCTION_URL:
             value: "<METAPHOR_PRODUCTION_INGRESS_URL>"
           USE_TELEMETRY:
             value: "<USE_TELEMETRY>"
