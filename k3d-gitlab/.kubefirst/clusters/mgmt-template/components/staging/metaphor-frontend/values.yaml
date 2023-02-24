@@ -9,16 +9,16 @@ metaphor-frontend:
       traefik.ingress.kubernetes.io/router.middlewares: staging-redirect-to-https@kubernetescrd
     className: ''
     hosts:
-      - host: metaphor-staging.<DOMAIN_NAME>
+      - host: metaphor-frontend-staging.<DOMAIN_NAME>
         paths:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: metaphor-staging-tls
+      - secretName: metaphor-frontend-staging-tls
         hosts:
-          - metaphor-staging.<DOMAIN_NAME>
+          - metaphor-frontend-staging.<DOMAIN_NAME>
   metaphor:
-    host: https://metaphor-staging.<DOMAIN_NAME>/api
+    host: https://metaphor-frontend-staging.<DOMAIN_NAME>/api
   vaultMountPoint: kubefirst
   vaultSecretPath: staging/metaphor
   isLocal: true

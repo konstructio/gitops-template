@@ -1,19 +1,19 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: metaphor-development-ingress
+  name: metaphor-frontend-development-ingress
   namespace: development
 spec:
   entryPoints:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`metaphor-development.<DOMAIN_NAME>`)
+    match: Host(`metaphor-frontend-development.<DOMAIN_NAME>`)
     services:
-    - name: metaphor-development
+    - name: metaphor-frontend-development
       port: 80
   tls:
-    secretName: metaphor-development-tls
+    secretName: metaphor-frontend-development-tls
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware

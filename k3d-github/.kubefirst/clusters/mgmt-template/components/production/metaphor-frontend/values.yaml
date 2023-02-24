@@ -9,16 +9,16 @@ metaphor-frontend:
       traefik.ingress.kubernetes.io/router.middlewares: production-redirect-to-https@kubernetescrd
     className: ""
     hosts:
-      - host: metaphor-production.<DOMAIN_NAME>
+      - host: metaphor-frontend-production.<DOMAIN_NAME>
         paths:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: metaphor-production-tls
+      - secretName: metaphor-frontend-production-tls
         hosts:
-          - metaphor-production.<DOMAIN_NAME>
+          - metaphor-frontend-production.<DOMAIN_NAME>
   metaphor:
-    host: https://metaphor-production.<DOMAIN_NAME>/api
+    host: https://metaphor-frontend-production.<DOMAIN_NAME>/api
   vaultMountPoint: kubefirst
   vaultSecretPath: production/metaphor
   isLocal: true

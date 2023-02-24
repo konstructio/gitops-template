@@ -10,7 +10,6 @@ spec:
   source:
     repoURL: https://kubefirst.github.io/charts
     targetRevision: 2.1.0
-    chart: console
     helm:
       values: |-
         env:
