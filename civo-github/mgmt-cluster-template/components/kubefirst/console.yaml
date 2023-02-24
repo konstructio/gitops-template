@@ -10,6 +10,7 @@ spec:
   source:
     repoURL: https://kubefirst.github.io/charts
     targetRevision: 2.1.0
+    chart: console
     helm:
       values: |-
         env:
@@ -29,6 +30,8 @@ spec:
             value: "<DOMAIN_NAME>"
           GIT_PROVIDER:
             value: "<GIT_PROVIDER>"
+          GITHUB_OWNER:
+            value: "<GITHUB_OWNER>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
           KUBEFIRST_TEAM:

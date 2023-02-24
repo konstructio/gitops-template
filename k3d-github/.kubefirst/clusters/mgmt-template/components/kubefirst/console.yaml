@@ -30,6 +30,8 @@ spec:
             value: "<DOMAIN_NAME>"
           GIT_PROVIDER:
             value: "<GIT_PROVIDER>"
+          GITHUB_OWNER:
+            value: "<GITHUB_OWNER>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
           KUBEFIRST_TEAM:
