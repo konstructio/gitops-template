@@ -1,5 +1,15 @@
-resource "gitlab_project" "repo" {
-  name                   = var.repo_name
+terraform {
+  required_providers {
+    gitlab = {
+      source  = "gitlabhq/gitlab"
+      version = "15.8.0"
+    }
+  }
+}
+
+
+resource "gitlab_project" "project" {
+  name                   = var.project_name
   archived               = var.archived
   visibility_level       = "private"
   default_branch         = var.default_branch
