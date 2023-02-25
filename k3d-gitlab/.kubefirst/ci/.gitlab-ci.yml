@@ -37,11 +37,13 @@ publish:
     - |
       argo submit .argo/publish.yaml \
         --generate-name="${CI_PROJECT_NAME}-publish-${CI_COMMIT_SHORT_SHA}-" \
+        -p gitOwner="${GITLAB_GROUP_NAME}" \
         -p appName="${CI_PROJECT_NAME}" \
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p containerRegistryURL="registry.gitlab.com/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" \
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
+        -p ciCommitSha="${CI_COMMIT_SHA}" \
         --wait --log
     - echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
 
@@ -56,12 +58,14 @@ development:
     - |
       argo submit .argo/deploy.yaml \
         --generate-name="${CI_PROJECT_NAME}-development-${CI_COMMIT_SHORT_SHA}-" \
+        -p gitOwner="${GITLAB_GROUP_NAME}" \
         -p appName="${CI_PROJECT_NAME}" \
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="development" \
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
+        -p ciCommitSha="${CI_COMMIT_SHA}" \
         --wait --log
     - echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
 
@@ -76,12 +80,14 @@ staging:
     - |
       argo submit .argo/deploy.yaml \
         --generate-name="${CI_PROJECT_NAME}-staging-${CI_COMMIT_SHORT_SHA}-" \
+        -p gitOwner="${GITLAB_GROUP_NAME}" \
         -p appName="${CI_PROJECT_NAME}" \
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="staging" \
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
+        -p ciCommitSha="${CI_COMMIT_SHA}" \
         --wait --log
     - echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
 
@@ -96,11 +102,13 @@ release:
     - |
       argo submit .argo/release.yaml \
         --generate-name="${CI_PROJECT_NAME}-production-${CI_COMMIT_SHORT_SHA}-" \
+        -p gitOwner="${GITLAB_GROUP_NAME}" \
         -p appName="${CI_PROJECT_NAME}" \
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="production" \
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
+        -p ciCommitSha="${CI_COMMIT_SHA}" \
         --wait --log
     - echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"

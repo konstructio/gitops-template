@@ -9,7 +9,7 @@ spec:
       inputs:
         parameters:
           - name: imageTag
-            value: ghcr.io/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}:{{workflow.parameters.ciCommitSha}}
+            value: registry.gitlab.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}:{{workflow.parameters.ciCommitSha}}
           - name: appRepoUrl
             value: https://gitlab.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}
         artifacts:
