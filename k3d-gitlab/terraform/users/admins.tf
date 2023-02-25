@@ -2,34 +2,34 @@ data "vault_identity_group" "admins" {
   group_name = "admins"
 }
 
-resource "vault_identity_group_member_entity_ids" "admins_membership" {
-  member_entity_ids = [
-    module.kbot.vault_identity_entity_id
-    #    , module.admin_one.vault_identity_entity_id
-  ]
+# resource "vault_identity_group_member_entity_ids" "admins_membership" {
+#   member_entity_ids = [
+#     module.kbot.vault_identity_entity_id
+#     #    , module.admin_one.vault_identity_entity_id
+#   ]
+# 
+#   group_id = data.vault_identity_group.admins.group_id
+# }
+# 
+# variable "initial_password" {
+#   type    = string
+#   default = ""
+# }
 
-  group_id = data.vault_identity_group.admins.group_id
-}
-
-variable "initial_password" {
-  type    = string
-  default = ""
-}
-
-module "kbot" {
-  # kbot is your automation user for all automation
-  # on the platform that needs a bot account
-  source = "./modules/user/gitlab"
-
-  acl_policies      = ["admin"]
-  email             = "kbot-email@your-company.io"
-  first_name        = "Kubefirst"
-  last_name         = "Bot"
-  initial_password  = var.initial_password
-  username          = "kbot"
-  user_disabled     = false
-  userpass_accessor = data.vault_auth_backend.userpass.accessor
-}
+# module "kbot" {
+#   # kbot is your automation user for all automation
+#   # on the platform that needs a bot account
+#   source = "./modules/user/gitlab"
+# 
+#   acl_policies      = ["admin"]
+#   email             = "kbot-email@your-company.io"
+#   first_name        = "Kubefirst"
+#   last_name         = "Bot"
+#   initial_password  = var.initial_password
+#   username          = "kbot"
+#   user_disabled     = false
+#   userpass_accessor = data.vault_auth_backend.userpass.accessor
+# }
 
 # # note: when you uncomment and change admin_one below 
 # # to your admin's firstname_lastname, you must also uncomment 

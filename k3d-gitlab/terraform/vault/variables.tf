@@ -1,3 +1,13 @@
+variable "aws_access_key_id" {
+  default = ""
+  type    = string
+}
+
+variable "aws_secret_access_key" {
+  default = ""
+  type    = string
+}
+
 variable "gitlab_token" {
   type = string
 }
