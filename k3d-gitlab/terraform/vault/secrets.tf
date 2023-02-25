@@ -52,8 +52,8 @@ resource "vault_generic_secret" "gitlab_runner" {
   path      = "secret/gitlab-runner"
   data_json = <<EOT
 {
-  "runner-token" : "",
-  "runner-registration-token" : "${data.gitlab_group.owner.runners_token}"
+  "RUNNER_TOKEN" : "",
+  "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
 }
 EOT
 }

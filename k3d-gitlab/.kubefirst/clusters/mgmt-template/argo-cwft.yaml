@@ -4,7 +4,7 @@ metadata:
   name: argo-cwft-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "55"
+    argocd.argoproj.io/sync-wave: '55'
 spec:
   project: default
   source:

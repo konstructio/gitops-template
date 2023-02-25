@@ -4,7 +4,7 @@ metadata:
   name: vault
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "40"
+    argocd.argoproj.io/sync-wave: '40'
 spec:
   project: default
   source:
@@ -67,7 +67,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
   ignoreDifferences:
-  - group: admissionregistration.k8s.io
-    kind: MutatingWebhookConfiguration
-    jsonPointers:
-    - /webhooks
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+      jsonPointers:
+        - /webhooks
