@@ -73,11 +73,12 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      accesskey       = var.aws_access_key_id,
-      secretkey       = var.aws_secret_access_key,
-      BASIC_AUTH_USER = "k-ray",
-      BASIC_AUTH_PASS = "feedkraystars",
-      SSH_PRIVATE_KEY = var.kubefirst_bot_ssh_private_key,
+      accesskey             = var.aws_access_key_id,
+      secretkey             = var.aws_secret_access_key,
+      BASIC_AUTH_USER       = "k-ray",
+      BASIC_AUTH_PASS       = "feedkraystars",
+      SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
+      PERSONAL_ACCESS_TOKEN = var.gitlab_token
     }
   )
 
@@ -95,9 +96,9 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ARGO_SERVER_URL                     = "argo.argo.svc.cluster.local:2746",
       ATLANTIS_GL_HOSTNAME                = "gitlab.com",
       ATLANTIS_GL_TOKEN                   = var.gitlab_token,
-      ATLANTIS_GL_USER                    = "<GITLAB_OWNER>",
+      ATLANTIS_GL_USER                    = "<GITLAB_GROUP_NAME>",
       ATLANTIS_GL_WEBHOOK_SECRET          = var.atlantis_repo_webhook_secret,
-      GITLAB_OWNER                        = "<GITLAB_OWNER>",
+      GITLAB_OWNER                        = "<GITLAB_GROUP_NAME>",
       GITLAB_TOKEN                        = var.gitlab_token,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
