@@ -93,6 +93,8 @@ resource "vault_generic_secret" "ci_secrets" {
       BASIC_AUTH_PASS       = "feedkraystars",
       SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
       PERSONAL_ACCESS_TOKEN = var.gitlab_token
+      username              = "gitlabpat"
+      password              = var.gitlab_token
     }
   )
 
