@@ -4,9 +4,9 @@ metadata:
   name: gitlab-runner
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: '1'
 spec:
   destination:
     server: https://kubernetes.default.svc
@@ -20,7 +20,7 @@ spec:
         - name: rbac.create
           value: 'true'
       values: |-
-        gitlabUrl: https://gitlab.<AWS_HOSTED_ZONE_NAME>/
+        gitlabUrl: https://gitlab.com/
         replicas: 2
         concurrent: 10
         hostNetwork: true
