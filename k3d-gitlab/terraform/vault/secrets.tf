@@ -44,6 +44,20 @@ resource "vault_generic_secret" "development_metaphor" {
 EOT
 }
 
+data "gitlab_group" "owner" {
+  group_id = var.owner_group_id
+}
+
+resource "vault_generic_secret" "gitlab_runner" {
+  path      = "secret/gitlab-runner"
+  data_json = <<EOT
+{
+  "runner-token" : "",
+  "runner-registration-token" : ${data.gitlab_group.owner.runners_token}
+}
+EOT
+}
+
 resource "vault_generic_secret" "staging_metaphor" {
   path = "secret/staging/metaphor"
   # note: these secrets are not actually sensitive.
