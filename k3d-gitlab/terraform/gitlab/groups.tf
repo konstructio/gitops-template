@@ -12,6 +12,7 @@ resource "gitlab_group" "admins" {
 resource "gitlab_group" "developers" {
   name        = "developers"
   path        = "developers"
+  parent_id   = data.gitlab_group.owner.group_id
   description = "developers group"
 }
 

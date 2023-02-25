@@ -38,13 +38,10 @@ module "gitops" {
   remove_source_branch_after_merge      = true
 }
 
-resource "gitlab_project_hook" "atlantis" {
-  depends_on = [
-    module.gitops
-  ]
-  project               = "kubefirst/gitops"
-  url                   = "https://atlantis.<DOMAIN_NAME>/events"
-  merge_requests_events = true
-  push_events           = true
-  note_events           = true
-}
+#resource "gitlab_project_hook" "atlantis" {
+#  project               = module.gitops.path
+#  url                   = "https://atlantis.<DOMAIN_NAME>/events"
+#  merge_requests_events = true
+#  push_events           = true
+#  note_events           = true
+#}
