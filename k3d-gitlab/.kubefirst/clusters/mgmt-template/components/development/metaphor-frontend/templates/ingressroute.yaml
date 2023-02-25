@@ -7,11 +7,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - kind: Rule
-    match: Host(`metaphor-frontend-development.<DOMAIN_NAME>`)
-    services:
-    - name: metaphor-frontend-development
-      port: 80
+    - kind: Rule
+      match: Host(`metaphor-frontend-development.<DOMAIN_NAME>`)
+      services:
+        - name: metaphor-frontend-development
+          port: 80
   tls:
     secretName: metaphor-frontend-development-tls
 ---

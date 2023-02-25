@@ -4,10 +4,10 @@ metadata:
   name: development
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "40"
-    addons.kubefirst.io/name: metaphor    
+    argocd.argoproj.io/sync-wave: '40'
+    addons.kubefirst.io/name: metaphor
 spec:
   project: default
   source:
