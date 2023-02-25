@@ -11,7 +11,7 @@ spec:
           - name: imageTag
             value: ghcr.io/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}:{{workflow.parameters.ciCommitSha}}
           - name: appRepoUrl
-            value: https://github.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}
+            value: https://gitlab.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}
         artifacts:
           - name: app-source
             path: '/work/{{workflow.parameters.appName}}'
