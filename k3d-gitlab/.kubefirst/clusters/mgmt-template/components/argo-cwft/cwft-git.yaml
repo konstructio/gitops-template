@@ -74,7 +74,7 @@ spec:
               name: ci-secrets
         # todo review last two git commands
         args:
-          - git remote set-url origin https://${username}:${password}@gitlab.com/{{inputs.parameters.gitOwner}}/{{inputs.parameters.repoName}}.git >/dev/null 2>&1;
+          - git remote set-url origin https://${username}:${password}@{{workflow.parameters.gitServerUrl}}/{{inputs.parameters.gitOwner}}/{{inputs.parameters.repoName}}.git >/dev/null 2>&1;
             git remote -v;
             git config --global user.email 'k-ray@example.com';
             git config --global user.name 'kubefirst-bot';
@@ -83,3 +83,46 @@ spec:
             git add .;
             git commit -m "{{inputs.parameters.commitMessage}}" || echo "Assuming this was committed on previous run, not erroring out";
             git push || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+    - name: git-checkout-with-gitops-ssh
+      inputs:
+        parameters:
+          - name: appDir
+          - name: branch
+            value: '{{workflow.parameters.branch}}'
+            default: main
+          - name: buildImage
+            value: '{{workflow.parameters.buildImage}}'
+            default: kubefirst/ci-tools:39e6cb
+          - name: gitopsRepoUrl
+            value: '{{workflow.parameters.gitopsRepoUrl}}'
+            default: 'ssh://<GITOPS_REPO_GIT_URL>'
+          - name: gitRepoUrl
+        artifacts:
+          - name: repo-source
+            path: '{{inputs.parameters.appDir}}'
+            git:
+              repo: '{{inputs.parameters.gitRepoUrl}}'
+              revision: '{{inputs.parameters.branch}}'
+              insecureIgnoreHostKey: true
+              sshPrivateKeySecret:
+                name: ci-secrets
+                key: SSH_PRIVATE_KEY
+          - name: gitops-source
+            path: /src/gitops
+            git:
+              repo: 'ssh://<GITOPS_REPO_GIT_URL>'
+              revision: 'main'
+              insecureIgnoreHostKey: true
+              sshPrivateKeySecret:
+                name: ci-secrets
+                key: SSH_PRIVATE_KEY
+      container:
+        image: golang:latest
+        command: ['/bin/sh', '-c']
+        args:
+          - ls -la /src &&
+            ls -la {{inputs.parameters.appDir}}
+      outputs:
+        artifacts:
+          - name: repo-source
+            path: /src
