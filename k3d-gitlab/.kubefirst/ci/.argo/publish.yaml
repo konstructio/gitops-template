@@ -6,7 +6,7 @@ spec:
   entrypoint: main
   volumeClaimTemplates:
     - metadata:
-        name: src
+        name: work
       spec:
         accessModes: ['ReadWriteOnce']
         resources:
