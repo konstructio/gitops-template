@@ -38,10 +38,10 @@ module "gitops" {
   remove_source_branch_after_merge      = true
 }
 
-#resource "gitlab_project_hook" "atlantis" {
-#  project               = module.gitops.path
-#  url                   = "https://atlantis.<DOMAIN_NAME>/events"
-#  merge_requests_events = true
-#  push_events           = true
-#  note_events           = true
-#}
+resource "gitlab_project_hook" "atlantis" {
+  project               = module.gitops.path
+  url                   = var.atlantis_repo_webhook_url
+  merge_requests_events = true
+  push_events           = true
+  note_events           = true
+}
