@@ -8,8 +8,6 @@ spec:
     - name: build-push
       inputs:
         parameters:
-          - name: imageTag
-            value: registry.gitlab.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}:{{workflow.parameters.ciCommitSha}}
           - name: appRepoUrl
             value: https://gitlab.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}
         artifacts:
@@ -55,4 +53,4 @@ spec:
           - --local
           - dockerfile=build
           - --output
-          - type=image,name={{inputs.parameters.imageTag}},push=true
+          - type=image,name={{workflow.parameters.containerRegistryURL}},push=true

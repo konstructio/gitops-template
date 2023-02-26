@@ -14,20 +14,20 @@ spec:
         parameters:
           - name: appName
             value: '{{workflow.parameters.appName}}'
+          - name: containerRegistryURL
+            value: '{{workflow.parameters.containerRegistryURL}}'
           - name: dockerFilePath
             value: '{{workflow.parameters.dockerFilePath}}'
-          - name: imageTag
-            value: 'registry.gitlab.com/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}:{{workflow.parameters.ciCommitSha}}'
       container:
-        image: docker:latest
+        image: kubefirst/chubbo:0.2
         command: ['bash', '-c']
         workingDir: '/src/{{inputs.parameters.appName}}'
         args:
           - until docker ps; do sleep 3; done;
             docker login registry.gitlab.com --username ${username} --password ${password};
-            echo building {{inputs.parameters.imageTag}};
-            docker build -t {{inputs.parameters.imageTag}} -f {{inputs.parameters.dockerFilePath}} .;
-            docker push {{inputs.parameters.imageTag}};
+            echo building {{workflow.parameters.containerRegistryURL}};
+            docker build -t {{workflow.parameters.containerRegistryURL}} -f {{inputs.parameters.dockerFilePath}} .;
+            docker push {{workflow.parameters.containerRegistryURL}};
         env:
           - name: DOCKER_HOST
             value: 'tcp://localhost:2375'

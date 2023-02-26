@@ -11,6 +11,14 @@ spec:
               name: cwft-git
               template: checkout-with-gitops
               clusterScope: true
+            arguments:
+              parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
+                - name: branch
+                  value: '{{workflow.parameters.branch}}'
+                - name: gitUrlNoProtocol
+                  value: '{{workflow.parameters.gitUrlNoProtocol}}'
         - - name: get-initial-chart-version
             templateRef:
               name: cwft-helm
@@ -21,6 +29,8 @@ spec:
                 - name: repo-source
                   from: '{{steps.checkout.outputs.artifacts.repo-source}}'
               parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
                 - name: chartDir
                   value: 'charts/{{workflow.parameters.appName}}'
         - - name: set-chart-versions
@@ -33,10 +43,14 @@ spec:
                 - name: repo-source
                   from: '{{steps.checkout.outputs.artifacts.repo-source}}'
               parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
                 - name: chartDir
                   value: 'charts/{{workflow.parameters.appName}}'
                 - name: chartVersion
                   value: '{{steps.get-initial-chart-version.outputs.result}}'
+                - name: shortSha
+                  value: '{{workflow.parameters.shortSha}}'
         - - name: publish-helm-chart
             templateRef:
               name: cwft-helm
@@ -47,6 +61,8 @@ spec:
                 - name: repo-source
                   from: '{{steps.set-chart-versions.outputs.artifacts.repo-source}}'
               parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
                 - name: chartDir
                   value: 'charts/{{workflow.parameters.appName}}'
         - - name: set-environment-version
@@ -57,10 +73,10 @@ spec:
             arguments:
               artifacts:
                 - name: repo-source
-                  from: '{{steps.set-chart-versions.outputs.artifacts.repo-source}}'
+                  from: '{{steps.checkout.outputs.artifacts.repo-source}}'
               parameters:
                 - name: fullChartPath
-                  value: 'components/{{workflow.parameters.environment}}/{{workflow.parameters.appName}}/Chart.yaml'
+                  value: 'registry/{{workflow.parameters.clusterName}}/{{workflow.parameters.appName}}/Chart.yaml'
                 - name: chartVersion
                   value: '{{steps.get-initial-chart-version.outputs.result}}'
                 - name: environment
@@ -77,6 +93,8 @@ spec:
               parameters:
                 - name: repoName
                   value: 'gitops'
+                - name: gitUrlNoProtocol
+                  value: '{{workflow.parameters.gitUrlNoProtocol}}'
                 - name: commitMessage
                   value: 'setting {{workflow.parameters.appName}} {{workflow.parameters.environment}} to chart version {{steps.get-initial-chart-version.outputs.result}}'
         - - name: increment-chart-minor
@@ -105,6 +123,8 @@ spec:
                 - name: repo-source
                   from: '{{steps.increment-chart-minor.outputs.artifacts.repo-source}}'
               parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
                 - name: chartDir
                   value: 'charts/{{workflow.parameters.appName}}'
         - - name: commit-chart-increment
@@ -119,6 +139,8 @@ spec:
               parameters:
                 - name: repoName
                   value: '{{workflow.parameters.appName}}'
+                - name: gitUrlNoProtocol
+                  value: '{{workflow.parameters.gitUrlNoProtocol}}'
                 - name: commitMessage
                   # Please, be careful updating this message, it must comply with:
                   # github skip ci rule: https://github.blog/changelog/2021-02-08-github-actions-skip-pull-request-and-push-workflows-with-skip-ci/
