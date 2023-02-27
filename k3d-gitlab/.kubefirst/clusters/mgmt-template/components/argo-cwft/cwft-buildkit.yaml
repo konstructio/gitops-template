@@ -35,13 +35,13 @@ spec:
           - name: work
             mountPath: /work
           - name: docker-config
-            mountPath: /.docker
+            mountPath: /docker-config
         workingDir: /work/{{workflow.parameters.appName}}
         env:
           - name: BUILDKITD_FLAGS
             value: --oci-worker-no-process-sandbox
           - name: DOCKER_CONFIG
-            value: /.docker
+            value: /docker-config
         command:
           - buildctl-daemonless.sh
         args:
