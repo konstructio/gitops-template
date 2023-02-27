@@ -62,7 +62,6 @@ development:
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="development" \
-        -p gitServerUrl="gitlab.com" \
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
         -p ciCommitSha="${CI_COMMIT_SHA}" \
@@ -85,7 +84,6 @@ staging:
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="staging" \
-        -p gitServerUrl="gitlab.com" \
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
         -p ciCommitSha="${CI_COMMIT_SHA}" \
@@ -108,7 +106,6 @@ release:
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="production" \
-        -p gitServerUrl="gitlab.com" \
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
         -p ciCommitSha="${CI_COMMIT_SHA}" \
