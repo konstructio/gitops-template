@@ -23,6 +23,8 @@ spec:
               passwordSecret:
                 name: ci-secrets
                 key: password
+          - name: docker-config
+            path: '/tmp/config.json'
       # Mount the configuration so we can push the image.
       # This should create the /.docker/config.json file.
       # volumes:
@@ -34,14 +36,12 @@ spec:
         volumeMounts:
           - name: work
             mountPath: /work
-          - name: docker-config
-            mountPath: /docker-config
         workingDir: /work/{{workflow.parameters.appName}}
         env:
           - name: BUILDKITD_FLAGS
             value: --oci-worker-no-process-sandbox
           - name: DOCKER_CONFIG
-            value: /docker-config
+            value: /tmp
         command:
           - buildctl-daemonless.sh
         args:
@@ -54,3 +54,17 @@ spec:
           - dockerfile=build
           - --output
           - type=image,name={{workflow.parameters.containerRegistryURL}},push=true
+    - name: create-docker-config
+      inputs:
+        parameters:
+          - name: docker-config
+            value: '{{workflow.parameters.gitlabRegistryAuth}}'
+      container:
+        image: kubefirst/chubbo:0.2
+        command: ['bash', '-c']
+        args:
+          ['echo {{inputs.parameters.docker-config}} | tee /tmp/config.json']
+      outputs:
+        artifacts:
+          - name: docker-config
+            path: /tmp/config.json
