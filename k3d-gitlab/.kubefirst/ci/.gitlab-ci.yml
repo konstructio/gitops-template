@@ -20,31 +20,54 @@ variables:
   - argo version --short
   - cd $CI_PROJECT_DIR
 
-.create-registry-auth: &create-registry-auth
-  - >
-    echo "{
-      \"auths\": {
-        \"$CI_REGISTRY\": {
-          \"auth\": \"$(echo -n \"$CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD\" | base64)\"
-        }
-      }
-    }" >> $HOME/dockerconfig.json
+# .create-registry-auth: &create-registry-auth
+#   - >
+#     echo "{
+#       \"auths\": {
+#         \"$CI_REGISTRY\": {
+#           \"auth\": \"$(echo -n \"$CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD\" | base64)\"
+#         }
+#       }
+#     }" >> $HOME/dockerconfig.json
 
 stages:
-  - build
+  - publish
   - development
   - staging
   - release
 
-build:
-  image: docker:20.10.16
-  stage: build
-  services:
-    - docker:20.10.16-dind
+# build:
+#   image: docker:20.10.16
+#   stage: build
+#   services:
+#     - docker:20.10.16-dind
+#   script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - docker build -f build/Dockerfile -t $CI_REGISTRY/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA} .
+#     - docker push $CI_REGISTRY/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
+
+publish:
+  image: '${BUILDER_IMAGE}'
+  stage: publish
+  only:
+    - main
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -f build/Dockerfile -t $CI_REGISTRY/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA} .
-    - docker push $CI_REGISTRY/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
+    - *setup-argocd
+    - echo "commit sha $CI_COMMIT_SHA"
+    - |
+      argo submit .argo/publish.yaml \
+        --generate-name="${CI_PROJECT_NAME}-publish-${CI_COMMIT_SHORT_SHA}-" \
+        -p gitOwner="${GITLAB_GROUP_NAME}" \
+        -p appName="${CI_PROJECT_NAME}" \
+        -p branch="${CI_COMMIT_REF_NAME}" \
+        -p containerRegistryURL="registry.gitlab.com/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" \
+        -p gitServerUrl="gitlab.com" \
+        -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
+        -p shortSha="${CI_COMMIT_SHORT_SHA}" \
+        -p ciCommitSha="${CI_COMMIT_SHA}" \
+        -p gitlabRegistryAuth="$(cat $HOME/dockerconfig.json)" \
+        --wait --log
+    - echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
 
 development:
   image: '${BUILDER_IMAGE}'
