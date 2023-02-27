@@ -6,7 +6,7 @@ spec:
   entrypoint: main
   volumeClaimTemplates:
     - metadata:
-        name: work
+        name: src
       spec:
         accessModes: ['ReadWriteOnce']
         resources:
@@ -16,17 +16,12 @@ spec:
   templates:
     - name: main
       steps:
-        - - name: preload-docker-config
-            template: create-docker-config
         - - name: publish-container
             templateRef:
               name: cwft-buildkit
               template: build-push
               clusterScope: true
             arguments:
-              artifacts:
-                - name: docker-config
-                  from: '{{steps.preload-docker-config.outputs.artifacts.docker-config}}'
               parameters:
                 - name: appName
                   value: '{{workflow.parameters.appName}}'
@@ -36,8 +31,6 @@ spec:
                   value: '{{workflow.parameters.containerRegistryURL}}'
                 - name: gitUrlNoProtocol
                   value: '{{workflow.parameters.gitUrlNoProtocol}}'
-                - name: gitlabRegistryAuth
-                  value: '{{workflow.parameters.gitlabRegistryAuth}}'
         - - name: checkout
             templateRef:
               name: cwft-git
@@ -97,17 +90,3 @@ spec:
                   value: '{{workflow.parameters.appName}}'
                 - name: chartDir
                   value: 'charts/{{workflow.parameters.appName}}'
-    - name: create-docker-config
-      inputs:
-        parameters:
-          - name: docker-config
-            value: '{{workflow.parameters.gitlabRegistryAuth}}'
-      container:
-        image: kubefirst/chubbo:0.2
-        command: ['bash', '-c']
-        args:
-          ['echo "{{inputs.parameters.docker-config}}" | tee /tmp/config.json']
-      outputs:
-        artifacts:
-          - name: docker-config
-            path: /tmp/config.json
