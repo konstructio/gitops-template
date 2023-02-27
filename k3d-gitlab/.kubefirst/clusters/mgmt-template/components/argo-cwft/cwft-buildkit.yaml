@@ -25,12 +25,12 @@ spec:
                 key: password
       # Mount the configuration so we can push the image.
       # This should create the /.docker/config.json file.
-      volumes:
-        - name: docker-config
-          secret:
-            secretName: docker-config
+      # volumes:
+      #   - name: docker-config
+      #     secret:
+      #       secretName: docker-config
       container:
-        image: moby/buildkit:v0.9.3-rootless
+        image: moby/buildkit:v0.11.3-rootless
         volumeMounts:
           - name: work
             mountPath: /work
