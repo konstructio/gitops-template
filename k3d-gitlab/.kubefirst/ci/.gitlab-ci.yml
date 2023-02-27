@@ -31,34 +31,20 @@ variables:
     }" >> $HOME/dockerconfig.json
 
 stages:
-  - publish
+  - build
   - development
   - staging
   - release
 
-publish:
-  image: '${BUILDER_IMAGE}'
-  stage: publish
-  only:
-    - main
+build:
+  image: docker:20.10.16
+  stage: build
+  services:
+    - docker:20.10.16-dind
   script:
-    - *setup-argocd
-    - *create-registry-auth
-    - echo "commit sha $CI_COMMIT_SHA"
-    - |
-      argo submit .argo/publish.yaml \
-        --generate-name="${CI_PROJECT_NAME}-publish-${CI_COMMIT_SHORT_SHA}-" \
-        -p gitOwner="${GITLAB_GROUP_NAME}" \
-        -p appName="${CI_PROJECT_NAME}" \
-        -p branch="${CI_COMMIT_REF_NAME}" \
-        -p containerRegistryURL="registry.gitlab.com/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" \
-        -p gitServerUrl="gitlab.com" \
-        -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
-        -p shortSha="${CI_COMMIT_SHORT_SHA}" \
-        -p ciCommitSha="${CI_COMMIT_SHA}" \
-        -p gitlabRegistryAuth="$(cat $HOME/dockerconfig.json)" \
-        --wait --log
-    - echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -f build/Dockerfile -t $CI_REGISTRY/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA} .
+    - docker push $CI_REGISTRY/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
 
 development:
   image: '${BUILDER_IMAGE}'
