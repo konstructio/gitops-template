@@ -12,28 +12,8 @@ spec:
         resources:
           requests:
             storage: 64Mi
-    - metadata:
-        name: docker-config
-      spec:
-        accessModes: ['ReadWriteOnce']
-        resources:
-          requests:
-            storage: 64Mi
   serviceAccountName: argo-server
   templates:
-    - name: create-docker-config
-      inputs:
-        parameters:
-          - name: config-data
-            value: '{{workflow.parameters.gitlabRegistryAuth}}'
-      container:
-        image: kubefirst/chubbo:0.2
-        command: ['bash', '-c']
-        args:
-          ['echo {{inputs.parameters.config-data}} | tee /mnt/out/config.json']
-        volumeMounts:
-          - name: docker-config
-            mountPath: /mnt/out
     - name: main
       steps:
         - - name: publish-container
@@ -51,6 +31,8 @@ spec:
                   value: '{{workflow.parameters.containerRegistryURL}}'
                 - name: gitUrlNoProtocol
                   value: '{{workflow.parameters.gitUrlNoProtocol}}'
+                - name: gitlabRegistryAuth
+                  value: '{{workflow.parameters.gitlabRegistryAuth}}'
         - - name: checkout
             templateRef:
               name: cwft-git
