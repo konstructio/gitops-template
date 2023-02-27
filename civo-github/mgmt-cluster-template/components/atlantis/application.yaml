@@ -13,6 +13,9 @@ spec:
     targetRevision: 4.10.3
     helm:
       values: |-
+        statefulSet:
+          annotations:
+            secret.reloader.stakater.com/reload: "atlantis-secrets"
         atlantisUrl: https://atlantis.<DOMAIN_NAME>
         orgAllowlist: <ATLANTIS_ALLOW_LIST>
         hidePrevPlanComments: true
