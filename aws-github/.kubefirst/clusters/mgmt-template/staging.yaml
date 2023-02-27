@@ -7,7 +7,6 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
   annotations:
     argocd.argoproj.io/sync-wave: "40"
-    addons.kubefirst.io/name: metaphor
 spec:
   project: default
   source:

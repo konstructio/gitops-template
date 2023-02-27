@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: cwft-buildkit
+spec:
+  entrypoint: build-push
+  templates:
+    - name: build-push
+      inputs:
+        parameters:
+          - name: appName
+          - name: branch
+          - name: containerRegistryURL
+          - name: gitUrlNoProtocol
+        artifacts:
+        - name: app-source
+          path: "/src/{{inputs.parameters.appName}}"
+          git:
+            repo: "{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.appName}}.git"
+            branch: "{{inputs.parameters.branch}}"
+            singleBranch: true
+            insecureIgnoreHostKey: true
+            sshPrivateKeySecret:
+              name: ci-secrets
+              key: SSH_PRIVATE_KEY
+      volumes:
+        - name: docker-config
+          secret:
+            secretName: docker-config
+      container:
+        image: moby/buildkit:v0.9.3-rootless
+        volumeMounts:
+          - name: src
+            mountPath: /src
+          - name: docker-config
+            mountPath: /.docker
+        workingDir: /src/{{inputs.parameters.appName}}
+        env:
+          - name: BUILDKITD_FLAGS
+            value: --oci-worker-no-process-sandbox
+          - name: DOCKER_CONFIG
+            value: /.docker
+        command:
+          - buildctl-daemonless.sh
+        args:
+          - build
+          - --frontend
+          - dockerfile.v0
+          - --local
+          - context=.
+          - --local
+          - dockerfile=build
+          - --output
+          - type=image,name={{inputs.parameters.containerRegistryURL}},push=true

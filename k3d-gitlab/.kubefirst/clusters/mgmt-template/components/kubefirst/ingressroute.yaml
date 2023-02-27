@@ -7,11 +7,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - kind: Rule
-    match: Host(`kubefirst.<DOMAIN_NAME>`)
-    services:
-    - name: kubefirst-console
-      port: 80
+    - kind: Rule
+      match: Host(`kubefirst.<DOMAIN_NAME>`)
+      services:
+        - name: kubefirst-console
+          port: 80
   tls:
     secretName: kubefirst-tls
 ---

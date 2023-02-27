@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket  = "<TF_STATE_BUCKET>"
+    bucket  = "<KUBEFIRST_STATE_STORE_BUCKET>"
     key     = "terraform/base/tfstate.tf"
-    region  = "<AWS_DEFAULT_REGION>"
+    region  = "<CLOUD_REGION>"
     encrypt = true
   }
 }
@@ -22,7 +22,7 @@ module "eks" {
 
   aws_account_id  = var.aws_account_id
   cluster_name    = "<CLUSTER_NAME>"
-  lifecycle_nodes = var.lifecycle_nodes
+  lifecycle_nodes = "<AWS_LIFECYCLE_NODES>"
   ami_type        = var.ami_type
   instance_type   = var.instance_type
 }

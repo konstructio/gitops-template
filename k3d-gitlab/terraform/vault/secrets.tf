@@ -44,6 +44,20 @@ resource "vault_generic_secret" "development_metaphor" {
 EOT
 }
 
+data "gitlab_group" "owner" {
+  group_id = var.owner_group_id
+}
+
+resource "vault_generic_secret" "gitlab_runner" {
+  path      = "secret/gitlab-runner"
+  data_json = <<EOT
+{
+  "RUNNER_TOKEN" : "",
+  "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
+}
+EOT
+}
+
 resource "vault_generic_secret" "staging_metaphor" {
   path = "secret/staging/metaphor"
   # note: these secrets are not actually sensitive.
@@ -73,11 +87,14 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      accesskey       = var.aws_access_key_id,
-      secretkey       = var.aws_secret_access_key,
-      BASIC_AUTH_USER = "k-ray",
-      BASIC_AUTH_PASS = "feedkraystars",
-      SSH_PRIVATE_KEY = var.kubefirst_bot_ssh_private_key,
+      accesskey             = var.aws_access_key_id,
+      secretkey             = var.aws_secret_access_key,
+      BASIC_AUTH_USER       = "k-ray",
+      BASIC_AUTH_PASS       = "feedkraystars",
+      SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
+      PERSONAL_ACCESS_TOKEN = var.gitlab_token
+      username              = "gitlabpat"
+      password              = var.gitlab_token
     }
   )
 

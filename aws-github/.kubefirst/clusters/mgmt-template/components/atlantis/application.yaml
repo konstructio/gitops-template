@@ -4,30 +4,20 @@ metadata:
   name: atlantis
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "60"
+    argocd.argoproj.io/sync-wave: '60'
 spec:
   project: default
   source:
-    repoURL: 'https://runatlantis.github.io/helm-charts'
+    repoURL: https://runatlantis.github.io/helm-charts
     chart: atlantis
     targetRevision: 4.10.3
     helm:
       values: |-
         atlantisUrl: https://atlantis.<DOMAIN_NAME>
-        orgAllowList: <ATLANTIS_ALLOW_LIST>
-        ingress:
-          enabled: true
-          annotations:
-            traefik.ingress.kubernetes.io/router.middlewares: atlantis-redirect-to-https@kubernetescrd
-          path: /
-          pathType: Prefix
-          host: atlantis.<DOMAIN_NAME>
-          tls:
-            - secretName: atlantis-tls
-              hosts:
-                - atlantis.<DOMAIN_NAME>
+        orgAllowlist: <ATLANTIS_ALLOW_LIST>
+        hidePrevPlanComments: true
         serviceAccount:
-          create: true
+          create: false
           mount: true
         resources:
           limits:
@@ -36,6 +26,17 @@ spec:
           requests:
             cpu: 400m
             memory: 512Mi
+        ingress:
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          path: /
+          host: atlantis.<DOMAIN_NAME>
+          ingressClassName: "nginx"
+          tls:
+            - secretName: atlantis-tls
+              hosts:
+                - atlantis.<DOMAIN_NAME>
         loadEnvFromSecrets:
           - atlantis-secrets
         repoConfig: |
@@ -46,7 +47,7 @@ spec:
             allowed_overrides: [apply_requirements]
             apply_requirements: [mergeable]
   destination:
-    server: "https://kubernetes.default.svc"
+    server: 'https://kubernetes.default.svc'
     namespace: atlantis
   syncPolicy:
     automated:
