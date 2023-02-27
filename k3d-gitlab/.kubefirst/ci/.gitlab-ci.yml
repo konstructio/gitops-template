@@ -20,6 +20,17 @@ variables:
   - argo version --short
   - cd $CI_PROJECT_DIR
 
+.create-registry-auth: &create-registry-auth
+  - >
+    echo "{
+      \"auths\": {
+        \"$CI_REGISTRY\": {
+          \"auth\": \"$(echo -n \"$CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD\" | base64)\"
+        }
+      }
+    }" >> $HOME/dockerconfig.json
+  - cat $HOME/dockerconfig.json
+
 stages:
   - publish
   - development
@@ -33,6 +44,7 @@ publish:
     - main
   script:
     - *setup-argocd
+    - *create-registry-auth
     - echo "commit sha $CI_COMMIT_SHA"
     - |
       argo submit .argo/publish.yaml \
@@ -45,6 +57,7 @@ publish:
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
         -p ciCommitSha="${CI_COMMIT_SHA}" \
+        -p gitlabRegistryAuth="$(cat $HOME/dockerconfig.json)" \
         --wait --log
     - echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
 
