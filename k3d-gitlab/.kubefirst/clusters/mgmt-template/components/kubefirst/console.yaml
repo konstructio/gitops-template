@@ -23,7 +23,7 @@ spec:
           GITLAB_HOST:
             value: "<GITLAB_HOST>"
           GITLAB_OWNER:
-            value: "<GITLAB_OWNER>"
+            value: "<GITLAB_GROUP_NAME>"
           ARGO_WORKFLOWS_URL:
             value: "<ARGO_WORKFLOWS_INGRESS_URL>"
           VAULT_URL:
