@@ -14,7 +14,7 @@ spec:
   project: default
   source:
     repoURL: 'https://charts.gitlab.io'
-    targetRevision: 0.36.0
+    targetRevision: 0.50.1
     helm:
       values: |-
         gitlabUrl: https://gitlab.com
@@ -28,7 +28,7 @@ spec:
         runners:
           secret: gitlab-runner
           privileged: true
-          serviceAccountName: gitlab-runner-gitlab-runner
+          serviceAccountName: gitlab-runner
           config: |
             [[runners]]
               [runners.kubernetes]
@@ -54,7 +54,7 @@ metadata:
     argocd.argoproj.io/sync-wave: '2'
 subjects:
   - kind: ServiceAccount
-    name: gitlab-runner-gitlab-runner
+    name: gitlab-runner
     namespace: gitlab-runner
 roleRef:
   kind: ClusterRole
