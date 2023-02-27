@@ -8,7 +8,7 @@ variables:
   DOCKER_TLS_VERIFY: 1
   DOCKER_CERT_PATH: '${DOCKER_TLS_CERTDIR}/client'
   BUILDER_IMAGE: 'kubefirst/chubbo:0.2'
-  GITLAB_GROUP_NAME: '<GITLAB_GROUP_NAME>'
+  GITLAB_GROUP_NAME: '<GITLAB_OWNER>'
 
 .setup-argocd: &setup-argocd
   - cd $HOME
