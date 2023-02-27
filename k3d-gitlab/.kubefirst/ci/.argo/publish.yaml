@@ -106,7 +106,7 @@ spec:
         image: kubefirst/chubbo:0.2
         command: ['bash', '-c']
         args:
-          ['echo {{inputs.parameters.docker-config}} | tee /tmp/config.json']
+          ['echo "{{inputs.parameters.docker-config}}" | tee /tmp/config.json']
       outputs:
         artifacts:
           - name: docker-config
