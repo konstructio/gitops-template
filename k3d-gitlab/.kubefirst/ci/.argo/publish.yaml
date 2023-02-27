@@ -21,14 +21,14 @@ spec:
             storage: 64Mi
   serviceAccountName: argo-server
   templates:
-    - name: preload
+    - name: create-docker-config
+      inputs:
+        parameters:
+          - name: config-data
+            value: '{{workflow.parameters.gitlabRegistryAuth}}'
       container:
         image: kubefirst/chubbo:0.2
         command: ['bash', '-c']
-        arguments:
-          parameters:
-            - name: config-data
-              value: '{{workflow.parameters.gitlabRegistryAuth}}'
         args:
           ['echo {{inputs.parameters.config-data}} | tee /mnt/out/config.json']
         volumeMounts:

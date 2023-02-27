@@ -29,7 +29,6 @@ variables:
         }
       }
     }" >> $HOME/dockerconfig.json
-  - cat $HOME/dockerconfig.json
 
 stages:
   - publish
