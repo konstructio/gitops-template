@@ -73,11 +73,12 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      accesskey       = var.aws_access_key_id,
-      secretkey       = var.aws_secret_access_key,
-      BASIC_AUTH_USER = "k-ray",
-      BASIC_AUTH_PASS = "feedkraystars",
-      SSH_PRIVATE_KEY = var.kubefirst_bot_ssh_private_key,
+      accesskey             = var.aws_access_key_id,
+      secretkey             = var.aws_secret_access_key,
+      BASIC_AUTH_USER       = "k-ray",
+      BASIC_AUTH_PASS       = "feedkraystars",
+      SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
+      PERSONAL_ACCESS_TOKEN = var.github_token,
     }
   )
 
