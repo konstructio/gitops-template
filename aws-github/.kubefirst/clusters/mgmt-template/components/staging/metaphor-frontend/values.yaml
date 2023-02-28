@@ -7,7 +7,7 @@ metaphor-frontend:
     className: nginx
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      cert-manager.io/cluster-issuer: "letsencrypt-staging"
     hosts:
       - host: metaphor-frontend-staging.<DOMAIN_NAME>
         paths:
