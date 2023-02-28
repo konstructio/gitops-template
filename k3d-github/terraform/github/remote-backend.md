@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket   = "kubefirst-state-store"
-    key      = "terraform/github/tfstate.tf"
+    key      = "terraform/github/terraform.tfstate"
     endpoint = "http://minio.localdev.me"
 
     access_key                  = "k-ray"

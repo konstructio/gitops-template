@@ -5,7 +5,7 @@ provider "vault" {
 terraform {
   backend "s3" {
     bucket   = "kubefirst-state-store"
-    key      = "terraform/vault/tfstate.tf"
+    key      = "terraform/vault/terraform.tfstate"
     endpoint = "http://minio.localdev.me"
 
     access_key                  = "k-ray"
