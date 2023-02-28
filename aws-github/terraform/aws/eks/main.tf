@@ -106,7 +106,7 @@ module "eks" {
   # write_kubeconfig = false
   manage_aws_auth = false
 
-  kubeconfig_output_path = "./kubeconfig"
+  kubeconfig_output_path = "../../../kubeconfig"
 
   vpc_id = module.vpc.vpc_id
 }
