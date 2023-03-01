@@ -43,10 +43,17 @@ spec:
               name: ci-secrets
               key: secretkey
             insecure: false
-            bucket: <KUBEFIRST_STATE_STORE_BUCKET>
-            endpoint: objectstore.<CLOUD_REGION>.civo.com
+            bucket: <KUBEFIRST_ARTIFACTS_BUCKET>
+            keyFormat: "argo-workflows/artifacts\
+              /{{workflow.creationTimestamp.Y}}\
+              /{{workflow.creationTimestamp.m}}\
+              /{{workflow.creationTimestamp.d}}\
+              /{{workflow.uid}}\
+              /{{workflow.name}}\
+              /{{pod.name}}"
+            endpoint: s3.amazonaws.com
             region: <CLOUD_REGION>
-            useSDKCreds: false
+            useSDKCreds: true
             encryptionOptions:
               enableEncryption: false
     chart: argo-workflows
