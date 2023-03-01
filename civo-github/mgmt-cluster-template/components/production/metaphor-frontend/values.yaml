@@ -2,12 +2,12 @@ metaphor-frontend:
   image:
     repository: ghcr.io/<GITHUB_OWNER>/metaphor-frontend
   imagePullSecrets:
-  - name: docker-config
+    - name: docker-config
   ingress:
     className: nginx
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      cert-manager.io/cluster-issuer: 'letsencrypt-prod'
     hosts:
       - host: metaphor-frontend-production.<DOMAIN_NAME>
         paths:
