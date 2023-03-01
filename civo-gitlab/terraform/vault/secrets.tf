@@ -98,6 +98,20 @@ resource "vault_generic_secret" "ci_secrets" {
   depends_on = [vault_mount.secret]
 }
 
+data "gitlab_group" "owner" {
+  group_id = var.owner_group_id
+}
+
+resource "vault_generic_secret" "gitlab_runner" {
+  path      = "secret/gitlab-runner"
+  data_json = <<EOT
+{
+  "RUNNER_TOKEN" : "",
+  "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
+}
+EOT
+}
+
 resource "vault_generic_secret" "atlantis_secrets" {
   path = "secret/atlantis"
 

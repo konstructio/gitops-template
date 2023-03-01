@@ -15,6 +15,10 @@ terraform {
     civo = {
       source = "civo/civo"
     }
+    gitlab = {
+      source  = "gitlabhq/gitlab"
+      version = "3.20.0"
+    }
     vault = {
       source = "hashicorp/vault"
     }
