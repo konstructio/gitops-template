@@ -136,6 +136,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       GITLAB_OWNER                         = "<GITLAB_OWNER>",
       GITLAB_TOKEN                         = var.gitlab_token,
       TF_VAR_gitlab_token                  = var.gitlab_token,
+      TF_VAR_owner_group_id                = var.owner_group_id,
       TF_VAR_kubefirst_bot_ssh_public_key  = var.kubefirst_bot_ssh_public_key,
       TF_VAR_kubefirst_bot_ssh_private_key = var.kubefirst_bot_ssh_private_key,
       VAULT_ADDR                           = "http://vault.vault.svc.cluster.local:8200",
