@@ -11,6 +11,11 @@ spec:
     repoURL: https://helm.releases.hashicorp.com
     targetRevision: 0.22.0
     helm:
+      parameters:
+        - name: server.route.host
+          value: vault.<DOMAIN_NAME>
+        - name: 'server.ingress.hosts[0].host'
+          value: vault.<DOMAIN_NAME>
       values: |-
         server:
           affinity: ""
