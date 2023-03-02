@@ -3,83 +3,95 @@ kind: ClusterWorkflowTemplate
 metadata:
   name: cwft-git
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: '0'
 spec:
   templates:
-  - name: checkout-with-gitops
-    inputs:
-      parameters:
-      - name: appName
-        value: "{{workflow.parameters.appName}}"
-      - name: appRepoUrl
-        value: "{{workflow.parameters.gitServerUrl}}/{{workflow.parameters.gitOwner}}/{{workflow.parameters.appName}}"
-      - name: gitopsRepoUrl
-        value: "{{workflow.parameters.gitServerUrl}}/{{workflow.parameters.gitOwner}}/gitops"
-      - name: branch
-        value: "{{workflow.parameters.branch}}"
-      artifacts:
-      - name: app-source
-        path: "/src/{{inputs.parameters.appName}}"
-        git:
-          repo: "{{inputs.parameters.appRepoUrl}}"
-          branch: "{{inputs.parameters.branch}}"
-          singleBranch: true
-          usernameSecret:
-            name: ci-secrets
-            key: username
-          passwordSecret:
-            name: ci-secrets
-            key: password
-      - name: gitops-source
-        path: /src/gitops
-        git:
-          repo: "{{inputs.parameters.gitopsRepoUrl}}"
-          branch: main
-          singleBranch: true
-          usernameSecret:
-            name: ci-secrets
-            key: username
-          passwordSecret:
-            name: ci-secrets
-            key: password
-    container:
-      image: golang:latest
-      command: ["sh", "-c"]
-      workingDir: /src
-      args:
-      - ls -la {{inputs.parameters.appName}};
-        ls -la gitops;
-    outputs:
-      artifacts:
-      - name: repo-source
-        path: /src
-  - name: pull-commit-push
-    retryStrategy:
-      limit: "5"
-    inputs:
-      artifacts:
-      - name: repo-source
-        path: /src
-      parameters:
-      - name: repoName
-      - name: commitMessage
-      - name: gitOwner
-        value: "{{workflow.parameters.gitOwner}}"
-    container:
-      image: golang:latest
-      command: ["sh", "-c"]
-      workingDir: "/src/{{inputs.parameters.repoName}}"
-      envFrom:
-      - secretRef:
-          name: ci-secrets
-      # todo review last two git commands
-      args:
-      - git remote set-url origin https://${username}:${password}@github.com/{{inputs.parameters.gitOwner}}/{{inputs.parameters.repoName}}.git >/dev/null 2>&1;
-        git remote -v;
-        git config --global user.email 'k-ray@example.com';
-        git config --global user.name 'kubefirst-bot';
-        git status;
-        git pull --ff-only;
-        git add .;
-        git commit -m "{{inputs.parameters.commitMessage}}" || echo "Assuming this was committed on previous run, not erroring out";
-        git push || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+    - name: checkout-with-gitops
+      inputs:
+        parameters:
+          - name: appName
+          - name: branch
+            default: main
+          - name: gitUrlNoProtocol
+        artifacts:
+          - name: repo-source
+            path: '/src/{{inputs.parameters.appName}}'
+            git:
+              repo: '{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.appName}}.git'
+              branch: '{{inputs.parameters.branch}}'
+              singleBranch: true
+              insecureIgnoreHostKey: true
+              sshPrivateKeySecret:
+                name: ci-secrets
+                key: SSH_PRIVATE_KEY
+          - name: gitops-source
+            path: /src/gitops
+            git:
+              repo: '{{inputs.parameters.gitUrlNoProtocol}}/gitops.git'
+              branch: 'main'
+              singleBranch: true
+              insecureIgnoreHostKey: true
+              sshPrivateKeySecret:
+                name: ci-secrets
+                key: SSH_PRIVATE_KEY
+      container:
+        image: golang:latest
+        command: ['/bin/sh', '-c']
+        args:
+          - ls -la /src &&
+            ls -la /src/{{inputs.parameters.appName}}
+      outputs:
+        artifacts:
+          - name: repo-source
+            path: /src
+    - name: pull-commit-push
+      retryStrategy:
+        limit: '5'
+      # todo get ssh item not all secrets
+      volumes:
+        - name: ssh-key
+          secret:
+            defaultMode: 256
+            secretName: ci-secrets
+      inputs:
+        artifacts:
+          - name: repo-source
+            path: /src
+        parameters:
+          - name: commitMessage
+          - name: gitUrlNoProtocol
+          - name: repoName
+      container:
+        workingDir: '/src/{{inputs.parameters.repoName}}'
+        image: golang:latest
+        command: ['/bin/sh', '-c']
+        volumeMounts:
+          - mountPath: '/mnt/secrets'
+            name: ssh-key
+            readOnly: true
+        args:
+          - set -e;
+
+            eval `ssh-agent -s`;
+            mkdir $HOME/.ssh;
+            cat /mnt/secrets/SSH_PRIVATE_KEY > $HOME/.ssh/id_ed25519;
+            echo -n "\\n" >> $HOME/.ssh/id_ed25519;
+            chmod 0600 $HOME/.ssh/id_ed25519;
+            ssh-add $HOME/.ssh/id_ed25519;
+
+            echo "Host *" >> $HOME/.ssh/config;
+            echo "  StrictHostKeyChecking no" >> $HOME/.ssh/config;
+            echo "  User git" >> $HOME/.ssh/config;
+            echo "  IdentitiesOnly yes" >> $HOME/.ssh/config;
+            echo "  UserKnownHostsFile /dev/null" >> $HOME/.ssh/config;
+            chmod 0700 $HOME/.ssh/config;
+
+            git config --global user.email 'k-ray@example.com';
+            git config --global user.name 'kubefirst-bot';
+            git remote set-url origin '{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.repoName}}.git';
+            git remote -v;
+            git status;
+            git pull;
+            git add .;
+            git commit -m "{{inputs.parameters.commitMessage}}"  || echo "Assuming this was committed on previous run, not erroring out" ;
+            git push;

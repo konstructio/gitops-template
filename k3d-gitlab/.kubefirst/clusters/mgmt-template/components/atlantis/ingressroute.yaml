@@ -5,11 +5,11 @@ metadata:
   namespace: atlantis
 spec:
   routes:
-  - kind: Rule
-    match: Host(`atlantis.<DOMAIN_NAME>`)
-    services:
-    - name: atlantis
-      port: 80
+    - kind: Rule
+      match: Host(`atlantis.<DOMAIN_NAME>`)
+      services:
+        - name: atlantis
+          port: 80
   tls:
     secretName: atlantis-tls
 ---
@@ -30,8 +30,8 @@ metadata:
   namespace: atlantis
 spec:
   routes:
-  - kind: Rule
-    match: Host(`<NGROK_HOST>`) && Path(`/events`)
-    services:
-    - name: atlantis
-      port: 80
+    - kind: Rule
+      match: Host(`<NGROK_HOST>`) && Path(`/events`)
+      services:
+        - name: atlantis
+          port: 80

@@ -1,0 +1,8 @@
+**/*.env
+**/.env
+**/.terraform/
+**/.terraform.lock.hcl
+**/terraform.tfstate
+.vscode
+.DS_Store
+argocd-values.yaml

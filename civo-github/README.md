@@ -11,22 +11,22 @@ The `gitops` repository has 2 main section
 
 The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the following applications:
 
-| Application              | Namespace        | Description                                 | URL (where applicable)                              |
-|--------------------------|------------------|---------------------------------------------|-----------------------------------------------------|
-| <GIT_PROVIDER>           | <GIT_NAMESPACE>  | <GIT_DESCRIPTION>                           | <GIT_URL>                                           |
-| Vault                    | vault            | Secrets Management                          | <VAULT_INGRESS_URL>                                 |
-| Argo CD                  | argocd           | GitOps Continuous Delivery                  | <ARGO_CD_INGRESS_URL>                               |
-| Argo Workflows           | argo             | Application Continuous Integration          | <ARGO_WORKFLOWS_INGRESS_URL>                        |
-| Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_INGRESS_URL>                              |
-| Chart Museum             | chartmuseum      | Helm Chart Registry                         | <CHARTMUSEUM_INGRESS_URL>                           |
-| Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_FRONT_DEVELOPMENT_INGRESS_URL>            |
-| Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_FRONT_STAGING_INGRESS_URL>                |
-| Metaphor Production      | production       | Production instance of sample application   | <METAPHOR_FRONT_PRODUCTION_INGRESS_URL>             |
-| Nginx Ingress Controller | ingress-nginx    | Ingress Controller                          |                                                     |
-| Cert Manager             | cert-manager     | Certificate Automation Utility              |                                                     |
-| Certificate Issuers      | clusterwide      | Let's Encrypt browser-trusted certificates  |                                                     |
-| External Secrets         | external-secrets | Syncs Kubernetes secrets with Vault secrets |                                                     |
-| <GIT_RUNNER>             | <GIT_RUNNER_NS>  | <GIT_RUNNER_DESCRIPTION>                    |                                                     |
+| Application              | Namespace        | Description                                 | URL (where applicable)                   |
+| ------------------------ | ---------------- | ------------------------------------------- | ---------------------------------------- |
+| <GIT_PROVIDER>           | <GIT_NAMESPACE>  | <GIT_DESCRIPTION>                           | <GIT_URL>                                |
+| Vault                    | vault            | Secrets Management                          | <VAULT_INGRESS_URL>                      |
+| Argo CD                  | argocd           | GitOps Continuous Delivery                  | <ARGO_CD_INGRESS_URL>                    |
+| Argo Workflows           | argo             | Application Continuous Integration          | <ARGO_WORKFLOWS_INGRESS_URL>             |
+| Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_INGRESS_URL>                   |
+| Chart Museum             | chartmuseum      | Helm Chart Registry                         | <CHARTMUSEUM_INGRESS_URL>                |
+| Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_FRONT_DEVELOPMENT_INGRESS_URL> |
+| Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_FRONT_STAGING_INGRESS_URL>     |
+| Metaphor Production      | production       | Production instance of sample application   | <METAPHOR_FRONT_PRODUCTION_INGRESS_URL>  |
+| Nginx Ingress Controller | ingress-nginx    | Ingress Controller                          |                                          |
+| Cert Manager             | cert-manager     | Certificate Automation Utility              |                                          |
+| Certificate Issuers      | clusterwide      | Let's Encrypt browser-trusted certificates  |                                          |
+| External Secrets         | external-secrets | Syncs Kubernetes secrets with Vault secrets |                                          |
+| <GIT_RUNNER>             | <GIT_RUNNER_NS>  | <GIT_RUNNER_DESCRIPTION>                    |                                          |
 
 ## argocd registry
 

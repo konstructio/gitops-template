@@ -44,6 +44,20 @@ resource "vault_generic_secret" "development_metaphor" {
 EOT
 }
 
+data "gitlab_group" "owner" {
+  group_id = var.owner_group_id
+}
+
+resource "vault_generic_secret" "gitlab_runner" {
+  path      = "secret/gitlab-runner"
+  data_json = <<EOT
+{
+  "RUNNER_TOKEN" : "",
+  "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
+}
+EOT
+}
+
 resource "vault_generic_secret" "staging_metaphor" {
   path = "secret/staging/metaphor"
   # note: these secrets are not actually sensitive.
@@ -73,11 +87,14 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      accesskey       = var.aws_access_key_id,
-      secretkey       = var.aws_secret_access_key,
-      BASIC_AUTH_USER = "k-ray",
-      BASIC_AUTH_PASS = "feedkraystars",
-      SSH_PRIVATE_KEY = var.kubefirst_bot_ssh_private_key,
+      accesskey             = var.aws_access_key_id,
+      secretkey             = var.aws_secret_access_key,
+      BASIC_AUTH_USER       = "k-ray",
+      BASIC_AUTH_PASS       = "feedkraystars",
+      SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
+      PERSONAL_ACCESS_TOKEN = var.gitlab_token
+      username              = "gitlabpat"
+      password              = var.gitlab_token
     }
   )
 
@@ -93,16 +110,17 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ARGOCD_INSECURE                     = "true",
       ARGOCD_SERVER                       = "http://localhost:8080",
       ARGO_SERVER_URL                     = "argo.argo.svc.cluster.local:2746",
-      ATLANTIS_GL_HOSTNAME                = "gitlab.com",
-      ATLANTIS_GL_TOKEN                   = var.gitlab_token,
-      ATLANTIS_GL_USER                    = "<GITLAB_OWNER>",
-      ATLANTIS_GL_WEBHOOK_SECRET          = var.atlantis_repo_webhook_secret,
+      ATLANTIS_GITLAB_HOSTNAME            = "gitlab.com",
+      ATLANTIS_GITLAB_TOKEN               = var.gitlab_token,
+      ATLANTIS_GITLAB_USER                = "<GITLAB_OWNER>",
+      ATLANTIS_GITLAB_WEBHOOK_SECRET      = var.atlantis_repo_webhook_secret,
       GITLAB_OWNER                        = "<GITLAB_OWNER>",
       GITLAB_TOKEN                        = var.gitlab_token,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       TF_VAR_gitlab_token                 = var.gitlab_token,
       TF_VAR_kubefirst_bot_ssh_public_key = var.kubefirst_bot_ssh_public_key,
+      TF_VAR_owner_group_id               = "<GITLAB_OWNER_GROUP_ID>"
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_token                  = "k1_local_vault_token",
       VAULT_ADDR                          = "http://vault.vault.svc.cluster.local:8200",

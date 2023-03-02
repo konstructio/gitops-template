@@ -4,7 +4,7 @@ metadata:
   name: argo
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "21"
+    argocd.argoproj.io/sync-wave: '21'
 spec:
   project: default
   source:
@@ -13,6 +13,14 @@ spec:
     helm:
       values: |-
         nameOverride: argo
+        executor:
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1
+              memory: 1024Mi
         server:
           extraArgs:
           - --auth-mode=client

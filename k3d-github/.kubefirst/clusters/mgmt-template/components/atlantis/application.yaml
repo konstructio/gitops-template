@@ -13,8 +13,11 @@ spec:
     targetRevision: 4.10.3
     helm:
       values: |-
+        statefulSet:
+          annotations:
+            secret.reloader.stakater.com/reload: "atlantis-secrets"
         atlantisUrl: https://atlantis.<DOMAIN_NAME>
-        orgAllowList: <ATLANTIS_ALLOW_LIST>
+        orgAllowlist: <ATLANTIS_ALLOW_LIST>
         ingress:
           enabled: true
           annotations:
