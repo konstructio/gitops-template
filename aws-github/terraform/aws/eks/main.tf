@@ -106,7 +106,7 @@ module "eks" {
   # write_kubeconfig = false
   manage_aws_auth = false
 
-  kubeconfig_output_path = "./kubeconfig"
+  kubeconfig_output_path = "../../../kubeconfig"
 
   vpc_id = module.vpc.vpc_id
 }
@@ -331,7 +331,7 @@ resource "aws_eks_node_group" "mgmt_nodes" {
   instance_types  = [var.instance_type]
   disk_size       = 50
 
-  capacity_type = var.lifecycle_nodes
+  capacity_type = var.node_capacity_type
 
   labels = {
     workload      = "mgmt"

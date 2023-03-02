@@ -11,6 +11,11 @@ spec:
     repoURL: https://helm.releases.hashicorp.com
     targetRevision: 0.22.0
     helm:
+      parameters:
+        - name: server.route.host
+          value: vault.<DOMAIN_NAME>
+        - name: 'server.ingress.hosts[0].host'
+          value: vault.<DOMAIN_NAME>
       values: |-
         server:
           affinity: ""
@@ -27,14 +32,21 @@ spec:
                   address         = "[::]:8200"
                   cluster_address = "[::]:8201"
                 }
-                storage "raft" {
-                  path = "/vault/data"
+                storage "dynamodb" {
+                  ha_enabled = "true"
+                  region = "<CLOUD_REGION>"
+                  table = "vault-backend-<CLUSTER_NAME>"
+                }
+          
+                seal "awskms" {
+                  region     = "<CLOUD_REGION>"
+                  kms_key_id = "<KMS_KEY_ID>"
                 }
                 service_registration "kubernetes" {}
           ingress:
             enabled: true
             annotations: 
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              cert-manager.io/cluster-issuer: "letsencrypt-staging"
             ingressClassName: "nginx"
             pathType: Prefix
             # When HA mode is enabled and K8s service registration is being used,
