@@ -4,7 +4,7 @@ metadata:
   name: chartmuseum
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-wave: '20'
 spec:
   project: default
   source:
@@ -44,7 +44,7 @@ spec:
           #   AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY            
           # existingSecret: chartmuseum-secrets
     chart: chartmuseum
-  destination: 
+  destination:
     server: https://kubernetes.default.svc
     namespace: chartmuseum
   syncPolicy:

@@ -7,11 +7,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - kind: Rule
-    match: Host(`chartmuseum.<DOMAIN_NAME>`)
-    services:
-    - name: chartmuseum
-      port: 80
+    - kind: Rule
+      match: Host(`chartmuseum.<DOMAIN_NAME>`)
+      services:
+        - name: chartmuseum
+          port: 80
   tls:
     secretName: chartmuseum-tls
 ---
