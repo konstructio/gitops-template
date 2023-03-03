@@ -1,28 +1,29 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: atlantis-ngrok
-  namespace: atlantis
-spec:
-  selector:
-    matchLabels:
-      app: atlantis-ngrok
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: atlantis-ngrok
-    spec:
-      containers:
-        - name: ngrok
-          image: ngrok:3
-          #env:
-          #  - name: NGROK_AUTHTOKEN
-          #    valueFrom:
-          #      secretKeyRef:
-          #        name: {{ $.Release.Name }}-secret
-          #        key: NGROK_AUTHTOKEN
-          #        optional: false
-          args: ['http', 'atlantis:80']
-          ports:
-            - containerPort: 4040
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: atlantis-ngrok
+#   namespace: atlantis
+# spec:
+#   selector:
+#     matchLabels:
+#       app: atlantis-ngrok
+#   replicas: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: atlantis-ngrok
+#     spec:
+#       containers:
+#         - name: ngrok
+#           image: ngrok:3
+#           #env:
+#           #  - name: NGROK_AUTHTOKEN
+#           #    valueFrom:
+#           #      secretKeyRef:
+#           #        name: {{ $.Release.Name }}-secret
+#           #        key: NGROK_AUTHTOKEN
+#           #        optional: false
+#           args: ['http', 'atlantis:80']
+#           ports:
+#             - containerPort: 4040
+#
