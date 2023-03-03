@@ -8,7 +8,7 @@ module "gitops" {
 }
 
 resource "github_repository_webhook" "gitops_atlantis_webhook" {
-  count = tobool(var.create_repo_webhook)
+  count = tobool(var.create_repo_webhook) ? 1 : 0
 
   repository = module.gitops.repo_name
 
