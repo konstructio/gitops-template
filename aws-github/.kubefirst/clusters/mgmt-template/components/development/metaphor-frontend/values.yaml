@@ -9,14 +9,14 @@ metaphor-frontend:
     annotations:
       cert-manager.io/cluster-issuer: "letsencrypt-staging"
     hosts:
-      - host: metaphor-frontend-development.<DOMAIN_NAME>
+      - host: metaphor-development.<DOMAIN_NAME>
         paths:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: metaphor-frontend-tls
+      - secretName: metaphor-tls
         hosts:
-          - metaphor-frontend-development.<DOMAIN_NAME>
+          - metaphor-development.<DOMAIN_NAME>
   metaphor:
-    host: https://metaphor-frontend-development.<DOMAIN_NAME>/api
+    host: https://metaphor-development.<DOMAIN_NAME>/api
   isLocal: true
