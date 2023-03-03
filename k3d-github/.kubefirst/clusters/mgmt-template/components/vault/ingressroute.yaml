@@ -7,11 +7,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - kind: Rule
-    match: Host(`vault.<DOMAIN_NAME>`)
-    services:
-    - name: vault
-      port: 80
+    - kind: Rule
+      match: Host(`vault.<DOMAIN_NAME>`)
+      services:
+        - name: vault
+          port: 80
   tls:
     secretName: vault-tls
 ---

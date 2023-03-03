@@ -4,7 +4,7 @@ metadata:
   name: controller-manager
   namespace: github-runner
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: '10'
 spec:
   target:
     name: controller-manager
@@ -12,7 +12,7 @@ spec:
     kind: ClusterSecretStore
     name: vault-kv-secret
   data:
-  - remoteRef:
-      key: ci-secrets
-      property: PERSONAL_ACCESS_TOKEN
-    secretKey: github_token
+    - remoteRef:
+        key: ci-secrets
+        property: PERSONAL_ACCESS_TOKEN
+      secretKey: github_token

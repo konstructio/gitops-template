@@ -7,11 +7,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - kind: Rule
-    match: Host(`argocd.<DOMAIN_NAME>`)
-    services:
-    - name: argocd
-      port: 80
+    - kind: Rule
+      match: Host(`argocd.<DOMAIN_NAME>`)
+      services:
+        - name: argocd
+          port: 80
   tls:
     secretName: argocd-tls
 ---
