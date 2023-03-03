@@ -8,8 +8,6 @@ module "gitops" {
 }
 
 resource "github_repository_webhook" "gitops_atlantis_webhook" {
-  count = var.create_repo_webhook
-
   repository = module.gitops.repo_name
 
   configuration {
@@ -42,9 +40,4 @@ variable "atlantis_repo_webhook_secret" {
 
 variable "atlantis_repo_webhook_url" {
   type = string
-}
-
-variable "create_repo_webhook" {
-  type    = bool
-  default = false
 }
