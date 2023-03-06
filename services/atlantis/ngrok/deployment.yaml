@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngrok
+  namespace: atlantis
+  annotations:
+    configmap.reloader.stakater.com/reload: 'ngrok-trigger'
+  labels:
+    app: ngrok
+spec:
+  selector:
+    matchLabels:
+      app: ngrok
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ngrok
+    spec:
+      containers:
+        - name: ngrok
+          image: ngrok:3
+          imagePullPolicy: Always
+          args: ['http', 'atlantis:80']
+          ports:
+            - containerPort: 4040
+          resources:
+            requests:
+              cpu: 200m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
