@@ -6,5 +6,5 @@ spec:
   selector:
     app: ngrok
   ports:
-  - port: 4040
-    targetPort: 4040
+    - port: 4040
+      targetPort: 4040

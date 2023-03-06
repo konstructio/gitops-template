@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ngrok
+data:
+  active-ngrok-tunnel-url: placeholder
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ngrok-trigger
+data:
+  trigger-ngrok-reload: placeholder

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ngrok
+  annotations:
+    secret.reloader.stakater.com/reload: 'ngrok-trigger'
   labels:
     app: ngrok
 spec:

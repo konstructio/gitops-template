@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ngrok-sync
+spec:
+  # Run every 2 hours.
+  schedule: '0 */2 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ngrok-sync
+              image: kubefirst/git-helper
+              envFrom:
+                - secretRef:
+                    name: k3d-ngrok
+              command: ['git-helper']
+              args:
+                [
+                  'sync',
+                  'webhook',
+                  'ngrok-atlantis',
+                  '--provider',
+                  '$GIT_PROVIDER',
+                  '--owner',
+                  '$GIT_OWNER',
+                  '--repository',
+                  '$GIT_REPOSITORY',
+                ]
+          restartPolicy: Never
