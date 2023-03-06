@@ -16,7 +16,7 @@ images:
     newTag: '3'
   - name: kubefirst/git-helper
     newName: eb129/git-helper
-    newTag: '32'
+    newTag: 'testv2'
 
 generatorOptions:
   disableNameSuffixHash: true
