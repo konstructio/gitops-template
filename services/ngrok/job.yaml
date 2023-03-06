@@ -9,7 +9,19 @@ spec:
     spec:
       template:
         spec:
+          initContainers:
+            # Bump the trigger ConfigMap to cause Atlantis to restart
+            - name: ngrok-restart
+              image: kubefirst/git-helper
+              command: ['git-helper']
+              args: ['sync', 'webhook', 'ngrok-atlantis', '--restart']
+            # Give the tunnel long enough to restart
+            - name: wait
+              image: busybox
+              command: ['/bin/sh', '-c']
+              args: ['sleep 10']
           containers:
+            # Update upstream webhook with new ngrok tunnel information
             - name: ngrok-sync
               image: kubefirst/git-helper
               envFrom:
