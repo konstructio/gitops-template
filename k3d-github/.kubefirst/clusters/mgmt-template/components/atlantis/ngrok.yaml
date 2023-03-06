@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/kubefirst/gitops-template'
-    path: services/ngrok
+    path: services/atlantis/ngrok
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
