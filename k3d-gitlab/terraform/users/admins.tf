@@ -38,12 +38,12 @@ data "vault_identity_group" "admins" {
 # # as you have admin personnel.
 
 # module "admin_one" {
-#   source = "./modules/user/github"
+#   source = "./modules/user/gitlab"
 
 #   acl_policies            = ["admin"]
 #   email                   = "your.admin@your-company.io"
 #   first_name              = "Admin"
-#   github_username         = "admin_one_github_username"
+#   gitlab_username         = "admin_one_gitlab_username"
 #   last_name               = "One"
 #   username                = "aone"
 #   user_disabled           = false
