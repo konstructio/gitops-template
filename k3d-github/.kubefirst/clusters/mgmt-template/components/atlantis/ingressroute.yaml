@@ -31,7 +31,7 @@ metadata:
 spec:
   routes:
     - kind: Rule
-      match: Host(`<NGROK_HOST>`) && Path(`/events`)
+      match: Host(`*.ngrok.io`) && Path(`/events`)
       services:
         - name: atlantis
           port: 80
