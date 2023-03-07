@@ -17,8 +17,16 @@ spec:
   ignoreDifferences:
     - group: ''
       kind: ConfigMap
+      name: ngrok
+      namespace: atlantis
       jsonPointers:
         - /data/active-ngrok-tunnel-url
+    - group: ''
+      kind: ConfigMap
+      name: ngrok-trigger
+      namespace: atlantis
+      jsonPointers:
+        - /data/trigger-ngrok-reload
   syncPolicy:
     automated:
       prune: true
