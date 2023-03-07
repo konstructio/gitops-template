@@ -1,0 +1,29 @@
+import styled from 'styled-components';
+import Link from 'next/link';
+
+export const Cards = styled.div`
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+`;
+
+export const Container = styled.div`
+  height: calc(100vh - 80px);
+  overflow: auto;
+  padding: 40px;
+  margin: 0 auto;
+  max-width: 1192px;
+`;
+
+export const Header = styled.div`
+  color: ${({ theme }) => theme.colors.volcanicSand};
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 40px;
+`;
+
+export const LearnMoreLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.primary};
+  text-decoration: none;
+`;
