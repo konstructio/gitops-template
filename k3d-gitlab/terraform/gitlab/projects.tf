@@ -18,10 +18,10 @@ module "metaphor-go" {
   remove_source_branch_after_merge      = true
 }
 
-module "metaphor-frontend" {
+module "metaphor" {
   source       = "./modules/project"
   group_name   = data.gitlab_group.owner.id
-  project_name = "metaphor-frontend"
+  project_name = "metaphor"
   # create_ecr                            = true
   initialize_with_readme                = false
   only_allow_merge_if_pipeline_succeeds = false

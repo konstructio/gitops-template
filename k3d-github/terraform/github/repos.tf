@@ -10,7 +10,7 @@ module "gitops" {
 module "metaphor_frontend" {
   source = "./modules/repository"
 
-  repo_name          = "metaphor-frontend"
+  repo_name          = "metaphor"
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
   create_ecr         = false

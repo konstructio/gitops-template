@@ -1,0 +1,24 @@
+metaphor:
+  image:
+    repository: ghcr.io/<GITHUB_OWNER>/metaphor
+  imagePullSecrets:
+    - name: docker-config
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.middlewares: staging-redirect-to-https@kubernetescrd
+    className: ''
+    hosts:
+      - host: metaphor-staging.<DOMAIN_NAME>
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: metaphor-staging-tls
+        hosts:
+          - metaphor-staging.<DOMAIN_NAME>
+  metaphor:
+    host: https://metaphor-staging.<DOMAIN_NAME>/api
+  vaultMountPoint: kubefirst
+  vaultSecretPath: staging/metaphor
+  isLocal: true

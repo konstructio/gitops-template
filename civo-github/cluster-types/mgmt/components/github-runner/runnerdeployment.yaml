@@ -33,14 +33,14 @@ spec:
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
-  name: actions-runner-metaphor-frontend
+  name: actions-runner-metaphor
   annotations:
     argocd.argoproj.io/sync-wave: '20'
 spec:
   replicas: 1
   template:
     spec:
-      repository: <GITHUB_OWNER>/metaphor-frontend
+      repository: <GITHUB_OWNER>/metaphor
       image: summerwind/actions-runner-dind
       serviceAccountName: github-runner
       dockerdWithinRunnerContainer: true
