@@ -1,41 +1,33 @@
-FROM node:16-alpine AS deps
+FROM mitchpash/pnpm AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
+COPY pnpm-lock.yaml .npmr[c] ./
 
-COPY package.json yarn.lock ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+RUN pnpm fetch
 
-
-FROM node:16-alpine AS builder
+FROM mitchpash/pnpm AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED 1
+RUN pnpm install -r --offline
 
-RUN yarn build
+RUN pnpm build
 
-# Production image, copy all the files and run next
-FROM node:16-alpine AS runner
+FROM mitchpash/pnpm AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
+COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
 
-# Automatically leverage output traces to reduce image size
+# Automatically leverage output traces to reduce image size 
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
+# Some things are not allowed (see https://github.com/vercel/next.js/issues/38119#issuecomment-1172099259)
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
 EXPOSE 8080
 

@@ -5,6 +5,10 @@ import Typography from '../typography';
 export const Container = styled.div`
   padding: 20px;
   border-bottom: 1px solid #e2e8f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 export const Header = styled.div`

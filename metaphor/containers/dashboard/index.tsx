@@ -71,7 +71,7 @@ const Dashboard: FunctionComponent = () => {
             value: appData?.chartVersion,
           },
           {
-            key: 'Docket tag',
+            key: 'Docker tag',
             value: appData?.dockerTag,
           },
         ],
