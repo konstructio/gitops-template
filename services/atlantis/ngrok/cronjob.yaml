@@ -5,8 +5,7 @@ metadata:
   namespace: atlantis
 spec:
   # Run every 2 hours.
-  # schedule: '0 */2 * * *'
-  schedule: '*/5 * * * *'
+  schedule: '*/55 */1 * * *'
   jobTemplate:
     spec:
       template:

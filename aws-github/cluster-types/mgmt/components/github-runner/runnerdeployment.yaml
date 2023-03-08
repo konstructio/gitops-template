@@ -3,12 +3,12 @@ kind: RunnerDeployment
 metadata:
   name: actions-runner-metaphor
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-wave: '20'
 spec:
-  replicas: 1
+  replicas: 2
   template:
-    spec:  
-      repository: <GITHUB_OWNER>/metaphor
+    spec:
+      organization: <GITHUB_OWNER>
       image: summerwind/actions-runner-dind
       serviceAccountName: github-runner
       dockerdWithinRunnerContainer: true

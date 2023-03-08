@@ -1,46 +1,14 @@
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
-  name: actions-runner-metaphor
+  name: actions-runner
   annotations:
     argocd.argoproj.io/sync-wave: '20'
 spec:
-  replicas: 1
+  replicas: 2
   template:
     spec:
-      repository: <GITHUB_OWNER>/metaphor
-      image: summerwind/actions-runner-dind
-      serviceAccountName: github-runner
-      dockerdWithinRunnerContainer: true
-      automountServiceAccountToken: true
----
-apiVersion: actions.summerwind.dev/v1alpha1
-kind: RunnerDeployment
-metadata:
-  name: actions-runner-metaphor-go
-  annotations:
-    argocd.argoproj.io/sync-wave: '20'
-spec:
-  replicas: 1
-  template:
-    spec:
-      repository: <GITHUB_OWNER>/metaphor-go
-      image: summerwind/actions-runner-dind
-      serviceAccountName: github-runner
-      dockerdWithinRunnerContainer: true
-      automountServiceAccountToken: true
----
-apiVersion: actions.summerwind.dev/v1alpha1
-kind: RunnerDeployment
-metadata:
-  name: actions-runner-metaphor
-  annotations:
-    argocd.argoproj.io/sync-wave: '20'
-spec:
-  replicas: 1
-  template:
-    spec:
-      repository: <GITHUB_OWNER>/metaphor
+      organization: <GITHUB_OWNER>
       image: summerwind/actions-runner-dind
       serviceAccountName: github-runner
       dockerdWithinRunnerContainer: true
