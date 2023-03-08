@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'git@github.com:<GITLAB_OWNER>/gitops.git'
+    repoURL: 'git@gitlab.com:<GITLAB_OWNER>/gitops.git'
     path: argocd
     targetRevision: HEAD
   destination:
