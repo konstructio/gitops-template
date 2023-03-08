@@ -19,4 +19,3 @@ metaphor:
           - metaphor-production.<DOMAIN_NAME>
   metaphor:
     host: https://metaphor-production.<DOMAIN_NAME>/api
-  isLocal: true
