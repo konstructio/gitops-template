@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'git@gitlab.com:<GITLAB_OWNER>/gitops.git'
-    path: argocd
+    path: registry/<CLUSTER_NAME>/components/argocd
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
