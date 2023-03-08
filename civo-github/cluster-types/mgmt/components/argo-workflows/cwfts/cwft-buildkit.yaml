@@ -48,5 +48,7 @@ spec:
           - dockerfile.v0
           - --local
           - context=.
+          - --local
+          - dockerfile=.
           - --output
           - type=image,name={{inputs.parameters.containerRegistryURL}},push=true
