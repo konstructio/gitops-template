@@ -21,4 +21,3 @@ metaphor:
     host: https://metaphor-production.<DOMAIN_NAME>/api
   vaultMountPoint: kubefirst
   vaultSecretPath: production/metaphor
-  isLocal: true

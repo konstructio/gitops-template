@@ -21,4 +21,3 @@ metaphor:
     host: https://metaphor-staging.<DOMAIN_NAME>/api
   vaultMountPoint: kubefirst
   vaultSecretPath: staging/metaphor
-  isLocal: true
