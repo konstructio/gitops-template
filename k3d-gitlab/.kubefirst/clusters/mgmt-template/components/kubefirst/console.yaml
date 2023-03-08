@@ -30,8 +30,8 @@ spec:
             value: "<DOMAIN_NAME>"
           GIT_PROVIDER:
             value: "<GIT_PROVIDER>"
-          GITLAB_OWNER:
-            value: "<GITLAB_OWNER>"
+          GITLAB_GROUP:
+            value: "<GITLAB_GROUP>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
           KUBEFIRST_TEAM:

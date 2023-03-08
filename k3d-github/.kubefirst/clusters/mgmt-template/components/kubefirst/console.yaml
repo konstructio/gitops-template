@@ -31,7 +31,7 @@ spec:
           GIT_PROVIDER:
             value: "<GIT_PROVIDER>"
           GITHUB_OWNER:
-            value: "<GITHUB_OWNER>"
+            value: "<GITHUB_USER>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
           KUBEFIRST_TEAM:

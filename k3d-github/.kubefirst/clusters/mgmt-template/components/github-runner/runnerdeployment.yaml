@@ -8,7 +8,7 @@ spec:
   replicas: 1
   template:
     spec:
-      repository: <GITHUB_OWNER>/metaphor-frontend
+      repository: <GITHUB_USER>/metaphor-frontend
       image: summerwind/actions-runner-dind
       serviceAccountName: github-runner
       dockerdWithinRunnerContainer: true

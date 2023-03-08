@@ -1,6 +1,6 @@
 metaphor-frontend:
   image:
-    repository: registry.gitlab.com/<GITLAB_OWNER>/metaphor-frontend
+    repository: registry.gitlab.com/<GITLAB_GROUP>/metaphor-frontend
   imagePullSecrets:
     - name: metaphor-frontend-deploy
   ingress:

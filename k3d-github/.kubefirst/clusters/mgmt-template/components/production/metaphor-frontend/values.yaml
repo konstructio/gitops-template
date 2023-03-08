@@ -1,6 +1,6 @@
 metaphor-frontend:
   image:
-    repository: ghcr.io/<GITHUB_OWNER>/metaphor-frontend
+    repository: ghcr.io/<GITHUB_USER>/metaphor-frontend
   imagePullSecrets:
     - name: docker-config
   ingress:

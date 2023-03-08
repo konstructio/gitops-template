@@ -1,6 +1,6 @@
 module "metaphor" {
   source       = "./modules/project"
-  group_name   = data.gitlab_group.owner.id
+  group_name   = data.gitlab_group.group.id
   project_name = "metaphor"
   # create_ecr                            = true
   initialize_with_readme                = false
@@ -10,7 +10,7 @@ module "metaphor" {
 
 module "metaphor-go" {
   source       = "./modules/project"
-  group_name   = data.gitlab_group.owner.id
+  group_name   = data.gitlab_group.group.id
   project_name = "metaphor-go"
   # create_ecr                            = true
   initialize_with_readme                = false
@@ -20,7 +20,7 @@ module "metaphor-go" {
 
 module "metaphor-frontend" {
   source       = "./modules/project"
-  group_name   = data.gitlab_group.owner.id
+  group_name   = data.gitlab_group.group.id
   project_name = "metaphor-frontend"
   # create_ecr                            = true
   initialize_with_readme                = false
@@ -30,7 +30,7 @@ module "metaphor-frontend" {
 
 module "gitops" {
   source       = "./modules/project"
-  group_name   = data.gitlab_group.owner.id
+  group_name   = data.gitlab_group.group.id
   project_name = "gitops"
   # create_ecr                            = true
   initialize_with_readme                = false
