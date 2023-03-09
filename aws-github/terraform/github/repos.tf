@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "<KUBEFIRST_STATE_STORE_BUCKET>"
-    key    = "terraform/github/terraform.tfstate"
+    key    = "terraform/github/tfstate.tf"
     region = "<CLOUD_REGION>"
   }
   required_providers {
@@ -48,7 +48,7 @@ variable "atlantis_repo_webhook_secret" {
 module "metaphor_frontend" {
   source = "./modules/repository"
 
-  repo_name          = "metaphor-frontend"
+  repo_name          = "metaphor"
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
   create_ecr         = true
@@ -58,7 +58,7 @@ module "metaphor_frontend" {
 
 # todo evaluate publishing a container with a new github action
 # resource "github_actions_secret" "example_secret" {
-#   repository       = module.metaphor_frontend.repo_name
+#   repository       = module.metaphor.repo_name
 #   secret_name      = "GH_TOKEN"
 #   plaintext_value  = var.github_token
 # }

@@ -1,0 +1,26 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: metaphor-production-ingress
+  namespace: production
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`metaphor-production.<DOMAIN_NAME>`)
+      services:
+        - name: metaphor-production
+          port: 80
+  tls:
+    secretName: metaphor-production-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: production
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

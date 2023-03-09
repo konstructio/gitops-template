@@ -1,0 +1,26 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: metaphor-development-ingress
+  namespace: development
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`metaphor-development.<DOMAIN_NAME>`)
+      services:
+        - name: metaphor-development
+          port: 80
+  tls:
+    secretName: metaphor-development-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: development
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

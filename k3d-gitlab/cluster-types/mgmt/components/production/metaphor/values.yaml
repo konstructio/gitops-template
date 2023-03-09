@@ -1,0 +1,23 @@
+metaphor:
+  image:
+    repository: registry.gitlab.com/<GITLAB_OWNER>/metaphor
+  imagePullSecrets:
+    - name: metaphor-deploy
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.middlewares: production-redirect-to-https@kubernetescrd
+    className: ''
+    hosts:
+      - host: metaphor-production.<DOMAIN_NAME>
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: metaphor-production-tls
+        hosts:
+          - metaphor-production.<DOMAIN_NAME>
+  metaphor:
+    host: https://metaphor-production.<DOMAIN_NAME>/api
+  vaultMountPoint: kubefirst
+  vaultSecretPath: production/metaphor

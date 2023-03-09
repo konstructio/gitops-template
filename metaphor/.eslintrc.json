@@ -1,0 +1,39 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "prettier",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier", "import"],
+  "rules": {
+    "no-var": "warn",
+    "curly": "warn",
+    "consistent-return": 0,
+    "prefer-destructuring": "warn",
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "always"
+      }
+    ],
+    "import/export": "warn",
+    "no-console": "warn",
+    "no-debugger": "error",
+    "prefer-template": "warn",
+    "react-hooks/exhaustive-deps": "error",
+    "@typescript-eslint/no-explicit-any": "error"
+  }
+}
