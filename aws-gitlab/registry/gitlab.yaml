@@ -39,7 +39,7 @@ spec:
             defaultProjectsFeatures:
               containerRegistry: false
           hosts:
-            domain: <AWS_HOSTED_ZONE_NAME>
+            domain: <DOMAIN_NAME>
           ingress:
             configureCertmanager: false
             provider: nginx
