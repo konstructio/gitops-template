@@ -26,14 +26,14 @@ spec:
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
               nginx.ingress.kubernetes.io/ssl-passthrough: "true"
             hosts:
-              - argocd.<AWS_HOSTED_ZONE_NAME>
+              - argocd.<DOMAIN_NAME>
             paths:
               - /
             pathType: Prefix
             tls:
               - secretName: argocd-server-tls
                 hosts: 
-                  - argocd.<AWS_HOSTED_ZONE_NAME>
+                  - argocd.<DOMAIN_NAME>
             https: true
           additionalApplications:
           - name: registry
@@ -65,12 +65,12 @@ spec:
           config:
             oidc.config: |
               name: Vault
-              issuer: https://vault.<AWS_HOSTED_ZONE_NAME>/v1/identity/oidc/provider/kubefirst
+              issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst
               clientID: $argocd-oidc-secret:clientId
               clientSecret: $argocd-oidc-secret:clientSecret
               requestedScopes: ["openid", "groups", "user", "profile", "email"]
               requestedIDTokenClaims: {"groups": {"essential": true}}
-            url: 'https://argocd.<AWS_HOSTED_ZONE_NAME>'        
+            url: 'https://argocd.<DOMAIN_NAME>'        
   destination:
     server: "https://kubernetes.default.svc"
     namespace: argocd

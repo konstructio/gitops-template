@@ -577,7 +577,7 @@ data:
       useSDKCreds: true
   sso: |
     # TODO: might need a route added
-    issuer: https://vault.<AWS_HOSTED_ZONE_NAME>/v1/identity/oidc/provider/kubefirst
+    issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst
     clientId:
       name: argo-secrets
       key: client-id
@@ -587,7 +587,7 @@ data:
     # This is the redirect URL supplied to the provider (required). It must
     # be in the form <argo-server-root-url>/oauth2/callback. It must be
     # browser-accessible.
-    redirectUrl: https://argo.<AWS_HOSTED_ZONE_NAME>/oauth2/callback
+    redirectUrl: https://argo.<DOMAIN_NAME>/oauth2/callback
     scopes:
       - email
       - openid

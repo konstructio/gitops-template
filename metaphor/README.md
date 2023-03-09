@@ -10,9 +10,9 @@ The cloud ([GitHub](https://docs.kubefirst.com/kubefirst/github/install.html)/[G
 
 | environment | url                                                            |
 |-------------|----------------------------------------------------------------|
-| development | `https://metaphor-development.<AWS_HOSTED_ZONE_NAME>` |
-| staging     | `https://metaphor-staging.<AWS_HOSTED_ZONE_NAME>`     |
-| production  | `https://metaphor-production.<AWS_HOSTED_ZONE_NAME>`  |
+| development | `https://metaphor-development.<DOMAIN_NAME>` |
+| staging     | `https://metaphor-staging.<DOMAIN_NAME>`     |
+| production  | `https://metaphor-production.<DOMAIN_NAME>`  |
 
 The [local](https://docs.kubefirst.com/kubefirst/local/install.html) deployed instances of `metaphor` is available at:
 

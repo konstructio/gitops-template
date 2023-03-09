@@ -9,7 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   rules:
-    - host: argo.<AWS_HOSTED_ZONE_NAME>
+    - host: argo.<DOMAIN_NAME>
       http:
         paths:
           - backend:
@@ -21,5 +21,5 @@ spec:
             pathType: Prefix
   tls:
   - hosts:
-    - argo.<AWS_HOSTED_ZONE_NAME>
+    - argo.<DOMAIN_NAME>
     secretName: argo-secret
