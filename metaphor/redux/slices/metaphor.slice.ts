@@ -20,6 +20,7 @@ export interface Config {
 }
 
 export interface MetaphorState {
+  consoleUrl?: string;
   metaphorApiUrl?: string;
   metaphor?: Metaphor;
   metaphorStatus: boolean;
@@ -28,6 +29,7 @@ export interface MetaphorState {
 }
 
 export const initialState: MetaphorState = {
+  consoleUrl: undefined,
   metaphorApiUrl: undefined,
 
   metaphor: undefined,
@@ -41,7 +43,8 @@ const metaphorSlice = createSlice({
   initialState,
   reducers: {
     setConfigValues(state, payload) {
-      const { metaphorApiUrl } = payload.payload;
+      const { consoleUrl, metaphorApiUrl } = payload.payload;
+      state.consoleUrl = consoleUrl;
       state.metaphorApiUrl = metaphorApiUrl;
     },
   },

@@ -18,7 +18,7 @@ import {
 } from '../../redux/actions/metaphor.action';
 import Tag from '../../components/tag';
 
-import { Cards, Container, Header, LearnMoreLink } from './dashboard.styled';
+import { Cards, Container, Header, LearnMoreLink, Title } from './dashboard.styled';
 
 const DOCS_LINK = 'https://docs.kubefirst.io';
 const RUNNING_TAG_PROPS = {
@@ -29,6 +29,11 @@ const RUNNING_TAG_PROPS = {
 const ERROR_TAG_PROPS = {
   backgroundColor: '#FCE7F3',
   color: '#BE185D',
+};
+
+const INFO_TAG_PROPS = {
+  backgroundColor: '#DBEAFE',
+  color: '#1D4ED8',
 };
 
 const Dashboard: FunctionComponent = () => {
@@ -136,7 +141,9 @@ const Dashboard: FunctionComponent = () => {
   return (
     <Container>
       <Header>
-        <Typography variant="h6">Welcome to Metaphor</Typography>
+        <Title variant="h6">
+          Metaphor <Tag label="Demo" {...INFO_TAG_PROPS} />
+        </Title>
         <Typography variant="body2">
           A demo application that demonstrates how an application can be integrated into the
           Kubefirst platform.{' '}
