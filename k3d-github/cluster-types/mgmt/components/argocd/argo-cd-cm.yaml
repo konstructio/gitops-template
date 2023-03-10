@@ -10,5 +10,4 @@ data:
   admin.enabled: 'true'
   statusbadge.enabled: 'true'
   users.anonymous.enabled: 'false'
-  server.insecure: 'true'
   url: 'https://argocd.<DOMAIN_NAME>'
