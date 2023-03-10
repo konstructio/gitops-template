@@ -19,3 +19,6 @@ export const selectVaultData = () =>
 
 export const selectMetaphorApiUrl = () =>
   createSelector(metaphorSelector, ({ metaphorApiUrl }) => metaphorApiUrl || '');
+
+export const selectConsoleUrl = () =>
+  createSelector(metaphorSelector, ({ consoleUrl }) => consoleUrl || '');

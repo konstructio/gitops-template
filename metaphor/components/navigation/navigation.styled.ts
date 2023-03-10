@@ -38,7 +38,7 @@ export const MenuItem = styled.div<{ isActive?: boolean; collapsible?: boolean }
   color: #9ea2c6;
   cursor: pointer;
   display: flex;
-  gap: 18px;
+  gap: 12px;
   height: 24px;
   margin: 0 8px;
   padding: 12px 18px;

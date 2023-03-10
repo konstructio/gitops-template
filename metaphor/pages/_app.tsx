@@ -5,12 +5,12 @@ import Head from 'next/head';
 import styled, { ThemeProvider } from 'styled-components';
 import { ThemeProvider as ThemeProviderMUI } from '@mui/material';
 
+import theme from '../theme';
 import themeMUI from '../theme/muiTheme';
 import { wrapper } from '../redux/store';
-import theme from '../theme';
+import Navigation from '../containers/navigation';
 
 import '../styles/globals.css';
-import Navigation from 'components/navigation/index';
 
 const Layout = styled.div`
   background-color: ${({ theme }) => theme.colors.washMe};
@@ -39,7 +39,7 @@ function App({ Component, ...rest }: AppProps) {
     <main id="app">
       <Head>
         <title>Metaphor</title>
-        <link rel="shortcut icon" href="/static/k-ray.svg" />
+        <link rel="shortcut icon" href="/static/jelly.svg" />
       </Head>
       <Provider store={store}>
         <ThemeProviderMUI theme={themeMUI}>

@@ -1,6 +1,7 @@
 {
   "name": "metaphor",
   "source": "src/index.html",
+  "version": "2.0.0",
   "scripts": {
     "dev": "rm -rf .next && next dev",
     "build": "next build",

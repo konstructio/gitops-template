@@ -19,3 +19,4 @@ metaphor:
           - metaphor-staging.<DOMAIN_NAME>
   metaphor:
     host: https://metaphor-staging.<DOMAIN_NAME>/api
+    console: https://kubefirst.<DOMAIN_NAME>
