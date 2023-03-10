@@ -69,6 +69,7 @@ affinity: {}
 
 metaphor:
   host: example.com
+  console: example.com
 
 vaultMountPoint: kubefirst
 vaultSecretPath: development/metaphor
