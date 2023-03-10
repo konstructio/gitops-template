@@ -11,6 +11,7 @@ resources:
 
 patchesStrategicMerge:
   - argo-cd-cm.yaml
+  - argo-cd-cmd-params-cm.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
