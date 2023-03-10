@@ -45,7 +45,7 @@ variable "atlantis_repo_webhook_secret" {
   default = ""
 }
 
-module "metaphor_frontend" {
+module "metaphor" {
   source = "./modules/repository"
 
   repo_name          = "metaphor"
@@ -55,14 +55,3 @@ module "metaphor_frontend" {
   team_developers_id = github_team.developers.id
   team_admins_id     = github_team.admins.id
 }
-
-# todo evaluate publishing a container with a new github action
-# resource "github_actions_secret" "example_secret" {
-#   repository       = module.metaphor.repo_name
-#   secret_name      = "GH_TOKEN"
-#   plaintext_value  = var.github_token
-# }
-
-# variable "github_token" {
-#   type = string
-# }

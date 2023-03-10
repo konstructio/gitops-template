@@ -7,7 +7,7 @@ module "gitops" {
   auto_init          = false # set to false if importing an existing repository
 }
 
-module "metaphor_frontend" {
+module "metaphor" {
   source = "./modules/repository"
 
   repo_name          = "metaphor"
