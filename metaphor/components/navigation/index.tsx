@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -6,10 +6,9 @@ import Link from 'next/link';
 import Typography from '../typography/';
 import Help from '../../assets/help.svg';
 import Slack from '../../assets/slack.svg';
+import LinkIcon from '../../assets/link.svg';
 
 import { Container, FooterContainer, MenuContainer, MenuItem, Title } from './navigation.styled';
-
-// const ROUTES = [];
 
 const FOOTER_ITEMS = [
   {
@@ -25,24 +24,24 @@ const FOOTER_ITEMS = [
 ];
 
 export interface NavigationProps {
+  consoleUrl: string;
   collapsible?: boolean;
 }
 
-const Navigation: FunctionComponent<NavigationProps> = ({ collapsible }) => {
+const Navigation: FunctionComponent<NavigationProps> = ({ consoleUrl, collapsible }) => {
   const [domLoaded, setDomLoaded] = useState(false);
-  // const { asPath } = useRouter();
-  const kubefirstVersion = '0.1.0';
 
-  // const isActive = (route: string) => {
-  //   if (typeof window !== 'undefined') {
-  //     const linkPathname = new URL(route as string, window?.location?.href).pathname;
-
-  //     // Using URL().pathname to get rid of query and hash
-  //     const activePathname = new URL(asPath, window?.location?.href).pathname;
-
-  //     return linkPathname === activePathname;
-  //   }
-  // };
+  const ROUTES = useMemo(
+    () => [
+      {
+        icon: LinkIcon,
+        path: consoleUrl,
+        title: 'kubefirst console',
+        target: '_blank',
+      },
+    ],
+    [consoleUrl],
+  );
 
   useEffect(() => {
     setDomLoaded(true);
@@ -52,29 +51,25 @@ const Navigation: FunctionComponent<NavigationProps> = ({ collapsible }) => {
     <Container collapsible={collapsible}>
       <div>
         <Title collapsible={collapsible}>
-          <Typography variant="h6" color="secondary">
-            Metaphor
+          <Image alt="metaphor-image" src={'/static/metaphor.svg'} height={40} width={208} />
+          <Typography
+            variant="labelSmall"
+            color="#ABADC6"
+            sx={{ position: 'absolute', left: 65, bottom: -10 }}
+          >
+            V2.0.0
           </Typography>
-          {kubefirstVersion && (
-            <Typography
-              variant="labelSmall"
-              color="#ABADC6"
-              sx={{ position: 'absolute', left: 16, bottom: -20 }}
-            >
-              {`V${kubefirstVersion}`}
-            </Typography>
-          )}
         </Title>
         {domLoaded && (
           <MenuContainer>
-            {/* {ROUTES.map(({ icon, path, title }) => (
-              <Link href={path} key={path}>
-                <MenuItem isActive={isActive(path)} collapsible={collapsible}>
-                  {icon}
+            {ROUTES.map(({ icon, path, title, target }) => (
+              <Link href={path} key={path} target={target}>
+                <MenuItem collapsible={collapsible}>
+                  <Image alt={title} src={icon} height={20} width={20} />
                   {!collapsible && <Typography variant="body1">{title}</Typography>}
                 </MenuItem>
               </Link>
-            ))} */}
+            ))}
           </MenuContainer>
         )}
       </div>
