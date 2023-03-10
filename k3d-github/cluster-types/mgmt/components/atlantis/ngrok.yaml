@@ -8,8 +8,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/kubefirst/gitops-template'
-    path: services/atlantis/ngrok
+    repoURL: 'https://github.com/kubefirst/manifests'
+    path: atlantis/ngrok
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
