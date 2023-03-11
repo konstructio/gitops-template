@@ -37,10 +37,9 @@ spec:
                   region = "<CLOUD_REGION>"
                   table = "vault-backend-<CLUSTER_NAME>"
                 }
-          
                 seal "awskms" {
                   region     = "<CLOUD_REGION>"
-                  kms_key_id = "<KMS_KEY_ID>"
+                  kms_key_id = "aa69d539-f0af-4222-8ec6-416439126709"
                 }
                 service_registration "kubernetes" {}
           ingress:

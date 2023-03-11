@@ -318,7 +318,7 @@ EOT
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name      = module.eks.cluster_id
   addon_name        = "vpc-cni"
-  addon_version     = "v1.12.0-eksbuild.1"
+  addon_version     = "v1.12.5-eksbuild.2"
   resolve_conflicts = "OVERWRITE"
 }
 
