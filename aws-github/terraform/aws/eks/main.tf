@@ -100,7 +100,7 @@ module "eks" {
   version         = "17.24.0"
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = local.cluster_name
-  cluster_version = "1.22"
+  cluster_version = "1.25"
   subnets         = module.vpc.private_subnets
   enable_irsa     = true
   # write_kubeconfig = false
