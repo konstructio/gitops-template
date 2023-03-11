@@ -18,7 +18,7 @@ spec:
       priority: 11
       services:
         - name: argocd-server
-          port: 80
+          port: 443
           scheme: h2c
   tls:
-    certResolver: default
+    secretName: argocd-tls
