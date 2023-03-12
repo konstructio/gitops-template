@@ -1,353 +1,181 @@
-terraform {
-  required_version = ">= 0.12.0"
+provider "aws" {
+  region = local.region
 }
 
-provider "local" {
-  version = "~> 2.1.0"
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    # This requires the awscli to be installed locally where Terraform is executed
+    args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+  }
 }
 
-provider "null" {
-  version = "~> 3.1.0"
-}
-
-data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
-}
-
-data "aws_availability_zones" "available" {
-}
+data "aws_caller_identity" "current" {}
+data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_name = "<CLUSTER_NAME>"
-}
-resource "aws_security_group" "worker_group_mgmt_one" {
-  name_prefix = "worker_group_mgmt_one"
-  vpc_id      = module.vpc.vpc_id
+  name            = "<CLUSTER_NAME>"
+  cluster_version = "1.25"
+  region          = "us-east-1"
 
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
+  vpc_cidr = "10.0.0.0/16"
+  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
+  tags = {
+    kubefirst  = "true"
   }
 }
 
-resource "aws_security_group" "worker_group_mgmt_two" {
-  name_prefix = "worker_group_mgmt_two"
-  vpc_id      = module.vpc.vpc_id
+################################################################################
+# EKS Module
+################################################################################
 
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "19.10.0"
 
-    cidr_blocks = [
-      "192.168.0.0/16",
-    ]
+  cluster_name                   = local.name
+  cluster_version                = local.cluster_version
+  cluster_endpoint_public_access = true
+
+  cluster_addons = {
+    # coredns = {
+    #   most_recent = true
+    #   resolve_conflicts = "OVERWRITE"
+    # }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent              = true
+      before_compute           = true
+      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+      configuration_values = jsonencode({
+        env = {
+          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+          ENABLE_PREFIX_DELEGATION = "true"
+          WARM_PREFIX_TARGET       = "1"
+        }
+      })
+    }
   }
+
+  vpc_id                   = module.vpc.vpc_id
+  subnet_ids               = module.vpc.private_subnets
+  control_plane_subnet_ids = module.vpc.intra_subnets
+
+  manage_aws_auth_configmap = false
+
+  eks_managed_node_group_defaults = {
+    ami_type       = "AL2_x86_64"
+    instance_types = ["m5.large"]
+
+    # We are using the IRSA created below for permissions
+    # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
+    # and then turn this off after the cluster/node group is created. Without this initial policy,
+    # the VPC CNI fails to assign IPs and nodes cannot join the cluster
+    # See https://github.com/aws/containers-roadmap/issues/1666 for more context
+    iam_role_attach_cni_policy = true
+  }
+
+  eks_managed_node_groups = {
+    # Default node group - as provided by AWS EKS
+    default_node_group = {
+      desired_size = 5
+      min_size = 5
+      max_size = 7
+      # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
+      # so we need to disable it to use the default template provided by the AWS EKS managed node group service
+      use_custom_launch_template = false
+
+      disk_size = 50
+    }
+  }
+
+  tags = local.tags
 }
 
-resource "aws_security_group" "all_worker_mgmt" {
-  name_prefix = "all_worker_management"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "10.0.0.0/8",
-      "172.16.0.0/12",
-      "192.168.0.0/16",
-    ]
-  }
-}
+################################################################################
+# Supporting Resources
+################################################################################
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "3.14.2"
+  version = "~> 3.0"
 
-  name                 = "kubefirst-vpc"
-  cidr                 = "10.0.0.0/16"
-  azs                  = data.aws_availability_zones.available.names
-  private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets       = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+  name = local.name
+  cidr = local.vpc_cidr
+
+  azs             = local.azs
+  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
+  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
+  intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
+
+  enable_ipv6                     = true
+  assign_ipv6_address_on_creation = true
+  create_egress_only_igw          = true
+
+  public_subnet_ipv6_prefixes  = [0, 1, 2]
+  private_subnet_ipv6_prefixes = [3, 4, 5]
+  intra_subnet_ipv6_prefixes   = [6, 7, 8]
+
   enable_nat_gateway   = true
   single_nat_gateway   = true
   enable_dns_hostnames = true
 
   public_subnet_tags = {
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                      = "1"
+    "kubernetes.io/role/elb" = 1
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"             = "1"
+    "kubernetes.io/role/internal-elb" = 1
   }
 
+  tags = local.tags
 }
 
-module "eks" {
-  version         = "17.24.0"
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = local.cluster_name
-  cluster_version = "1.25"
-  subnets         = module.vpc.private_subnets
-  enable_irsa     = true
-  # write_kubeconfig = false
-  manage_aws_auth = false
+module "vpc_cni_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
 
-  kubeconfig_output_path = "../../../kubeconfig"
+  role_name_prefix      = "VPC-CNI-IRSA"
+  attach_vpc_cni_policy = true
+  vpc_cni_enable_ipv6   = true
 
-  vpc_id = module.vpc.vpc_id
-}
-
-module "iam_assumable_role_argo_admin" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-
-  version                       = "4.0.0"
-  create_role                   = true
-  oidc_fully_qualified_subjects = ["system:serviceaccount:argo:argo"]
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_name                     = "argo-${local.cluster_name}"
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
-  ]
-  tags = {
-    Role = "Argo"
-  }
-}
-
-module "iam_assumable_role_atlantis_admin" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-
-  version                       = "4.0.0"
-  create_role                   = true
-  oidc_fully_qualified_subjects = ["system:serviceaccount:atlantis:atlantis"]
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_name                     = "atlantis-${local.cluster_name}"
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
-  ]
-  tags = {
-    Role = "Atlantis"
-  }
-}
-
-module "iam_assumable_role_cert_manager_route53" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-
-  version                       = "4.0.0"
-  create_role                   = true
-  oidc_fully_qualified_subjects = ["system:serviceaccount:cert-manager:cert-manager"]
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_name                     = "cert-manager-${local.cluster_name}"
-  role_policy_arns = [
-    aws_iam_policy.cert_manager.arn,
-  ]
-  tags = {
-    Role = "CertManager"
-  }
-}
-
-resource "aws_iam_policy" "cert_manager" {
-  name        = "cert-manager-<CLUSTER_NAME>"
-  path        = "/"
-  description = "policy for external dns to access route53 resources"
-
-  policy = <<EOT
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "route53:GetChange",
-      "Resource": "arn:aws:route53:::change/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "route53:ChangeResourceRecordSets",
-        "route53:ListResourceRecordSets"
-      ],
-      "Resource": "arn:aws:route53:::hostedzone/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "route53:ListHostedZonesByName",
-      "Resource": "*"
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-node"]
     }
-  ]
-}
-EOT
-}
-
-
-module "iam_assumable_role_chartmuseum_s3" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-
-  version                       = "4.0.0"
-  create_role                   = true
-  oidc_fully_qualified_subjects = ["system:serviceaccount:chartmuseum:chartmuseum"]
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_name                     = "chartmuseum-${local.cluster_name}"
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-  ]
-  tags = {
-    Role = "Chartmuseum"
-  }
-}
-
-module "iam_assumable_role_external_dns_route53" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-
-  version                       = "4.0.0"
-  create_role                   = true
-  oidc_fully_qualified_subjects = ["system:serviceaccount:external-dns:external-dns"]
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_name                     = "external-dns-${local.cluster_name}"
-  role_policy_arns = [
-    aws_iam_policy.external_dns.arn,
-  ]
-  tags = {
-    Role = "ExternalDns"
-  }
-}
-
-resource "aws_iam_policy" "external_dns" {
-  name        = "external-dns-<CLUSTER_NAME>"
-  path        = "/"
-  description = "policy for external dns to access route53 resources"
-
-  policy = <<EOT
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "route53:ChangeResourceRecordSets"
-      ],
-      "Resource": [
-        "arn:aws:route53:::hostedzone/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "route53:ListHostedZones",
-        "route53:ListResourceRecordSets"
-      ],
-      "Resource": [
-        "*"
-      ]
-    }
-  ]
-}
-EOT
-}
-
-module "iam_assumable_role_vault_dynamo_kms" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-
-  version                       = "4.0.0"
-  create_role                   = true
-  oidc_fully_qualified_subjects = ["system:serviceaccount:vault:vault"]
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_name                     = "vault-${local.cluster_name}"
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-    "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
-    aws_iam_policy.vault_server.arn
-  ]
-  tags = {
-    Role = "Vault"
-  }
-}
-
-resource "aws_iam_policy" "vault_server" {
-  name        = "vault-unseal-<CLUSTER_NAME>"
-  path        = "/"
-  description = "policy for external dns to access route53 resources"
-
-  policy = <<EOT
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "VaultAWSAuthMethod",
-      "Effect": "Allow",
-      "Action": [
-        "ec2:DescribeInstances",
-        "iam:GetInstanceProfile",
-        "iam:GetUser",
-        "iam:GetRole"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Sid": "VaultKMSUnseal",
-      "Effect": "Allow",
-      "Action": [
-        "kms:Encrypt",
-        "kms:Decrypt",
-        "kms:DescribeKey"
-      ],
-      "Resource": [
-        "*"
-      ]
-    }
-  ]
-}
-EOT
-}
-
-
-resource "aws_eks_addon" "vpc_cni" {
-  cluster_name      = module.eks.cluster_id
-  addon_name        = "vpc-cni"
-  addon_version     = "v1.12.5-eksbuild.2"
-  resolve_conflicts = "OVERWRITE"
-}
-
-resource "aws_eks_node_group" "mgmt_nodes" {
-  cluster_name    = module.eks.cluster_id
-  node_group_name = "mgmt-nodes"
-  node_role_arn   = module.eks.worker_iam_role_arn
-  subnet_ids      = module.vpc.private_subnets
-  ami_type        = var.ami_type
-  instance_types  = [var.instance_type]
-  disk_size       = 50
-
-  capacity_type = var.node_capacity_type
-
-  labels = {
-    workload      = "mgmt"
-    ClusterName   = "${local.cluster_name}"
-    ProvisionedBy = "kubefirst"
   }
 
-  scaling_config {
-    desired_size = 7
-    max_size     = 7
-    min_size     = 7
-  }
+  tags = local.tags
+}
 
-  # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
-  # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
-  depends_on = [
-    module.eks
+module "ebs_kms_key" {
+  source  = "terraform-aws-modules/kms/aws"
+  version = "~> 1.5"
+
+  description = "Customer managed key to encrypt EKS managed node group volumes"
+
+  # Policy
+  key_administrators = [
+    data.aws_caller_identity.current.arn
   ]
+
+  key_service_roles_for_autoscaling = [
+    # required for the ASG to manage encrypted volumes for nodes
+    "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+    # required for the cluster / persistentvolume-controller to create encrypted PVCs
+    module.eks.cluster_iam_role_arn,
+  ]
+
+  # Aliases
+  aliases = ["eks/${local.name}/ebs"]
+
+  tags = local.tags
 }
