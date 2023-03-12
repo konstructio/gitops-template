@@ -160,10 +160,10 @@ module "argo_workflows" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "argo-${local.cluster_name}"
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
-  ]
+  role_name_prefix      = "argo-${local.name}"
+  role_policy_arns = {
+    admin = "arn:aws:iam::aws:policy/AdministratorAccess"
+  }
 
   oidc_providers = {
     main = {
@@ -179,10 +179,10 @@ module "atlantis" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "atlantis-${local.cluster_name}"
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
-  ]
+  role_name_prefix      = "atlantis-${local.name}"
+  role_policy_arns = {
+    atlantis =  "arn:aws:iam::aws:policy/AdministratorAccess",
+  }
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
@@ -197,10 +197,10 @@ module "cert_manager" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "cert-manager-${local.cluster_name}"
-  role_policy_arns = [
-    aws_iam_policy.cert_manager.arn,
-  ]
+  role_name_prefix      = "cert-manager-${local.name}"
+  role_policy_arns = {
+    cert_manager = aws_iam_policy.cert_manager.arn
+  }
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
@@ -212,7 +212,7 @@ module "cert_manager" {
 }
 
 resource "aws_iam_policy" "cert_manager" {
-  name        = "cert-manager-<CLUSTER_NAME>"
+  name        = "cert-manager-${local.name}"
   path        = "/"
   description = "policy for external dns to access route53 resources"
 
@@ -247,10 +247,10 @@ module "chartmuseum" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "chartmuseum-${local.cluster_name}"
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-  ]
+  role_name_prefix      = "chartmuseum-${local.name}"
+  role_policy_arns = { 
+    chartmuseum = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  }
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
@@ -266,10 +266,10 @@ module "external_dns" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "external-dns-${local.cluster_name}"
-  role_policy_arns = [
-    aws_iam_policy.external_dns.arn,
-  ]
+  role_name_prefix      = "external-dns-${local.name}"
+  role_policy_arns = {
+    external_dns = aws_iam_policy.external_dns.arn
+  }
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
@@ -281,7 +281,7 @@ module "external_dns" {
 }
 
 resource "aws_iam_policy" "external_dns" {
-  name        = "external-dns-<CLUSTER_NAME>"
+  name        = "external-dns-${local.name}"
   path        = "/"
   description = "policy for external dns to access route53 resources"
 
@@ -317,12 +317,12 @@ module "vault" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "vault-${local.cluster_name}"
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-    "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
-    aws_iam_policy.vault_server.arn
-  ]
+  role_name_prefix      = "vault-${local.name}"
+  role_policy_arns = {
+    dynamo = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+    kms = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    vault = aws_iam_policy.vault_server.arn,
+  }
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
@@ -334,7 +334,7 @@ module "vault" {
 }
 
 resource "aws_iam_policy" "vault_server" {
-  name        = "vault-unseal-<CLUSTER_NAME>"
+  name        = "vault-unseal-${local.name}"
   path        = "/"
   description = "policy for external dns to access route53 resources"
 

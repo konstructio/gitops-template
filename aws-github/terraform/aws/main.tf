@@ -20,11 +20,11 @@ provider "aws" {
 module "eks" {
   source = "./eks"
 
-  aws_account_id     = var.aws_account_id
-  cluster_name       = "<CLUSTER_NAME>"
-  node_capacity_type = "<AWS_NODE_CAPACITY_TYPE>"
-  ami_type           = var.ami_type
-  instance_type      = var.instance_type
+  # aws_account_id     = var.aws_account_id
+  # cluster_name       = "<CLUSTER_NAME>"
+  # node_capacity_type = "<AWS_NODE_CAPACITY_TYPE>"
+  # ami_type           = var.ami_type
+  # instance_type      = var.instance_type
 }
 
 module "kms" {
