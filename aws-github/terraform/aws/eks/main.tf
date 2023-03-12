@@ -85,8 +85,8 @@ module "eks" {
   eks_managed_node_groups = {
     # Default node group - as provided by AWS EKS
     default_node_group = {
-      desired_size = 5
-      min_size = 5
+      desired_size = 6
+      min_size = 6
       max_size = 7
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
@@ -154,6 +154,222 @@ module "vpc_cni_irsa" {
   }
 
   tags = local.tags
+}
+
+module "argo_workflows" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix      = "argo-${local.cluster_name}"
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["argo:argo"]
+    }
+  }
+
+  tags = local.tags
+}
+
+module "atlantis" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix      = "atlantis-${local.cluster_name}"
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["atlantis:atlantis"]
+    }
+  }
+
+  tags = local.tags
+}
+
+module "cert_manager" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix      = "cert-manager-${local.cluster_name}"
+  role_policy_arns = [
+    aws_iam_policy.cert_manager.arn,
+  ]
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["cert-manager:cert-manager"]
+    }
+  }
+
+  tags = local.tags
+}
+
+resource "aws_iam_policy" "cert_manager" {
+  name        = "cert-manager-<CLUSTER_NAME>"
+  path        = "/"
+  description = "policy for external dns to access route53 resources"
+
+  policy = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "route53:GetChange",
+      "Resource": "arn:aws:route53:::change/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets",
+        "route53:ListResourceRecordSets"
+      ],
+      "Resource": "arn:aws:route53:::hostedzone/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "route53:ListHostedZonesByName",
+      "Resource": "*"
+    }
+  ]
+}
+EOT
+}
+
+module "chartmuseum" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix      = "chartmuseum-${local.cluster_name}"
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+  ]
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["chartmuseum:chartmuseum"]
+    }
+  }
+
+  tags = local.tags
+}
+
+
+module "external_dns" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix      = "external-dns-${local.cluster_name}"
+  role_policy_arns = [
+    aws_iam_policy.external_dns.arn,
+  ]
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["external-dns:external-dns"]
+    }
+  }
+
+  tags = local.tags
+}
+
+resource "aws_iam_policy" "external_dns" {
+  name        = "external-dns-<CLUSTER_NAME>"
+  path        = "/"
+  description = "policy for external dns to access route53 resources"
+
+  policy = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets"
+      ],
+      "Resource": [
+        "arn:aws:route53:::hostedzone/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListHostedZones",
+        "route53:ListResourceRecordSets"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
+EOT
+}
+
+module "vault" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix      = "vault-${local.cluster_name}"
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+    "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    aws_iam_policy.vault_server.arn
+  ]
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["vault:vault"]
+    }
+  }
+
+  tags = local.tags
+}
+
+resource "aws_iam_policy" "vault_server" {
+  name        = "vault-unseal-<CLUSTER_NAME>"
+  path        = "/"
+  description = "policy for external dns to access route53 resources"
+
+  policy = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VaultAWSAuthMethod",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "iam:GetInstanceProfile",
+        "iam:GetUser",
+        "iam:GetRole"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "VaultKMSUnseal",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
+EOT
 }
 
 module "ebs_kms_key" {
