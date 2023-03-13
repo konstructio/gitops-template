@@ -2,6 +2,7 @@ terraform {
   backend "s3" {
     bucket  = "<KUBEFIRST_STATE_STORE_BUCKET>"
     key     = "terraform/aws/terraform.tfstate"
+    
     region  = "<CLOUD_REGION>"
     encrypt = true
   }

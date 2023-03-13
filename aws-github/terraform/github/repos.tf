@@ -2,7 +2,9 @@ terraform {
   backend "s3" {
     bucket = "<KUBEFIRST_STATE_STORE_BUCKET>"
     key    = "terraform/github/tfstate.tf"
+    
     region = "<CLOUD_REGION>"
+    encrypt = true
   }
   required_providers {
     github = {
