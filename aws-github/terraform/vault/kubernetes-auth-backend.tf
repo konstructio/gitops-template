@@ -1,9 +1,18 @@
 provider "kubernetes" {
-  config_path = "<KUBE_CONFIG_PATH>"
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+}
+provider "aws" {
+  region = "us-east-1"
 }
 
-data "civo_kubernetes_cluster" "kubefirst" {
-  name = local.cluster_name
+data "aws_eks_cluster" "cluster" {
+  name = "kubefirst-tech-4"
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = "kubefirst-tech-4"
 }
 
 resource "vault_auth_backend" "k8s" {
@@ -29,7 +38,7 @@ data "kubernetes_secret" "atlantis_token_secret" {
 
 resource "vault_kubernetes_auth_backend_config" "vault_k8s_auth_atlantis" {
   backend            = vault_auth_backend.k8s.path
-  kubernetes_host    = data.civo_kubernetes_cluster.kubefirst.api_endpoint
+  kubernetes_host    = data.aws_eks_cluster.cluster.endpoint
   token_reviewer_jwt = data.kubernetes_secret.atlantis_token_secret.data.token
 }
 
@@ -60,7 +69,7 @@ data "kubernetes_secret" "external_secrets_token_secret" {
 
 resource "vault_kubernetes_auth_backend_config" "vault_k8s_auth_es" {
   backend            = vault_auth_backend.k8s.path
-  kubernetes_host    = data.civo_kubernetes_cluster.kubefirst.api_endpoint
+  kubernetes_host    = data.aws_eks_cluster.cluster.endpoint
   token_reviewer_jwt = data.kubernetes_secret.external_secrets_token_secret.data.token
 }
 

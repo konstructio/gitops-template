@@ -7,18 +7,10 @@ terraform {
     encrypt = true
 }
   required_providers {
-    civo = {
-      source = "civo/civo"
-    }
     vault = {
       source = "hashicorp/vault"
     }
   }
-}
-
-# export CIVO_TOKEN=$MYTOKEN is set 
-provider "civo" {
-  region = "<CLOUD_REGION>"
 }
 
 provider "vault" {

@@ -2,10 +2,6 @@ locals {
   cluster_name = "<CLUSTER_NAME>"
 }
 
-variable "civo_token" {
-  type = string
-}
-
 variable "github_token" {
   type = string
 }
@@ -30,12 +26,12 @@ variable "atlantis_repo_webhook_url" {
   type    = string
 }
 
-variable "aws_access_key_id" {
-  default = ""
-  type    = string
-}
+# variable "aws_access_key_id" {
+#   default = ""
+#   type    = string
+# }
 
-variable "aws_secret_access_key" {
-  default = ""
-  type    = string
-}
+# variable "aws_secret_access_key" {
+#   default = ""
+#   type    = string
+# }

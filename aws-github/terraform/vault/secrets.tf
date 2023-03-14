@@ -6,36 +6,22 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
     {
       BASIC_AUTH_USER       = "k-ray",
       BASIC_AUTH_PASS       = "feedkraystars",
-      AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
-      AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
     }
   )
 
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "external_dns_secrets" {
-  path = "secret/external-dns"
+# resource "vault_generic_secret" "civo_creds" {
+#   path = "secret/argo"
 
-  data_json = jsonencode(
-    {
-      civo-token = var.civo_token,
-    }
-  )
-
-  depends_on = [vault_mount.secret]
-}
-
-resource "vault_generic_secret" "civo_creds" {
-  path = "secret/argo"
-
-  data_json = jsonencode(
-    {
-      accesskey = var.aws_access_key_id,
-      secretkey = var.aws_secret_access_key,
-    }
-  )
-}
+#   data_json = jsonencode(
+#     {
+#       accesskey = var.aws_access_key_id,
+#       secretkey = var.aws_secret_access_key,
+#     }
+#   )
+# }
 
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
@@ -84,8 +70,8 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      accesskey       = var.aws_access_key_id,
-      secretkey       = var.aws_secret_access_key,
+      # accesskey       = var.aws_access_key_id,
+      # secretkey       = var.aws_secret_access_key,
       BASIC_AUTH_USER = "k-ray",
       BASIC_AUTH_PASS = "feedkraystars",
       SSH_PRIVATE_KEY = var.kubefirst_bot_ssh_private_key,
@@ -110,12 +96,6 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ATLANTIS_GH_WEBHOOK_SECRET           = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_secret  = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url     = var.atlantis_repo_webhook_url,
-      AWS_ACCESS_KEY_ID                    = var.aws_access_key_id,
-      AWS_SECRET_ACCESS_KEY                = var.aws_secret_access_key,
-      TF_VAR_aws_access_key_id             = var.aws_access_key_id,
-      TF_VAR_aws_secret_access_key         = var.aws_secret_access_key,
-      CIVO_TOKEN                           = var.civo_token,
-      TF_VAR_civo_token                    = var.civo_token,
       GITHUB_OWNER                         = "<GITHUB_OWNER>",
       GITHUB_TOKEN                         = var.github_token,
       TF_VAR_github_token                  = var.github_token,
