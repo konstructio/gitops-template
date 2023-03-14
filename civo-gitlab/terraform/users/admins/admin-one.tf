@@ -2,7 +2,7 @@
 #   source = "../modules/user"
 
 #   acl_policies            = ["admin"]
-#   email                   = "admin@your-company-io.com"
+#   email                   = "your.admin@your-company.io"
 #   first_name              = "Admin"
 #   fullname                = "Admin One"
 #   group_id                = data.vault_identity_group.admins.group_id
