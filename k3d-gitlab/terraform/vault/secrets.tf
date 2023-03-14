@@ -112,7 +112,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ARGO_SERVER_URL                     = "argo.argo.svc.cluster.local:2746",
       ATLANTIS_GITLAB_HOSTNAME            = "gitlab.com",
       ATLANTIS_GITLAB_TOKEN               = var.gitlab_token,
-      ATLANTIS_GITLAB_USER                = "<GITLAB_OWNER>",
+      ATLANTIS_GITLAB_USER                = "<GITLAB_USER>",
       ATLANTIS_GITLAB_WEBHOOK_SECRET      = var.atlantis_repo_webhook_secret,
       GITLAB_OWNER                        = "<GITLAB_OWNER>",
       GITLAB_TOKEN                        = var.gitlab_token,
