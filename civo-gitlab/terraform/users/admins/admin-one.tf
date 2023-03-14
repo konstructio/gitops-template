@@ -1,26 +1,14 @@
-# # note: uncomment the below to create a new admin, and be sure to
-# # adjust module name admin_one below to your admin's firstname_lastname.
-# # create as many admin modules files as you have admin personnel.
-
 # module "admin_one" {
-#   source = "./modules/user/github"
+#   source = "../modules/user"
 
 #   acl_policies            = ["admin"]
-#   email                   = "your.admin@your-company.io"
+#   email                   = "admin@your-company-io.com"
 #   first_name              = "Admin"
-#   github_username         = "admin-one-github-username"
+#   fullname                = "Admin One"
+#   group_id                = data.vault_identity_group.admins.group_id
+#   gitlab_username         = "your-admins-gitlab-username"
 #   last_name               = "One"
-#   team_id                 = data.github_team.admins.id
 #   username                = "aone"
 #   user_disabled           = false
 #   userpass_accessor       = data.vault_auth_backend.userpass.accessor
 # }
-
-# Uncomment this and add all admin module entity_id addresses to it
-#output "vault_identity_entity_ids" {
-#  value = [module.admin_one.vault_identity_entity_id]
-#}
-
-output "vault_identity_entity_ids" {
-  value = []
-}
