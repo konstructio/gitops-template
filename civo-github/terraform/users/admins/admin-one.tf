@@ -22,5 +22,5 @@
 #}
 
 output "vault_identity_entity_ids" {
-  value = []
+  value = [module.kbot.vault_identity_entity_id]
 }
