@@ -5,7 +5,7 @@ module "kbot" {
   email                   = "<ALERTS_EMAIL>"
   first_name              = "K"
   fullname                = "kbot"
-  gitlab_username         = "<GITLAB_USERNAME>"
+  gitlab_username         = "<GITLAB_USER>"
   group_id                = data.vault_identity_group.admins.group_id
   last_name               = "Bot"
   initial_password        = var.initial_password
