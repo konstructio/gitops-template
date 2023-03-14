@@ -4,15 +4,15 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
 provider "aws" {
-  region = "us-east-1"
+  region = "<CLOUD_REGION>"
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = "kubefirst-tech-4"
+  name = "<CLUSTER_NAME>"
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = "kubefirst-tech-4"
+  name = "<CLUSTER_NAME>"
 }
 
 resource "vault_auth_backend" "k8s" {
