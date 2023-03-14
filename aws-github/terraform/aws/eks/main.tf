@@ -142,7 +142,7 @@ module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "VPC-CNI-IRSA"
+  role_name      = "VPC-CNI-IRSA"
   attach_vpc_cni_policy = true
   vpc_cni_enable_ipv6   = true
 
@@ -160,7 +160,7 @@ module "argo_workflows" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "argo-${local.name}"
+  role_name      = "argo-${local.name}"
   role_policy_arns = {
     admin = "arn:aws:iam::aws:policy/AdministratorAccess"
   }
@@ -179,7 +179,7 @@ module "atlantis" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "atlantis-${local.name}"
+  role_name      = "atlantis-${local.name}"
   role_policy_arns = {
     atlantis =  "arn:aws:iam::aws:policy/AdministratorAccess",
   }
@@ -197,7 +197,7 @@ module "cert_manager" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "cert-manager-${local.name}"
+  role_name      = "cert-manager-${local.name}"
   role_policy_arns = {
     cert_manager = aws_iam_policy.cert_manager.arn
   }
@@ -247,7 +247,7 @@ module "chartmuseum" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "chartmuseum-${local.name}"
+  role_name      = "chartmuseum-${local.name}"
   role_policy_arns = { 
     chartmuseum = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   }
@@ -266,7 +266,7 @@ module "external_dns" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "external-dns-${local.name}"
+  role_name      = "external-dns-${local.name}"
   role_policy_arns = {
     external_dns = aws_iam_policy.external_dns.arn
   }
@@ -317,7 +317,7 @@ module "vault" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "vault-${local.name}"
+  role_name      = "vault-${local.name}"
   role_policy_arns = {
     dynamo = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
     kms = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
