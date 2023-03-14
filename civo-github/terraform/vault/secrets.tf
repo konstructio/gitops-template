@@ -1,11 +1,18 @@
+resource "random_password" "chartmuseum_user_password" {
+  length           = 16
+  special          = true
+  override_special = "!@"
+}
+
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
   # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
-      BASIC_AUTH_USER       = "k-ray",
-      BASIC_AUTH_PASS       = "feedkraystars",
+
+      BASIC_AUTH_USER       = "admin",
+      BASIC_AUTH_PASS       = random_password.chartmuseum_user_password.result
       AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
     }
@@ -88,8 +95,8 @@ resource "vault_generic_secret" "ci_secrets" {
     {
       accesskey       = var.aws_access_key_id,
       secretkey       = var.aws_secret_access_key,
-      BASIC_AUTH_USER = "k-ray",
-      BASIC_AUTH_PASS = "feedkraystars",
+      BASIC_AUTH_USER = "admin",
+      BASIC_AUTH_PASS = random_password.chartmuseum_user_password.result,
       SSH_PRIVATE_KEY = var.kubefirst_bot_ssh_private_key,
     }
   )
