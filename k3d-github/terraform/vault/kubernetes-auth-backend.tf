@@ -2,10 +2,6 @@ provider "kubernetes" {
   config_path = "<KUBE_CONFIG_PATH>"
 }
 
-data "civo_kubernetes_cluster" "kubefirst" {
-  name = local.cluster_name
-}
-
 resource "vault_auth_backend" "k8s" {
   type = "kubernetes"
   path = "kubernetes/kubefirst"
@@ -13,7 +9,7 @@ resource "vault_auth_backend" "k8s" {
 
 resource "vault_kubernetes_auth_backend_config" "k8s" {
   backend         = vault_auth_backend.k8s.path
-  kubernetes_host = data.civo_kubernetes_cluster.kubefirst.api_endpoint
+  kubernetes_host = var.kubernetes_api_endpoint
 }
 
 resource "vault_kubernetes_auth_backend_role" "k8s_atlantis" {

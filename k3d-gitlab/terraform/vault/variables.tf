@@ -41,3 +41,8 @@ variable "vault_token" {
   default = ""
   type    = string
 }
+
+variable "kubernetes_api_endpoint" {
+  default = ""
+  type    = string
+}
