@@ -9,6 +9,8 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   "AWS_SECRET_ACCESS_KEY" : "feedkraystars"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "minio_creds" {
@@ -20,6 +22,8 @@ resource "vault_generic_secret" "minio_creds" {
   "secretkey" : "feedkraystars"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "external_secrets_token" {
@@ -27,9 +31,11 @@ resource "vault_generic_secret" "external_secrets_token" {
 
   data_json = <<EOT
 {
-  "token" : ${var.vault_token}
+  "token" : "${var.vault_token}"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "development_metaphor" {
@@ -42,6 +48,8 @@ resource "vault_generic_secret" "development_metaphor" {
   "SECRET_TWO" : "development secret 2"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "staging_metaphor" {
@@ -54,6 +62,8 @@ resource "vault_generic_secret" "staging_metaphor" {
   "SECRET_TWO" : "staging secret 2"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "production_metaphor" {
@@ -66,6 +76,8 @@ resource "vault_generic_secret" "production_metaphor" {
   "SECRET_TWO" : "production secret 2"
 }
 EOT
+
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "ci_secrets" {
@@ -82,7 +94,7 @@ resource "vault_generic_secret" "ci_secrets" {
     }
   )
 
-  # depends_on = [vault_mount.secret] #! this will be added back in when vault is not in development mode
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
@@ -110,4 +122,6 @@ resource "vault_generic_secret" "atlantis_secrets" {
       VAULT_TOKEN                         = var.vault_token,
     }
   )
+
+  depends_on = [vault_mount.secret]
 }
