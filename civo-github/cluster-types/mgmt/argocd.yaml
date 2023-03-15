@@ -1,3 +1,4 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -24,3 +25,28 @@ spec:
         duration: 5s
         maxDuration: 5m0s
         factor: 2
+---
+apiVersion: external-secrets.io/v1alpha1
+kind: ExternalSecret
+metadata:
+  name: argocd-oidc-secret
+  annotations:
+    argocd.argoproj.io/sync-wave: '120'
+  labels:
+    app.kubernetes.io/part-of: argocd
+spec:
+  target:
+    name: argocd-oidc-secret
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-kv-secret
+  refreshInterval: 10s
+  data:
+    - remoteRef:
+        key: oidc/argocd
+        property: client_secret
+      secretKey: clientSecret
+    - remoteRef:
+        key: oidc/argocd
+        property: client_id
+      secretKey: clientId
