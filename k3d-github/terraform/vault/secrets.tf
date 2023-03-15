@@ -27,7 +27,7 @@ resource "vault_generic_secret" "external_secrets_token" {
 
   data_json = <<EOT
 {
-  "token" : "k1_local_vault_token"
+  "token" : ${var.vault_token}
 }
 EOT
 }
@@ -105,9 +105,9 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_github_token                 = var.github_token,
       TF_VAR_kubefirst_bot_ssh_public_key = var.kubefirst_bot_ssh_public_key,
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
-      TF_VAR_vault_token                  = "k1_local_vault_token",
+      TF_VAR_vault_token                  = var.vault_token,
       VAULT_ADDR                          = "http://vault.vault.svc.cluster.local:8200",
-      VAULT_TOKEN                         = "k1_local_vault_token",
+      VAULT_TOKEN                         = var.vault_token,
     }
   )
 }

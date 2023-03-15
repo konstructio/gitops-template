@@ -36,3 +36,8 @@ variable "owner_group_id" {
   description = "gitlab owner group id"
   type        = string
 }
+
+variable "vault_token" {
+  default = ""
+  type    = string
+}
