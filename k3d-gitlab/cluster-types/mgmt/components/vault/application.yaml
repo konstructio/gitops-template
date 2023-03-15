@@ -16,6 +16,23 @@ spec:
           value: vault.<DOMAIN_NAME>
       values: |-
         server:
+          config: |
+            ui = true
+            listener "tcp" {
+              tls_disable     = 1
+              address         = "[::]:8200"
+              cluster_address = "[::]:8201"
+            }
+            storage "s3" {
+              bucket     = "vault-backend"
+              endpoint   = "http://minio.minio.svc.cluster.local:9000"
+              region     = "us-k3d-1"
+              access_key = "k-ray"
+              secret_key = "feedkraystars"
+              disable_ssl = "true"
+              s3_force_path_style = true
+            }
+            service_registration "kubernetes" {}
           ingress:
             enabled: true
             annotations:
@@ -27,30 +44,6 @@ spec:
               - secretName: vault-tls
                 hosts:
                   - vault.<DOMAIN_NAME>
-          affinity: ""
-          ha:
-            enabled: true
-          dev:
-            enabled: true
-            devRootToken: "k1_local_vault_token"
-          image:
-            config: |
-              ui = true
-              listener "tcp" {
-                tls_disable = 1
-                address = "[::]:8200"
-                cluster_address = "[::]:8201"
-              }
-              storage "s3" {
-                bucket     = "vault-backend"
-                endpoint   = "http://minio.minio.svc.cluster.local:9000"
-                region     = "us-k3d-1"
-                access_key = "k-ray"
-                secret_key = "feedkraystars"
-                disable_ssl = "true"
-                s3_force_path_style = true
-              }
-              service_registration "kubernetes" {}
           ui:
             enabled: true
             serviceType: "ClusterIP"
