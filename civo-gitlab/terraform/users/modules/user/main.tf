@@ -155,7 +155,7 @@ data "gitlab_user" "user" {
 # }
 
 resource "gitlab_group_membership" "user_admin_group" {
-  count        = var.enabled ? 1 : 0
+  count        = (var.enabled && var.username != "kbot") ? 1 : 0
   group_id     = var.group_id == data.vault_identity_group.admins.group_id ? data.gitlab_group.admins.id : data.gitlab_group.developers.id
   user_id      = data.gitlab_user.user.user_id
   access_level = var.group_id == data.vault_identity_group.admins.group_id ? "owner" : "maintainer"
