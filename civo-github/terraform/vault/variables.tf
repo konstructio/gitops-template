@@ -39,3 +39,8 @@ variable "aws_secret_access_key" {
   default = ""
   type    = string
 }
+
+variable "vault_token" {
+  default = ""
+  type    = string
+}
