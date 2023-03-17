@@ -22,6 +22,11 @@ spec:
               cpu: 1
               memory: 1024Mi
         server:
+          serviceAccount:
+            create: true
+            name: argo-server
+            annotations:
+              eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/argo-<CLUSTER_NAME>
           extraArgs:
           - --auth-mode=client
           - --auth-mode=server
@@ -44,12 +49,6 @@ spec:
         artifactRepository:
           archiveLogs: false
           s3:
-            accessKeySecret:
-              name: ci-secrets
-              key: accesskey
-            secretKeySecret:
-              name: ci-secrets
-              key: secretkey
             insecure: false
             bucket: <KUBEFIRST_ARTIFACTS_BUCKET>
             keyFormat: "argo-workflows/artifacts\
