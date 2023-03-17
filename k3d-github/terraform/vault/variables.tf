@@ -31,3 +31,13 @@ variable "kubefirst_bot_ssh_public_key" {
   default = ""
   type    = string
 }
+
+variable "vault_token" {
+  default = ""
+  type    = string
+}
+
+variable "kubernetes_api_endpoint" {
+  default = ""
+  type    = string
+}

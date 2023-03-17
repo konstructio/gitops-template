@@ -120,7 +120,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ARGO_SERVER_URL                      = "argo.argo.svc.cluster.local:2746",
       ATLANTIS_GITLAB_HOSTNAME             = "gitlab.com",
       ATLANTIS_GITLAB_TOKEN                = var.gitlab_token,
-      ATLANTIS_GITLAB_USER                 = "<GITLAB_OWNER>",
+      ATLANTIS_GITLAB_USER                 = "<GITLAB_USER>",
       ATLANTIS_GITLAB_WEBHOOK_SECRET       = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_secret  = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url     = var.atlantis_repo_webhook_url,
@@ -138,8 +138,8 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_kubefirst_bot_ssh_private_key = var.kubefirst_bot_ssh_private_key,
       VAULT_ADDR                           = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_addr                    = "http://vault.vault.svc.cluster.local:8200",
-      VAULT_TOKEN                          = "k1_local_vault_token",
-      TF_VAR_vault_token                   = "k1_local_vault_token",
+      VAULT_TOKEN                          = var.vault_token,
+      TF_VAR_vault_token                   = var.vault_token,
     }
   )
 
