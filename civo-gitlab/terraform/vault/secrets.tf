@@ -117,9 +117,6 @@ resource "vault_generic_secret" "atlantis_secrets" {
 
   data_json = jsonencode(
     {
-      ARGOCD_AUTH_USERNAME                 = "admin",
-      ARGOCD_INSECURE                      = "true",
-      ARGOCD_SERVER                        = "http://localhost:8080",
       ARGO_SERVER_URL                      = "argo.argo.svc.cluster.local:2746",
       ATLANTIS_GITLAB_HOSTNAME             = "gitlab.com",
       ATLANTIS_GITLAB_TOKEN                = var.gitlab_token,
