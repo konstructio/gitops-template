@@ -12,26 +12,26 @@ spec:
     targetRevision: 3.9.3
     helm:
       values: |-
+        serviceAccount:
+          create: true
+          name: chartmuseum
+          annotations:
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/chartmuseum-<CLUSTER_NAME>'
         env:
           open:
             AUTH_ANONYMOUS_GET: true
+            AWS_SDK_LOAD_CONFIG: true
             STORAGE: amazon
-            STORAGE_AMAZON_BUCKET: <KUBEFIRST_STATE_STORE_BUCKET>
+            STORAGE_AMAZON_BUCKET: <KUBEFIRST_ARTIFACTS_BUCKET>
             STORAGE_AMAZON_PREFIX: kubefirst-charts
             STORAGE_AMAZON_REGION: <CLOUD_REGION>
-            STORAGE_AMAZON_ENDPOINT: https://objectstore.<CLOUD_REGION>.civo.com
             DISABLE_API: false
           existingSecret: chartmuseum-secrets
-          existingSecretMappings:
-            BASIC_AUTH_USER: BASIC_AUTH_USER
-            BASIC_AUTH_PASS: BASIC_AUTH_PASS
-            AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
-            AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
         ingress:
           enabled: true
           pathType: "Prefix"
           annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            cert-manager.io/cluster-issuer: "letsencrypt-staging"
           hosts:
             - name: chartmuseum.<DOMAIN_NAME>
               path: /
