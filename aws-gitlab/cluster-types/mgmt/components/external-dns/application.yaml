@@ -13,23 +13,13 @@ spec:
     helm:
       releaseName: external-dns
       values: |
-        image:
-          repository: registry.k8s.io/external-dns/external-dns
-          tag: "v0.13.2"
         serviceAccount:
           create: true
           name: external-dns
-        provider: civo
-        sources:
-        - ingress
+          annotations:
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/external-dns-<CLUSTER_NAME>'
         domainFilters:
-        - <DOMAIN_NAME>
-        env:
-        - name: CIVO_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: civo-creds
-              key: civo-token
+          - <DOMAIN_NAME>
     chart: external-dns
   destination:
     server: https://kubernetes.default.svc
