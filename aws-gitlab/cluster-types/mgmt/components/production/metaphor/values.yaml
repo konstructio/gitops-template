@@ -1,6 +1,6 @@
 metaphor:
   image:
-    repository: registry.gitlab.com/<GITLAB_OWNER>/metaphor
+    repository: <CONTAINER_REGISTRY_URL>/metaphor
   imagePullSecrets:
     - name: metaphor-deploy
   ingress:
