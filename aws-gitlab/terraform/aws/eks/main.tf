@@ -26,7 +26,7 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    kubefirst  = "true"
+    kubefirst = "true"
   }
 }
 
@@ -48,7 +48,7 @@ module "eks" {
     #   resolve_conflicts = "OVERWRITE"
     # }
     aws-ebs-csi-driver = {
-      most_recent = true
+      most_recent              = true
       service_account_role_arn = module.aws_ebs_csi_driver.iam_role_arn
     }
     kube-proxy = {
@@ -90,8 +90,8 @@ module "eks" {
     # Default node group - as provided by AWS EKS
     default_node_group = {
       desired_size = 6
-      min_size = 6
-      max_size = 7
+      min_size     = 6
+      max_size     = 7
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false
@@ -146,7 +146,7 @@ module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name      = "VPC-CNI-IRSA"
+  role_name             = "VPC-CNI-IRSA"
   attach_vpc_cni_policy = true
 
   oidc_providers = {
@@ -163,7 +163,7 @@ module "aws_ebs_csi_driver" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name      = "EBS-CSI-DRIVER"
+  role_name = "EBS-CSI-DRIVER"
 
   role_policy_arns = {
     admin = aws_iam_policy.aws_ebs_csi_driver.arn
@@ -325,7 +325,7 @@ module "argo_workflows" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name      = "argo-${local.name}"
+  role_name = "argo-${local.name}"
   role_policy_arns = {
     admin = "arn:aws:iam::aws:policy/AdministratorAccess"
   }
@@ -344,9 +344,9 @@ module "atlantis" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name      = "atlantis-${local.name}"
+  role_name = "atlantis-${local.name}"
   role_policy_arns = {
-    atlantis =  "arn:aws:iam::aws:policy/AdministratorAccess",
+    atlantis = "arn:aws:iam::aws:policy/AdministratorAccess",
   }
   oidc_providers = {
     main = {
@@ -362,7 +362,7 @@ module "cert_manager" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name      = "cert-manager-${local.name}"
+  role_name = "cert-manager-${local.name}"
   role_policy_arns = {
     cert_manager = aws_iam_policy.cert_manager.arn
   }
@@ -412,8 +412,8 @@ module "chartmuseum" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name      = "chartmuseum-${local.name}"
-  role_policy_arns = { 
+  role_name = "chartmuseum-${local.name}"
+  role_policy_arns = {
     chartmuseum = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   }
   oidc_providers = {
@@ -431,7 +431,7 @@ module "external_dns" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name      = "external-dns-${local.name}"
+  role_name = "external-dns-${local.name}"
   role_policy_arns = {
     external_dns = aws_iam_policy.external_dns.arn
   }
@@ -482,11 +482,11 @@ module "vault" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name      = "vault-${local.name}"
+  role_name = "vault-${local.name}"
   role_policy_arns = {
     dynamo = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-    kms = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
-    vault = aws_iam_policy.vault_server.arn,
+    kms    = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    vault  = aws_iam_policy.vault_server.arn,
   }
   oidc_providers = {
     main = {

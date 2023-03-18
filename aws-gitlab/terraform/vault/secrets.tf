@@ -4,8 +4,8 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
-      BASIC_AUTH_USER       = "k-ray",
-      BASIC_AUTH_PASS       = "feedkraystars",
+      BASIC_AUTH_USER = "k-ray",
+      BASIC_AUTH_PASS = "feedkraystars",
     }
   )
 
@@ -73,7 +73,7 @@ resource "vault_generic_secret" "ci_secrets" {
       BASIC_AUTH_USER       = "k-ray",
       BASIC_AUTH_PASS       = "feedkraystars",
       SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
-      PERSONAL_ACCESS_TOKEN = var.github_token
+      PERSONAL_ACCESS_TOKEN = var.gitlab_token,
     }
   )
 
@@ -86,15 +86,16 @@ resource "vault_generic_secret" "atlantis_secrets" {
   data_json = jsonencode(
     {
       ARGO_SERVER_URL                      = "argo.argo.svc.cluster.local:2746",
-      ATLANTIS_GH_HOSTNAME                 = "github.com",
-      ATLANTIS_GH_TOKEN                    = var.github_token,
-      ATLANTIS_GH_USER                     = "<GITHUB_USER>",
-      ATLANTIS_GH_WEBHOOK_SECRET           = var.atlantis_repo_webhook_secret,
+      ATLANTIS_GITLAB_HOSTNAME             = "gitlab.com",
+      ATLANTIS_GITLAB_TOKEN                = var.gitlab_token,
+      ATLANTIS_GITLAB_USER                 = "<GITLAB_USER>",
+      ATLANTIS_GITLAB_WEBHOOK_SECRET       = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_secret  = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url     = var.atlantis_repo_webhook_url,
-      GITHUB_OWNER                         = "<GITHUB_OWNER>",
-      GITHUB_TOKEN                         = var.github_token,
-      TF_VAR_github_token                  = var.github_token,
+      GITLAB_OWNER                         = "<GITLAB_OWNER>",
+      GITLAB_TOKEN                         = var.gitlab_token,
+      TF_VAR_gitlab_token                  = var.gitlab_token,
+      TF_VAR_owner_group_id                = var.owner_group_id,
       TF_VAR_kubefirst_bot_ssh_public_key  = var.kubefirst_bot_ssh_public_key,
       TF_VAR_kubefirst_bot_ssh_private_key = var.kubefirst_bot_ssh_private_key,
       VAULT_ADDR                           = "http://vault.vault.svc.cluster.local:8200",

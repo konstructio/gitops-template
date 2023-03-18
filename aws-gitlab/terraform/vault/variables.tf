@@ -2,7 +2,7 @@ locals {
   cluster_name = "<CLUSTER_NAME>"
 }
 
-variable "github_token" {
+variable "gitlab_token" {
   type = string
 }
 
@@ -35,3 +35,13 @@ variable "atlantis_repo_webhook_url" {
 #   default = ""
 #   type    = string
 # }
+
+variable "owner_group_id" {
+  description = "gitlab owner group id"
+  type        = string
+}
+
+variable "vault_token" {
+  default = ""
+  type    = string
+}
