@@ -36,9 +36,9 @@ resource "random_password" "password" {
 resource "vault_generic_endpoint" "user" {
   path                 = "auth/userpass/users/${var.username}"
   ignore_absent_fields = true
-  
+
   lifecycle {
-    ignore_changes = [ data_json ] 
+    ignore_changes = [data_json]
   }
 
   data_json = jsonencode(
@@ -52,9 +52,9 @@ resource "vault_generic_endpoint" "user" {
 
 resource "vault_generic_secret" "user" {
   path = "users/${var.username}"
-  
+
   lifecycle {
-    ignore_changes = [ data_json ] 
+    ignore_changes = [data_json]
   }
 
   data_json = <<EOT
@@ -73,7 +73,7 @@ variable "username" {
   description = "a distinct username that is unique to this user throughout the kubefirst ecosystem"
 }
 
-variable gitlab_username{
+variable "gitlab_username" {
   type        = string
   description = "user's preexisting username at gitlab.com"
 }
