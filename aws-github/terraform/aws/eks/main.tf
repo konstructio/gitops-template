@@ -148,6 +148,10 @@ module "vpc_cni_irsa" {
 
   role_name             = upper("VPC-CNI-IRSA-<CLUSTER_NAME>")
   attach_vpc_cni_policy = true
+  role_policy_arns = {
+    AmazonEKS_CNI_Policy = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  }
+
 
   oidc_providers = {
     main = {
