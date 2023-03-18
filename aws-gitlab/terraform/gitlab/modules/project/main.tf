@@ -7,6 +7,17 @@ terraform {
   }
 }
 
+resource "aws_ecr_repository" "repo" {
+  count                = var.create_ecr != true ? 0 : 1
+  name                 = "<ECR_REPOSITORY_NAME>"
+  image_tag_mutability = "IMMUTABLE"
+  force_delete         = true
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
 resource "gitlab_project" "project" {
   name                   = var.project_name
   archived               = var.archived
