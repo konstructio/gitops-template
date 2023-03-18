@@ -4,8 +4,8 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
-      BASIC_AUTH_USER       = "k-ray",
-      BASIC_AUTH_PASS       = "feedkraystars",
+      BASIC_AUTH_USER = "k-ray",
+      BASIC_AUTH_PASS = "feedkraystars",
     }
   )
 
