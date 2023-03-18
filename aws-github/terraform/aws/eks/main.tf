@@ -150,7 +150,7 @@ module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name             = "VPC-CNI-IRSA"
+  role_name             = upper("VPC-CNI-IRSA-<CLUSTER_NAME>")
   attach_vpc_cni_policy = true
 
   oidc_providers = {
@@ -167,7 +167,7 @@ module "aws_ebs_csi_driver" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name = "EBS-CSI-DRIVER"
+  role_name = upper("EBS-CSI-DRIVER-<CLUSTER_NAME>")
 
   role_policy_arns = {
     admin = aws_iam_policy.aws_ebs_csi_driver.arn
