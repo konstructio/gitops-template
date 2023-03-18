@@ -51,10 +51,6 @@ module "eks" {
 #       most_recent = true
 #       service_account_role_arn = module.aws_ebs_csi_driver.iam_role_arn
 #     }
-    aws-ebs-csi-driver = {
-      most_recent              = true
-      service_account_role_arn = module.aws_ebs_csi_driver.iam_role_arn
-    }
     kube-proxy = {
       most_recent = true
     }
