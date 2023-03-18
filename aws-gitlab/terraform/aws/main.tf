@@ -8,7 +8,6 @@ terraform {
   }
 }
 
-
 provider "aws" {
   region = var.aws_region
   default_tags {
@@ -18,6 +17,7 @@ provider "aws" {
     }
   }
 }
+
 module "eks" {
   source = "./eks"
 
@@ -34,6 +34,12 @@ module "kms" {
 
 module "dynamodb" {
   source = "./dynamodb"
+}
+
+module "ecr_metaphor" {
+  source = "./ecr"
+
+  repository_name = "metaphor"
 }
 
 output "vault_unseal_kms_key" {
