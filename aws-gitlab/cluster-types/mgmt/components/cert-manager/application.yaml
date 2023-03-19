@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.jetstack.io
-    targetRevision: v1.10.1
+    targetRevision: v1.11.0
     helm:
       values: |-
         serviceAccount:
