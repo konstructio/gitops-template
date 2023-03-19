@@ -1,13 +1,13 @@
 metaphor:
   image:
-    repository: ghcr.io/<GITHUB_OWNER>/metaphor
+    repository: <CONTAINER_REGISTRY_URL>/metaphor
   imagePullSecrets:
-  - name: docker-config
+    - name: docker-config
   ingress:
     className: nginx
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-staging"
+      cert-manager.io/cluster-issuer: 'letsencrypt-staging'
     hosts:
       - host: metaphor-staging.<DOMAIN_NAME>
         paths:
