@@ -1,8 +1,6 @@
 metaphor:
   image:
     repository: <CONTAINER_REGISTRY_URL>/metaphor
-  imagePullSecrets:
-    - name: metaphor-deploy
   ingress:
     className: nginx
     enabled: true

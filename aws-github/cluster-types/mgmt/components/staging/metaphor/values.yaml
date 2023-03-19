@@ -1,8 +1,6 @@
 metaphor:
   image:
     repository: <CONTAINER_REGISTRY_URL>/metaphor
-  imagePullSecrets:
-    - name: docker-config
   ingress:
     className: nginx
     enabled: true
