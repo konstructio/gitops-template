@@ -175,7 +175,7 @@ module "aws_ebs_csi_driver" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:aws-node"]
+      namespace_service_accounts = ["kube-system:aws-node", "kube-system:ebs-csi-controller-sa"]
     }
   }
 
