@@ -4,12 +4,12 @@ metadata:
   name: cert-manager
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: '10'
 spec:
   project: default
   source:
     repoURL: https://charts.jetstack.io
-    targetRevision: v1.10.1
+    targetRevision: v1.11.0
     helm:
       values: |-
         serviceAccount:
