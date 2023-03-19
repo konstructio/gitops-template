@@ -22,7 +22,7 @@ resource "vault_auth_backend" "k8s" {
 
 resource "vault_kubernetes_auth_backend_config" "k8s" {
   backend         = vault_auth_backend.k8s.path
-  kubernetes_host = data.civo_kubernetes_cluster.kubefirst.api_endpoint
+  kubernetes_host = data.aws_eks_cluster.cluster.endpoint
 }
 
 resource "vault_kubernetes_auth_backend_config" "vault_k8s_auth_es" {
