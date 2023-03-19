@@ -49,6 +49,13 @@ spec:
             workflow: default
             allowed_overrides: [apply_requirements]
             apply_requirements: [mergeable]
+          workflows:
+            default:
+              plan:
+                steps:
+                - init:
+                    extra_args: ["-reconfigure"]
+                - plan
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: atlantis
