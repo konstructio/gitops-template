@@ -114,7 +114,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_github_token                 = var.github_token,
-      TF_VAR_kbot_ssh_public_key = var.kbot_ssh_public_key,
+      TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kubernetes_api_endpoint      = var.kubernetes_api_endpoint,
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_token                  = var.vault_token,

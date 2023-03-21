@@ -85,22 +85,22 @@ resource "vault_generic_secret" "atlantis_secrets" {
 
   data_json = jsonencode(
     {
-      ARGO_SERVER_URL                      = "argo.argo.svc.cluster.local:2746",
-      ATLANTIS_GH_HOSTNAME                 = "github.com",
-      ATLANTIS_GH_TOKEN                    = var.github_token,
-      ATLANTIS_GH_USER                     = "<GITHUB_USER>",
-      ATLANTIS_GH_WEBHOOK_SECRET           = var.atlantis_repo_webhook_secret,
-      TF_VAR_atlantis_repo_webhook_secret  = var.atlantis_repo_webhook_secret,
-      TF_VAR_atlantis_repo_webhook_url     = var.atlantis_repo_webhook_url,
-      GITHUB_OWNER                         = "<GITHUB_OWNER>",
-      GITHUB_TOKEN                         = var.github_token,
-      TF_VAR_github_token                  = var.github_token,
-      TF_VAR_kbot_ssh_public_key  = var.kbot_ssh_public_key,
-      TF_VAR_kbot_ssh_private_key = var.kbot_ssh_private_key,
-      VAULT_ADDR                           = "http://vault.vault.svc.cluster.local:8200",
-      TF_VAR_vault_addr                    = "http://vault.vault.svc.cluster.local:8200",
-      VAULT_TOKEN                          = var.vault_token,
-      TF_VAR_vault_token                   = var.vault_token,
+      ARGO_SERVER_URL                     = "argo.argo.svc.cluster.local:2746",
+      ATLANTIS_GH_HOSTNAME                = "github.com",
+      ATLANTIS_GH_TOKEN                   = var.github_token,
+      ATLANTIS_GH_USER                    = "<GITHUB_USER>",
+      ATLANTIS_GH_WEBHOOK_SECRET          = var.atlantis_repo_webhook_secret,
+      TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
+      TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
+      GITHUB_OWNER                        = "<GITHUB_OWNER>",
+      GITHUB_TOKEN                        = var.github_token,
+      TF_VAR_github_token                 = var.github_token,
+      TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
+      TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,
+      VAULT_ADDR                          = "http://vault.vault.svc.cluster.local:8200",
+      TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
+      VAULT_TOKEN                         = var.vault_token,
+      TF_VAR_vault_token                  = var.vault_token,
     }
   )
 
