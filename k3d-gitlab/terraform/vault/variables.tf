@@ -17,17 +17,12 @@ variable "atlantis_repo_webhook_secret" {
   type    = string
 }
 
-variable "atlantis_repo_webhook_url" {
+variable "kbot_ssh_private_key" {
   default = ""
   type    = string
 }
 
-variable "kubefirst_bot_ssh_private_key" {
-  default = ""
-  type    = string
-}
-
-variable "kubefirst_bot_ssh_public_key" {
+variable "kbot_ssh_public_key" {
   default = ""
   type    = string
 }
