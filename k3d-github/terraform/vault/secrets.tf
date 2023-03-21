@@ -1,14 +1,14 @@
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
-  data_json = <<EOT
-{
-  "BASIC_AUTH_USER" : "k-ray",
-  "BASIC_AUTH_PASS" : "feedkraystars",
-  "AWS_ACCESS_KEY_ID" : "k-ray",
-  "AWS_SECRET_ACCESS_KEY" : "feedkraystars"
-}
-EOT
+  data_json = jsonencode(
+    {
+      AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
+      AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
+      BASIC_AUTH_USER       = "k-ray",
+      BASIC_AUTH_PASS       = "feedkraystars",
+    }
+  )
 
   depends_on = [vault_mount.secret]
 }
@@ -16,12 +16,12 @@ EOT
 resource "vault_generic_secret" "minio_creds" {
   path = "secret/minio"
 
-  data_json = <<EOT
-{
-  "accesskey" : "k-ray",
-  "secretkey" : "feedkraystars"
-}
-EOT
+  data_json = jsonencode(
+    {
+      accesskey = var.aws_access_key_id,
+      secretkey = var.aws_secret_access_key,
+    }
+  )
 
   depends_on = [vault_mount.secret]
 }
@@ -29,11 +29,11 @@ EOT
 resource "vault_generic_secret" "external_secrets_token" {
   path = "secret/external-secrets-store"
 
-  data_json = <<EOT
-{
-  "token" : "${var.vault_token}"
-}
-EOT
+  data_json = jsonencode(
+    {
+      token = var.vault_token
+    }
+  )
 
   depends_on = [vault_mount.secret]
 }
@@ -109,12 +109,12 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ATLANTIS_GH_WEBHOOK_SECRET          = var.atlantis_repo_webhook_secret,
       GITHUB_OWNER                        = "<GITHUB_OWNER>",
       GITHUB_TOKEN                        = var.github_token,
-      SSH_PRIVATE_KEY                     = var.kbot_ssh_private_key,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
+      TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
-      TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_github_token                 = var.github_token,
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
+      TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,
       TF_VAR_kubernetes_api_endpoint      = var.kubernetes_api_endpoint,
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_token                  = var.vault_token,
