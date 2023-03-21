@@ -46,9 +46,8 @@ spec:
               containerPort: 8080
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
             successThreshold: 1
@@ -56,7 +55,7 @@ spec:
             timeoutSeconds: 30
           readinessProbe:
             httpGet:
-              path: /
+              path: /api/healthz
               port: http
             initialDelaySeconds: 10
             periodSeconds: 5
