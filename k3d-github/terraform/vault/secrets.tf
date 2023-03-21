@@ -89,7 +89,7 @@ resource "vault_generic_secret" "ci_secrets" {
       secretkey             = var.aws_secret_access_key,
       BASIC_AUTH_USER       = "k-ray",
       BASIC_AUTH_PASS       = "feedkraystars",
-      SSH_PRIVATE_KEY       = var.kubefirst_bot_ssh_private_key,
+      SSH_PRIVATE_KEY       = var.kbot_ssh_private_key,
       PERSONAL_ACCESS_TOKEN = var.github_token,
     }
   )
@@ -109,12 +109,12 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ATLANTIS_GH_WEBHOOK_SECRET          = var.atlantis_repo_webhook_secret,
       GITHUB_OWNER                        = "<GITHUB_OWNER>",
       GITHUB_TOKEN                        = var.github_token,
-      SSH_PRIVATE_KEY                     = var.kubefirst_bot_ssh_private_key,
+      SSH_PRIVATE_KEY                     = var.kbot_ssh_private_key,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_github_token                 = var.github_token,
-      TF_VAR_kubefirst_bot_ssh_public_key = var.kubefirst_bot_ssh_public_key,
+      TF_VAR_kbot_ssh_public_key = var.kbot_ssh_public_key,
       TF_VAR_kubernetes_api_endpoint      = var.kubernetes_api_endpoint,
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_token                  = var.vault_token,
