@@ -87,7 +87,7 @@ spec:
         chmod 0700 $HOME/.ssh/config;
         
         git config --global user.email 'jared@kubeshop.io';
-        git config --global user.name 'kubefirst-bot';
+        git config --global user.name 'kbot';
         git remote set-url origin '{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.repoName}}.git';
         git remote -v;
         git status;

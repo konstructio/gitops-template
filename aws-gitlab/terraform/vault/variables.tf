@@ -6,12 +6,12 @@ variable "gitlab_token" {
   type = string
 }
 
-variable "kubefirst_bot_ssh_private_key" {
+variable "kbot_ssh_private_key" {
   default = ""
   type    = string
 }
 
-variable "kubefirst_bot_ssh_public_key" {
+variable "kbot_ssh_public_key" {
   default = ""
   type    = string
 }
