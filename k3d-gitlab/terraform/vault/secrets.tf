@@ -129,7 +129,6 @@ resource "vault_generic_secret" "atlantis_secrets" {
       GITLAB_TOKEN                        = var.gitlab_token,
       SSH_PRIVATE_KEY                     = var.kubefirst_bot_ssh_private_key,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
-      TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
       TF_VAR_gitlab_token                 = var.gitlab_token,
