@@ -21,6 +21,7 @@ module "gitops" {
 resource "gitlab_project_hook" "atlantis" {
   project               = module.gitops.path
   url                   = var.atlantis_repo_webhook_url
+  token                 = var.atlantis_repo_webhook_secret
   merge_requests_events = true
   push_events           = true
   note_events           = true
