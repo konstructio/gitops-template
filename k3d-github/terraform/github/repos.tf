@@ -13,5 +13,4 @@ module "metaphor" {
   repo_name          = "metaphor"
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
-  create_ecr         = false
 }
