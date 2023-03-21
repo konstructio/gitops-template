@@ -131,6 +131,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       TF_VAR_gitlab_token                 = var.gitlab_token,
       TF_VAR_kubefirst_bot_ssh_public_key = var.kubefirst_bot_ssh_public_key,
+      TF_VAR_kubernetes_api_endpoint      = var.kubernetes_api_endpoint,
       TF_VAR_owner_group_id               = "<GITLAB_OWNER_GROUP_ID>"
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_token                  = var.vault_token,
