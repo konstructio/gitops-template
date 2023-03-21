@@ -20,8 +20,6 @@ spec:
         orgAllowlist: <ATLANTIS_ALLOW_LIST>
         ingress:
           enabled: true
-          annotations:
-            traefik.ingress.kubernetes.io/router.middlewares: atlantis-redirect-to-https@kubernetescrd
           path: /
           pathType: Prefix
           host: atlantis.<DOMAIN_NAME>

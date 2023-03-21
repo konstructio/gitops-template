@@ -48,8 +48,6 @@ spec:
             value: "<VAULT_INGRESS_URL>"
         ingress:
           enabled: true
-          annotations:
-            traefik.ingress.kubernetes.io/router.middlewares: kubefirst-redirect-to-https@kubernetescrd
           className: ""
           hosts:
             - host: kubefirst.<DOMAIN_NAME>

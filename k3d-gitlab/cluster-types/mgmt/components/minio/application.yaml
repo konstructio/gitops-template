@@ -25,8 +25,6 @@ spec:
                 - minio.<DOMAIN_NAME>
         consoleIngress:
           enabled: true
-          annotations:
-            traefik.ingress.kubernetes.io/router.middlewares: minio-redirect-to-https@kubernetescrd
           path: /
           hosts:
             - minio-console.<DOMAIN_NAME>

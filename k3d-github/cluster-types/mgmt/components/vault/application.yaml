@@ -35,8 +35,6 @@ spec:
             service_registration "kubernetes" {}
           ingress:
             enabled: true
-            annotations:
-              traefik.ingress.kubernetes.io/router.middlewares: vault-redirect-to-https@kubernetescrd
             hosts:
               - host: vault.<DOMAIN_NAME>
             pathType: Prefix

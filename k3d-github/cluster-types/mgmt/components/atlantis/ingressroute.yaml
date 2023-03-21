@@ -12,26 +12,3 @@ spec:
           port: 80
   tls:
     secretName: atlantis-tls
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: atlantis
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: atlantis-events
-  namespace: atlantis
-spec:
-  routes:
-    - kind: Rule
-      match: Host(`*.ngrok.io`) && Path(`/events`)
-      services:
-        - name: atlantis
-          port: 80
