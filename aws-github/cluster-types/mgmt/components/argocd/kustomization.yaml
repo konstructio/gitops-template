@@ -6,11 +6,13 @@ namespace: argocd
 # https://github.com/argoproj/argo-cd/tags
 resources:
   - github.com:argoproj/argo-cd.git/manifests/ha/cluster-install?ref=v2.6.4
-  - argo-cd-ui-ingress.yaml
-  - argo-cd-namespace.yaml
+  - argocd-ui-ingress.yaml
+  - argocd-namespace.yaml
+  - externalsecrets.yaml
 
 patchesStrategicMerge:
-  - argo-cd-cm.yaml
+  - argocd-cm.yaml
+  - argocd-rbac-cm.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

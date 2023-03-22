@@ -9,3 +9,10 @@ data:
   users.anonymous.enabled: 'false'
   server.insecure: 'true'
   url: 'https://argocd.<DOMAIN_NAME>'
+  oidc.config: |
+    name: Vault
+    issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst
+    clientID: $argocd-oidc-secret:clientId
+    clientSecret: $argocd-oidc-secret:clientSecret
+    requestedScopes: ["openid", "groups", "user", "profile", "email"]
+    requestedIDTokenClaims: {"groups": {"essential": true}}

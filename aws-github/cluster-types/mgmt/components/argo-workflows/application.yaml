@@ -28,8 +28,9 @@ spec:
             annotations:
               eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/argo-<CLUSTER_NAME>
           extraArgs:
+          - --secure
           - --auth-mode=client
-          - --auth-mode=server
+          - --auth-mode=sso
           ingress:
             enabled: true
             ingressClassName: nginx
@@ -44,6 +45,24 @@ spec:
               - secretName: argo-tls
                 hosts:
                   - argo.<DOMAIN_NAME>
+          sso:
+            issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst
+            clientId:
+              name: argo-secrets
+              key: client-id
+            clientSecret:
+              name: argo-secrets
+              key: client-secret
+            redirectUrl: https://argo.<DOMAIN_NAME>/oauth2/callback
+            scopes:
+              - email
+              - openid
+              - groups
+              - user
+              - profile
+            # RBAC Config. >= v2.12
+            rbac:
+              enabled: true
         useDefaultArtifactRepo: true
         useStaticCredentials: true
         artifactRepository:
