@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+data:
+  # policy.csv is an file containing user-defined RBAC policies and role definitions (optional).
+  # Policy rules are in the form:
+  #   p, subject, resource, action, object, effect
+  # Role definitions and bindings are in the form:
+  #   g, subject, inherited-subject
+  # See https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md for additional information.
+  policy.csv: |
+    g, admins, role:admin
+    g, developers, role:readonly
+
+  # policy.default is the name of the default role which Argo CD will falls back to, when
+  # authorizing API requests (optional). If omitted or empty, users may be still be able to login,
+  # but will see no apps, projects, etc...
+  policy.default: role:readonly
