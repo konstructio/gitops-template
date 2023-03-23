@@ -4,7 +4,7 @@ metadata:
   name: github-runner-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '60'
+    argocd.argoproj.io/sync-wave: '100'
     addons.kubefirst.io/name: github
 spec:
   project: default
