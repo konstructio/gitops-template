@@ -3,7 +3,7 @@ kind: RunnerDeployment
 metadata:
   name: actions-runner
   annotations:
-    argocd.argoproj.io/sync-wave: '100'
+    argocd.argoproj.io/sync-wave: '99'
 spec:
   replicas: 2
   template:
