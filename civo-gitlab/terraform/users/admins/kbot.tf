@@ -13,3 +13,8 @@ module "kbot" {
   user_disabled     = false
   userpass_accessor = data.vault_auth_backend.userpass.accessor
 }
+
+variable "initial_password" {
+  type    = string
+  default = ""
+}
