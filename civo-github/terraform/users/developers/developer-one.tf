@@ -16,12 +16,3 @@
 #   userpass_accessor       = data.vault_auth_backend.userpass.accessor
 # }
 #
-
-# Uncomment this and add all admin module entity_id addresses to it
-#output "vault_identity_entity_ids" {
-#  value = [module.developer_one.vault_identity_entity_id]
-#}
-
-output "vault_identity_entity_ids" {
-  value = []
-}

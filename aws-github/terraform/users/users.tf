@@ -47,7 +47,6 @@ resource "vault_identity_group_member_entity_ids" "admins_membership" {
   group_id = data.vault_identity_group.admins.group_id
 }
 
-
 # # after you add your first developer to the platform be sure to 
 # # uncomment everything below this comment to initialize the 
 # # developers module
