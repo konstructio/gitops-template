@@ -504,7 +504,7 @@ module "vault" {
 resource "aws_iam_policy" "vault_server" {
   name        = "vault-unseal-${local.name}"
   path        = "/"
-  description = "policy for external dns to access route53 resources"
+  description = "vault server kms unseal policy"
 
   policy = <<EOT
 {
