@@ -3,7 +3,7 @@ kind: ClusterWorkflowTemplate
 metadata:
   name: cwft-git
   annotations:
-    argocd.argoproj.io/sync-wave: '25'
+    argocd.argoproj.io/sync-wave: '0'
 spec:
   templates:
     - name: checkout-with-gitops
