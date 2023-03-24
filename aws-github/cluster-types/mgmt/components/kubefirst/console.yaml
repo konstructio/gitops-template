@@ -16,7 +16,7 @@ spec:
       values: |-
         env:
           ARGO_CD_URL:
-            value: "<ARGO_CD_INGRESS_URL>"
+            value: "<ARGOCD_INGRESS_URL>"
           ARGO_WORKFLOWS_URL:
             value: "<ARGO_WORKFLOWS_INGRESS_URL>"
           ATLANTIS_URL:
