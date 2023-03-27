@@ -19,7 +19,7 @@ spec:
             STORAGE_AMAZON_BUCKET: <KUBEFIRST_STATE_STORE_BUCKET>
             STORAGE_AMAZON_PREFIX: kubefirst-charts
             STORAGE_AMAZON_REGION: us-east-1
-            STORAGE_AMAZON_ENDPOINT: <CLOUD_REGION>.vultrobjects.com
+            STORAGE_AMAZON_ENDPOINT: <KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>
             DISABLE_API: false
           existingSecret: chartmuseum-secrets
           existingSecretMappings:
