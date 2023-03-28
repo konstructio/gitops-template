@@ -16,7 +16,7 @@ resource "vault_auth_backend" "k8s" {
 
 resource "vault_kubernetes_auth_backend_config" "k8s" {
   backend         = vault_auth_backend.k8s.path
-  kubernetes_host = data.vultr_kubernetes.kubefirst.endpoint
+  kubernetes_host = "https://${data.vultr_kubernetes.kubefirst.endpoint}:6443"
 }
 
 resource "vault_kubernetes_auth_backend_role" "k8s_atlantis" {

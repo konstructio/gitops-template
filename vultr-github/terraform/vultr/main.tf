@@ -20,23 +20,24 @@ terraform {
   }
 }
 
-provider "vultr" {
-  region = "<CLOUD_REGION>"
-}
+provider "vultr" {}
 
 locals {
   cluster_name         = "<CLUSTER_NAME>"
+  pool_name            = "${local.cluster_name}-node-pool"
   kube_config_filename = "../../../kubeconfig"
+  kubernetes_version   = "v1.26.2+2"
 }
 
 resource "vultr_kubernetes" "kubefirst" {
+  region  = "<CLOUD_REGION>"
   label   = local.cluster_name
-  version = "v1.23.5+1"
+  version = local.kubernetes_version
 
   node_pools {
     node_quantity = 1
     plan          = "vc2-2c-4gb"
-    label         = "my-label"
+    label         = local.pool_name
     auto_scaler   = true
     min_nodes     = 4
     max_nodes     = 4
@@ -44,6 +45,6 @@ resource "vultr_kubernetes" "kubefirst" {
 }
 
 resource "local_file" "kubeconfig" {
-  content  = vultr_kubernetes.kubefirst.kube_config
+  content  = base64decode(vultr_kubernetes.kubefirst.kube_config)
   filename = local.kube_config_filename
 }

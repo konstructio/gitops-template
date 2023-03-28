@@ -23,9 +23,7 @@ terraform {
   }
 }
 
-provider "vultr" {
-  region = "<CLOUD_REGION>"
-}
+provider "vultr" {}
 
 provider "vault" {
   skip_tls_verify = "true"
