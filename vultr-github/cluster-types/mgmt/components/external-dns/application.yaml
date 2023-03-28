@@ -25,7 +25,7 @@ spec:
         domainFilters:
         - <DOMAIN_NAME>
         env:
-        - name: VULTR_API_TOKEN
+        - name: VULTR_API_KEY
           valueFrom:
             secretKeyRef:
               name: vultr-creds
