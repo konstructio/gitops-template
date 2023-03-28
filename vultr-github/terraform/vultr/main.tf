@@ -25,6 +25,7 @@ provider "vultr" {}
 locals {
   cluster_name         = "<CLUSTER_NAME>"
   pool_name            = "${local.cluster_name}-node-pool"
+  pool_instance_type   = "vc2-4c-8gb"
   kube_config_filename = "../../../kubeconfig"
   kubernetes_version   = "v1.26.2+2"
 }
@@ -35,11 +36,11 @@ resource "vultr_kubernetes" "kubefirst" {
   version = local.kubernetes_version
 
   node_pools {
-    node_quantity = 1
-    plan          = "vc2-2c-4gb"
+    node_quantity = 2
+    plan          = local.pool_instance_type
     label         = local.pool_name
     auto_scaler   = true
-    min_nodes     = 4
+    min_nodes     = 2
     max_nodes     = 4
   }
 }
