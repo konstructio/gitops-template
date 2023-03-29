@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.1.5
+    targetRevision: 2.1.6
     chart: console
     helm:
       values: |-
