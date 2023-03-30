@@ -9,9 +9,8 @@ spec:
   project: default
   source:
     repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.1.5
+    targetRevision: 2.1.6
     chart: console
-    # todo need to fix HOSTED_ZONE_NAME with DOMAIN_NAME or something more generic
     helm:
       values: |-
         env:
