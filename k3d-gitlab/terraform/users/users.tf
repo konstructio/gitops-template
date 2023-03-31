@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
+    bucket   = "kubefirst-state-store"
     key      = "terraform/users/terraform.tfstate"
     endpoint = "https://minio.localdev.me"
 
