@@ -32,6 +32,8 @@ spec:
             value: "<GIT_PROVIDER>"
           GITHUB_OWNER:
             value: "<GITHUB_OWNER>"
+          K3D_DOMAIN:
+            value: "<K3D_DOMAIN>"
           KUBEFIRST_VERSION:
             value: "<KUBEFIRST_VERSION>"
           KUBEFIRST_TEAM:
