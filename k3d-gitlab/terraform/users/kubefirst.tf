@@ -12,12 +12,6 @@ terraform {
     skip_region_validation      = true
     force_path_style            = true
   }
-  required_providers {
-    github = {
-      source  = "integrations/github"
-      version = "~> 5.17.0"
-    }
-  }
 }
 
 # todo add organization support
