@@ -12,6 +12,15 @@ terraform {
     skip_region_validation      = true
     force_path_style            = true
   }
+  required_providers {
+    gitlab = {
+      source  = "gitlabhq/gitlab"
+      version = "15.8.0"
+    }
+    vault = {
+      source = "hashicorp/vault"
+    }
+  }
 }
 
 # todo add organization support
