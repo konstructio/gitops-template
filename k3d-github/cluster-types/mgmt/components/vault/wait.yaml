@@ -20,7 +20,7 @@ rules:
   - watch
   - list
 - apiGroups:
-  - "*"
+  - ""
   resources:
   - secrets
   verbs:
