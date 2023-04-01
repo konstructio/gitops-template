@@ -54,7 +54,7 @@ spec:
       - args:
         - wait-for
         - vault-unseal
-        image: kubefirst/kubernetes-toolkit:0.0.5
+        image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
         name: kubernetes-toolkit
       restartPolicy: OnFailure
@@ -74,7 +74,7 @@ spec:
       - args:
         - wait-for
         - vault-init-complete
-        image: kubefirst/kubernetes-toolkit:0.0.5
+        image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
         name: kubernetes-toolkit
         env:

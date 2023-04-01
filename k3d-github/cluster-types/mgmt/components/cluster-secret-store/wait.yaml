@@ -1,39 +1,23 @@
-# apiVersion: v1
-# kind: ServiceAccount
-# metadata:
-#   name: kubernetes-toolkit
-#   namespace: external-secrets-operator
-# ---
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: Role
-# metadata:
-#   name: kubernetes-toolkit
-#   namespace: external-secrets-operator
-# rules:
-# - apiGroups:
-#   - apps
-#   resources:
-#   - deployments
-#   - statefulsets
-#   verbs:
-#   - get
-#   - watch
-#   - list
-# ---
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: RoleBinding
-# metadata:
-#   name: kubernetes-toolkit
-#   namespace: external-secrets-operator
-# roleRef:
-#   apiGroup: rbac.authorization.k8s.io
-#   kind: Role
-#   name: kubernetes-toolkit
-# subjects:
-# - kind: ServiceAccount
-#   name: kubernetes-toolkit
-#   namespace: external-secrets-operator
-# ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubernetes-toolkit
+  namespace: external-secrets-operator
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubernetes-toolkit
+  namespace: external-secrets-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-secrets-operator-view
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-toolkit
+  namespace: external-secrets-operator
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -52,8 +36,8 @@ spec:
         - vault-kv-secret
         - --timeout-seconds
         - "60"
-        image: kubefirst/kubernetes-toolkit:0.0.5
+        image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
         name: kubernetes-toolkit
       restartPolicy: OnFailure
-      # serviceAccountName: kubernetes-toolkit
+      serviceAccountName: kubernetes-toolkit
