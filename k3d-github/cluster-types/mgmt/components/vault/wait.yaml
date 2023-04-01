@@ -19,6 +19,12 @@ rules:
   - get
   - watch
   - list
+- apiGroups:
+  - "*"
+  resources:
+  - secrets
+  verbs:
+  - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -40,6 +46,26 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
   name: kubernetes-toolkit
+  namespace: vault
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - wait-for
+        - vault-unseal
+        image: kubefirst/kubernetes-toolkit:0.0.2
+        imagePullPolicy: Always
+        name: kubernetes-toolkit
+      restartPolicy: OnFailure
+      serviceAccountName: kubernetes-toolkit
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "21"
+  name: kubernetes-toolkit2
   namespace: vault
 spec:
   template:
