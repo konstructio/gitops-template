@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sync-wave-20
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  template:
+    spec:
+      serviceAccountName: argocd-server
+      containers:
+      - name: atlantis-wait
+        image: sverrirab/sleep
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "sync wave 20"
+          sleep 20
+      restartPolicy: Never
+  backoffLimit: 1
