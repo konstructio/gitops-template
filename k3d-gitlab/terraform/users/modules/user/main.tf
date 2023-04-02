@@ -1,12 +1,10 @@
 terraform {
   required_providers {
     gitlab = {
-      source  = "gitlabhq/gitlab"
-      version = "3.20.0"
+      source = "gitlabhq/gitlab"
     }
   }
 }
-
 
 
 resource "vault_identity_entity" "user" {
@@ -39,10 +37,14 @@ resource "vault_generic_endpoint" "user" {
   path                 = "auth/userpass/users/${var.username}"
   ignore_absent_fields = true
 
+  lifecycle {
+    ignore_changes = [data_json]
+  }
+
   data_json = jsonencode(
     {
       policies  = var.acl_policies,
-      password  = random_password.password.result
+      password  = var.initial_password != "" ? var.initial_password : random_password.password.result
       token_ttl = "1h"
     }
   )
@@ -51,9 +53,13 @@ resource "vault_generic_endpoint" "user" {
 resource "vault_generic_secret" "user" {
   path = "users/${var.username}"
 
+  lifecycle {
+    ignore_changes = [data_json]
+  }
+
   data_json = <<EOT
 {
-  "initial-password": "${random_password.password.result}"
+  "initial-password": "${var.initial_password != "" ? var.initial_password : random_password.password.result}"
 }
 EOT
 }
@@ -65,6 +71,11 @@ variable "acl_policies" {
 variable "username" {
   type        = string
   description = "a distinct username that is unique to this user throughout the kubefirst ecosystem"
+}
+
+variable "gitlab_username" {
+  type        = string
+  description = "user's preexisting username at gitlab.com"
 }
 
 variable "user_disabled" {
@@ -112,35 +123,40 @@ data "vault_identity_group" "admins" {
 }
 
 data "gitlab_group" "admins" {
-  full_path = "admins"
+  full_path = "<GITLAB_OWNER>/admins"
 }
 
 data "gitlab_group" "developers" {
-  full_path = "developers"
+  full_path = "<GITLAB_OWNER>/developers"
 }
 
-resource "gitlab_user" "user" {
-  count            = var.enabled ? 1 : 0
-  name             = var.fullname
-  username         = var.username
-  password         = var.initial_password == "" ? random_password.password.result : var.initial_password
-  email            = var.email
-  is_admin         = var.group_id == data.vault_identity_group.admins.group_id ? true : false
-  projects_limit   = 100
-  can_create_group = true
-  is_external      = false
-  reset_password   = false
-  # initial gitlab password are stored in vault. to allow gitlab to manage passwords,
-  # you should remove `password` and change `reset_password` to true. however, you'll need to
-  # enable gitlab email before setting to reset_password to true. see this link for config settings:
-  # https://github.com/gitlabhq/omnibus-gitlab/blob/master/doc/settings/smtp.md
-  # we didn't want this dependency on kubefirst's initial setup due to the variations in how companies
-  # manage email. if you don't have company email available to you, the gmail integration works well.
+data "gitlab_user" "user" {
+  username = var.gitlab_username
 }
+
+# self hosted variation of the data.gitlab_user above. in self-hosted gitlab you can create your own users instead of onboarding them.
+# resource "gitlab_user" "user" {
+#   count            = var.enabled ? 1 : 0
+#   name             = var.fullname
+#   username         = var.username
+#   password         = var.initial_password == "" ? random_password.password.result : var.initial_password
+#   email            = var.email
+#   is_admin         = var.group_id == data.vault_identity_group.admins.group_id ? true : false
+#   projects_limit   = 100
+#   can_create_group = true
+#   is_external      = false
+#   reset_password   = false
+#   # initial gitlab password are stored in vault. to allow gitlab to manage passwords,
+#   # you should remove `password` and change `reset_password` to true. however, you'll need to
+#   # enable gitlab email before setting to reset_password to true. see this link for config settings:
+#   # https://github.com/gitlabhq/omnibus-gitlab/blob/master/doc/settings/smtp.md
+#   # we didn't want this dependency on kubefirst's initial setup due to the variations in how companies
+#   # manage email. if you don't have company email available to you, the gmail integration works well.
+# }
 
 resource "gitlab_group_membership" "user_admin_group" {
-  count        = var.enabled ? 1 : 0
+  count        = (var.enabled && var.username != "kbot") ? 1 : 0
   group_id     = var.group_id == data.vault_identity_group.admins.group_id ? data.gitlab_group.admins.id : data.gitlab_group.developers.id
-  user_id      = gitlab_user.user[count.index].id
+  user_id      = data.gitlab_user.user.user_id
   access_level = var.group_id == data.vault_identity_group.admins.group_id ? "owner" : "maintainer"
 }

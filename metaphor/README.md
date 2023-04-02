@@ -8,16 +8,16 @@
 
 The cloud ([GitHub](https://docs.kubefirst.com/kubefirst/github/install.html)/[GitLab](https://docs.kubefirst.com/kubefirst/gitlab/install.html)) deployed instances of `metaphor` are available at:
 
-| environment | url                                                            |
-|-------------|----------------------------------------------------------------|
+| environment | url                                          |
+| ----------- | -------------------------------------------- |
 | development | `https://metaphor-development.<DOMAIN_NAME>` |
 | staging     | `https://metaphor-staging.<DOMAIN_NAME>`     |
 | production  | `https://metaphor-production.<DOMAIN_NAME>`  |
 
 The [local](https://docs.kubefirst.com/kubefirst/local/install.html) deployed instances of `metaphor` is available at:
 
-| environment | url                                                 |
-|-------------|-----------------------------------------------------|
+| environment | url                                          |
+| ----------- | -------------------------------------------- |
 | development | `https://metaphor-development.kubefirst.dev` |
 | staging     | `https://metaphor-staging.kubefirst.dev`     |
 | production  | `https://metaphor-production.kubefirst.dev`  |
