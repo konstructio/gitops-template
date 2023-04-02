@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: minio
   namespace: minio
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
 spec:
   entryPoints:
     - websecure
@@ -20,6 +22,8 @@ kind: IngressRoute
 metadata:
   name: minio-console
   namespace: minio
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
 spec:
   entryPoints:
     - websecure

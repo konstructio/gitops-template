@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: argo
   namespace: argo
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
 spec:
   entryPoints:
     - websecure
