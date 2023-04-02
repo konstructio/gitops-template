@@ -33,75 +33,75 @@ subjects:
 - kind: ServiceAccount
   name: k8s-toolkit-cert-manager
   namespace: cert-manager
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "20"
-  name: wait-cert-manager
-  namespace: cert-manager
-spec:
-  template:
-    spec:
-      containers:
-      - args:
-        - wait-for
-        - deployment
-        - --namespace
-        - cert-manager
-        - --label
-        - app.kubernetes.io/name=cert-manager
-        image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
-        name: wait
-      restartPolicy: OnFailure
-      serviceAccountName: kubernetes-toolkit
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "20"
-  name: wait-cainjector
-  namespace: cert-manager
-spec:
-  template:
-    spec:
-      containers:
-      - args:
-        - wait-for
-        - deployment
-        - --namespace
-        - cert-manager
-        - --label
-        - app.kubernetes.io/name=cainjector
-        image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
-        name: wait
-      restartPolicy: OnFailure
-      serviceAccountName: kubernetes-toolkit
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "20"
-  name: wait-webhook
-  namespace: cert-manager
-spec:
-  template:
-    spec:
-      containers:
-      - args:
-        - wait-for
-        - deployment
-        - --namespace
-        - cert-manager
-        - --label
-        - app.kubernetes.io/name=webhook
-        image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
-        name: wait
-      restartPolicy: OnFailure
-      serviceAccountName: kubernetes-toolkit
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "20"
+#   name: wait-cert-manager
+#   namespace: cert-manager
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - args:
+#         - wait-for
+#         - deployment
+#         - --namespace
+#         - cert-manager
+#         - --label
+#         - app.kubernetes.io/name=cert-manager
+#         image: kubefirst/kubernetes-toolkit:0.0.6
+#         imagePullPolicy: Always
+#         name: wait
+#       restartPolicy: OnFailure
+#       serviceAccountName: k8s-toolkit-cert-manager
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "20"
+#   name: wait-cainjector
+#   namespace: cert-manager
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - args:
+#         - wait-for
+#         - deployment
+#         - --namespace
+#         - cert-manager
+#         - --label
+#         - app.kubernetes.io/name=cainjector
+#         image: kubefirst/kubernetes-toolkit:0.0.6
+#         imagePullPolicy: Always
+#         name: wait
+#       restartPolicy: OnFailure
+#       serviceAccountName: k8s-toolkit-cert-manager
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "20"
+#   name: wait-webhook
+#   namespace: cert-manager
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - args:
+#         - wait-for
+#         - deployment
+#         - --namespace
+#         - cert-manager
+#         - --label
+#         - app.kubernetes.io/name=webhook
+#         image: kubefirst/kubernetes-toolkit:0.0.6
+#         imagePullPolicy: Always
+#         name: wait
+#       restartPolicy: OnFailure
+#       serviceAccountName: k8s-toolkit-cert-manager
