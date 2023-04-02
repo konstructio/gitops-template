@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: kubernetes-toolkit
+  name: k8s-toolkit-atlantis
   namespace: atlantis
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: kubernetes-toolkit
+  name: k8s-toolkit-atlantis
   namespace: atlantis
 rules:
 - apiGroups:
@@ -23,15 +23,15 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: kubernetes-toolkit
+  name: k8s-toolkit-atlantis
   namespace: atlantis
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: kubernetes-toolkit
+  name: k8s-toolkit-atlantis
 subjects:
 - kind: ServiceAccount
-  name: kubernetes-toolkit
+  name: k8s-toolkit-atlantis
   namespace: atlantis
 ---
 apiVersion: batch/v1
@@ -39,7 +39,7 @@ kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
-  name: kubernetes-toolkit
+  name: k8s-toolkit-atlantis
   namespace: atlantis
 spec:
   template:
@@ -54,6 +54,6 @@ spec:
         - app=atlantis
         image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
-        name: kubernetes-toolkit
+        name: k8s-toolkit-atlantis
       restartPolicy: OnFailure
-      serviceAccountName: kubernetes-toolkit
+      serviceAccountName: k8s-toolkit-atlantis
