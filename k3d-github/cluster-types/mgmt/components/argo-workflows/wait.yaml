@@ -2,13 +2,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: kubernetes-toolkit
-  namespace: chartmuseum
+  namespace: argo
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: kubernetes-toolkit
-  namespace: chartmuseum
+  namespace: argo
 rules:
 - apiGroups:
   - apps
@@ -24,7 +24,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: kubernetes-toolkit
-  namespace: chartmuseum
+  namespace: argo
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -32,7 +32,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: kubernetes-toolkit
-  namespace: chartmuseum
+  namespace: argo
 ---
 apiVersion: batch/v1
 kind: Job
@@ -40,7 +40,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
   name: kubernetes-toolkit
-  namespace: chartmuseum
+  namespace: argo
 spec:
   template:
     spec:
@@ -64,7 +64,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
   name: kubernetes-toolkit
-  namespace: chartmuseum
+  namespace: argo
 spec:
   template:
     spec:
