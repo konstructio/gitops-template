@@ -23,7 +23,7 @@ kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
-  name: wait
+  name: wait-vault-kv-secret
   namespace: external-secrets-operator
 spec:
   template:
