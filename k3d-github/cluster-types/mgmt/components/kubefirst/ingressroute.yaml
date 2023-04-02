@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: kubefirst-console
   namespace: kubefirst
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
 spec:
   entryPoints:
     - websecure
