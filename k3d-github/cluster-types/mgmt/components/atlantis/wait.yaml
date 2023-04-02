@@ -57,3 +57,27 @@ spec:
         name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-atlantis
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+  name: wait-atlantis
+  namespace: atlantis
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - wait-for
+        - statefulset
+        - --namespace
+        - atlantis
+        - --label
+        - app=ngrok
+        image: kubefirst/kubernetes-toolkit:0.0.6
+        imagePullPolicy: Always
+        name: wait
+      restartPolicy: OnFailure
+      serviceAccountName: k8s-toolkit-atlantis
