@@ -28,6 +28,18 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "docker_config" {
+  path = "secret/dockerconfigjson"
+
+  data_json = jsonencode(
+    {
+      dockerconfig   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "minio_creds" {
   path = "secret/minio"
 

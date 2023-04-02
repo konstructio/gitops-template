@@ -12,16 +12,18 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
-# resource "vault_generic_secret" "civo_creds" {
-#   path = "secret/argo"
+resource "vault_generic_secret" "docker_config" {
+  path = "secret/dockerconfigjson"
 
-#   data_json = jsonencode(
-#     {
-#       accesskey = var.aws_access_key_id,
-#       secretkey = var.aws_secret_access_key,
-#     }
-#   )
-# }
+  data_json = jsonencode(
+    {
+      dockerconfig   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"

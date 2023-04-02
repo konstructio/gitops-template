@@ -39,6 +39,18 @@ resource "vault_generic_secret" "civo_creds" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "docker_config" {
+  path = "secret/dockerconfigjson"
+
+  data_json = jsonencode(
+    {
+      dockerconfig   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
   # note: these secrets are not actually sensitive.
