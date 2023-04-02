@@ -45,7 +45,7 @@ resource "vault_generic_secret" "docker_config" {
 
   data_json = jsonencode(
     {
-      dockerconfig   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
+      dockerconfig   = jsonencode({"auths":{"registry.gitlab.io":{"auth":"${var.b64_docker_auth}"}}}),
     }
   )
 
