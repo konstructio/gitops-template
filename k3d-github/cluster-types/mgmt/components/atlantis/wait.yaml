@@ -39,7 +39,7 @@ kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
-  name: k8s-toolkit-atlantis
+  name: wait-atlantis
   namespace: atlantis
 spec:
   template:
@@ -54,6 +54,6 @@ spec:
         - app=atlantis
         image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
-        name: k8s-toolkit-atlantis
+        name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-atlantis

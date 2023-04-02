@@ -39,7 +39,7 @@ kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
-  name: k8s-toolkit-argo
+  name: wait-argo-workflow-controller
   namespace: argo
 spec:
   template:
@@ -54,7 +54,7 @@ spec:
         - app.kubernetes.io/name=argo-workflow-controller
         image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
-        name: k8s-toolkit-argo
+        name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-argo
 ---
@@ -63,7 +63,7 @@ kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
-  name: kubernetes-toolkit
+  name: wait-argo-server
   namespace: argo
 spec:
   template:
@@ -78,6 +78,6 @@ spec:
         - app.kubernetes.io/name=argo-server
         image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
-        name: k8s-toolkit-argo
+        name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-argo

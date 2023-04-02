@@ -39,7 +39,7 @@ kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "30"
-  name: k8s-toolkit-arc
+  name: wait-actions-runner-controller
   namespace: github-runner
 spec:
   template:
@@ -54,6 +54,6 @@ spec:
         - app.kubernetes.io/name=actions-runner-controller
         image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
-        name: k8s-toolkit-arc
+        name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-arc

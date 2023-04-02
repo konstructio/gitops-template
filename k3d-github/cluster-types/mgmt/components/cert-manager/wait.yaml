@@ -78,7 +78,7 @@ spec:
         - app.kubernetes.io/name=cainjector
         image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
-        name: kubernetes-toolkit
+        name: wait
       restartPolicy: OnFailure
       serviceAccountName: kubernetes-toolkit
 ---
@@ -102,6 +102,6 @@ spec:
         - app.kubernetes.io/name=webhook
         image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
-        name: kubernetes-toolkit
+        name: wait
       restartPolicy: OnFailure
       serviceAccountName: kubernetes-toolkit
