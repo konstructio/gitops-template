@@ -157,6 +157,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
+      TF_VAR_b64_docker_auth               = var.b64_docker_auth,
       TF_VAR_gitlab_token                 = var.gitlab_token,
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,

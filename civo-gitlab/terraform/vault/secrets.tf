@@ -140,6 +140,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       AWS_ACCESS_KEY_ID                   = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY               = var.aws_secret_access_key,
+      TF_VAR_b64_docker_auth               = var.b64_docker_auth,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
       CIVO_TOKEN                          = var.civo_token,
