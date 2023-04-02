@@ -62,8 +62,8 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
-  name: wait-atlantis
+    argocd.argoproj.io/sync-wave: "31"
+  name: wait-ngrok
   namespace: atlantis
 spec:
   template:
@@ -71,7 +71,7 @@ spec:
       containers:
       - args:
         - wait-for
-        - statefulset
+        - deployment
         - --namespace
         - atlantis
         - --label
