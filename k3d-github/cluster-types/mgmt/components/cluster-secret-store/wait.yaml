@@ -5,7 +5,7 @@ metadata:
   namespace: external-secrets-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: kubernetes-toolkit
   namespace: external-secrets-operator
@@ -29,15 +29,12 @@ spec:
   template:
     spec:
       containers:
-      - args:
-        - wait-for
-        - cluster-secret-store
-        - --name
-        - vault-kv-secret
-        - --timeout-seconds
-        - "60"
-        image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
-        name: kubernetes-toolkit
+      - name: unseal-vault
+        image: public.ecr.aws/bitnami/kubectl:1.24
+        command:
+        - /bin/sh
+        - -c
+        - |
+          while ! kubectl get clustersecretstore/vault-kv-secret --namespace external-secrets-operator; do echo "waiting for external secrets store to be valid, sleeping 5 seconds"; sleep 5; done
       restartPolicy: OnFailure
       serviceAccountName: kubernetes-toolkit
