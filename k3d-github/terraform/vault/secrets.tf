@@ -1,3 +1,18 @@
+resource "vault_generic_secret" "atlantis_ngrok_secrets" {
+  path = "secret/atlantis-ngrok"
+
+  data_json = jsonencode(
+    {
+      GIT_PROVIDER   = "<GIT_PROVIDER>",
+      GIT_OWNER      = "<GITHUB_OWNER>",
+      GIT_TOKEN      = var.github_token,
+      GIT_REPOSITORY = "gitops",
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 

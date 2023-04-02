@@ -2,13 +2,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: kubernetes-toolkit
-  namespace: external-dns
+  namespace: atlantis
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: kubernetes-toolkit
-  namespace: external-dns
+  namespace: atlantis
 rules:
 - apiGroups:
   - apps
@@ -24,7 +24,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: kubernetes-toolkit
-  namespace: external-dns
+  namespace: atlantis
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -32,7 +32,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: kubernetes-toolkit
-  namespace: external-dns
+  namespace: atlantis
 ---
 apiVersion: batch/v1
 kind: Job
@@ -40,18 +40,18 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
   name: kubernetes-toolkit
-  namespace: external-dns
+  namespace: atlantis
 spec:
   template:
     spec:
       containers:
       - args:
         - wait-for
-        - deployment
+        - statefulset
         - --namespace
-        - external-dns
+        - atlantis
         - --label
-        - app.kubernetes.io/name=external-dns
+        - app=atlantis
         image: kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: Always
         name: kubernetes-toolkit
