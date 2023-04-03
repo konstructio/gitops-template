@@ -4,7 +4,7 @@ metadata:
   name: reloader-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '100'
+    argocd.argoproj.io/sync-wave: '50'
 spec:
   project: default
   source:
