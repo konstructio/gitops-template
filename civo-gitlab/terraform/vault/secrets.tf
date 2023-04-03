@@ -124,6 +124,8 @@ resource "vault_generic_secret" "gitlab_runner" {
   "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
 }
 EOT
+  
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
