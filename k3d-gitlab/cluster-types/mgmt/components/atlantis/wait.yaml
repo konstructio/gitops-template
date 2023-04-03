@@ -63,7 +63,7 @@ kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
-  name: wait-atlantis
+  name: wait-atlantis-ngrok
   namespace: atlantis
 spec:
   template:
