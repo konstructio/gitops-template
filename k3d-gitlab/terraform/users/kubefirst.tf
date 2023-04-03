@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     bucket   = "kubefirst-state-store"
     key      = "terraform/users/terraform.tfstate"
-    endpoint = "https://minio.localdev.me"
+    endpoint = "https://minio.kubefirst.dev"
 
     access_key                  = "k-ray"
     secret_key                  = "feedkraystars"
@@ -11,6 +11,15 @@ terraform {
     skip_metadata_api_check     = true
     skip_region_validation      = true
     force_path_style            = true
+  }
+  required_providers {
+    gitlab = {
+      source  = "gitlabhq/gitlab"
+      version = "15.8.0"
+    }
+    vault = {
+      source = "hashicorp/vault"
+    }
   }
 }
 

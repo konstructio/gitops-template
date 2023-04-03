@@ -1,3 +1,18 @@
+resource "vault_generic_secret" "atlantis_ngrok_secrets" {
+  path = "secret/atlantis-ngrok"
+
+  data_json = jsonencode(
+    {
+      GIT_PROVIDER   = "<GIT_PROVIDER>",
+      GIT_OWNER      = "<GITHUB_OWNER>",
+      GIT_TOKEN      = var.github_token,
+      GIT_REPOSITORY = "gitops",
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
@@ -7,6 +22,18 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
       BASIC_AUTH_USER       = "k-ray",
       BASIC_AUTH_PASS       = "feedkraystars",
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
+resource "vault_generic_secret" "docker_config" {
+  path = "secret/dockerconfigjson"
+
+  data_json = jsonencode(
+    {
+      dockerconfig   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
     }
   )
 
@@ -112,6 +139,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
+      TF_VAR_b64_docker_auth               = var.b64_docker_auth,
       TF_VAR_github_token                 = var.github_token,
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,

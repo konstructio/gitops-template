@@ -2,6 +2,10 @@ locals {
   cluster_name = "<CLUSTER_NAME>"
 }
 
+variable "b64_docker_auth" {
+  type = string
+}
+
 variable "github_token" {
   type = string
 }
