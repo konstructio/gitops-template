@@ -8,6 +8,10 @@ variable "aws_secret_access_key" {
   type    = string
 }
 
+variable "b64_docker_auth" {
+  type = string
+}
+
 variable "gitlab_token" {
   type = string
 }

@@ -12,16 +12,18 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
-# resource "vault_generic_secret" "civo_creds" {
-#   path = "secret/argo"
+resource "vault_generic_secret" "docker_config" {
+  path = "secret/dockerconfigjson"
 
-#   data_json = jsonencode(
-#     {
-#       accesskey = var.aws_access_key_id,
-#       secretkey = var.aws_secret_access_key,
-#     }
-#   )
-# }
+  data_json = jsonencode(
+    {
+      dockerconfig   = jsonencode({"auths":{"registry.gitlab.io":{"auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
@@ -110,6 +112,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       TF_VAR_aws_account_id               = "<AWS_ACCOUNT_ID>",
       TF_VAR_aws_region                   = "<CLOUD_REGION>",
+      TF_VAR_b64_docker_auth               = var.b64_docker_auth,
       TF_VAR_hosted_zone_name             = "<DOMAIN_NAME>",
       TF_VAR_gitlab_token                 = var.gitlab_token,
       TF_VAR_owner_group_id               = var.owner_group_id,

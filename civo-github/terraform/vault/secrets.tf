@@ -39,6 +39,18 @@ resource "vault_generic_secret" "civo_creds" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "docker_config" {
+  path = "secret/dockerconfigjson"
+
+  data_json = jsonencode(
+    {
+      dockerconfig   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
   # note: these secrets are not actually sensitive.
@@ -113,6 +125,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       AWS_SECRET_ACCESS_KEY               = var.aws_secret_access_key,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
+      TF_VAR_b64_docker_auth               = var.b64_docker_auth,
       CIVO_TOKEN                          = var.civo_token,
       TF_VAR_civo_token                   = var.civo_token,
       GITHUB_OWNER                        = "<GITHUB_OWNER>",

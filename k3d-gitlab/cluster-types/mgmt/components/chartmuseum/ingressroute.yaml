@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: chartmuseum
   namespace: chartmuseum
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
 spec:
   entryPoints:
     - websecure
