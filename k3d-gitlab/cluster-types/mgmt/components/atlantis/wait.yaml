@@ -71,7 +71,7 @@ spec:
       containers:
       - args:
         - wait-for
-        - statefulset
+        - deployment
         - --namespace
         - atlantis
         - --label
