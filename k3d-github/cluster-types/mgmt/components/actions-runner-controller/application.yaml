@@ -4,7 +4,7 @@ metadata:
   name: actions-runner-contoller
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '20'
+    argocd.argoproj.io/sync-wave: '10'
 spec:
   project: default
   source:

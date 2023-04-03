@@ -103,6 +103,7 @@ resource "vault_generic_secret" "ci_secrets" {
       BASIC_AUTH_USER = "k-ray",
       BASIC_AUTH_PASS = "feedkraystars",
       SSH_PRIVATE_KEY = var.kbot_ssh_private_key,
+      PERSONAL_ACCESS_TOKEN = var.github_token,
     }
   )
 

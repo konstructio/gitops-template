@@ -4,7 +4,7 @@ metadata:
   name: gitlab-runner-wait
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '3'
+    argocd.argoproj.io/sync-wave: '20'
 spec:
   template:
     spec:

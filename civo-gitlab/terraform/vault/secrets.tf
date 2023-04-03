@@ -35,7 +35,6 @@ resource "vault_generic_secret" "civo_creds" {
       secretkey = var.aws_secret_access_key,
     }
   )
-
   depends_on = [vault_mount.secret]
 }
 
@@ -48,7 +47,6 @@ resource "vault_generic_secret" "docker_config" {
       dockerconfig   = jsonencode({"auths":{"registry.gitlab.io":{"auth":"${var.b64_docker_auth}"}}}),
     }
   )
-
   depends_on = [vault_mount.secret]
 }
 
@@ -63,7 +61,6 @@ resource "vault_generic_secret" "development_metaphor" {
   "SECRET_TWO" : "development secret 2"
 }
 EOT
-
   depends_on = [vault_mount.secret]
 }
 
@@ -77,7 +74,6 @@ resource "vault_generic_secret" "staging_metaphor" {
   "SECRET_TWO" : "staging secret 2"
 }
 EOT
-
   depends_on = [vault_mount.secret]
 }
 
@@ -108,7 +104,6 @@ resource "vault_generic_secret" "ci_secrets" {
       PERSONAL_ACCESS_TOKEN = var.gitlab_token,
     }
   )
-
   depends_on = [vault_mount.secret]
 }
 
@@ -124,6 +119,7 @@ resource "vault_generic_secret" "gitlab_runner" {
   "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
 }
 EOT
+  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
@@ -157,6 +153,5 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_vault_token                  = var.vault_token,
     }
   )
-
   depends_on = [vault_mount.secret]
 }
