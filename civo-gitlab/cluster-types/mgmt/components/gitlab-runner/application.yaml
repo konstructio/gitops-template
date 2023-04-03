@@ -6,7 +6,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '1'
+    argocd.argoproj.io/sync-wave: '10'
 spec:
   destination:
     server: https://kubernetes.default.svc
@@ -51,7 +51,7 @@ kind: ClusterRoleBinding
 metadata:
   name: gitlab-runner-argo-workflows-admin
   annotations:
-    argocd.argoproj.io/sync-wave: '2'
+    argocd.argoproj.io/sync-wave: '20'
 subjects:
   - kind: ServiceAccount
     name: gitlab-runner
