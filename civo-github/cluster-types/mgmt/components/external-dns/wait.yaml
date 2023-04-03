@@ -53,7 +53,7 @@ spec:
         - --label
         - app.kubernetes.io/name=external-dns
         image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: kubernetes-toolkit
       restartPolicy: OnFailure
       serviceAccountName: kubernetes-toolkit

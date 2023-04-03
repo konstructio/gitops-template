@@ -53,7 +53,7 @@ spec:
         - --label
         - app.kubernetes.io/name=external-secrets-cert-controller
         image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-eso
@@ -77,7 +77,7 @@ spec:
         - --label
         - app.kubernetes.io/name=external-secrets
         image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-eso
@@ -101,7 +101,7 @@ spec:
         - --label
         - app.kubernetes.io/name=external-secrets-webhook
         image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-eso

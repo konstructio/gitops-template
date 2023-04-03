@@ -53,7 +53,7 @@ spec:
         - --label
         - app.kubernetes.io/name=actions-runner-controller
         image: kubefirst/kubernetes-toolkit:0.0.6
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-arc
