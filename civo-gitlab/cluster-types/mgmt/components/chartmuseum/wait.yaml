@@ -52,7 +52,7 @@ spec:
         - chartmuseum
         - --label
         - app.kubernetes.io/name=chartmuseum
-        image: kubefirst/kubernetes-toolkit:0.0.6
+        image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: IfNotPresent
         name: wait
       restartPolicy: OnFailure

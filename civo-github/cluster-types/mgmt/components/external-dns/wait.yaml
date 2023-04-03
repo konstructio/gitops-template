@@ -52,7 +52,7 @@ spec:
         - external-dns
         - --label
         - app.kubernetes.io/name=external-dns
-        image: kubefirst/kubernetes-toolkit:0.0.6
+        image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.6
         imagePullPolicy: IfNotPresent
         name: kubernetes-toolkit
       restartPolicy: OnFailure

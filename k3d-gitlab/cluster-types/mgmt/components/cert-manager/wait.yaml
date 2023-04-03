@@ -52,7 +52,7 @@ subjects:
 #         - cert-manager
 #         - --label
 #         - app.kubernetes.io/name=cert-manager
-#         image: kubefirst/kubernetes-toolkit:0.0.6
+#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.6
 #         imagePullPolicy: IfNotPresent
 #         name: wait
 #       restartPolicy: OnFailure
@@ -76,7 +76,7 @@ subjects:
 #         - cert-manager
 #         - --label
 #         - app.kubernetes.io/name=cainjector
-#         image: kubefirst/kubernetes-toolkit:0.0.6
+#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.6
 #         imagePullPolicy: IfNotPresent
 #         name: wait
 #       restartPolicy: OnFailure
@@ -100,7 +100,7 @@ subjects:
 #         - cert-manager
 #         - --label
 #         - app.kubernetes.io/name=webhook
-#         image: kubefirst/kubernetes-toolkit:0.0.6
+#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.6
 #         imagePullPolicy: IfNotPresent
 #         name: wait
 #       restartPolicy: OnFailure
