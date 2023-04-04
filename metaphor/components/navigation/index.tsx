@@ -14,7 +14,7 @@ const FOOTER_ITEMS = [
   {
     icon: Help,
     path: 'https://docs.kubefirst.io',
-    title: 'Help Documentation',
+    title: 'Documentation',
   },
   {
     icon: Slack,
