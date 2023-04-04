@@ -5,14 +5,12 @@ namespace: argocd
 # To upgrade ArgoCD, increment the version here
 # https://github.com/argoproj/argo-cd/tags
 resources:
-  - github.com:argoproj/argo-cd.git/manifests/ha/cluster-install?ref=v2.6.4
-  # - argocd-ui-ingress.yaml
-  - argocd-namespace.yaml
+  - github.com:kubefirst/manifests.git/argocd/cloud?ref=main
+  - argocd-ui-ingress.yaml
   - externalsecrets.yaml
 
 patchesStrategicMerge:
   - argocd-cm.yaml
-  - argocd-rbac-cm.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
