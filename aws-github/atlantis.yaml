@@ -5,19 +5,19 @@ projects:
     terraform_version: 1.3.8
     autoplan:
       enabled: true
-      when_modified: ['./**/*.tf', '*.tf*']
+      when_modified: ['./*/*.tf', '*.tf*']
   - dir: terraform/github
     terraform_version: 1.3.8
     autoplan:
       enabled: true
-      when_modified: ['./**/*.tf', '*.tf*']
+      when_modified: ['./*/*.tf', '*.tf*']
   - dir: terraform/users
     terraform_version: 1.3.8
     autoplan:
       enabled: true
-      when_modified: ['./**/*.tf', '*.tf*']
+      when_modified: ['./*/*.tf', './*/*/*.tf', '*.tf*']
   - dir: terraform/vault
     terraform_version: 1.3.8
     autoplan:
       enabled: true
-      when_modified: ['./**/*.tf', '*.tf*']
+      when_modified: ['./*/*.tf', '*.tf*']
