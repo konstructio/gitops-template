@@ -3,10 +3,6 @@ kind: ConfigMap
 metadata:
   name: argocd-cm
 data:
-  application.resourceTrackingMethod: annotation
-  admin.enabled: 'true'
-  statusbadge.enabled: 'true'
-  users.anonymous.enabled: 'false'
   url: 'https://argocd.<DOMAIN_NAME>'
   oidc.config: |
     name: Vault
