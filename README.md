@@ -50,7 +50,7 @@ The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the 
 
 The argocd configurations in this repo can be found in the [registry directory](./registry). The applications that we build and release on the kubefirst platform will also be registered here in the development, staging, and production folders. The `metaphor` application can be found there to serve as an example to follow for building and shipping code on the platform.
 
-The `main` branch's registry directory represents the gitops desired state for all apps registered with kubernetes. Argo CD will automatically apply your desired state to kubernetes through. You can see the Sync status of all of your apps in [argo cd](<ARGO_CD_URL>).
+The `main` branch's registry directory represents the gitops desired state for all apps registered with kubernetes. Argo CD will automatically apply your desired state to kubernetes through. You can see the Sync status of all of your apps in [argo cd](<ARGOCD_INGRESS_URL>).
 
 ## terraform infrastructure as code
 
