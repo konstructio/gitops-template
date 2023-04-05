@@ -71,12 +71,12 @@ spec:
       - name: BASIC_AUTH_PASS
         valueFrom:
           secretKeyRef:
-            name: chartmuseum-secrets
+            name: ci-secrets
             key: BASIC_AUTH_PASS
       - name: BASIC_AUTH_USER
         valueFrom:
           secretKeyRef:
-            name: chartmuseum-secrets
+            name: ci-secrets
             key: BASIC_AUTH_USER
   - name: set-environment-version
     inputs:
