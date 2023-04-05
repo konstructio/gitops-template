@@ -33,7 +33,7 @@ The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the 
 | Vault                    | vault            | Secrets Management                          | <VAULT_INGRESS_URL>              |
 | Argo CD                  | argocd           | GitOps Continuous Delivery                  | <ARGOCD_INGRESS_URL>            |
 | Argo Workflows           | argo             | Application Continuous Integration          | <ARGO_WORKFLOWS_INGRESS_URL>     |
-| Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_URL>           |
+| Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_INGRESS_URL>           |
 | Chart Museum             | chartmuseum      | Helm Chart Registry                         | <CHARTMUSEUM_URL>        |
 | Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_FRONT_DEV>     |
 | Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_FRONT_STAGING> |
