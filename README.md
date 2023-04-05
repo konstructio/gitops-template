@@ -59,3 +59,6 @@ The terraform in this repository can be found in the [terraform directory](./ter
 All of our terraform is automated with a tool called atlantis that integrates with your git pull requests. To see the terraform entry points and under what circumstance they are triggered, see [atlantis.yaml](./atlantis.yaml).
 
 Any change to a `*.tf` file, even a whitespace change, will trigger its corresponding Atlantis workflow once a pull request is submitted. Within a minute it will post the plan to the pull request with instruction on how to apply the plan if approved.
+
+
+
