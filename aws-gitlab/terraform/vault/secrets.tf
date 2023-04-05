@@ -17,7 +17,7 @@ resource "vault_generic_secret" "docker_config" {
 
   data_json = jsonencode(
     {
-      dockerconfig   = jsonencode({"auths":{"registry.gitlab.io":{"auth":"${var.b64_docker_auth}"}}}),
+      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.io" : { "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
 
@@ -87,8 +87,8 @@ data "gitlab_group" "owner" {
 }
 
 resource "vault_generic_secret" "gitlab_runner" {
-  path      = "secret/gitlab-runner"
-  data_json = <<EOT
+  path       = "secret/gitlab-runner"
+  data_json  = <<EOT
 {
   "RUNNER_TOKEN" : "",
   "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
@@ -113,7 +113,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       TF_VAR_aws_account_id               = "<AWS_ACCOUNT_ID>",
       TF_VAR_aws_region                   = "<CLOUD_REGION>",
-      TF_VAR_b64_docker_auth               = var.b64_docker_auth,
+      TF_VAR_b64_docker_auth              = var.b64_docker_auth,
       TF_VAR_hosted_zone_name             = "<DOMAIN_NAME>",
       TF_VAR_gitlab_token                 = var.gitlab_token,
       TF_VAR_owner_group_id               = var.owner_group_id,

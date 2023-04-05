@@ -32,6 +32,18 @@ resource "vault_generic_secret" "external_dns_secrets" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "metaphor_deploy_token" {
+  path = "secret/deploy-tokens/metaphor"
+
+  data_json = jsonencode(
+    {
+      auth = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "metaphor-deploy-token", "password" : "${var.metaphor_deploy_token}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "civo_creds" {
   path = "secret/argo"
 
@@ -50,7 +62,7 @@ resource "vault_generic_secret" "docker_config" {
 
   data_json = jsonencode(
     {
-      dockerconfig   = jsonencode({"auths":{"registry.gitlab.io":{"auth":"${var.b64_docker_auth}"}}}),
+      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.io" : { "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
   depends_on = [vault_mount.secret]
@@ -61,7 +73,7 @@ resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
-  data_json = <<EOT
+  data_json  = <<EOT
 {
   "SECRET_ONE" : "development secret 1",
   "SECRET_TWO" : "development secret 2"
@@ -74,7 +86,7 @@ resource "vault_generic_secret" "staging_metaphor" {
   path = "secret/staging/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
-  data_json = <<EOT
+  data_json  = <<EOT
 {
   "SECRET_ONE" : "staging secret 1",
   "SECRET_TWO" : "staging secret 2"
@@ -118,8 +130,8 @@ data "gitlab_group" "owner" {
 }
 
 resource "vault_generic_secret" "gitlab_runner" {
-  path      = "secret/gitlab-runner"
-  data_json = <<EOT
+  path       = "secret/gitlab-runner"
+  data_json  = <<EOT
 {
   "RUNNER_TOKEN" : "",
   "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
@@ -142,7 +154,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       AWS_ACCESS_KEY_ID                   = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY               = var.aws_secret_access_key,
-      TF_VAR_b64_docker_auth               = var.b64_docker_auth,
+      TF_VAR_b64_docker_auth              = var.b64_docker_auth,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
       CIVO_TOKEN                          = var.civo_token,
