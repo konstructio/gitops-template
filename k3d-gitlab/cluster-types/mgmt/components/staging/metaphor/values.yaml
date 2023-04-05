@@ -2,7 +2,7 @@ metaphor:
   image:
     repository: registry.gitlab.com/<GITLAB_OWNER>/metaphor
   imagePullSecrets:
-    - name: metaphor-deploy
+    - name: docker-config
   ingress:
     enabled: true
     className: ''
