@@ -3,7 +3,7 @@
 # # create as many developer module files as you have developer personnel.
 
 # module "developer_one" {
-#   source = "../modules/user/github"
+#   source = "../modules/user"
 # 
 #   acl_policies            = ["developer"]
 #   email                   = "dev.one@example.com"

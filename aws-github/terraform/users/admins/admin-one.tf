@@ -3,7 +3,7 @@
 # # create as many admin modules files as you have admin personnel.
 
 # module "admin_one" {
-#   source = "./modules/user/github"
+#   source = "../modules/user"
 
 #   acl_policies            = ["admin"]
 #   email                   = "your.admin@your-company.io"
