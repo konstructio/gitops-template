@@ -2,8 +2,7 @@ name: release
 env:
   ARGO_NAMESPACE: argo
   ARGO_VERSION: v3.4.1
-  REPO_SUFFIX: "-<CLUSTER_NAME>" # allows for more than one kubefirst installation
-  KUBEFIRST_REPO_NAME: "${GITHUB_REPOSITORY_NAME_PART}${REPO_SUFFIX}"
+  CONTAINER_REGISTRY_URL: '<CONTAINER_REGISTRY_URL>'
 on:
   push:
     branches:
@@ -40,7 +39,7 @@ jobs:
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-publish-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
-            -p containerRegistryURL="ghcr.io/${GITHUB_REPOSITORY_OWNER_PART_SLUG}/${KUBEFIRST_REPO_NAME}:${GITHUB_SHA_SHORT}" \
+            -p containerRegistryURL="${CONTAINER_REGISTRY_URL}/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}" \
             -p gitUrlNoProtocol="git@github.com:${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
