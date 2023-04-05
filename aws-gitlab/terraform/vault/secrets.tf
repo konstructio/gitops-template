@@ -1,3 +1,9 @@
+resource "random_password" "chartmuseum_password" {
+  length           = 22
+  special          = true
+  override_special = "!#$"
+}
+
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
