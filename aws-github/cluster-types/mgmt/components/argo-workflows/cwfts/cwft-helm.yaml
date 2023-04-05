@@ -52,22 +52,32 @@ spec:
         path: /src
   - name: publish-chart
     retryStrategy:
-      limit: "5"
+      limit: '5'
     inputs:
       artifacts:
-      - name: repo-source
-        path: /src
+        - name: repo-source
+          path: /src
       parameters:
-      - name: appName
-      - name: chartDir
-      # todo need to address username and password for chartmuseum
+        - name: appName
+        - name: chartDir
     container:
       image: kubefirst/chubbo:0.2
-      command: ["bash", "-c"]
-      workingDir: "/src/{{inputs.parameters.appName}}"
+      command: ['bash', '-c']
+      workingDir: '/src/{{inputs.parameters.appName}}'
       args:
-      - helm repo add kubefirst http://chartmuseum.chartmuseum.svc.cluster.local:8080 --username k-ray --password feedkraystars || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
-        helm push {{inputs.parameters.chartDir}} kubefirst || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+        - helm repo add kubefirst http://chartmuseum.chartmuseum.svc.cluster.local:8080 --username ${BASIC_AUTH_USER} --password ${BASIC_AUTH_PASS} || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+          helm push {{inputs.parameters.chartDir}} kubefirst || bash -c "sleep 10 && echo 'waiting before trying again' && exit 1";
+      env:
+      - name: BASIC_AUTH_PASS
+        valueFrom:
+          secretKeyRef:
+            name: chartmuseum-secrets
+            key: BASIC_AUTH_PASS
+      - name: BASIC_AUTH_USER
+        valueFrom:
+          secretKeyRef:
+            name: chartmuseum-secrets
+            key: BASIC_AUTH_USER
   - name: set-environment-version
     inputs:
       artifacts:
