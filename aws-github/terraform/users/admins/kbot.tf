@@ -1,7 +1,7 @@
 module "kbot" {
   # kbot is your automation user for all automation
   # on the platform that needs a bot account
-  source = "../modules/user/github"
+  source = "../modules/user"
 
   acl_policies      = ["admin"]
   email             = "<ALERTS_EMAIL>"
