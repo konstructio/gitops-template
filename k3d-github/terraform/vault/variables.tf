@@ -12,6 +12,10 @@ variable "b64_docker_auth" {
   type = string
 }
 
+variable "chartmuseum_password" {
+  type    = string
+}
+
 variable "github_token" {
   type = string
 }

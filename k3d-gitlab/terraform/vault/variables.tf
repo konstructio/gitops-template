@@ -25,6 +25,10 @@ variable "atlantis_repo_webhook_secret" {
   type    = string
 }
 
+variable "chartmuseum_password" {
+  type    = string
+}
+
 variable "kbot_ssh_private_key" {
   default = ""
   type    = string
