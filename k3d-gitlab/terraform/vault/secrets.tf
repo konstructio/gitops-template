@@ -39,7 +39,7 @@ resource "vault_generic_secret" "docker_config" {
 
   data_json = jsonencode(
     {
-      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.io" : { "auth" : "${var.b64_docker_auth}" } } }),
+      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "metaphor-deploy-token", "password" : "${var.metaphor_deploy_token}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
 
