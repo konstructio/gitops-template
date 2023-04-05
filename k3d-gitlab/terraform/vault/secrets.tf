@@ -40,6 +40,18 @@ resource "vault_generic_secret" "docker_config" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "metaphor_deploy_token" {
+  path = "secret/deploy-tokens/metaphor"
+
+  data_json = jsonencode(
+    {
+      auth   = jsonencode({"auths": {"registry.gitlab.com": {"username": "metaphor-deploy-token", "password": "${var.metaphor_deploy_token}", "email": "kbo@example.com", "auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "minio_creds" {
   path = "secret/minio"
 
@@ -159,6 +171,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
       TF_VAR_b64_docker_auth               = var.b64_docker_auth,
       TF_VAR_gitlab_token                 = var.gitlab_token,
+      TF_VAR_metaphor_deploy_token        = var.metaphor_deploy_token,
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,
       TF_VAR_kubernetes_api_endpoint      = var.kubernetes_api_endpoint,

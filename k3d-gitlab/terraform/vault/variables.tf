@@ -12,6 +12,10 @@ variable "b64_docker_auth" {
   type = string
 }
 
+variable "metaphor_deploy_token" {
+  type = string
+}
+
 variable "gitlab_token" {
   type = string
 }
