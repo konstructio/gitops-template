@@ -32,6 +32,18 @@ resource "vault_generic_secret" "external_dns_secrets" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "metaphor_deploy_token" {
+  path = "secret/deploy-tokens/metaphor"
+
+  data_json = jsonencode(
+    {
+      auth = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "metaphor-deploy-token", "password" : "${var.metaphor_deploy_token}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "civo_creds" {
   path = "secret/argo"
 
