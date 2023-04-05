@@ -37,7 +37,7 @@ The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the 
 | Chart Museum             | chartmuseum      | Helm Chart Registry                         | <CHARTMUSEUM_INGRESS_URL>        |
 | Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_DEVELOPMENT_INGRESS_URL>     |
 | Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_STAGING_INGRESS_URL> |
-| Metaphor Production      | production       | Production instance of sample application   | <METAPHOR_FRONT_PROD>    |
+| Metaphor Production      | production       | Production instance of sample application   | <METAPHOR_PRODUCTION_INGRESS_URL>    |
 | Nginx Ingress Controller | ingress-nginx    | Ingress Controller                          |                          |
 | Cert Manager             | cert-manager     | Certificate Automation Utility              |                          |
 | Certificate Issuers      | clusterwide      | Let's Encrypt browser-trusted certificates  |                          |
