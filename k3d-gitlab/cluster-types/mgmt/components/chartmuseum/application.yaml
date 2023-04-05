@@ -29,18 +29,12 @@ spec:
             STORAGE_AMAZON_REGION: us-k3d-1
             STORAGE_AMAZON_ENDPOINT: http://minio.minio.svc.cluster.local:9000
             DISABLE_API: false
-          secret:
-            BASIC_AUTH_USER: k-ray
-            BASIC_AUTH_PASS: feedkraystars
-            AWS_ACCESS_KEY_ID: k-ray
-            AWS_SECRET_ACCESS_KEY: feedkraystars
-          # existingSecret: chartmuseum-secrets
-          # existingSecretMappings:
-          #   BASIC_AUTH_USER: BASIC_AUTH_USER
-          #   BASIC_AUTH_PASS: BASIC_AUTH_PASS
-          #   AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
-          #   AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY            
-          # existingSecret: chartmuseum-secrets
+          existingSecret: chartmuseum-secrets
+          existingSecretMappings:
+            BASIC_AUTH_USER: BASIC_AUTH_USER
+            BASIC_AUTH_PASS: BASIC_AUTH_PASS
+            AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
     chart: chartmuseum
   destination:
     server: https://kubernetes.default.svc

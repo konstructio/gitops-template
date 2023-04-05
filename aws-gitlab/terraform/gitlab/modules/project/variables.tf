@@ -10,12 +10,6 @@ variable "create_deploy_key" {
   default     = false
 }
 
-variable "create_ecr" {
-  description = "whether or not to create the ecr repository"
-  type        = bool
-  default     = false
-}
-
 variable "default_branch" {
   description = "specifies what the default branch is for the repository"
   type        = string
