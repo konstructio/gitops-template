@@ -30,15 +30,9 @@ variable "atlantis_repo_webhook_url" {
   type    = string
 }
 
-# variable "aws_access_key_id" {
-#   default = ""
-#   type    = string
-# }
-
-# variable "aws_secret_access_key" {
-#   default = ""
-#   type    = string
-# }
+variable "metaphor_deploy_token" {
+  type = string
+}
 
 variable "owner_group_id" {
   description = "gitlab owner group id"

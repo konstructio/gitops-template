@@ -48,6 +48,10 @@ variable "aws_secret_access_key" {
   type    = string
 }
 
+variable "metaphor_deploy_token" {
+  type = string
+}
+
 variable "owner_group_id" {
   description = "gitlab owner group id"
   type        = string
