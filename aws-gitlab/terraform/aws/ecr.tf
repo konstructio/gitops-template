@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "repo" {
-  name                 = var.repository_name
+  name                 = "metaphor-<CLUSTER_NAME>"
   image_tag_mutability = "IMMUTABLE"
   force_delete         = true
 

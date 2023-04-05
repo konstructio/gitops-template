@@ -9,6 +9,8 @@ variables:
   DOCKER_CERT_PATH: '${DOCKER_TLS_CERTDIR}/client'
   BUILDER_IMAGE: 'kubefirst/chubbo:0.2'
   GITLAB_GROUP_NAME: '<GITLAB_OWNER>'
+  REPO_SUFFIX: '-<CLUSTER_NAME>' # allows for more than one kubefirst installation
+  KUBEFIRST_REPO_NAME: "${CI_PROJECT_NAME}${REPO_SUFFIX}"
 
 .setup-argocd: &setup-argocd
   - cd $HOME
@@ -40,7 +42,7 @@ publish:
         -p gitOwner="${GITLAB_GROUP_NAME}" \
         -p appName="${CI_PROJECT_NAME}" \
         -p branch="${CI_COMMIT_REF_NAME}" \
-        -p containerRegistryURL="registry.gitlab.com/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" \
+        -p containerRegistryURL="registry.gitlab.com/${GITLAB_GROUP_NAME}/${KUBEFIRST_REPO_NAME}:${CI_COMMIT_SHORT_SHA}" \
         -p gitServerUrl="gitlab.com" \
         -p gitUrlNoProtocol="git@gitlab.com:${GITLAB_GROUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
