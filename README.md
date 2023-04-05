@@ -35,7 +35,7 @@ The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the 
 | Argo Workflows           | argo             | Application Continuous Integration          | <ARGO_WORKFLOWS_INGRESS_URL>     |
 | Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_INGRESS_URL>           |
 | Chart Museum             | chartmuseum      | Helm Chart Registry                         | <CHARTMUSEUM_INGRESS_URL>        |
-| Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_FRONT_DEV>     |
+| Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_DEVELOPMENT_INGRESS_URL>     |
 | Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_FRONT_STAGING> |
 | Metaphor Production      | production       | Production instance of sample application   | <METAPHOR_FRONT_PROD>    |
 | Nginx Ingress Controller | ingress-nginx    | Ingress Controller                          |                          |
