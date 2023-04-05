@@ -30,7 +30,7 @@ The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the 
 | Application              | Namespace        | Description                                 | URL (where applicable)   |
 | ------------------------ | ---------------- | ------------------------------------------- | ------------------------ |
 | <GIT_PROVIDER>           | <GIT_NAMESPACE>  | <GIT_DESCRIPTION>                           | <GIT_URL>                |
-| Vault                    | vault            | Secrets Management                          | <VAULT_URL>              |
+| Vault                    | vault            | Secrets Management                          | <VAULT_INGRESS_URL>              |
 | Argo CD                  | argocd           | GitOps Continuous Delivery                  | <ARGO_CD_URL>            |
 | Argo Workflows           | argo             | Application Continuous Integration          | <ARGO_WORKFLOWS_URL>     |
 | Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_URL>           |
