@@ -13,6 +13,12 @@ resource "vault_generic_secret" "atlantis_ngrok_secrets" {
   depends_on = [vault_mount.secret]
 }
 
+resource "random_password" "chartmuseum_password" {
+  length           = 22
+  special          = true
+  override_special = "!#$"
+}
+
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
@@ -20,8 +26,8 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
     {
       AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
-      BASIC_AUTH_USER       = "k-ray",
-      BASIC_AUTH_PASS       = "feedkraystars",
+      BASIC_AUTH_USER       = "kbot",
+      BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
     }
   )
 
@@ -34,6 +40,18 @@ resource "vault_generic_secret" "docker_config" {
   data_json = jsonencode(
     {
       dockerconfig   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
+resource "vault_generic_secret" "regsitry_auth" {
+  path = "secret/registry-auth"
+
+  data_json = jsonencode(
+    {
+      config.json   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
     }
   )
 
@@ -114,8 +132,8 @@ resource "vault_generic_secret" "ci_secrets" {
     {
       accesskey             = var.aws_access_key_id,
       secretkey             = var.aws_secret_access_key,
-      BASIC_AUTH_USER       = "k-ray",
-      BASIC_AUTH_PASS       = "feedkraystars",
+      BASIC_AUTH_USER       = "kbot",
+      BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
       SSH_PRIVATE_KEY       = var.kbot_ssh_private_key,
       PERSONAL_ACCESS_TOKEN = var.github_token,
     }

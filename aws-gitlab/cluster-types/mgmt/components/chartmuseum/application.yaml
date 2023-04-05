@@ -4,7 +4,7 @@ metadata:
   name: chartmuseum
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '10'
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
@@ -27,6 +27,11 @@ spec:
             STORAGE_AMAZON_REGION: <CLOUD_REGION>
             DISABLE_API: false
           existingSecret: chartmuseum-secrets
+          existingSecretMappings:
+            BASIC_AUTH_USER: BASIC_AUTH_USER
+            BASIC_AUTH_PASS: BASIC_AUTH_PASS
+            AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
         ingress:
           enabled: true
           pathType: "Prefix"

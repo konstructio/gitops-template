@@ -1,11 +1,17 @@
+resource "random_password" "chartmuseum_password" {
+  length           = 22
+  special          = true
+  override_special = "!#$"
+}
+
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
   # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
-      BASIC_AUTH_USER = "k-ray",
-      BASIC_AUTH_PASS = "feedkraystars",
+      BASIC_AUTH_USER = "kbot",
+      BASIC_AUTH_PASS = random_password.chartmuseum_password.result,
     }
   )
 
@@ -24,6 +30,17 @@ resource "vault_generic_secret" "docker_config" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "regsitry_auth" {
+  path = "secret/registry-auth"
+
+  data_json = jsonencode(
+    {
+      config.json   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
   # note: these secrets are not actually sensitive.
@@ -71,8 +88,8 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      BASIC_AUTH_USER       = "k-ray",
-      BASIC_AUTH_PASS       = "feedkraystars",
+      BASIC_AUTH_USER       = "kbot",
+      BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
       SSH_PRIVATE_KEY       = var.kbot_ssh_private_key,
       PERSONAL_ACCESS_TOKEN = var.github_token,
     }
