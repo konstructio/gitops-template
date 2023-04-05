@@ -14,10 +14,6 @@ variable "civo_token" {
   type = string
 }
 
-variable "chartmuseum_password" {
-  type    = string
-}
-
 variable "gitlab_token" {
   type = string
 }

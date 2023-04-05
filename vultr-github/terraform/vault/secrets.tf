@@ -5,7 +5,7 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   data_json = jsonencode(
     {
       BASIC_AUTH_USER       = "kbot",
-      BASIC_AUTH_PASS       = var.chartmuseum_password,
+      BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
       AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
     }
@@ -89,7 +89,7 @@ resource "vault_generic_secret" "ci_secrets" {
       accesskey       = var.aws_access_key_id,
       secretkey       = var.aws_secret_access_key,
       BASIC_AUTH_USER = "kbot",
-      BASIC_AUTH_PASS = var.chartmuseum_password,
+      BASIC_AUTH_PASS = random_password.chartmuseum_password.result,
       SSH_PRIVATE_KEY = var.kbot_ssh_private_key,
     }
   )

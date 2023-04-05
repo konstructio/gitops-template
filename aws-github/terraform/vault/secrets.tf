@@ -11,7 +11,7 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   data_json = jsonencode(
     {
       BASIC_AUTH_USER = "kbot",
-      BASIC_AUTH_PASS = var.chartmuseum_password,
+      BASIC_AUTH_PASS = random_password.chartmuseum_password.result,
     }
   )
 
@@ -78,7 +78,7 @@ resource "vault_generic_secret" "ci_secrets" {
   data_json = jsonencode(
     {
       BASIC_AUTH_USER       = "kbot",
-      BASIC_AUTH_PASS       = var.chartmuseum_password,
+      BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
       SSH_PRIVATE_KEY       = var.kbot_ssh_private_key,
       PERSONAL_ACCESS_TOKEN = var.github_token,
     }
