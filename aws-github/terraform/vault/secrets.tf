@@ -30,6 +30,17 @@ resource "vault_generic_secret" "docker_config" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "regsitry_auth" {
+  path = "secret/registry-auth"
+
+  data_json = jsonencode(
+    {
+      config.json   = jsonencode({"auths":{"ghcr.io":{"auth":"${var.b64_docker_auth}"}}}),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
   # note: these secrets are not actually sensitive.
