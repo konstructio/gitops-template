@@ -36,7 +36,7 @@ The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the 
 | Atlantis                 | atlantis         | Terraform Workflow Automation               | <ATLANTIS_INGRESS_URL>           |
 | Chart Museum             | chartmuseum      | Helm Chart Registry                         | <CHARTMUSEUM_INGRESS_URL>        |
 | Metaphor Development     | development      | Development instance of sample application  | <METAPHOR_DEVELOPMENT_INGRESS_URL>     |
-| Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_FRONT_STAGING> |
+| Metaphor Staging         | staging          | Staging instance of sample application      | <METAPHOR_STAGING_INGRESS_URL> |
 | Metaphor Production      | production       | Production instance of sample application   | <METAPHOR_FRONT_PROD>    |
 | Nginx Ingress Controller | ingress-nginx    | Ingress Controller                          |                          |
 | Cert Manager             | cert-manager     | Certificate Automation Utility              |                          |
