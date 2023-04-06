@@ -431,6 +431,24 @@ module "chartmuseum" {
   tags = local.tags
 }
 
+module "ecr_publish_permissions_sync" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name = "ecr-publish-permissions-sync-${local.name}"
+  role_policy_arns = {
+    admin = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+  }
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["argo:ecr-publish-permissions-sync"]
+    }
+  }
+
+  tags = local.tags
+}
 
 module "external_dns" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
