@@ -4,7 +4,7 @@ metadata:
   name: atlantis-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '60'
+    argocd.argoproj.io/sync-wave: '50'
 spec:
   project: default
   source:
