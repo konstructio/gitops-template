@@ -10,15 +10,15 @@ metadata:
   name: k8s-toolkit-minio
   namespace: minio
 rules:
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  - statefulsets
-  verbs:
-  - get
-  - watch
-  - list
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - statefulsets
+    verbs:
+      - get
+      - watch
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -30,26 +30,26 @@ roleRef:
   kind: Role
   name: k8s-toolkit-minio
 subjects:
-- kind: ServiceAccount
-  name: k8s-toolkit-minio
-  namespace: minio
+  - kind: ServiceAccount
+    name: k8s-toolkit-minio
+    namespace: minio
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-wave: '20'
   name: wait-minio-buckets
   namespace: minio
 spec:
   template:
     spec:
       containers:
-      - args:
-        - wait-for
-        - minio-buckets
-        image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.7
-        imagePullPolicy: IfNotPresent
-        name: wait
+        - args:
+            - wait-for
+            - minio-buckets
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          imagePullPolicy: IfNotPresent
+          name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-minio
