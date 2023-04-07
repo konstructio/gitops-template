@@ -1,3 +1,9 @@
+resource "random_password" "chartmuseum_password" {
+  length           = 22
+  special          = true
+  override_special = "!#$"
+}
+
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
@@ -33,6 +39,30 @@ resource "vault_generic_secret" "vultr_creds" {
     {
       accesskey = var.aws_access_key_id,
       secretkey = var.aws_secret_access_key,
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
+resource "vault_generic_secret" "docker_config" {
+  path = "secret/dockerconfigjson"
+
+  data_json = jsonencode(
+    {
+      dockerconfig = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
+resource "vault_generic_secret" "regsitry_auth" {
+  path = "secret/registry-auth"
+
+  data_json = jsonencode(
+    {
+      auth = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
 
@@ -86,11 +116,12 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      accesskey       = var.aws_access_key_id,
-      secretkey       = var.aws_secret_access_key,
-      BASIC_AUTH_USER = "kbot",
-      BASIC_AUTH_PASS = random_password.chartmuseum_password.result,
-      SSH_PRIVATE_KEY = var.kbot_ssh_private_key,
+      accesskey             = var.aws_access_key_id,
+      secretkey             = var.aws_secret_access_key,
+      BASIC_AUTH_USER       = "kbot",
+      BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
+      SSH_PRIVATE_KEY       = var.kbot_ssh_private_key,
+      PERSONAL_ACCESS_TOKEN = var.github_token,
     }
   )
 
@@ -113,6 +144,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       AWS_SECRET_ACCESS_KEY               = var.aws_secret_access_key,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
+      TF_VAR_b64_docker_auth              = var.b64_docker_auth,
       VULTR_TOKEN                         = var.vultr_token,
       TF_VAR_vultr_token                  = var.vultr_token,
       GITHUB_OWNER                        = "<GITHUB_OWNER>",

@@ -4,7 +4,7 @@ metadata:
   name: atlantis
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '60'
+    argocd.argoproj.io/sync-wave: '10'
 spec:
   project: default
   source:
@@ -16,9 +16,6 @@ spec:
         statefulSet:
           annotations:
             secret.reloader.stakater.com/reload: "atlantis-secrets"
-        volumeClaim:
-          storageClassName: vultr-block-storage
-          dataStorage: 10Gi
         atlantisUrl: https://atlantis.<DOMAIN_NAME>
         orgAllowlist: <ATLANTIS_ALLOW_LIST>
         hidePrevPlanComments: true
