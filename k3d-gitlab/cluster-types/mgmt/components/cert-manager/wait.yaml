@@ -10,15 +10,15 @@ metadata:
   name: k8s-toolkit-cert-manager
   namespace: cert-manager
 rules:
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  - statefulsets
-  verbs:
-  - get
-  - watch
-  - list
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - statefulsets
+    verbs:
+      - get
+      - watch
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -30,9 +30,9 @@ roleRef:
   kind: Role
   name: kubernetes-toolkit
 subjects:
-- kind: ServiceAccount
-  name: k8s-toolkit-cert-manager
-  namespace: cert-manager
+  - kind: ServiceAccount
+    name: k8s-toolkit-cert-manager
+    namespace: cert-manager
 # ---
 # apiVersion: batch/v1
 # kind: Job
@@ -52,7 +52,7 @@ subjects:
 #         - cert-manager
 #         - --label
 #         - app.kubernetes.io/name=cert-manager
-#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.7
+#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
 #         imagePullPolicy: IfNotPresent
 #         name: wait
 #       restartPolicy: OnFailure
@@ -76,7 +76,7 @@ subjects:
 #         - cert-manager
 #         - --label
 #         - app.kubernetes.io/name=cainjector
-#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.7
+#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
 #         imagePullPolicy: IfNotPresent
 #         name: wait
 #       restartPolicy: OnFailure
@@ -100,7 +100,7 @@ subjects:
 #         - cert-manager
 #         - --label
 #         - app.kubernetes.io/name=webhook
-#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.7
+#         image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
 #         imagePullPolicy: IfNotPresent
 #         name: wait
 #       restartPolicy: OnFailure

@@ -10,15 +10,15 @@ metadata:
   name: kubernetes-toolkit
   namespace: external-dns
 rules:
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  - statefulsets
-  verbs:
-  - get
-  - watch
-  - list
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - statefulsets
+    verbs:
+      - get
+      - watch
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -30,30 +30,30 @@ roleRef:
   kind: Role
   name: kubernetes-toolkit
 subjects:
-- kind: ServiceAccount
-  name: kubernetes-toolkit
-  namespace: external-dns
+  - kind: ServiceAccount
+    name: kubernetes-toolkit
+    namespace: external-dns
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-wave: '20'
   name: kubernetes-toolkit
   namespace: external-dns
 spec:
   template:
     spec:
       containers:
-      - args:
-        - wait-for
-        - deployment
-        - --namespace
-        - external-dns
-        - --label
-        - app.kubernetes.io/name=external-dns
-        image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.7
-        imagePullPolicy: IfNotPresent
-        name: kubernetes-toolkit
+        - args:
+            - wait-for
+            - deployment
+            - --namespace
+            - external-dns
+            - --label
+            - app.kubernetes.io/name=external-dns
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          imagePullPolicy: IfNotPresent
+          name: kubernetes-toolkit
       restartPolicy: OnFailure
       serviceAccountName: kubernetes-toolkit
