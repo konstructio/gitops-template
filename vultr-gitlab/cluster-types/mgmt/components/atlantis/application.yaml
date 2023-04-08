@@ -56,6 +56,9 @@ spec:
                 - init:
                     extra_args: ["-reconfigure"]
                 - plan
+        volumeClaim:
+          enabled: true
+          dataStorage: 10Gi
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: atlantis
