@@ -11,7 +11,7 @@ spec:
         accessModes: ['ReadWriteOnce']
         resources:
           requests:
-            storage: 64Mi
+            storage: 10Gi
   serviceAccountName: argo-server
   templates:
     - name: main
