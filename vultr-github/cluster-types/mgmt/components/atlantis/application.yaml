@@ -49,6 +49,9 @@ spec:
             workflow: default
             allowed_overrides: [apply_requirements]
             apply_requirements: [mergeable]
+        volumeClaim:
+          enabled: true
+          dataStorage: 10Gi
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: atlantis
