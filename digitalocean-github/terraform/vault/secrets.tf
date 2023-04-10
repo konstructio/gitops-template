@@ -57,7 +57,7 @@ resource "vault_generic_secret" "docker_config" {
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "regsitry_auth" {
+resource "vault_generic_secret" "registry_auth" {
   path = "secret/registry-auth"
 
   data_json = jsonencode(
