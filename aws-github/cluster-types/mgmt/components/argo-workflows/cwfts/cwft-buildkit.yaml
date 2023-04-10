@@ -13,16 +13,16 @@ spec:
           - name: containerRegistryURL
           - name: gitUrlNoProtocol
         artifacts:
-        - name: app-source
-          path: "/src/{{inputs.parameters.appName}}"
-          git:
-            repo: "{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.appName}}.git"
-            branch: "{{inputs.parameters.branch}}"
-            singleBranch: true
-            insecureIgnoreHostKey: true
-            sshPrivateKeySecret:
-              name: ci-secrets
-              key: SSH_PRIVATE_KEY
+          - name: app-source
+            path: '/src/{{inputs.parameters.appName}}'
+            git:
+              repo: '{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.appName}}.git'
+              branch: '{{inputs.parameters.branch}}'
+              singleBranch: true
+              insecureIgnoreHostKey: true
+              sshPrivateKeySecret:
+                name: ci-secrets
+                key: SSH_PRIVATE_KEY
       volumes:
         - name: docker-config
           secret:
@@ -30,8 +30,6 @@ spec:
       container:
         image: moby/buildkit:v0.9.3-rootless
         volumeMounts:
-          - name: src
-            mountPath: /src
           - name: docker-config
             mountPath: /.docker
         workingDir: /src/{{inputs.parameters.appName}}
