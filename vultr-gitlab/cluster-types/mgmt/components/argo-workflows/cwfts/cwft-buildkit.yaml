@@ -30,8 +30,6 @@ spec:
       container:
         image: moby/buildkit:v0.9.3-rootless
         volumeMounts:
-          - name: src
-            mountPath: /src
           - name: docker-config
             mountPath: /.docker
         workingDir: /src/{{inputs.parameters.appName}}
