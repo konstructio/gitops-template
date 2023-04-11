@@ -10,7 +10,7 @@ spec:
       steps:
         - - name: publish-container
             templateRef:
-              name: cwft-buildkit
+              name: cwft-kaniko
               template: build-push
               clusterScope: true
             arguments:

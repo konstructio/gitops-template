@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ClusterWorkflowTemplate
 metadata:
-  name: cwft-buildkit
+  name: cwft-kaniko
 spec:
   entrypoint: build-push
   templates:
@@ -28,25 +28,17 @@ spec:
           secret:
             secretName: '{{inputs.parameters.appName}}-deploy-token'
       container:
-        image: moby/buildkit:v0.9.3-rootless
+        image: gcr.io/kaniko-project/executor:latest
         volumeMounts:
           - name: docker-config
             mountPath: /.docker
-        workingDir: /src/{{inputs.parameters.appName}}
         env:
-          - name: BUILDKITD_FLAGS
-            value: --oci-worker-no-process-sandbox
           - name: DOCKER_CONFIG
             value: /.docker
-        command:
-          - buildctl-daemonless.sh
         args:
-          - build
-          - --frontend
-          - dockerfile.v0
-          - --local
-          - context=.
-          - --local
-          - dockerfile=.
-          - --output
-          - type=image,name={{inputs.parameters.containerRegistryURL}},push=true
+          - '--dockerfile'
+          - 'Dockerfile'
+          - '--context'
+          - 'dir:///src/{{inputs.parameters.appName}}/'
+          - '--destination'
+          - '{{inputs.parameters.containerRegistryURL}}'
