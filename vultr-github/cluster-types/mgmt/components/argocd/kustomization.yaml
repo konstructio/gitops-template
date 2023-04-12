@@ -8,6 +8,7 @@ resources:
   - github.com:kubefirst/manifests.git/argocd/cloud?ref=main
   - argocd-ui-ingress.yaml
   - externalsecrets.yaml
+  - argocd-oidc-restart-job.yaml
 
 patchesStrategicMerge:
   - argocd-cm.yaml
