@@ -2,6 +2,8 @@
 # # adjust module name developer_one below to your developer's firstname_lastname.
 # # create as many developer module files as you have developer personnel.
 
+# # For Single Sign On: be sure to also add the new user to the developers-outputs.tf
+
 # module "developer_one" {
 #   source = "../modules/user/github"
 # 
