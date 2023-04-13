@@ -32,12 +32,12 @@ resource "vault_generic_secret" "external_dns_secrets" {
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "metaphor_deploy_token" {
-  path = "secret/deploy-tokens/metaphor"
+resource "vault_generic_secret" "container_registry_auth" {
+  path = "secret/deploy-tokens/container-registry-auth"
 
   data_json = jsonencode(
     {
-      auth = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "metaphor-deploy-token", "password" : "${var.metaphor_deploy_token}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
+      auth = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
 
@@ -62,7 +62,7 @@ resource "vault_generic_secret" "docker_config" {
 
   data_json = jsonencode(
     {
-      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "metaphor-deploy-token", "password" : "${var.metaphor_deploy_token}", "email" : "kbot@example.com", "auth" : "${var.b64_docker_auth}" } } }),
+      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbot@example.com", "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
   depends_on = [vault_mount.secret]
@@ -162,7 +162,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       GITLAB_OWNER                        = "<GITLAB_OWNER>",
       GITLAB_TOKEN                        = var.gitlab_token,
       TF_VAR_gitlab_token                 = var.gitlab_token,
-      TF_VAR_metaphor_deploy_token        = var.metaphor_deploy_token,
+      TF_VAR_container_registry_auth      = var.container_registry_auth,
       TF_VAR_owner_group_id               = var.owner_group_id,
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,
