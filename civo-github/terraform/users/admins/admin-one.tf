@@ -2,8 +2,10 @@
 # # adjust module name admin_one below to your admin's firstname_lastname.
 # # create as many admin modules files as you have admin personnel.
 
+# # For Single Sign On: be sure to also add the new user to the admins-outputs.tf
+
 # module "admin_one" {
-#   source = "./modules/user/github"
+#   source = "../modules/user/github"
 
 #   acl_policies            = ["admin"]
 #   email                   = "your.admin@your-company.io"
