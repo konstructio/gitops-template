@@ -12,7 +12,7 @@ variable "b64_docker_auth" {
   type = string
 }
 
-variable "metaphor_deploy_token" {
+variable "container_registry_auth" {
   type = string
 }
 

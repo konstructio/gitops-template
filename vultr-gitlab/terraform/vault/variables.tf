@@ -44,7 +44,7 @@ variable "aws_secret_access_key" {
   type    = string
 }
 
-variable "metaphor_deploy_token" {
+variable "container_registry_auth" {
   type = string
 }
 
