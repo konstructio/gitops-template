@@ -9,14 +9,14 @@ spec:
   project: default
   source:
     repoURL: https://charts.okteto.com
-    targetRevision: 0.3.2
+    targetRevision: 0.3.1
     helm:
       values: |-
         certManager:
           namespace: "cert-manager"
           serviceAccountName: "cert-manager"
         region: "<CLOUD_REGION>"
-    chart: cert-manager
+    chart: cert-manager-webhook-civo
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
