@@ -4,6 +4,18 @@ resource "random_password" "chartmuseum_password" {
   override_special = "!#$"
 }
 
+resource "vault_generic_secret" "cert_manager_webhook_civo" {
+  path = "secret/cert-manager-webhook-civo-secrets"
+
+  data_json = jsonencode(
+    {
+      api-key = var.civo_token,
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 

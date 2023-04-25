@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prod-wildcard-cert
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  commonName: '*.<DOMAIN_NAME>'
+  dnsNames:
+    - '<DOMAIN_NAME>'
+    - '*.<DOMAIN_NAME>'
+  issuerRef:
+    name: letsencrypt-prod
+    kind: Issuer
+  secretName: prod-wildcard-cert

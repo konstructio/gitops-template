@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager-webhook-civo
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  project: default
+  source:
+    repoURL: https://charts.okteto.com
+    targetRevision: 0.3.2
+    helm:
+      values: |-
+        certManager:
+          namespace: "cert-manager"
+          serviceAccountName: "cert-manager"
+        region: "<CLOUD_REGION>"
+    chart: cert-manager
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
