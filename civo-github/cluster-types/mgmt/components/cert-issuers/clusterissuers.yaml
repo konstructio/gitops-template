@@ -9,9 +9,12 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-staging
     solvers:
-      - http01:
-          ingress:
-            class: nginx
+      - dns01:
+          webhook:
+            solverName: 'civo'
+            groupName: civo.webhook.okteto.com
+            config:
+              secretName: civo-secret
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -24,6 +27,9 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-prod
     solvers:
-      - http01:
-          ingress:
-            class: nginx
+      - dns01:
+          webhook:
+            solverName: 'civo'
+            groupName: civo.webhook.okteto.com
+            config:
+              secretName: civo-secret

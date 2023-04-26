@@ -33,8 +33,6 @@ spec:
                 service_registration "kubernetes" {}
           ingress:
             enabled: true
-            annotations: 
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
             ingressClassName: "nginx"
             pathType: Prefix
             # When HA mode is enabled and K8s service registration is being used,
@@ -43,8 +41,7 @@ spec:
             hosts:
               - host: vault.<DOMAIN_NAME>
             tls:
-              - secretName: vault-tls
-                hosts:
+              - hosts:
                   - vault.<DOMAIN_NAME>
           ui:
             enabled: true
