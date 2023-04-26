@@ -26,3 +26,9 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: cert-manager.io/v1
+      kind: Certificate
+      jqPathExpressions:
+        - .spec.duration

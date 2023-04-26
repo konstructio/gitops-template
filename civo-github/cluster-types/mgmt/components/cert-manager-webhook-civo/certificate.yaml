@@ -12,5 +12,5 @@ spec:
     - '*.<DOMAIN_NAME>'
   issuerRef:
     name: letsencrypt-prod
-    kind: Issuer
+    kind: ClusterIssuer
   secretName: prod-wildcard-cert
