@@ -23,7 +23,6 @@ spec:
               service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
           extraArgs:
             enable-ssl-passthrough: true
-            default-ssl-certificate: cert-manager/prod-wildcard-cert
     chart: ingress-nginx
   destination:
     server: https://kubernetes.default.svc
