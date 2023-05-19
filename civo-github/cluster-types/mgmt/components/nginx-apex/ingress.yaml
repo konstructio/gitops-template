@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/instance: nginx
   annotations:
     kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
 spec:
   rules:
     - host: <DOMAIN_NAME>
@@ -23,3 +24,4 @@ spec:
   tls:
     - hosts:
         - <DOMAIN_NAME>
+      secretName: nginx-apex-tls
