@@ -8,8 +8,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/syntasso/kratix'
-    path: distribution/single-cluster
+    repoURL: <GITOPS_REPO_GIT_URL>
+    path: registry/<CLUSTER_NAME>/components/development
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
