@@ -110,7 +110,7 @@ module "eks" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "4.0.2"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -145,7 +145,7 @@ module "vpc" {
 
 module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name             = upper("VPC-CNI-IRSA-<CLUSTER_NAME>")
   attach_vpc_cni_policy = true
@@ -166,7 +166,7 @@ module "vpc_cni_irsa" {
 
 module "aws_ebs_csi_driver" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name = upper("EBS-CSI-DRIVER-<CLUSTER_NAME>")
 
@@ -328,7 +328,7 @@ EOT
 
 module "argo_workflows" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name = "argo-${local.name}"
   role_policy_arns = {
@@ -347,7 +347,7 @@ module "argo_workflows" {
 
 module "atlantis" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name = "atlantis-${local.name}"
   role_policy_arns = {
@@ -365,7 +365,7 @@ module "atlantis" {
 
 module "cert_manager" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name = "cert-manager-${local.name}"
   role_policy_arns = {
@@ -415,7 +415,7 @@ EOT
 
 module "chartmuseum" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name = "chartmuseum-${local.name}"
   role_policy_arns = {
@@ -433,7 +433,7 @@ module "chartmuseum" {
 
 module "ecr_publish_permissions_sync" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name = "ecr-publish-permissions-sync-${local.name}"
   role_policy_arns = {
@@ -452,7 +452,7 @@ module "ecr_publish_permissions_sync" {
 
 module "external_dns" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name = "external-dns-${local.name}"
   role_policy_arns = {
@@ -503,7 +503,7 @@ EOT
 
 module "vault" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "5.20.0"
 
   role_name = "vault-${local.name}"
   role_policy_arns = {
