@@ -110,7 +110,7 @@ module "eks" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "4.0.1"
+  version = "4.0.2"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -120,9 +120,8 @@ module "vpc" {
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
-  enable_ipv6                     = true
-  assign_ipv6_address_on_creation = true
-  create_egress_only_igw          = true
+  enable_ipv6            = true
+  create_egress_only_igw = true
 
   public_subnet_ipv6_prefixes  = [0, 1, 2]
   private_subnet_ipv6_prefixes = [3, 4, 5]
