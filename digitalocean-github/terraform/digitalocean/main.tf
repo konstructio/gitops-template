@@ -30,13 +30,16 @@ locals {
   pool_name            = "${local.cluster_name}-node-pool"
   pool_instance_size   = "s-4vcpu-8gb"
   kube_config_filename = "../../../kubeconfig"
-  kubernetes_version   = "1.26.3-do.0"
+}
+
+data "digitalocean_kubernetes_versions" "versions" {
+  version_prefix = "1.26."
 }
 
 resource "digitalocean_kubernetes_cluster" "kubefirst" {
   name    = local.cluster_name
   region  = "<CLOUD_REGION>"
-  version = local.kubernetes_version
+  version = data.digitalocean_kubernetes_versions.versions.latest_version
 
   node_pool {
     name       = local.pool_name
