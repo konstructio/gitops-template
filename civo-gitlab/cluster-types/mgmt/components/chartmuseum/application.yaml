@@ -29,11 +29,13 @@ spec:
             AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
         ingress:
           enabled: true
-          pathType: "Prefix"
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
           hosts:
             - name: chartmuseum.<DOMAIN_NAME>
               path: /
               tls: true
+              tlsSecret: chartmuseum-tls
           ingressClassName: nginx
     chart: chartmuseum
   destination:
