@@ -29,13 +29,16 @@ spec:
           ingress:
             enabled: true
             ingressClassName: nginx
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-prod"
             hosts:
               - argo.<DOMAIN_NAME>
             paths: 
               - /
             pathType: Prefix
             tls:
-              - hosts:
+              - secretName: argo-tls
+                hosts:
                   - argo.<DOMAIN_NAME>
           sso:
             issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst

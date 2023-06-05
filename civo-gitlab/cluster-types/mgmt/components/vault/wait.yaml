@@ -121,9 +121,9 @@ spec:
             - wait-for
             - certificate
             - --namespace
-            - cert-manager
+            - vault
             - --name
-            - prod-wildcard-cert
+            - vault-tls
             - --timeout-seconds
             - '1200'
           image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
