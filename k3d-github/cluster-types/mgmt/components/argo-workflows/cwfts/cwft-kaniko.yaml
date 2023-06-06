@@ -20,9 +20,12 @@ spec:
               branch: '{{inputs.parameters.branch}}'
               singleBranch: true
               insecureIgnoreHostKey: true
-              sshPrivateKeySecret:
+              usernameSecret:
                 name: ci-secrets
-                key: SSH_PRIVATE_KEY
+                key: USERNAME
+              passwordSecret:
+                name: ci-secrets
+                key: PERSONAL_ACCESS_TOKEN
       volumes:
         - name: docker-config
           secret:
