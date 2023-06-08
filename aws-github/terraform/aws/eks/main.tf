@@ -19,7 +19,7 @@ data "aws_availability_zones" "available" {}
 
 locals {
   name            = "<CLUSTER_NAME>"
-  cluster_version = "1.26"
+  cluster_version = "1.23"
   region          = "<CLOUD_REGION>"
 
   vpc_cidr = "10.0.0.0/16"
