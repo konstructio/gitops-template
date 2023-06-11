@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "<KUBEFIRST_STATE_STORE_BUCKET>"
-    key    = "terraform/github/terraform.tfstate"
+    key    = "terraform/gitlab/terraform.tfstate"
 
     region  = "<CLOUD_REGION>"
     encrypt = true

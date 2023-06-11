@@ -1,0 +1,84 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  namespace: argo
+spec:
+  entrypoint: main
+  serviceAccountName: argo-server
+  templates:
+    - name: main
+      steps:
+        - - name: publish-container
+            templateRef:
+              name: cwft-kaniko
+              template: build-push
+              clusterScope: true
+            arguments:
+              parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
+                - name: branch
+                  value: '{{workflow.parameters.branch}}'
+                - name: containerRegistryURL
+                  value: '{{workflow.parameters.containerRegistryURL}}'
+                - name: gitUrlNoProtocol
+                  value: '{{workflow.parameters.gitUrlNoProtocol}}'
+        - - name: checkout
+            templateRef:
+              name: cwft-git
+              template: checkout-with-gitops
+              clusterScope: true
+            arguments:
+              parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
+                - name: branch
+                  value: '{{workflow.parameters.branch}}'
+                - name: gitUrlNoProtocol
+                  value: '{{workflow.parameters.gitUrlNoProtocol}}'
+        - - name: get-initial-chart-version
+            templateRef:
+              name: cwft-helm
+              template: get-chart-version
+              clusterScope: true
+            arguments:
+              artifacts:
+                - name: repo-source
+                  from: '{{steps.checkout.outputs.artifacts.repo-source}}'
+              parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
+                - name: chartDir
+                  value: 'charts/{{workflow.parameters.appName}}'
+        - - name: set-chart-versions
+            templateRef:
+              name: cwft-helm
+              template: set-chart-versions
+              clusterScope: true
+            arguments:
+              artifacts:
+                - name: repo-source
+                  from: '{{steps.checkout.outputs.artifacts.repo-source}}'
+              parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
+                - name: chartDir
+                  value: 'charts/{{workflow.parameters.appName}}'
+                - name: chartVersion
+                  value: '{{steps.get-initial-chart-version.outputs.result}}-rc.{{workflow.parameters.shortSha}}'
+                - name: shortSha
+                  value: '{{workflow.parameters.shortSha}}'
+        - - name: publish-helm-chart
+            templateRef:
+              name: cwft-helm
+              template: publish-chart
+              clusterScope: true
+            arguments:
+              artifacts:
+                - name: repo-source
+                  from: '{{steps.set-chart-versions.outputs.artifacts.repo-source}}'
+              parameters:
+                - name: appName
+                  value: '{{workflow.parameters.appName}}'
+                - name: chartDir
+                  value: 'charts/{{workflow.parameters.appName}}'
