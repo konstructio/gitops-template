@@ -1,5 +1,10 @@
 variable "service_account_name" {
-  description = "The name of the service account."
+  description = "The name of the service account in GCP."
+  type        = string
+}
+
+variable "kubernetes_service_account_name" {
+  description = "The Kubernetes Service Account name."
   type        = string
 }
 
