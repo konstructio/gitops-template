@@ -22,7 +22,7 @@ spec:
             create: true
             name: vault
             annotations:
-              iam.gke.io/gcp-service-account=vault-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
+              iam.gke.io/gcp-service-account: vault-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
           affinity: ""
           ha:
             enabled: true

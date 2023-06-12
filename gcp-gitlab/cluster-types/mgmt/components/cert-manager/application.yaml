@@ -16,7 +16,7 @@ spec:
           create: true
           name: cert-manager
           annotations:
-           iam.gke.io/gcp-service-account=cert-manager-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
+           iam.gke.io/gcp-service-account: cert-manager-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
         installCRDs: true
     chart: cert-manager
   destination:

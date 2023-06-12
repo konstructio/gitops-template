@@ -16,7 +16,7 @@ resource "google_service_account_iam_member" "this" {
   service_account_id = google_service_account.this.name
   role               = data.google_iam_role.workload_identity_user.name
 
-  member = "serviceAccount:${var.project}.svc.id.goog[${var.service_account_namespace}/${var.service_account_name}]"
+  member = "serviceAccount:${var.project}.svc.id.goog[${var.service_account_namespace}/${var.kubernetes_service_account_name}]"
 }
 
 # Role Memberships

@@ -17,9 +17,10 @@ spec:
           create: true
           name: external-dns
           annotations:
-            iam.gke.io/gcp-service-account=external-dns-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
+            iam.gke.io/gcp-service-account: external-dns-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
         domainFilters:
           - <DOMAIN_NAME>
+        provider: google
     chart: external-dns
   destination:
     server: https://kubernetes.default.svc

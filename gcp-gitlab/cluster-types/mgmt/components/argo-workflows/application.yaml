@@ -26,7 +26,7 @@ spec:
             create: true
             name: argo-server
             annotations:
-              iam.gke.io/gcp-service-account=argo-server-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
+              iam.gke.io/gcp-service-account: argo-server-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
           extraArgs:
           - --secure
           - --auth-mode=client
