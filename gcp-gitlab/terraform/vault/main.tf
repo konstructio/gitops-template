@@ -18,6 +18,11 @@ terraform {
   }
 }
 
+provider "google" {
+  project = var.project
+  region  = var.gcp_region
+}
+
 provider "vault" {
   skip_tls_verify = "true"
 }

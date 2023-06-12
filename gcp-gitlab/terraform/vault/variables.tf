@@ -39,3 +39,17 @@ variable "vault_token" {
   default = ""
   type    = string
 }
+
+variable "gcp_region" {
+  description = "GCP Cloud Region"
+  type        = string
+
+  default = "<CLOUD_REGION>"
+}
+
+variable "project" {
+  description = "GCP Project ID"
+  type        = string
+
+  default = "<GCP_PROJECT>"
+}
