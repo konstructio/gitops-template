@@ -6,7 +6,7 @@ data "google_container_cluster" "this" {
 }
 
 provider "kubernetes" {
-  host                   = "https://${data.google_container_cluster.this.public_endpoint}"
+  host                   = "https://${data.google_container_cluster.this.endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(data.google_container_cluster.this.master_auth)
 }
@@ -18,12 +18,12 @@ resource "vault_auth_backend" "k8s" {
 
 resource "vault_kubernetes_auth_backend_config" "k8s" {
   backend         = vault_auth_backend.k8s.path
-  kubernetes_host = "https://${data.google_container_cluster.this.public_endpoint}"
+  kubernetes_host = "https://${data.google_container_cluster.this.endpoint}"
 }
 
 resource "vault_kubernetes_auth_backend_config" "vault_k8s_auth_es" {
   backend         = vault_auth_backend.k8s.path
-  kubernetes_host = "https://${data.google_container_cluster.this.public_endpoint}"
+  kubernetes_host = "https://${data.google_container_cluster.this.endpoint}"
 }
 
 resource "vault_kubernetes_auth_backend_role" "k8s_atlantis" {
