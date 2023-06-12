@@ -1,6 +1,8 @@
 metaphor:
   image:
-    repository: <CONTAINER_REGISTRY_URL>/metaphor
+    repository: registry.gitlab.com/<GITLAB_OWNER>/metaphor
+  imagePullSecrets:
+    - name: docker-config
   ingress:
     className: nginx
     enabled: true
