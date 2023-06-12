@@ -40,5 +40,5 @@ module "vpc" {
     },
   ]
 
-  depends_on = [module.quotas]
+  depends_on = [module.services]
 }
