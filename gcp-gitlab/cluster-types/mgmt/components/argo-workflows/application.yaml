@@ -68,7 +68,6 @@ spec:
         artifactRepository:
           archiveLogs: false
           gcs:
-            insecure: false
             bucket: <KUBEFIRST_ARTIFACTS_BUCKET>
             keyFormat: "argo-workflows/artifacts\
               /{{workflow.creationTimestamp.Y}}\
