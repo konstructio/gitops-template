@@ -18,18 +18,6 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "docker_config" {
-  path = "secret/dockerconfigjson"
-
-  data_json = jsonencode(
-    {
-      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.io" : { "auth" : "${var.b64_docker_auth}" } } }),
-    }
-  )
-
-  depends_on = [vault_mount.secret]
-}
-
 resource "vault_generic_secret" "container_registry_auth" {
   path = "secret/deploy-tokens/container-registry-auth"
 
@@ -39,6 +27,17 @@ resource "vault_generic_secret" "container_registry_auth" {
     }
   )
 
+  depends_on = [vault_mount.secret]
+}
+
+resource "vault_generic_secret" "docker_config" {
+  path = "secret/dockerconfigjson"
+
+  data_json = jsonencode(
+    {
+      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbot@example.com", "auth" : "${var.b64_docker_auth}" } } }),
+    }
+  )
   depends_on = [vault_mount.secret]
 }
 
