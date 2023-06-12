@@ -1,9 +1,7 @@
 terraform {
-  terraform {
-    backend "gcs" {
-      bucket = "<KUBEFIRST_STATE_STORE_BUCKET>"
-      prefix = "terraform/gitlab/terraform.tfstate"
-    }
+  backend "gcs" {
+    bucket = "<KUBEFIRST_STATE_STORE_BUCKET>"
+    prefix = "terraform/gitlab/terraform.tfstate"
   }
   required_providers {
     gitlab = {
