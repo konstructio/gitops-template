@@ -1,8 +1,8 @@
 data "google_client_config" "default" {}
 
 data "google_container_cluster" "this" {
-  name     = "sh-test-gcp-int"
-  location = "us-east1"
+  name     = "<CLUSTER_NAME>"
+  location = "<CLOUD_REGION>"
 }
 
 provider "kubernetes" {
