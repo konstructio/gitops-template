@@ -6,6 +6,10 @@ variable "b64_docker_auth" {
   type = string
 }
 
+variable "container_registry_auth" {
+  type = string
+}
+
 variable "gitlab_token" {
   type = string
 }
