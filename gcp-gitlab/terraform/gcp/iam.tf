@@ -37,7 +37,7 @@ module "cert_manager" {
 module "chartmuseum" {
   source = "./modules/sa"
 
-  service_account_name            = "chart-museum-${local.cluster_name}"
+  service_account_name            = "chartmuseum-${local.cluster_name}"
   kubernetes_service_account_name = "chartmuseum"
   display_name                    = "Chart Museum Service Account"
   project                         = var.project
