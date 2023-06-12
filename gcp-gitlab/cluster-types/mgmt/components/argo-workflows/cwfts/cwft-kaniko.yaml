@@ -26,7 +26,7 @@ spec:
       volumes:
         - name: docker-config
           secret:
-            secretName: 'docker-config'
+            secretName: 'container-registry-auth'
       container:
         image: gcr.io/kaniko-project/executor:latest
         volumeMounts:
