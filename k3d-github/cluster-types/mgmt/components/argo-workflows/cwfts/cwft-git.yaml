@@ -161,7 +161,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: ci-secrets
-              key: PERSONAL_ACCCESS_TOKEN
+              key: PERSONAL_ACCESS_TOKEN
         args:
           - set -e;
 
