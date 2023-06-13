@@ -60,9 +60,12 @@ spec:
               branch: '{{inputs.parameters.branch}}'
               singleBranch: true
               insecureIgnoreHostKey: true
-              sshPrivateKeySecret:
+              usernameSecret:
                 name: ci-secrets
-                key: 
+                key: BASIC_AUTH_USER
+              passwordSecret:
+                name: ci-secrets
+                key: PERSONAL_ACCESS_TOKEN 
           - name: gitops-source
             path: /src/gitops
             git:
@@ -72,7 +75,7 @@ spec:
               insecureIgnoreHostKey: true
               usernameSecret:
                 name: ci-secrets
-                key: USERNAME
+                key: BASIC_AUTH_USER
               passwordSecret:
                 name: ci-secrets
                 key: PERSONAL_ACCESS_TOKEN

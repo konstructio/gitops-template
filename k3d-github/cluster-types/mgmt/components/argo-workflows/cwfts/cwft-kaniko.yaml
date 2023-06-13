@@ -59,7 +59,7 @@ spec:
           insecureIgnoreHostKey: true
           usernameSecret:
             name: ci-secrets
-            key: USERNAME
+            key: BASIC_AUTH_USER
           passwordSecret:
             name: ci-secrets
             key: PERSONAL_ACCESS_TOKEN
