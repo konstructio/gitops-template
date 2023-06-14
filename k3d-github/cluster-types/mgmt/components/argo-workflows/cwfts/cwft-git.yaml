@@ -155,7 +155,7 @@ spec:
       container:
         workingDir: '/src/{{inputs.parameters.repoName}}'
         image: golang:latest
-        command: ['/bin/sh', '-c']
+        command: ['/bin/bash', '-c']
         env:
         - name: GITHUB_TOKEN
           valueFrom:
@@ -167,7 +167,10 @@ spec:
 
             git config --global user.email 'k-ray@example.com';
             git config --global user.name 'kbot';
-            git remote set-url origin '{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.repoName}}.git';
+            //set url to https://kbot:token@github.com/the_rest_of_the input slug
+            input_url='{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.repoName}}.git';
+            origin_url="${input_url/"https://github.com"/"https://kbot:$GITHUB_TOKEN@github.com"}";   
+            git remote set-url origin $origin_url;
             git remote -v;
             git status;
             git pull;
