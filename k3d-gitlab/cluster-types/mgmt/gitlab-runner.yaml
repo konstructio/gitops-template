@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_GIT_URL>
+    repoURL: <GITOPS_REPO_URL>
     path: registry/<CLUSTER_NAME>/components/gitlab-runner
     targetRevision: HEAD
   destination:
@@ -19,10 +19,10 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - Replace=true
-      - PruneLast=true
+    - CreateNamespace=true
+    - ApplyOutOfSyncOnly=true
+    - Replace=true
+    - PruneLast=true
     retry:
       limit: 5
       backoff:
