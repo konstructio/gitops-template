@@ -25,7 +25,7 @@ resource "vault_generic_secret" "external_dns_secrets" {
 
   data_json = jsonencode(
     {
-      vultr-token = var.vultr_token,
+      vultr-token = var.vultr_api_key,
     }
   )
 
@@ -158,8 +158,8 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_b64_docker_auth              = var.b64_docker_auth,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
-      VULTR_TOKEN                         = var.vultr_token,
-      TF_VAR_vultr_token                  = var.vultr_token,
+      VULTR_API_KEY                         = var.vultr_api_key,
+      TF_VAR_vultr_api_key                  = var.vultr_api_key,
       GITLAB_OWNER                        = "<GITLAB_OWNER>",
       GITLAB_TOKEN                        = var.gitlab_token,
       TF_VAR_gitlab_token                 = var.gitlab_token,
