@@ -157,7 +157,7 @@ spec:
         image: golang:latest
         command: ['/bin/bash', '-c']
         env:
-        - name: GITHUB_TOKEN
+        - name: GIT_TOKEN
           valueFrom:
             secretKeyRef:
               name: ci-secrets
@@ -167,9 +167,9 @@ spec:
 
             git config --global user.email 'k-ray@example.com';
             git config --global user.name 'kbot';
-            echo "set url to https://kbot:token@github.com/the_rest_of_the input slug";
+            echo "set url to https://kbot:token@<GIT_PROVIDER>.com/the_rest_of_the input slug";
             input_url='{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.repoName}}.git';
-            origin_url="${input_url/"https://github.com"/"https://kbot:$GITHUB_TOKEN@github.com"}";   
+            origin_url="${input_url/"https://<GIT_PROVIDER>.com"/"https://kbot:$GIT_TOKEN@<GIT_PROVIDER>.com"}";   
             git remote set-url origin $origin_url;
             git remote -v;
             git status;
