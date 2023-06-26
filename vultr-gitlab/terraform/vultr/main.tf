@@ -27,7 +27,7 @@ locals {
   pool_name            = "${local.cluster_name}-node-pool"
   pool_instance_type   = "vc2-4c-8gb"
   kube_config_filename = "../../../kubeconfig"
-  kubernetes_version   = "v1.26.2+2"
+  kubernetes_version   = "v1.26.5+1"
 }
 
 resource "vultr_kubernetes" "kubefirst" {
