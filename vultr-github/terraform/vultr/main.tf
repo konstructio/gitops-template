@@ -36,12 +36,12 @@ resource "vultr_kubernetes" "kubefirst" {
   version = local.kubernetes_version
 
   node_pools {
-    node_quantity = 2
+    node_quantity = 3
     plan          = local.pool_instance_type
     label         = local.pool_name
     auto_scaler   = true
-    min_nodes     = 2
-    max_nodes     = 4
+    min_nodes     = 3
+    max_nodes     = 5
   }
 }
 
