@@ -11,7 +11,7 @@ spec:
         - - name: publish-container
             templateRef:
               name: cwft-kaniko
-              template: build-push
+              template: build-push-<GIT-PROTOCOL>
               clusterScope: true
             arguments:
               parameters:
@@ -26,7 +26,7 @@ spec:
         - - name: checkout
             templateRef:
               name: cwft-git
-              template: checkout-with-gitops
+              template: checkout-with-gitops-<GIT-PROTOCOL>
               clusterScope: true
             arguments:
               parameters:
