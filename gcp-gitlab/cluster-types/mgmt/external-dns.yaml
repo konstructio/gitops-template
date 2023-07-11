@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_GIT_URL>
+    repoURL: <GITOPS_REPO_URL>
     path: registry/<CLUSTER_NAME>/components/external-dns
     targetRevision: HEAD
   destination:

@@ -9,7 +9,7 @@ spec:
         - - name: checkout
             templateRef:
               name: cwft-git
-              template: checkout-with-gitops
+              template: checkout-with-gitops-<GIT-PROTOCOL>
               clusterScope: true
             arguments:
               parameters:
@@ -84,7 +84,7 @@ spec:
         - - name: commit-production
             templateRef:
               name: cwft-git
-              template: pull-commit-push
+              template: pull-commit-push-<GIT-PROTOCOL>
               clusterScope: true
             arguments:
               artifacts:
@@ -130,7 +130,7 @@ spec:
         - - name: commit-chart-increment
             templateRef:
               name: cwft-git
-              template: pull-commit-push
+              template: pull-commit-push-<GIT-PROTOCOL>
               clusterScope: true
             arguments:
               artifacts:
