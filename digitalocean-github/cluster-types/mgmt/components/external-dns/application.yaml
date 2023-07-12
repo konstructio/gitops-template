@@ -19,17 +19,19 @@ spec:
         serviceAccount:
           create: true
           name: external-dns
-        provider: digitalocean
+        provider: <EXTERNAL_DNS_PROVIDER_NAME>
         sources:
         - ingress
         domainFilters:
         - <DOMAIN_NAME>
         env:
-        - name: DO_TOKEN
+        - name: <EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME>
           valueFrom:
             secretKeyRef:
-              name: digitalocean-creds
-              key: digitalocean-token
+              name: <EXTERNAL_DNS_PROVIDER_SECRET_NAME>
+              key: <EXTERNAL_DNS_PROVIDER_SECRET_KEY>
+        - name: CF_API_EMAIL
+          value: <CLOUDFLARE_ACCOUNT_EMAIL>
     chart: external-dns
   destination:
     server: https://kubernetes.default.svc
