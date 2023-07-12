@@ -30,8 +30,6 @@ spec:
             secretKeyRef:
               name: <EXTERNAL_DNS_PROVIDER_SECRET_NAME>
               key: <EXTERNAL_DNS_PROVIDER_SECRET_KEY>
-        - name: CF_API_EMAIL
-          value: <CLOUDFLARE_ACCOUNT_EMAIL>
     chart: external-dns
   destination:
     server: https://kubernetes.default.svc
