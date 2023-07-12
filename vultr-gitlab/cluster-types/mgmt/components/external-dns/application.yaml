@@ -19,17 +19,19 @@ spec:
         serviceAccount:
           create: true
           name: external-dns
-        provider: vultr
+        provider: <EXTERNAL_DNS_PROVIDER_NAME>
         sources:
         - ingress
         domainFilters:
         - <DOMAIN_NAME>
         env:
-        - name: VULTR_API_KEY
+        - name: <EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME>
           valueFrom:
             secretKeyRef:
-              name: vultr-creds
-              key: vultr-token
+              name: <EXTERNAL_DNS_PROVIDER_SECRET_NAME>
+              key: <EXTERNAL_DNS_PROVIDER_SECRET_KEY>
+        - name: CF_API_EMAIL
+          value: <CLOUDFLARE_ACCOUNT_EMAIL>
     chart: external-dns
   destination:
     server: https://kubernetes.default.svc
