@@ -6,11 +6,11 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: '1'
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
+    repoURL: <GITOPS_REPO_GIT_URL>>
     path: registry/<CLUSTER_NAME>/components/development/metaphor
     targetRevision: HEAD
     helm:

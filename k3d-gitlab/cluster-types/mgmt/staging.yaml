@@ -4,13 +4,13 @@ metadata:
   name: staging
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
   annotations:
     argocd.argoproj.io/sync-wave: '60'
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
+    repoURL: <GITOPS_REPO_GIT_URL>>
     path: registry/<CLUSTER_NAME>/components/staging
     targetRevision: HEAD
   destination:
@@ -21,4 +21,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

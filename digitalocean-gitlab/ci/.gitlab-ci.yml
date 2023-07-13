@@ -42,7 +42,7 @@ publish:
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p containerRegistryURL="registry.gitlab.com/${GITLAB_GROUP_NAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" \
         -p gitServerUrl="gitlab.com" \
-        -p gitUrlNoProtocol="<GIT_FQDN>${GITLAB_GROUP_NAME}" \
+        -p gitUrlNoProtocol="git@gitlab.com:OUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
         -p ciCommitSha="${CI_COMMIT_SHA}" \
         --wait --log
@@ -64,7 +64,7 @@ development:
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="development" \
-        -p gitUrlNoProtocol="<GIT_FQDN>${GITLAB_GROUP_NAME}" \
+        -p gitUrlNoProtocol="git@gitlab.com:OUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
         -p ciCommitSha="${CI_COMMIT_SHA}" \
         --wait --log
@@ -86,7 +86,7 @@ staging:
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="staging" \
-        -p gitUrlNoProtocol="<GIT_FQDN>${GITLAB_GROUP_NAME}" \
+        -p gitUrlNoProtocol="git@gitlab.com:OUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
         -p ciCommitSha="${CI_COMMIT_SHA}" \
         --wait --log
@@ -108,7 +108,7 @@ release:
         -p branch="${CI_COMMIT_REF_NAME}" \
         -p clusterName="<CLUSTER_NAME>" \
         -p environment="production" \
-        -p gitUrlNoProtocol="<GIT_FQDN>${GITLAB_GROUP_NAME}" \
+        -p gitUrlNoProtocol="git@gitlab.com:OUP_NAME}" \
         -p shortSha="${CI_COMMIT_SHORT_SHA}" \
         -p ciCommitSha="${CI_COMMIT_SHA}" \
         --wait --log
