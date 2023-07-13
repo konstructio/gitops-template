@@ -26,7 +26,7 @@ spec:
         - - name: checkout
             templateRef:
               name: cwft-git
-              template: checkout-with-gitops-<GIT-PROTOCOL>
+              template: checkout-with-gitops
               clusterScope: true
             arguments:
               parameters:
