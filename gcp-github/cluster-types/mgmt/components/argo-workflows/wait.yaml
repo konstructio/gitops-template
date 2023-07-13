@@ -66,7 +66,6 @@ metadata:
   name: wait-argo-server
   namespace: argo
 spec:
-  backoffLimit: 10
   template:
     spec:
       containers:
