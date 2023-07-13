@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-wave: '55'
 spec:
   templates:
-    - name: checkout-with-gitops-ssh
+    - name: checkout-with-gitops
       inputs:
         parameters:
           - name: appName
@@ -88,7 +88,7 @@ spec:
         artifacts:
           - name: repo-source
             path: /src
-    - name: pull-commit-push-ssh
+    - name: pull-commit-push
       retryStrategy:
         limit: '5'
       # todo get ssh item not all secrets

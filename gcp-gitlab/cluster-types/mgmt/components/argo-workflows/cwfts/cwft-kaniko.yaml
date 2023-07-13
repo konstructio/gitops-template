@@ -5,7 +5,7 @@ metadata:
 spec:
   entrypoint: build-push
   templates:
-    - name: build-push-ssh
+    - name: build-push
       inputs:
         parameters:
           - name: appName
