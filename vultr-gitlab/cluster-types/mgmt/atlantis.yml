@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
+    repoURL: <GITOPS_REPO_GIT_URL>
     path: registry/<CLUSTER_NAME>/components/atlantis
     targetRevision: HEAD
   destination:
@@ -26,4 +26,3 @@ spec:
         duration: 5s
         maxDuration: 5m0s
         factor: 2
-

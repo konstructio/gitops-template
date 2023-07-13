@@ -4,18 +4,18 @@ metadata:
   name: metaphor-development
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
   annotations:
     argocd.argoproj.io/sync-wave: '1'
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
+    repoURL: <GITOPS_REPO_GIT_URL>
     path: registry/<CLUSTER_NAME>/components/development/metaphor
     targetRevision: HEAD
     helm:
       valueFiles:
-      - values.yaml
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: development
@@ -24,4 +24,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
