@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_GIT_URL>
+    repoURL: <GITOPS_REPO_URL>
     path: registry/<CLUSTER_NAME>/components/staging/metaphor
     targetRevision: HEAD
     helm:
