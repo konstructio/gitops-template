@@ -50,7 +50,7 @@ jobs:
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
             -p containerRegistryURL="ghcr.io/${GITHUB_REPOSITORY_OWNER_PART_SLUG}/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}" \
-            -p gitUrlNoProtocol="git@github.com:${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
+            -p gitUrlNoProtocol="<GIT_FQDN>${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
       - run: echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
@@ -86,7 +86,7 @@ jobs:
             -p branch="${GITHUB_REF_NAME}" \
             -p clusterName="<CLUSTER_NAME>" \
             -p environment="development" \
-            -p gitUrlNoProtocol="git@github.com:${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
+            -p gitUrlNoProtocol="<GIT_FQDN>${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
       - run: echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
@@ -122,7 +122,7 @@ jobs:
             -p branch="${GITHUB_REF_NAME}" \
             -p clusterName="<CLUSTER_NAME>" \
             -p environment="staging" \
-            -p gitUrlNoProtocol="git@github.com:${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
+            -p gitUrlNoProtocol="<GIT_FQDN>${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
       - run: echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"
@@ -159,7 +159,7 @@ jobs:
             -p branch="${GITHUB_REF_NAME}" \
             -p clusterName="<CLUSTER_NAME>" \
             -p environment="production" \
-            -p gitUrlNoProtocol="git@github.com:${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
+            -p gitUrlNoProtocol="<GIT_FQDN>${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
       - run: echo "⭐️ the kubefirst open source platform is powered by github stars. give kubefirst one today https://github.com/kubefirst/kubefirst"

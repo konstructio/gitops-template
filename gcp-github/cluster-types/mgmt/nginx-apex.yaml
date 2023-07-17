@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   name: nginx-apex-components
   namespace: argocd
   annotations:
@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_GIT_URL>
+    repoURL: <GITOPS_REPO_URL>
     path: registry/<CLUSTER_NAME>/components/nginx-apex
     targetRevision: HEAD
   destination:
@@ -21,4 +21,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

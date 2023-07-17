@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-wave: '55'
 spec:
   templates:
-    - name: checkout-with-gitops
+    - name: checkout-with-gitops-ssh
       inputs:
         parameters:
           - name: appName
@@ -64,7 +64,7 @@ spec:
                 key: BASIC_AUTH_USER
               passwordSecret:
                 name: ci-secrets
-                key: PERSONAL_ACCESS_TOKEN
+                key: PERSONAL_ACCESS_TOKEN 
           - name: gitops-source
             path: /src/gitops
             git:
@@ -88,8 +88,8 @@ spec:
         artifacts:
           - name: repo-source
             path: /src
-    - name: pull-commit-push
-      retryStrategy:
+    - name: pull-commit-push-ssh
+      retryStrategy:        
         limit: '5'
       # todo get ssh item not all secrets
       volumes:
@@ -156,11 +156,11 @@ spec:
         image: golang:latest
         command: ['/bin/bash', '-c']
         env:
-          - name: GIT_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: ci-secrets
-                key: PERSONAL_ACCESS_TOKEN
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: ci-secrets
+              key: PERSONAL_ACCESS_TOKEN
         args:
           - set -e;
 
@@ -168,7 +168,7 @@ spec:
             git config --global user.name 'kbot';
             echo "set url to https://kbot:token@<GIT_PROVIDER>.com/the_rest_of_the input slug";
             input_url='{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.repoName}}.git';
-            origin_url="${input_url/"https://<GIT_PROVIDER>.com"/"https://kbot:$GIT_TOKEN@<GIT_PROVIDER>.com"}";
+            origin_url="${input_url/"https://<GIT_PROVIDER>.com"/"https://kbot:$GIT_TOKEN@<GIT_PROVIDER>.com"}";   
             git remote set-url origin $origin_url;
             git remote -v;
             git status;
