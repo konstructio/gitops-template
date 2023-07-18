@@ -21,3 +21,9 @@ variable "ami_type" {
   default     = "AL2_x86_64"
   type        = string
 }
+
+variable "use_ecr" {
+  type        = bool
+  default     = false
+  description = "boolean that changes if we create ecr resources"
+}
