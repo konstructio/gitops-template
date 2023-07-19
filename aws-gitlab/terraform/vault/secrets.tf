@@ -30,12 +30,12 @@ resource "vault_generic_secret" "docker_config" {
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "regsitry_auth" {
-  path = "secret/registry-auth"
+resource "vault_generic_secret" "container_registry_auth" {
+  path = "secret/deploy-tokens/container-registry-auth"
 
   data_json = jsonencode(
     {
-      auth = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
+      auth = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
 
