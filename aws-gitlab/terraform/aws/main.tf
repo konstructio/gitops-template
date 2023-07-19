@@ -40,6 +40,7 @@ module "ecr_metaphor" {
   source = "./ecr"
 
   repository_name = "metaphor"
+  use_ecr         = var.use_ecr
 }
 
 output "vault_unseal_kms_key" {

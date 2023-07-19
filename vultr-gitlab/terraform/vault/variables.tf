@@ -6,7 +6,7 @@ variable "b64_docker_auth" {
   type = string
 }
 
-variable "vultr_token" {
+variable "vultr_api_key" {
   type = string
 }
 

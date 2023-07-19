@@ -20,3 +20,4 @@ metaphor:
   metaphor:
     host: https://metaphor-production.<DOMAIN_NAME>/api
     console: https://kubefirst.<DOMAIN_NAME>
+  vaultSecretPath: production/metaphor
