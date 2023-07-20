@@ -57,7 +57,7 @@ const Navigation: FunctionComponent<NavigationProps> = ({ consoleUrl, collapsibl
             color="#ABADC6"
             sx={{ position: 'absolute', left: 65, bottom: -10 }}
           >
-            V<KUBEFIRST_VERSION>
+            {`V<KUBEFIRST_VERSION>`}
           </Typography>
         </Title>
         {domLoaded && (
