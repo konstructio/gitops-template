@@ -34,7 +34,7 @@ spec:
           ingress:
             enabled: true
             annotations: 
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              cert-manager.io/cluster-issuer: "<CLUSTER_ISSUER>"
             ingressClassName: "nginx"
             pathType: Prefix
             # When HA mode is enabled and K8s service registration is being used,

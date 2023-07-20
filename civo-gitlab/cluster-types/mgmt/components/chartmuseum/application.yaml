@@ -30,7 +30,7 @@ spec:
         ingress:
           enabled: true
           annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            cert-manager.io/cluster-issuer: "<CLUSTER_ISSUER>"
           hosts:
             - name: chartmuseum.<DOMAIN_NAME>
               path: /
