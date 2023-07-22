@@ -38,8 +38,8 @@ ingress:
   enabled: true
   annotations: {}
     # kubernetes.io/ingress.class: nginx
-    # Change to "letsencrypt-staging" while testing adjustments, change to "<CLUSTER_ISSUER>" after confirming LE certificate was issued
-    # cert-manager.io/cluster-issuer: "<CLUSTER_ISSUER>"
+    # Change to "letsencrypt-staging" while testing adjustments, change to "letsencrypt-prod" after confirming LE certificate was issued
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
   hosts:
     - host: example.com
       paths:
