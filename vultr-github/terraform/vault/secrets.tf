@@ -25,8 +25,7 @@ resource "vault_generic_secret" "external_dns_secrets" {
 
   data_json = jsonencode(
     {
-      vultr-token = var.vultr_api_key,
-    }
+<EXTERNAL_DNS_PROVIDER_NAME>-token = var.<EXTERNAL_DNS_PROVIDER_NAME>_secret,    }
   )
 
   depends_on = [vault_mount.secret]
