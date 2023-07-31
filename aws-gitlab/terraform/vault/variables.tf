@@ -2,6 +2,11 @@ locals {
   cluster_name = "<CLUSTER_NAME>"
 }
 
+variable "<EXTERNAL_DNS_PROVIDER_NAME>_secret" {
+  default = ""
+  type = string
+}
+
 variable "b64_docker_auth" {
   type = string
 }
@@ -38,4 +43,9 @@ variable "owner_group_id" {
 variable "vault_token" {
   default = ""
   type    = string
+}
+
+variable "container_registry_auth" {
+  default = ""
+  type = string
 }
