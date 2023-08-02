@@ -13,6 +13,13 @@ spec:
     chart: kubefirst
     helm:
       values: |-
+        mongodb:
+          image:
+            repository: arm64v8/mongo
+            tag: latest
+          persistence:
+            mountPath: /data/db
+          extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
           env:
             - name: IN_CLUSTER
