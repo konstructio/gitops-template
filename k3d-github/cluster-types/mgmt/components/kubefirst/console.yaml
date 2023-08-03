@@ -22,9 +22,9 @@ spec:
           extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
           image:
-          api:
-            repository: public.ecr.aws/kubefirst/api
-            tag: 0.0.3
+            api:
+              repository: public.ecr.aws/kubefirst/api
+              tag: 0.0.3
           env:
             - name: IN_CLUSTER
               value: "'true'"
