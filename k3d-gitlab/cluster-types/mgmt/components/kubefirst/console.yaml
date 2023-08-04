@@ -8,58 +8,41 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://kubefirst.github.io/charts
-    targetRevision: 2.1.9
-    chart: console
+    repoURL: https://charts.kubefirst.com
+    targetRevision: 2.2.7
+    chart: kubefirst
     helm:
       values: |-
-        env:
-          ARGO_CD_URL:
-            value: "<ARGOCD_INGRESS_URL>"
-          ARGO_WORKFLOWS_URL:
-            value: "<ARGO_WORKFLOWS_INGRESS_URL>"
-          ATLANTIS_URL:
-            value: "<ATLANTIS_INGRESS_URL>"
-          CLOUD:
-            value: "<CLOUD_PROVIDER>"
-          CLUSTER_ID:
-            value: "<CLUSTER_ID>"
-          CLUSTER_TYPE:
-            value: "<CLUSTER_TYPE>"
-          DOMAIN_NAME:
-            value: "<DOMAIN_NAME>"
-          GIT_PROVIDER:
-            value: "<GIT_PROVIDER>"
-          GITLAB_OWNER:
-            value: "<GITLAB_OWNER>"
-          K3D_DOMAIN:
-            value: "<K3D_DOMAIN>"
-          KUBEFIRST_VERSION:
-            value: "<KUBEFIRST_VERSION>"
-          KUBEFIRST_TEAM:
-            value: "<KUBEFIRST_TEAM>"
-          METAPHOR_DEVELOPMENT_URL:
-            value: "<METAPHOR_DEVELOPMENT_INGRESS_URL>"
-          METAPHOR_STAGING_URL:
-            value: "<METAPHOR_STAGING_INGRESS_URL>"
-          METAPHOR_PRODUCTION_URL:
-            value: "<METAPHOR_PRODUCTION_INGRESS_URL>"
-          USE_TELEMETRY:
-            value: "<USE_TELEMETRY>"
-          VAULT_URL:
-            value: "<VAULT_INGRESS_URL>"
-        ingress:
-          enabled: true
-          className: ""
-          hosts:
-            - host: kubefirst.<DOMAIN_NAME>
-              paths:
-                - path: /
-                  pathType: Prefix
-          tls:
-            - secretName: kubefirst-tls
-              hosts:
-                - kubefirst.<DOMAIN_NAME>
+        mongodb:
+          image:
+            repository: arm64v8/mongo
+            tag: latest
+          persistence:
+            mountPath: /data/db
+          extraEnvVarsSecret: kubefirst-initial-secrets
+        kubefirst-api:
+          image:
+            api:
+              repository: public.ecr.aws/kubefirst/api
+              tag: 0.0.3
+          env:
+            - name: IN_CLUSTER
+              value: "'true'"
+        console:
+          ingress:
+            enabled: "true"
+            hosts:
+              - host: kubefirst.<DOMAIN_NAME>
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: kubefirst-tls
+                hosts:
+                  - kubefirst.<DOMAIN_NAME>
+          env:
+          - name: POSTHOG_KEY
+            value: "phc_1i5RDnv8Byf9w05fV8l02GSltpDwF9iyf0ry0U0Fw4r"
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst
