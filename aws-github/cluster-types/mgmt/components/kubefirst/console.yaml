@@ -17,6 +17,10 @@ spec:
           env:
             - name: IN_CLUSTER
               value: "'true'"
+          image:
+            api:
+              repository: public.ecr.aws/kubefirst/api
+              tag: 0.0.4
         console:
           ingress:
             enabled: "true"
