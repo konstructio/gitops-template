@@ -39,9 +39,6 @@ spec:
               - secretName: kubefirst-tls
                 hosts:
                   - kubefirst.<DOMAIN_NAME>
-          env:
-          - name: POSTHOG_KEY
-            value: "phc_1i5RDnv8Byf9w05fV8l02GSltpDwF9iyf0ry0U0Fw4r"
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst
