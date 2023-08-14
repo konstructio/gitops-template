@@ -11,7 +11,7 @@ spec:
     repoURL: https://charts.kubefirst.com
     targetRevision: 2.2.7
     chart: kubefirst
-      helm:
+    helm:
       values: |-
         mongodb:
           image:
