@@ -11,28 +11,28 @@ spec:
     repoURL: https://charts.kubefirst.com
     targetRevision: 2.2.7
     chart: kubefirst
-      helm:
-        values: |-
-          kubefirst-api:
-            image:
-              api:
-                repository: public.ecr.aws/kubefirst/api
-                tag: 0.0.3
-            env:
-              - name: IN_CLUSTER
-                value: "'true'"
-          console:
-            ingress:
-              enabled: "true"
-              hosts:
-                - host: kubefirst.<DOMAIN_NAME>
-                  paths:
-                    - path: /
-                      pathType: Prefix
-              tls:
-                - secretName: kubefirst-tls
-                  hosts:
-                    - kubefirst.<DOMAIN_NAME>
+    helm:
+      values: |-
+        kubefirst-api:
+          image:
+            api:
+              repository: public.ecr.aws/kubefirst/api
+              tag: 0.0.3
+          env:
+            - name: IN_CLUSTER
+              value: "'true'"
+        console:
+          ingress:
+            enabled: "true"
+            hosts:
+              - host: kubefirst.<DOMAIN_NAME>
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: kubefirst-tls
+                hosts:
+                  - kubefirst.<DOMAIN_NAME>
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst
