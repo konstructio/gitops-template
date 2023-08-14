@@ -1,0 +1,29 @@
+{{- if eq "<ARCH>" "arm64" }}
+mongodb:
+  image:
+    repository: arm64v8/mongo
+    tag: latest
+  persistence:
+    mountPath: /data/db
+  extraEnvVarsSecret: kubefirst-initial-secrets
+{{- end }}
+kubefirst-api:
+  image:
+    api:
+      repository: public.ecr.aws/kubefirst/api
+      tag: 0.0.3
+  env:
+    - name: IN_CLUSTER
+      value: "'true'"
+console:
+  ingress:
+    enabled: "true"
+    hosts:
+      - host: kubefirst.<DOMAIN_NAME>
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: kubefirst-tls
+        hosts:
+          - kubefirst.<DOMAIN_NAME>
