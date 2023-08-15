@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kubefirst-console
+  name: kubefirst
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: '10'
@@ -14,10 +14,6 @@ spec:
     helm:
       values: |-
         kubefirst-api:
-          image:
-            api:
-              repository: public.ecr.aws/kubefirst/api
-              tag: 0.0.3
           env:
             - name: IN_CLUSTER
               value: "'true'"
