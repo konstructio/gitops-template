@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.2.7
+    targetRevision: 2.2.10
     chart: kubefirst
     helm:
       values: |-
@@ -24,7 +24,7 @@ spec:
           image:
             api:
               repository: public.ecr.aws/kubefirst/api
-              tag: 0.0.5
+              tag: 0.0.6
           env:
             - name: IN_CLUSTER
               value: "'true'"
