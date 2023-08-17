@@ -21,6 +21,10 @@ spec:
             mountPath: /data/db
           extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
+          image:
+            api:
+              repository: public.ecr.aws/kubefirst/api
+              tag: 0.0.5
           env:
             - name: IN_CLUSTER
               value: "'true'"
