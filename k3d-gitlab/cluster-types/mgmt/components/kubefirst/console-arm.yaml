@@ -24,7 +24,7 @@ spec:
           image:
             api:
               repository: public.ecr.aws/kubefirst/api
-              tag: 0.0.7
+              tag: 0.0.8
           env:
             - name: IN_CLUSTER
               value: "'true'"
