@@ -21,7 +21,7 @@ spec:
 apiVersion: cert-manager.k8s.cloudflare.com/v1
 kind: OriginIssuer
 metadata:
-  name: cf-issuer
+  name: cloudflare-origin-issuer
   namespace: staging
 spec:
   requestType: OriginECC

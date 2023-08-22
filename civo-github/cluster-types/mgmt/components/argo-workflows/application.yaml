@@ -30,7 +30,10 @@ spec:
             enabled: true
             ingressClassName: nginx
             annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              cert-manager.io/issuer: cloudflare-origin-issuer
+              cert-manager.io/issuer-kind: OriginIssuer
+              cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+              external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
             hosts:
               - argo.<DOMAIN_NAME>
             paths: 
