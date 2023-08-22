@@ -22,3 +22,10 @@ variable "project" {
 
   default = "<GCP_PROJECT>"
 }
+
+variable "force_destroy" {
+  description = "variable used to control bucket force destroy"
+  type        = bool
+
+  default = "false"
+}
