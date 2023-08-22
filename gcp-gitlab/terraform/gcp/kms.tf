@@ -1,4 +1,4 @@
-resource "random_string" "uniqeness" {
+resource "random_string" "uniqueness" {
   length           = 5
   special          = false
   lower            = true
@@ -14,7 +14,7 @@ resource "random_string" "uniqeness" {
 module "vault_keys" {
   source = "./modules/kms"
 
-  keyring  = "vault-${local.cluster_name}-${random_string.uniqeness.result}"
+  keyring  = "vault-${local.cluster_name}-${random_string.uniqueness.result}"
   keys     = ["vault-unseal", "vault-encrypt"]
   location = "global"
   project  = var.project
