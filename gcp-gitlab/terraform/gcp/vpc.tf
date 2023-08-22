@@ -3,7 +3,7 @@ module "vpc" {
   version = "~> 7.0"
 
   project_id   = var.project
-  network_name = var.network_name
+  network_name = "var.network_name-${local.cluster_name}"
   routing_mode = "GLOBAL"
 
   subnets = [
