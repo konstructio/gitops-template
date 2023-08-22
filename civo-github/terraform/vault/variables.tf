@@ -11,6 +11,10 @@ variable "b64_docker_auth" {
   type = string
 }
 
+variable "cloudflare_origin_ca_api_key" {
+  type = string
+}
+
 variable "civo_token" {
   type = string
 }
