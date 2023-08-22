@@ -32,7 +32,7 @@ spec:
               key: <EXTERNAL_DNS_PROVIDER_SECRET_KEY>
     chart: external-dns
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: external-dns
   syncPolicy:
     automated:

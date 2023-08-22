@@ -12,7 +12,7 @@ spec:
     path: registry/<CLUSTER_NAME>/components/argo-workflows
     targetRevision: HEAD
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: argo
   syncPolicy:
     automated:

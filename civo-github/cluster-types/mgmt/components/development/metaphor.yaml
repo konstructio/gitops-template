@@ -17,7 +17,7 @@ spec:
       valueFiles:
         - values.yaml
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: development
   syncPolicy:
     automated:

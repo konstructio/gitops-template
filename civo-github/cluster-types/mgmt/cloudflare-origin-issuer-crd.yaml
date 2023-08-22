@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kubefirst-components
+  name: cloudflare-origin-issuer-crd
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '50'
+    argocd.argoproj.io/sync-wave: '20'
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>/components/kubefirst
-    targetRevision: HEAD
+    repoURL: https://github.com/cloudflare/origin-ca-issuer
+    path: deploy/crds
+    targetRevision: v0.6.1
   destination:
     name: in-cluster
-    namespace: kubefirst
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true

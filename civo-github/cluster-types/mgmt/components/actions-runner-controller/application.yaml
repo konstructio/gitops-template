@@ -121,7 +121,7 @@ spec:
           {}
     chart: actions-runner-controller
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: github-runner
   syncPolicy:
     automated:

@@ -53,7 +53,7 @@ spec:
             externalPort: 8200
     chart: vault
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: vault
   syncPolicy:
     automated:

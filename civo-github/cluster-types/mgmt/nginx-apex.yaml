@@ -14,7 +14,7 @@ spec:
     path: registry/<CLUSTER_NAME>/components/nginx-apex
     targetRevision: HEAD
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: default
   syncPolicy:
     automated:

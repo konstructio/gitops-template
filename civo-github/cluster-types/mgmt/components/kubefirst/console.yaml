@@ -68,7 +68,7 @@ spec:
               hosts:
                 - kubefirst.<DOMAIN_NAME>
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: kubefirst
   syncPolicy:
     automated:

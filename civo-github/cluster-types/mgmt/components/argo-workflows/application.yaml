@@ -78,7 +78,7 @@ spec:
               enableEncryption: false
     chart: argo-workflows
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: argo
   syncPolicy:
     automated:

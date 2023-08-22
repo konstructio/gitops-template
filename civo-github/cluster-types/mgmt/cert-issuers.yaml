@@ -12,7 +12,7 @@ spec:
     path: registry/<CLUSTER_NAME>/components/cert-issuers
     targetRevision: HEAD
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: cert-manager
   syncPolicy:
     automated:

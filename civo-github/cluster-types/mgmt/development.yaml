@@ -14,7 +14,7 @@ spec:
     path: registry/<CLUSTER_NAME>/components/development
     targetRevision: HEAD
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: development
   syncPolicy:
     automated:
