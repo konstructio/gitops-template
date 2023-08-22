@@ -18,13 +18,13 @@ module "vpc" {
   ]
 
   secondary_ranges = {
-    subnet-01 = [
+    "subnet-01-${local.cluster_name}" = [
       {
-        range_name    = "subnet-01-gke-01-pods"
+        range_name    = "subnet-01-${local.cluster_name}-gke-01-pods"
         ip_cidr_range = "10.13.0.0/16"
       },
       {
-        range_name    = "subnet-01-gke-01-services"
+        range_name    = "subnet-01-${local.cluster_name}-gke-01-services"
         ip_cidr_range = "10.14.0.0/16"
       },
     ]
@@ -32,7 +32,7 @@ module "vpc" {
 
   routes = [
     {
-      name              = "egress-internet"
+      name              = "egress-internet-${local.cluster_name}"
       description       = "route through IGW to access internet"
       destination_range = "0.0.0.0/0"
       tags              = "egress-inet"
