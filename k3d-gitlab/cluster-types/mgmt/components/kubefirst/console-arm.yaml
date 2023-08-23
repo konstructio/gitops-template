@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.2.10
+    targetRevision: 2.2.11-rc.1
     chart: kubefirst
     helm:
       values: |-
@@ -21,6 +21,8 @@ spec:
             mountPath: /data/db
           extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
+          initContainer:
+            enabled: "'true'"
           image:
             api:
               repository: public.ecr.aws/kubefirst/api
