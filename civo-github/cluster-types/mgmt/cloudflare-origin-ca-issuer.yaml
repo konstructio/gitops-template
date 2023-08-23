@@ -4,9 +4,9 @@ metadata:
   name: cloudflare-cloudflare-origin-ca-issuer
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '25'
+    argocd.argoproj.io/sync-wave: '19'
 spec:
-  project: cloudflare
+  project: default
   source:
     repoURL: https://cloudflare.github.io/origin-ca-issuer/charts
     chart: origin-ca-issuer
@@ -107,7 +107,7 @@ spec:
           # ref: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#toleration-v1-core
           tolerations: {}
   destination:
-    name: cloudflare
+    name: in-cluster
     namespace: cert-manager
   syncPolicy:
     automated:
