@@ -41,7 +41,7 @@ resource "google_kms_key_ring_iam_member" "this" {
   count = var.create_service_account_key ? 1 : 0
 
   key_ring_id = var.keyring
-  role        = data.google_iam_role.crypto_key_encrypter_decrypter.name
+  role        = data.google_iam_role.admin.name
 
   member = "serviceAccount:${google_service_account.this.email}"
 }
