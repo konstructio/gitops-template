@@ -29,3 +29,8 @@ variable "force_destroy" {
 
   default = "false"
 }
+
+variable "uniqueness" {
+  description = "variable used to avoid collision amongst immutable resource names"
+  type        = string
+}
