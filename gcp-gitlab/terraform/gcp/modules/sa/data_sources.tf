@@ -8,9 +8,14 @@ data "google_iam_role" "artifactregistry_reader" {
   name = "roles/artifactregistry.reader"
 }
 
+data "google_iam_role" "crypto_key_encrypter_decrypter" {
+  name = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+}
+
 data "google_iam_role" "admin" {
   name = "roles/cloudkms.admin"
 }
+
 
 data "google_iam_role" "dns_admin" {
   name = "roles/dns.admin"

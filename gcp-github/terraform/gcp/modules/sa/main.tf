@@ -37,6 +37,18 @@ resource "google_service_account_key" "this" {
 
 # Binding Service Account to Key Ring
 
+resource "google_kms_key_ring_iam_member" "this-crypto_key_encrypter_decrypter" {
+  count = var.create_service_account_key ? 1 : 0
+
+  key_ring_id = var.keyring
+  role        = data.google_iam_role.crypto_key_encrypter_decrypter.name
+
+  member = "serviceAccount:${google_service_account.this.email}"
+}
+
+
+# Binding Service Account to Key Ring
+
 resource "google_kms_key_ring_iam_member" "this" {
   count = var.create_service_account_key ? 1 : 0
 
