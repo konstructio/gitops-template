@@ -55,5 +55,5 @@ subjects:
     namespace: kubefirst
 roleRef:
   kind: ClusterRole
-  name: admin
+  name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
