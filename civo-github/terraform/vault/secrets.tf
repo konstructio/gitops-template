@@ -163,7 +163,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_github_token                 = var.github_token,
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,
-      TF_VAR_cloudflare_origin_ca_api_key = var.
+      TF_VAR_cloudflare_origin_ca_api_key = var.cloudflare_origin_ca_api_key
       VAULT_ADDR                          = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       VAULT_TOKEN                         = var.vault_token,
