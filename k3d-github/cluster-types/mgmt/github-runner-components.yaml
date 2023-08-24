@@ -15,9 +15,9 @@ spec:
     server: https://kubernetes.default.svc
     namespace: github-runner
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    # automated:
+    #   prune: true
+    #   selfHeal: true
     syncOptions:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
