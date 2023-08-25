@@ -1,6 +1,6 @@
 metaphor:
   image:
-    repository: ghcr.io/<GITHUB_OWNER>/metaphor
+    repository: <CONTAINER_REGISTRY_URL>/metaphor
   imagePullSecrets:
   - name: docker-config
   ingress:
