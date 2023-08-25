@@ -25,21 +25,16 @@ spec:
         kubefirst-api:
           initContainer:
             enabled: "'true'"
+          clusterId: "<CLUSTER_ID>"
+          clusterType: "<CLUSTER_TYPE>"
+          useTelemetry: "'<USE_TELEMETRY>'"
+          kubefirstTeam: "'<KUBEFIRST_TEAM>'"
+          installMethod: "helm"
           env:
             - name: IN_CLUSTER
               value: "'true'"
-            - name: INSTALL_METHOD
-              value: "helm"
-            - name: CLUSTER_ID
-              value: "<CLUSTER_ID>" 
-            - name: CLUSTER_TYPE
-              value: "<CLUSTER_TYPE>"
-            - name: USE_TELEMETRY
-              value: "<USE_TELEMETRY>"
-            - name: KUBEFIRST_TEAM
-              value: "<KUBEFIRST_TEAM>"
         console:
-          isClusterZero: "false"
+          isClusterZero: "'false'"
           ingress:
             enabled: "true"
             hosts:
