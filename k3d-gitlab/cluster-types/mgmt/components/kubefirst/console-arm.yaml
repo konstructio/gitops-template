@@ -13,6 +13,8 @@ spec:
     chart: kubefirst
     helm:
       values: |-
+        global:
+            kubefirstVersion: "<KUBEFIRST_VERSION>"
         mongodb:
           image:
             repository: arm64v8/mongo
@@ -26,7 +28,18 @@ spec:
           env:
             - name: IN_CLUSTER
               value: "'true'"
+            - name: INSTALL_METHOD
+              value: "helm"
+            - name: CLUSTER_ID
+              value: "<CLUSTER_ID>" 
+            - name: CLUSTER_TYPE
+              value: "<CLUSTER_TYPE>"
+            - name: USE_TELEMETRY
+              value: "<USE_TELEMETRY>"
+            - name: KUBEFIRST_TEAM
+              value: "<KUBEFIRST_TEAM>"
         console:
+          isClusterZero: "false"
           ingress:
             enabled: "true"
             hosts:
