@@ -23,10 +23,6 @@ spec:
         kubefirst-api:
           initContainer:
             enabled: "'true'"
-          image:
-            api:
-              repository: public.ecr.aws/kubefirst/api
-              tag: 0.0.12
           env:
             - name: IN_CLUSTER
               value: "'true'"
