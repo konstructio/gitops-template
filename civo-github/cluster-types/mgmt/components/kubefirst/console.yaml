@@ -9,11 +9,13 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.2.11-rc.1
+    targetRevision: 2.2.11
     chart: kubefirst
     helm:
       values: |-
         kubefirst-api:
+          initContainer:
+            enabled: "'true'"
           env:
             - name: IN_CLUSTER
               value: "'true'"
