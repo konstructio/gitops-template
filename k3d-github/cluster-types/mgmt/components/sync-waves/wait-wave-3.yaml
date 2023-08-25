@@ -1,19 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vault-components
+  name: wait-wave-3-components
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '20'
+    argocd.argoproj.io/sync-wave: '1'
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>/components/vault
+    path: registry/<CLUSTER_NAME>/components/sync-waves/wait-wave-3
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: vault
+    namespace: development
   syncPolicy:
     automated:
       prune: true

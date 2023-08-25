@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+  name: wait-wave-3
+  namespace: argo
+spec:
+  template:
+    spec:
+      containers:
+        - image: public.ecr.aws/ubuntu/ubuntu:edge
+          imagePullPolicy: IfNotPresent
+          name: wait
+          command:
+            - "echo 'sleeping 10'"
+            - "sleep 10"
+      restartPolicy: OnFailure
