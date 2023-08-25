@@ -15,6 +15,13 @@ spec:
       values: |-
         global:
             kubefirstVersion: "<KUBEFIRST_VERSION>"
+        mongodb:
+          image:
+            repository: arm64v8/mongo
+            tag: latest
+          persistence:
+            mountPath: /data/db
+          extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
           initContainer:
             enabled: "'true'"
