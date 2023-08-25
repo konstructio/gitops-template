@@ -24,10 +24,10 @@ resource "vault_generic_secret" "external_dns_secrets" {
   path = "secret/external-dns"
 
   data_json = jsonencode(
-    {
-<EXTERNAL_DNS_PROVIDER_NAME>-token = var.<EXTERNAL_DNS_PROVIDER_NAME>_secret,    }
+    {       
+      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_secret,    
+    }
   )
-
   depends_on = [vault_mount.secret]
 }
 
