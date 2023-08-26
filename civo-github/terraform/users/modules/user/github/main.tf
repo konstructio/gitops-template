@@ -91,7 +91,7 @@ variable "team_id" {
 }
 
 resource "github_team_membership" "team_membership" {
-  count = var.user_disabled == true ? 0 : 1
+  count    = var.user_disabled == true ? 0 : 1
   team_id  = var.team_id
   username = var.github_username
 }

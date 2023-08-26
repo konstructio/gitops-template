@@ -4,7 +4,7 @@ locals {
 
 variable "<EXTERNAL_DNS_PROVIDER_NAME>_secret" {
   default = ""
-  type = string
+  type    = string
 }
 
 variable "b64_docker_auth" {
