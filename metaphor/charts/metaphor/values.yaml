@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: <CONTAINER_REGISTRY_URL>
+  repository: <CONTAINER_REGISTRY_URL>/metaphor
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
