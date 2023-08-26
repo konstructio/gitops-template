@@ -1,0 +1,57 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-cluster
+  namespace: argocd
+  # labels:
+  #   argocd.argoproj.io/secret-type: cluster
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+    # managed-by: argocd.argoproj.io
+spec:
+  target:
+    name: <WORKLOAD_CLUSTER_NAME>-cluster
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-kv-secret
+  refreshInterval: 10s
+  data:
+  - remoteRef:
+      key: clusters/<WORKLOAD_CLUSTER_NAME>
+      property: kubeconfig
+    secretKey: kubeconfig
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-argocd-cluster-add
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  template:
+    spec:
+      serviceAccountName: argocd-server
+      containers:
+      - name: argo-wait
+        image: argoproj/argocd:v2.6.4
+        command:
+        - /bin/sh
+        - -c
+        - |
+          argocd login argocd.argocd-server.svc.cluster.local --core
+          argocd cluster add <WORKLOAD_CLUSTER_NAME> --kubeconfig /tmp/secrets/kubeconfig --yes
+        volumeMounts:
+          - mountPath: "/tmp/secrets"
+            name: kubeconfig
+            readOnly: true
+      volumes:
+        - name: kubeconfig
+          secret:
+            secretName: <WORKLOAD_CLUSTER_NAME>-cluster
+            items:
+              - key: kubeconfig
+                path: kubeconfig
+      restartPolicy: Never
+  backoffLimit: 1

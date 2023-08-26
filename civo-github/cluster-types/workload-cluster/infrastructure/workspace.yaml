@@ -1,0 +1,60 @@
+---
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+    crossplane.io/external-name: <WORKLOAD_CLUSTER_NAME>
+spec:
+  providerConfigRef:
+    name: <WORKLOAD_CLUSTER_NAME>
+  forProvider:
+    source: Inline
+    module: |
+      variable "cluster_name" {
+        type    = string
+        default = "<WORKLOAD_CLUSTER_NAME>"
+      }
+
+      variable "instance_size" {
+        type    = string
+        default = "<MACHINE_TYPE>"
+      }
+
+      resource "civo_network" "workload_cluster" {
+        label = var.cluster_name
+      }
+
+      resource "civo_firewall" "workload_cluster" {
+        name                 = var.cluster_name
+        network_id           = civo_network.workload_cluster.id
+        create_default_rules = true
+      }
+
+      resource "civo_kubernetes_cluster" "workload_cluster" {
+        name        = var.cluster_name
+        network_id  = civo_network.workload_cluster.id
+        firewall_id = civo_firewall.workload_cluster.id
+        pools {
+          label      = var.cluster_name
+          size       = var.instance_size
+          node_count = <NUM_NODES>
+        }
+      }
+
+      resource "vault_generic_secret" "clusters" {
+        path = "secret/clusters/${var.cluster_name}"
+
+        data_json = jsonencode(
+          {
+            cluster_endpoint        = civo_kubernetes_cluster.workload_cluster.api_endpoint
+            host                    = civo_kubernetes_cluster.workload_cluster.api_endpoint
+            cluster_name            = var.cluster_name
+            kubeconfig              = civo_kubernetes_cluster.workload_cluster.kubeconfig
+            client_certificate      = base64decode(yamldecode(civo_kubernetes_cluster.workload_cluster.kubeconfig).users[0].user.client-certificate-data)
+            client_key              = base64decode(yamldecode(civo_kubernetes_cluster.workload_cluster.kubeconfig).users[0].user.client-key-data)
+            cluster_ca_certificate  = base64decode(yamldecode(civo_kubernetes_cluster.workload_cluster.kubeconfig).clusters[0].cluster.certificate-authority-data)
+          }
+        )
+      }

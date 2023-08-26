@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-external-dns
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '50'
+spec:
+  project: <WORKLOAD_CLUSTER_NAME>
+  source:
+    repoURL: https://kubernetes-sigs.github.io/external-dns
+    targetRevision: 1.13.0
+    helm:
+      releaseName: external-dns
+      values: |
+        image:
+          repository: registry.k8s.io/external-dns/external-dns
+          tag: "v0.13.2"
+        serviceAccount:
+          create: true
+          name: external-dns
+        provider: civo
+        sources:
+        - ingress
+        domainFilters:
+        - kgetpods.biz
+        env:
+        - name: CIVO_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap
+              key: civo-token
+    chart: external-dns
+  destination:
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: external-dns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

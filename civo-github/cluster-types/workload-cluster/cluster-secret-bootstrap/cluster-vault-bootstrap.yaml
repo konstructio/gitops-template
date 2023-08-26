@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-bootstrap-secrets-configmap
+data:
+  bootstrap-secrets.sh: |
+    #!/bin/bash
+    kubectl --kubeconfig /tmp/secrets/kubeconfig create namespace external-dns 
+    kubectl --kubeconfig /tmp/secrets/kubeconfig create namespace external-secrets-operator
+    if [[ $(kubectl --kubeconfig /tmp/secrets/kubeconfig -n external-dns get secret <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap --ignore-not-found) ]]
+    then
+      echo "secret exists, skipping creation"
+    else
+      kubectl --kubeconfig /tmp/secrets/kubeconfig -n external-dns create secret generic <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap --from-literal=civo-token=$CIVO_TOKEN
+    fi
+
+    if [[ $(kubectl --kubeconfig /tmp/secrets/kubeconfig -n external-secrets-operator get secret <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap --ignore-not-found) ]]
+    then
+      echo "secret exists, skipping creation"
+    else
+      kubectl --kubeconfig /tmp/secrets/kubeconfig -n external-secrets-operator create secret generic <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap --from-literal=vault-token=$VAULT_TOKEN
+    fi
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+    managed-by: argocd.argoproj.io
+spec:
+  target:
+    name: <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-kv-secret
+  refreshInterval: 10s
+  data:
+  - remoteRef:
+      key: clusters/<WORKLOAD_CLUSTER_NAME>
+      property: kubeconfig
+    secretKey: kubeconfig
+  - remoteRef:
+      key: crossplane
+      property: CIVO_TOKEN
+    secretKey: CIVO_TOKEN
+  - remoteRef:
+      key: crossplane
+      property: VAULT_TOKEN
+    secretKey: VAULT_TOKEN
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-cluster-secret-bootstrap
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  template:
+    spec:
+      serviceAccountName: argocd-server
+      containers:
+      - envFrom:
+        - secretRef:
+            name: <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap
+        name: bootstrap-secrets
+        image: bitnami/kubectl:1.25.12
+        command:
+        - /bin/sh
+        - -c
+        - /scripts/bootstrap-secrets.sh
+        volumeMounts:
+          - mountPath: "/tmp/secrets"
+            name: kubeconfig
+            readOnly: true
+          - name: script
+            mountPath: "/scripts"
+      volumes:
+        - name: kubeconfig
+          secret:
+            secretName: <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap
+            items:
+              - key: kubeconfig
+                path: kubeconfig
+        - name: script
+          configMap:
+            name: <WORKLOAD_CLUSTER_NAME>-bootstrap-secrets-configmap
+            defaultMode: 0777
+      restartPolicy: Never
+  backoffLimit: 1
+
+
+
+
+
+
+
