@@ -19,7 +19,7 @@ spec:
 
       variable "instance_size" {
         type    = string
-        default = "<MACHINE_TYPE>"
+        default = "<WORKLOAD_MACHINE_TYPE>"
       }
 
       resource "civo_network" "workload_cluster" {
@@ -39,7 +39,7 @@ spec:
         pools {
           label      = var.cluster_name
           size       = var.instance_size
-          node_count = <NUM_NODES>
+          node_count = <WORKLOAD_NODE_COUNT>
         }
       }
 

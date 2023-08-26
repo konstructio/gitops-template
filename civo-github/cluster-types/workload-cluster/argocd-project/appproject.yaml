@@ -18,7 +18,7 @@ spec:
   - 'https://charts.jetstack.io'
   - 'https://charts.external-secrets.io'
   - 'https://stakater.github.io/stakater-charts'
-  - 'https://chartmuseum.<DOMAIN_NAME>'
+  - 'https://chartmuseum.<WORKLOAD_DOMAIN_NAME>'
   - 'https://helm.linkerd.io/stable'
   # Only permit applications to deploy to the guestbook namespace in the same cluster
   destinations:
@@ -30,7 +30,7 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   - namespace: linkerd-viz
     name: <WORKLOAD_CLUSTER_NAME>
-  - namespace: <ENVIRONMENT>
+  - namespace: <WORKLOAD_ENVIRONMENT>
     name: <WORKLOAD_CLUSTER_NAME>
   - namespace: external-secrets-operator
     name: <WORKLOAD_CLUSTER_NAME>
