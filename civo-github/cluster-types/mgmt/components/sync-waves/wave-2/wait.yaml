@@ -11,7 +11,7 @@ metadata:
   namespace: argo
 rules:
   - apiGroups:
-      - apps
+      - "*"
     resources:
       - pods
     verbs:
