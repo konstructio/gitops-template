@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: wait-wave-3-components
+  name: wave-2-components
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '1'
+    argocd.argoproj.io/sync-wave: '2'
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>/components/sync-waves/wait-wave-3
+    repoURL: git@github.com:johndietz/gitops.git
+    path: registry/kubefirst/components/sync-waves/wave-2
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

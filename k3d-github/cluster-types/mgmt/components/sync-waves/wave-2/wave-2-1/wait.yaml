@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
+  name: wave-2-1
+  namespace: argo
+spec:
+  template:
+    spec:
+      containers:
+        - name: wait
+          image: alpine:latest
+          command: ["sleep", "10"]
+      restartPolicy: Never
