@@ -16,8 +16,6 @@ spec:
         global:
             kubefirstVersion: "<KUBEFIRST_VERSION>"
         kubefirst-api:
-          initContainer:
-            enabled: "'true'"
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"
           useTelemetry: "'<USE_TELEMETRY>'"
