@@ -31,8 +31,23 @@ resource "vault_generic_endpoint" "user" {
   data_json = jsonencode(
     {
       policies  = var.acl_policies,
-      password  = var.initial_password != "" ? var.initial_password : random_password.password.result
       token_ttl = "1h"
+    }
+  )
+}
+
+resource "vault_generic_endpoint" "user_password" {
+  path                 = "auth/userpass/users/${var.username}"
+  ignore_absent_fields = true
+  lifecycle {
+    ignore_changes=[data_json]
+  }
+
+  # note: this resource only manages the user's initial password and has a lifecycle policy to
+  # ignore changes. to change other vault_generic_endpoint properties see the "user" resource above
+  data_json = jsonencode(
+    {
+      password  = var.initial_password != "" ? var.initial_password : random_password.password.result
     }
   )
 }
