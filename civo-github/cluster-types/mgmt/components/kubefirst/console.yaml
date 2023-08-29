@@ -27,26 +27,24 @@ spec:
         console:
           isClusterZero: "'false'"
           ingress:
-            enabled: "true"
-            annotations:
-              kubernetes.io/ingress.class: "nginx"
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
-              # nginx.ingress.kubernetes.io/auth-signin: "https://vouch.<DOMAIN_NAME>/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
-              # nginx.ingress.kubernetes.io/auth-url: https://vouch.<DOMAIN_NAME>/validate
-              # nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
-              # nginx.ingress.kubernetes.io/auth-snippet: |
-              #   auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
-              #   auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
-              #   auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
-            hosts:
-              - host: kubefirst.<DOMAIN_NAME>
-                paths:
-                  - path: /
-                    pathType: Prefix
-            tls:
-              - secretName: kubefirst-tls
-                hosts:
-                  - kubefirst.<DOMAIN_NAME>
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            # nginx.ingress.kubernetes.io/auth-signin: "https://vouch.<DOMAIN_NAME>/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
+            # nginx.ingress.kubernetes.io/auth-url: https://vouch.<DOMAIN_NAME>/validate
+            # nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
+            # nginx.ingress.kubernetes.io/auth-snippet: |
+            #   auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+            #   auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+            #   auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
+          hosts:
+            - host: kubefirst.<DOMAIN_NAME>
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+              - kubefirst.<DOMAIN_NAME>
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst
@@ -55,4 +53,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

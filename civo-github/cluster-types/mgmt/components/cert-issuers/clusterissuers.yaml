@@ -12,6 +12,15 @@ spec:
     - http01:
         ingress:
           class: nginx
+    - dns01:
+        webhook:
+          solverName: 'civo'
+          groupName: civo.webhook.okteto.com
+          config:
+            secretName: civo-secret
+      selector:
+        dnsNames:
+        - '*.<DOMAIN_NAME>'
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -27,3 +36,12 @@ spec:
     - http01:
         ingress:
           class: nginx
+    - dns01:
+        webhook:
+          solverName: 'civo'
+          groupName: civo.webhook.okteto.com
+          config:
+            secretName: civo-secret
+        selector:
+          dnsNames:
+          - '*.<DOMAIN_NAME>'

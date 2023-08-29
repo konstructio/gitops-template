@@ -44,7 +44,6 @@ spec:
                   - path: /
                     pathType: Prefix
             tls:
-              - secretName: kubefirst-tls
                 hosts:
                   - kubefirst.<DOMAIN_NAME>
   destination:
@@ -55,4 +54,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true
