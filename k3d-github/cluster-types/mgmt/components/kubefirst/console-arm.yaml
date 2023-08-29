@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.2.11
+    targetRevision: 2.2.16
     chart: kubefirst
     helm:
       values: |-
@@ -23,8 +23,6 @@ spec:
             mountPath: /data/db
           extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
-          initContainer:
-            enabled: "'true'"
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"
           useTelemetry: "'<USE_TELEMETRY>'"
