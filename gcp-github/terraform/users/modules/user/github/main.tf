@@ -25,6 +25,7 @@ resource "random_password" "password" {
 }
 
 resource "vault_generic_endpoint" "user" {
+  depends_on = [ vault_generic_endpoint.user_password ] # avoids race condition
   path                 = "auth/userpass/users/${var.username}"
   ignore_absent_fields = true
 
@@ -43,14 +44,18 @@ resource "vault_generic_endpoint" "user_password" {
     ignore_changes=[data_json]
   }
 
-  # note: this resource only manages the user's initial password and has a lifecycle policy to
-  # ignore changes. to change other vault_generic_endpoint properties see the "user" resource above
+  # note: this resource includes the initial password and only gets applied once
+  # changes to the user should be managed by the vault_generic_endpoint named "user" above
   data_json = jsonencode(
     {
-      password  = var.initial_password != "" ? var.initial_password : random_password.password.result
+      password  = var.initial_password != "" ? var.initial_password : random_password.password.result,
+      policies  = var.acl_policies,
+      token_ttl = "1h"
     }
   )
 }
+
+
 
 resource "vault_generic_secret" "user" {
   path = "users/${var.username}"
