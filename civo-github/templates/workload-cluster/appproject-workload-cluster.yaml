@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: staging
+  name: <WORKLOAD_CLUSTER_NAME>
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
@@ -9,7 +9,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: staging description
+  description: <WORKLOAD_CLUSTER_NAME> description
   # Allow manifests to deploy from any Git repos
   sourceRepos:
   - '<GITOPS_REPO_URL>'
@@ -24,31 +24,31 @@ spec:
   # Only permit applications to deploy to the guestbook namespace in the same cluster
   destinations:
   - namespace: external-dns
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   - namespace: datadog
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   - namespace: default
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   - namespace: development
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   - namespace: external-secrets-operator
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   - namespace: reloader
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   - namespace: cert-manager
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   - namespace: ingress-nginx
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   - namespace: kube-system
-    name: staging
+    name: <WORKLOAD_CLUSTER_NAME>
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
   roles:
-  - description: staging-admin-role
+  - description: <WORKLOAD_CLUSTER_NAME>-admin-role
     groups:
     - admins
     name: admin-role
     policies:
-    - p, proj:staging:admin-role, applications, *, staging/*, allow
+    - p, proj:<WORKLOAD_CLUSTER_NAME>:admin-role, applications, *, <WORKLOAD_CLUSTER_NAME>/*, allow

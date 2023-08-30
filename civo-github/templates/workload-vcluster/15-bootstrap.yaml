@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:feedkray-one/gitops.git
+    repoURL: <GITOPS_REPO_URL>
     path: registry/<WORKLOAD_CLUSTER_NAME>/bootstrap
     targetRevision: HEAD
   destination:

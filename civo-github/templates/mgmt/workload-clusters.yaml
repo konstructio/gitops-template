@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: development
+  name: workload-clusters
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '60'
+    argocd.argoproj.io/sync-wave: '0'
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>/components/development
+    path: registry/<CLUSTER_NAME>/components/workload-clusters
     targetRevision: HEAD
   destination:
     name: in-cluster
-    namespace: development
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

@@ -24,8 +24,9 @@ resource "vault_generic_secret" "external_dns_secrets" {
   path = "secret/external-dns"
 
   data_json = jsonencode(
-    {       
-      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_secret,
+    {
+      civo-token = var.civo_token,
+      cf-api-key = var.cloudflare_api_key,
     }
   )
   depends_on = [vault_mount.secret]
@@ -151,6 +152,7 @@ resource "vault_generic_secret" "cloudflare" {
   data_json = jsonencode(
     {
       origin-ca-api-key = var.cloudflare_origin_ca_api_key,
+      cf-api-key        = var.cloudflare_api_key,
     }
   )
 
