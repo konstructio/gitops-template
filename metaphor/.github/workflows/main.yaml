@@ -84,7 +84,7 @@ jobs:
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-development-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
-            -p clusterName="<CLUSTER_NAME>" \
+            -p clusterName="development" \
             -p environment="development" \
             -p gitUrlNoProtocol="<GIT_FQDN>${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
@@ -120,7 +120,7 @@ jobs:
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-staging-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
-            -p clusterName="<CLUSTER_NAME>" \
+            -p clusterName="staging" \
             -p environment="staging" \
             -p gitUrlNoProtocol="<GIT_FQDN>${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
@@ -157,7 +157,7 @@ jobs:
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-release-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
-            -p clusterName="<CLUSTER_NAME>" \
+            -p clusterName="production" \
             -p environment="production" \
             -p gitUrlNoProtocol="<GIT_FQDN>${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \

@@ -1,0 +1,32 @@
+metaphor:
+  annotations: |
+    linkerd.io/inject: "enabled"
+  labels: |
+    mirror.linkerd.io/exported: "true"
+  image:
+    repository: ghcr.io/feedkray-one/metaphor
+  imagePullSecrets:
+    - name: docker-config
+  ingress:
+    className: nginx
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+      nginx.ingress.kubernetes.io/service-upstream: "true"
+    hosts:
+      - host: metaphor-production.feedkray.one
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: metaphor-tls
+        hosts:
+          - metaphor-production.feedkray.one
+  metaphor:
+    host: https://metaphor-production.feedkray.one/api
+    console: https://kubefirst.feedkray.one
+
+  clusterSecretStoreName: production-vault-kv-secret
+  configs:
+    configOne: production-cluster-override-one
+    configTwo: production-cluster-override-two
