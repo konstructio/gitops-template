@@ -4,10 +4,11 @@ metadata:
   name: argocd-server
   namespace: argocd
   annotations:
-    cert-manager.io/issuer: cloudflare-origin-issuer
-    cert-manager.io/issuer-kind: OriginIssuer
-    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    # cert-manager.io/issuer: cloudflare-origin-issuer
+    # cert-manager.io/issuer-kind: OriginIssuer
+    # cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+    # external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: 'true'
     nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
