@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: production
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: production description
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+  - '<GITOPS_REPO_URL>'
+  - 'https://kubernetes.github.io/ingress-nginx'
+  - 'https://kubernetes-sigs.github.io/external-dns'
+  - 'https://charts.jetstack.io'
+  - 'https://charts.external-secrets.io'
+  - 'https://helm.datadoghq.com'
+  - 'https://stakater.github.io/stakater-charts'
+  - 'https://chartmuseum.<DOMAIN_NAME>'
+  - 'https://charts.loft.sh'
+  # Only permit applications to deploy to the guestbook namespace in the same cluster
+  destinations:
+  - namespace: external-dns
+    name: production
+  - namespace: datadog
+    name: production
+  - namespace: default
+    name: production
+  - namespace: development
+    name: production
+  - namespace: external-secrets-operator
+    name: production
+  - namespace: reloader
+    name: production
+  - namespace: cert-manager
+    name: production
+  - namespace: ingress-nginx
+    name: production
+  - namespace: kube-system
+    name: production
+  # Deny all cluster-scoped resources from being created, except for Namespace
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  roles:
+  - description: production-admin-role
+    groups:
+    - admins
+    name: admin-role
+    policies:
+    - p, proj:production:admin-role, applications, *, production/*, allow

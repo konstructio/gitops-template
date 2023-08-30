@@ -71,7 +71,7 @@ resource "vault_generic_secret" "clusters" {
 }
 
 provider "kubernetes" {
-  host = "https://cloud-blue.feedkray.one"
+  host = "https://cloud-blue.<DOMAIN_NAME>"
 
   client_certificate     = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-certificate-data)
   client_key             = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-key-data)

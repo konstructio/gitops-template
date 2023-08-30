@@ -14,17 +14,17 @@ metaphor:
       cert-manager.io/cluster-issuer: 'letsencrypt-prod'
       nginx.ingress.kubernetes.io/service-upstream: "true"
     hosts:
-      - host: metaphor-production.feedkray.one
+      - host: metaphor-production.<DOMAIN_NAME>
         paths:
           - path: /
             pathType: Prefix
     tls:
       - secretName: metaphor-tls
         hosts:
-          - metaphor-production.feedkray.one
+          - metaphor-production.<DOMAIN_NAME>
   metaphor:
-    host: https://metaphor-production.feedkray.one/api
-    console: https://kubefirst.feedkray.one
+    host: https://metaphor-production.<DOMAIN_NAME>/api
+    console: https://kubefirst.<DOMAIN_NAME>
 
   clusterSecretStoreName: production-vault-kv-secret
   configs:
