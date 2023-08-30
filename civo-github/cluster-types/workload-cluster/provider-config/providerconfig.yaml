@@ -8,7 +8,7 @@ spec:
   configuration: |
       terraform {
         backend "s3" {
-          bucket   = "k1-state-store-feedkray-one-mp-rah8um"
+          bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           key      = "registry/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
           endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
 
@@ -34,7 +34,7 @@ spec:
         }
       }
       provider "civo" {
-        region = "<WORKLOAD_CLUSTER_CLOUD_REGION>"
+        region = "<WORKLOAD_CLUSTER_REGION>"
       }
   credentials:
   - filename: gen-nothing
