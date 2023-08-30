@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: development-metaphor
+  name: <WORKLOAD_CLUSTER_NAME>-metaphor
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,15 +10,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:feedkray-one/gitops.git
+    repoURL: <GITOPS_REPO_URL>
     path: registry/apps/metaphor
     targetRevision: HEAD
     helm:
       valueFiles:
-        - development-values.yaml
+        - <WORKLOAD_CLUSTER_NAME>-values.yaml
   destination:
-    name: development
-    namespace: development
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: <WORKLOAD_CLUSTER_NAME>
   syncPolicy:
     automated:
       prune: true

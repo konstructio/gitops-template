@@ -4,7 +4,7 @@ metaphor:
   labels: |
     mirror.linkerd.io/exported: "true"
   image:
-    repository: ghcr.io/feedkray-one/metaphor
+    repository: <CONTAINER_REGISTRY_URL>
   imagePullSecrets:
     - name: docker-config
   ingress:
@@ -14,19 +14,19 @@ metaphor:
       cert-manager.io/cluster-issuer: 'letsencrypt-prod'
       nginx.ingress.kubernetes.io/service-upstream: "true"
     hosts:
-      - host: metaphor-staging.<DOMAIN_NAME>
+      - host: metaphor-<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
         paths:
           - path: /
             pathType: Prefix
     tls:
       - secretName: metaphor-tls
         hosts:
-          - metaphor-staging.<DOMAIN_NAME>
+          - metaphor-<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
   metaphor:
-    host: https://metaphor-staging.<DOMAIN_NAME>/api
+    host: https://metaphor-<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>/api
     console: https://kubefirst.<DOMAIN_NAME>
 
-  clusterSecretStoreName: staging-vault-kv-secret
+  clusterSecretStoreName: <WORKLOAD_CLUSTER_NAME>-vault-kv-secret
   configs:
-    configOne: staging-cluster-override-one
-    configTwo: staging-cluster-override-two
+    configOne: <WORKLOAD_CLUSTER_NAME>-cluster-override-one
+    configTwo: <WORKLOAD_CLUSTER_NAME>-cluster-override-two

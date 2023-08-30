@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: production-metaphor
+  name: <WORKLOAD_CLUSTER_NAME>-metaphor
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -15,10 +15,10 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-        - production-values.yaml
+        - <WORKLOAD_CLUSTER_NAME>-values.yaml
   destination:
-    name: production
-    namespace: production
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: <WORKLOAD_CLUSTER_NAME>
   syncPolicy:
     automated:
       prune: true
