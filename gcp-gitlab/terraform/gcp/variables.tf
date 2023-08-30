@@ -22,3 +22,15 @@ variable "project" {
 
   default = "<GCP_PROJECT>"
 }
+
+variable "force_destroy" {
+  description = "variable used to control bucket force destroy"
+  type        = bool
+
+  default = "false"
+}
+
+variable "uniqueness" {
+  description = "variable used to acoid collision amongst immutable resource names"
+  type        = string
+}

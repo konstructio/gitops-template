@@ -6,5 +6,5 @@ module "gke" {
   project      = var.project
 
   network    = module.vpc.network_name
-  subnetwork = lookup(module.vpc.subnets, "${var.gcp_region}/subnet-01").name
+  subnetwork = lookup(module.vpc.subnets, "${var.gcp_region}/subnet-01-${local.cluster_name}").name
 }
