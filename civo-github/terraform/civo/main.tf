@@ -31,6 +31,7 @@ provider "civo" {
 
 locals {
   cluster_name = "<CLUSTER_NAME>"
+  kube_config_filename = "../../../kubeconfig"
 }
 
 resource "civo_network" "kubefirst" {
@@ -52,4 +53,9 @@ resource "civo_kubernetes_cluster" "kubefirst" {
     size       = "g4s.kube.medium"
     node_count = 6
   }
+}
+
+resource "local_file" "kubeconfig" {
+  content  = civo_kubernetes_cluster.kubefirst.kubeconfig
+  filename = local.kube_config_filename
 }
