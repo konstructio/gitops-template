@@ -1,75 +1,58 @@
 apiVersion: tf.upbound.io/v1beta1
 kind: Workspace
 metadata:
-  name: <WORKLOAD_CLUSTER_NAME>
+  name: <WORKLOAD_CLUSTER_NAME>-bootstrap
   annotations:
     argocd.argoproj.io/sync-wave: "10"
-    crossplane.io/external-name: <WORKLOAD_CLUSTER_NAME>
+    crossplane.io/external-name: <WORKLOAD_CLUSTER_NAME>-bootstrap
 spec:
   providerConfigRef:
     name: <WORKLOAD_CLUSTER_NAME>
   forProvider:
     source: Inline
     module: |
-      variable "instance_size" {
-        type    = string
-        default = "g4s.kube.medium"
+      variable "cluster_name" {
+        type = string
+        default = "<WORKLOAD_CLUSTER_NAME>"
       }
-
-      variable "node_count" {
-        type    = number
-        default = "3"
+      provider "kubernetes" {
+        alias = "local"
       }
-
-      locals {
-        cluster_name = "<WORKLOAD_CLUSTER_NAME>"
-      }
-
-      resource "civo_network" "kubefirst" {
-        label = local.cluster_name
-      }
-
-      resource "civo_firewall" "kubefirst" {
-        name                 = local.cluster_name
-        network_id           = civo_network.kubefirst.id
-        create_default_rules = true
-      }
-
-      resource "civo_kubernetes_cluster" "kubefirst" {
-        name        = local.cluster_name
-        network_id  = civo_network.kubefirst.id
-        firewall_id = civo_firewall.kubefirst.id
-        pools {
-          label      = local.cluster_name
-          size       = var.instance_size
-          node_count = var.node_count
+      data "kubernetes_secret_v1" "vcluster_kubeconfig" {
+        provider = "kubernetes.local"
+        metadata {
+          name = "vc-<WORKLOAD_CLUSTER_NAME>"
+          namespace = "<WORKLOAD_CLUSTER_NAME>"
         }
-      }
+      }      
 
       resource "vault_generic_secret" "clusters" {
-        path = "secret/clusters/${local.cluster_name}"
+        path = "secret/clusters/${var.cluster_name}"
 
         data_json = jsonencode(
           {
-            kubeconfig             = civo_kubernetes_cluster.kubefirst.kubeconfig
-            client_certificate     = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
-            client_key             = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
-            cluster_ca_certificate = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
-            host                   = civo_kubernetes_cluster.kubefirst.api_endpoint
-            cluster_name           = local.cluster_name
+            kubeconfig              = data.kubernetes_secret_v1.vcluster_kubeconfig.data.config
+            client_certificate      = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-certificate-data)
+            client_key              = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-key-data)
+            cluster_ca_certificate  = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).clusters[0].cluster.certificate-authority-data)
+            host                    = "https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>"
+            cluster_name            = var.cluster_name
             argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
           }
         )
       }
 
       provider "kubernetes" {
-        host                   = civo_kubernetes_cluster.kubefirst.api_endpoint
-        client_certificate     = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
-        client_key             = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
-        cluster_ca_certificate = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
+        alias = "target"
+        host = "https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>"
+
+        client_certificate     = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-certificate-data)
+        client_key             = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-key-data)
+        cluster_ca_certificate = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).clusters[0].cluster.certificate-authority-data)
       }
 
       resource "kubernetes_cluster_role_v1" "argocd_manager" {
+        provider = "kubernetes.target"
         metadata {
           name = "argocd-manager-role"
         }
@@ -87,6 +70,7 @@ spec:
 
 
       resource "kubernetes_cluster_role_binding_v1" "argocd_manager" {
+        provider = "kubernetes.target"
         metadata {
           name = "argocd-manager-role-binding"
         }
@@ -103,6 +87,7 @@ spec:
       }
 
       resource "kubernetes_service_account_v1" "argocd_manager" {
+        provider = "kubernetes.target"
         metadata {
           name = "argocd-manager"
           namespace = "kube-system"
@@ -113,6 +98,7 @@ spec:
       }
 
       resource "kubernetes_secret_v1" "argocd_manager" {
+        provider = "kubernetes.target"
         metadata {
           name = "argocd-manager-token"
           namespace = "kube-system"
@@ -125,6 +111,7 @@ spec:
       }
 
       resource "kubernetes_namespace_v1" "external_dns" {
+        provider = "kubernetes.target"
         metadata {
           name = "external-dns"
         }
@@ -135,8 +122,9 @@ spec:
       }
 
       resource "kubernetes_secret_v1" "external_dns" {
+        provider = "kubernetes.target"
         metadata {
-          name = "${local.cluster_name}-cluster-vault-bootstrap"
+          name = "${var.cluster_name}-cluster-vault-bootstrap"
           namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
         }
         data = {
@@ -148,12 +136,18 @@ spec:
 
 
       resource "kubernetes_namespace_v1" "external_secrets_operator" {
+        provider = "kubernetes.target"
         metadata {
           name = "external-secrets-operator"
         }
       }
 
+      data "vault_generic_secret" "external_secrets_operator" {
+        path = "secret/atlantis"
+      }
+
       resource "kubernetes_namespace_v1" "environment" {
+        provider = "kubernetes.target"
         metadata {
           name = "<WORKLOAD_CLUSTER_NAME>"
         }
@@ -164,6 +158,7 @@ spec:
       }
 
       resource "kubernetes_secret_v1" "image_pull" {
+        provider = "kubernetes.target"
         metadata {
           name = "docker-config"
           namespace = kubernetes_namespace_v1.environment.metadata.0.name
@@ -176,13 +171,10 @@ spec:
         type = "kubernetes.io/dockerconfigjson"
       }
 
-      data "vault_generic_secret" "external_secrets_operator" {
-        path = "secret/atlantis"
-      }
-
       resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
+        provider = "kubernetes.target"
         metadata {
-          name = "${local.cluster_name}-cluster-vault-bootstrap"
+          name = "${var.cluster_name}-cluster-vault-bootstrap"
           namespace = kubernetes_namespace_v1.environment.metadata.0.name
         }
         data = {
@@ -192,8 +184,9 @@ spec:
       }
 
       resource "kubernetes_secret_v1" "external_secrets_operator" {
+        provider = "kubernetes.target"
         metadata {
-          name = "${local.cluster_name}-cluster-vault-bootstrap"
+          name = "${var.cluster_name}-cluster-vault-bootstrap"
           namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name
         }
         data = {
@@ -203,6 +196,7 @@ spec:
       }
 
       resource "kubernetes_service_account_v1" "external_secrets" {
+        provider = "kubernetes.target"
         metadata {
           name = "external-secrets"
           namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name
@@ -213,6 +207,7 @@ spec:
       }
 
       resource "kubernetes_secret_v1" "external_secrets" {
+        provider = "kubernetes.target"
         metadata {
           name = "external-secrets-token"
           namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name

@@ -3,10 +3,8 @@ kind: Application
 metadata:
   name: <WORKLOAD_CLUSTER_NAME>-external-dns
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '50'
+    argocd.argoproj.io/sync-wave: '30'
 spec:
   project: <WORKLOAD_CLUSTER_NAME>
   source:
@@ -21,17 +19,17 @@ spec:
         serviceAccount:
           create: true
           name: external-dns
-        provider: civo
+        provider: <EXTERNAL_DNS_PROVIDER_NAME>
         sources:
         - ingress
         domainFilters:
-        - kgetpods.biz
+        - <DOMAIN_NAME>
         env:
-        - name: CIVO_TOKEN
+        - name: <EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME>
           valueFrom:
             secretKeyRef:
               name: <WORKLOAD_CLUSTER_NAME>-cluster-vault-bootstrap
-              key: civo-token
+              key: <EXTERNAL_DNS_PROVIDER_SECRET_KEY>
     chart: external-dns
   destination:
     name: <WORKLOAD_CLUSTER_NAME>

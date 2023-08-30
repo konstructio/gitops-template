@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: <WORKLOAD_CLUSTER_NAME>-app-registry
+  name: <WORKLOAD_CLUSTER_NAME>-environment
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '1000'
+    argocd.argoproj.io/sync-wave: '45'
 spec:
-  project: <WORKLOAD_CLUSTER_NAME>
+  project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
-    path: registry/apps/<WORKLOAD_ENVIRONMENT>
+    repoURL: git@github.com:feedkray-one/gitops.git
+    path: registry/environments/<WORKLOAD_CLUSTER_NAME>
     targetRevision: HEAD
   destination:
-    name: <WORKLOAD_CLUSTER_NAME>
-    namespace: <WORKLOAD_ENVIRONMENT>
+    name: in-cluster
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

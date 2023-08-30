@@ -10,7 +10,7 @@ spec:
     spec:
       serviceAccountName: argocd-server
       containers:
-      - name: bootstrap-secrets
+      - name: wait
         image: bitnami/kubectl:1.25.12
         command:
         - /bin/sh

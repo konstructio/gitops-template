@@ -1,21 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: <WORKLOAD_CLUSTER_NAME>-registry
+  name: <WORKLOAD_CLUSTER_NAME>-reloader
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '100'
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    argocd.argoproj.io/sync-wave: '30'
 spec:
-  project: default
+  project: <WORKLOAD_CLUSTER_NAME>
   source:
-    repoURL: <GITOPS_REPO_URL>
-    path: registry/<WORKLOAD_CLUSTER_NAME>
-    targetRevision: HEAD
+    repoURL: 'https://stakater.github.io/stakater-charts'
+    targetRevision: v1.0.10
+    chart: reloader
+    helm:
+      values: |-
+        ignoreSecrets: false
   destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: reloader
   syncPolicy:
     automated:
       prune: true
