@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<WORKLOAD_CLUSTER_NAME>
+    path: registry/clusters/<WORKLOAD_CLUSTER_NAME>
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>/components/clusters
+    path: registry/clusters/<CLUSTER_NAME>/components/clusters
     targetRevision: HEAD
   destination:
     name: in-cluster

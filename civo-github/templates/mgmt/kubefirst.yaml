@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>/components/kubefirst
+    path: registry/clusters/<CLUSTER_NAME>/components/kubefirst
     targetRevision: HEAD
   destination:
     name: in-cluster

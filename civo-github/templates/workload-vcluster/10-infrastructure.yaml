@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<WORKLOAD_CLUSTER_NAME>/infrastructure
+    path: registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure
     targetRevision: HEAD
   destination:
     name: in-cluster

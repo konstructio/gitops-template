@@ -9,7 +9,7 @@ spec:
       terraform {
         backend "s3" {
           bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
-          key      = "registry/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
+          key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
           endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
 
           region = "<CLOUD_REGION>"
