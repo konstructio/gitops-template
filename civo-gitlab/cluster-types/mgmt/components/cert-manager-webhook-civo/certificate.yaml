@@ -8,8 +8,10 @@ metadata:
 spec:
   commonName: '*.<DOMAIN_NAME>'
   dnsNames:
-    - '<DOMAIN_NAME>'
-    - '*.<DOMAIN_NAME>'
+  - '<DOMAIN_NAME>'
+  - '*.<DOMAIN_NAME>'
+  labels:
+    dns-solver: <EXTERNAL_DNS_PROVIDER_NAME>
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer

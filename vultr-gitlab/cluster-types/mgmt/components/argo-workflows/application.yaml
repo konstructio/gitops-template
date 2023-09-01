@@ -37,9 +37,8 @@ spec:
               - /
             pathType: Prefix
             tls:
-              - secretName: argo-tls
-                hosts:
-                  - argo.<DOMAIN_NAME>
+              - hosts:
+                - argo.<DOMAIN_NAME>
           sso:
             issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst
             clientId:

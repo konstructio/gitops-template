@@ -42,7 +42,6 @@ spec:
               - /
             pathType: Prefix
             tls:
-              - secretName: argo-tls
                 hosts:
                   - argo.<DOMAIN_NAME>
           sso:

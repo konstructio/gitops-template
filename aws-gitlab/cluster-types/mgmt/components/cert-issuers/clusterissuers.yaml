@@ -12,6 +12,21 @@ spec:
     - http01:
         ingress:
           class: nginx
+    - dns01:
+        route53:
+          region: <CLOUD_REGION>
+          role: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/cert-manager-<CLUSTER_NAME>'
+        selector:
+          matchLabels:
+            "dns-solver": "aws"
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: <<EXTERNAL_DNS_PROVIDER_NAME>-auth
+            key: cf-api-token
+        selector:
+          matchLabels:
+            "dns-solver": "cloudflare"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -27,3 +42,37 @@ spec:
     - http01:
         ingress:
           class: nginx
+    - dns01:
+        route53:
+          region: <CLOUD_REGION>
+          role: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/cert-manager-<CLUSTER_NAME>'
+        selector:
+          matchLabels:
+            "dns-solver": "cloudflare""
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: <EXTERNAL_DNS_PROVIDER_NAME>-auth
+            key: cf-api-token
+        selector:
+          matchLabels:
+            "dns-solver": "cloudflare"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prod-wildcard-cert
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  commonName: '*.<DOMAIN_NAME>'
+  dnsNames:
+  - '<DOMAIN_NAME>'
+  - '*.<DOMAIN_NAME>'
+  labels:
+    dns-solver: <EXTERNAL_DNS_PROVIDER_NAME>
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  secretName: prod-wildcard-cert

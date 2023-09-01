@@ -11,71 +11,7 @@ spec:
     repoURL: https://argoproj.github.io/argo-helm
     targetRevision: 0.20.1
     helm:
-      values: |-
-        nameOverride: argo
-        executor:
-          resources:
-            requests:
-              cpu: 200m
-              memory: 256Mi
-            limits:
-              cpu: 1
-              memory: 1024Mi
-        server:
-          extraArgs:
-          - --secure
-          - --auth-mode=client
-          - --auth-mode=sso
-          ingress:
-            enabled: true
-            ingressClassName: nginx
-            annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
-            hosts:
-              - argo.<DOMAIN_NAME>
-            paths: 
-              - /
-            pathType: Prefix
-            tls:
-              - secretName: argo-tls
-                hosts:
-                  - argo.<DOMAIN_NAME>
-          sso:
-            issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst
-            clientId:
-              name: argo-secrets
-              key: client-id
-            clientSecret:
-              name: argo-secrets
-              key: client-secret
-            redirectUrl: https://argo.<DOMAIN_NAME>/oauth2/callback
-            scopes:
-              - email
-              - openid
-              - groups
-              - user
-              - profile
-            # RBAC Config. >= v2.12
-            rbac:
-              enabled: true
-        useDefaultArtifactRepo: true
-        useStaticCredentials: true
-        artifactRepository:
-          archiveLogs: false
-          s3:
-            accessKeySecret:
-              name: ci-secrets
-              key: accesskey
-            secretKeySecret:
-              name: ci-secrets
-              key: secretkey
-            insecure: false
-            bucket: <KUBEFIRST_STATE_STORE_BUCKET>
-            endpoint: <KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>
-            region: us-east-1
-            useSDKCreds: false
-            encryptionOptions:
-              enableEncryption: false
+      values: "nameOverride: argo\nexecutor:\n  resources:\n    requests:\n      cpu: 200m\n      memory: 256Mi\n    limits:\n      cpu: 1\n      memory: 1024Mi\nserver:\n  extraArgs:\n  - --secure\n  - --auth-mode=client\n  - --auth-mode=sso\n  ingress:\n    enabled: true\n    ingressClassName: nginx\n    annotations:\n      cert-manager.io/cluster-issuer: \"letsencrypt-prod\"\n    hosts:\n      - argo.<DOMAIN_NAME>\n    paths: \n      - /\n    pathType: Prefix\n    tls:\n        hosts:\n          - argo.<DOMAIN_NAME>\n  sso:\n    issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst\n    clientId:\n      name: argo-secrets\n      key: client-id\n    clientSecret:\n      name: argo-secrets\n      key: client-secret\n    redirectUrl: https://argo.<DOMAIN_NAME>/oauth2/callback\n    scopes:\n      - email\n      - openid\n      - groups\n      - user\n      - profile\n    # RBAC Config. >= v2.12\n    rbac:\n      enabled: true\nuseDefaultArtifactRepo: true\nuseStaticCredentials: true\nartifactRepository:\n  archiveLogs: false\n  s3:\n    accessKeySecret:\n      name: ci-secrets\n      key: accesskey\n    secretKeySecret:\n      name: ci-secrets\n      key: secretkey\n    insecure: false\n    bucket: <KUBEFIRST_STATE_STORE_BUCKET>\n    endpoint: <KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>\n    region: us-east-1\n    useSDKCreds: false\n    encryptionOptions:\n      enableEncryption: false"
     chart: argo-workflows
   destination:
     server: https://kubernetes.default.svc
@@ -85,4 +21,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

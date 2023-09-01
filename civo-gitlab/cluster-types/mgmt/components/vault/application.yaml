@@ -42,7 +42,7 @@ spec:
               - host: vault.<DOMAIN_NAME>
             tls:
               - hosts:
-                  - vault.<DOMAIN_NAME>
+                - vault.<DOMAIN_NAME>
           ui:
             enabled: true
             serviceType: "ClusterIP"
@@ -57,9 +57,9 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true
   ignoreDifferences:
-    - group: admissionregistration.k8s.io
-      kind: MutatingWebhookConfiguration
-      jsonPointers:
-        - /webhooks
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+    jsonPointers:
+    - /webhooks

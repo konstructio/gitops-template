@@ -15,12 +15,21 @@ spec:
     - dns01:
         webhook:
           solverName: 'civo'
-          groupName: civo.webhook.okteto.com
+          groupName: civo.webhook.kubefirst.com
           config:
-            secretName: civo-secret
-      selector:
-        dnsNames:
-        - '*.<DOMAIN_NAME>'
+            secretName: <EXTERNAL_DNS_PROVIDER_NAME>-auth
+            secretKey: <EXTERNAL_DNS_PROVIDER_NAME>-auth
+        selector:
+          matchLabels:
+            "dns-solver": "civo"
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: <EXTERNAL_DNS_PROVIDER_NAME>-auth
+            key: cf-api-token
+        selector:
+          matchLabels:
+            "dns-solver": "cloudflare"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -39,9 +48,18 @@ spec:
     - dns01:
         webhook:
           solverName: 'civo'
-          groupName: civo.webhook.okteto.com
+          groupName: civo.webhook.kubefirst.com
           config:
-            secretName: civo-secret
+            secretName: <EXTERNAL_DNS_PROVIDER_NAME>-auth
+            secretKey: <EXTERNAL_DNS_PROVIDER_NAME>-auth
         selector:
-          dnsNames:
-          - '*.<DOMAIN_NAME>'
+          matchLabels:
+            "dns-solver": "civo"
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: <EXTERNAL_DNS_PROVIDER_NAME>-auth
+            key: cf-api-token
+        selector:
+          matchLabels:
+            "dns-solver": "cloudflare"

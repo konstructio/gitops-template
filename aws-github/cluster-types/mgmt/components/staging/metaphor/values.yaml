@@ -5,14 +5,12 @@ metaphor:
     className: nginx
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: 'letsencrypt-prod'
     hosts:
     - host: metaphor-staging.<DOMAIN_NAME>
       paths:
       - path: /
         pathType: Prefix
     tls:
-    - secretName: metaphor-tls
       hosts:
       - metaphor-staging.<DOMAIN_NAME>
   metaphor:

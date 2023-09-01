@@ -43,9 +43,8 @@ spec:
             hosts:
               - host: vault.<DOMAIN_NAME>
             tls:
-              - secretName: vault-tls
-                hosts:
-                  - vault.<DOMAIN_NAME>
+              - hosts:
+                - vault.<DOMAIN_NAME>
           ui:
             enabled: true
             serviceType: "ClusterIP"

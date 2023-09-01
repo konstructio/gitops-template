@@ -10,21 +10,21 @@ metadata:
   name: k8s-toolkit
   namespace: vault
 rules:
-  - apiGroups:
-      - apps
-    resources:
-      - deployments
-      - statefulsets
-    verbs:
-      - get
-      - watch
-      - list
-  - apiGroups:
-      - ''
-    resources:
-      - secrets
-    verbs:
-      - get
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - statefulsets
+  verbs:
+  - get
+  - watch
+  - list
+- apiGroups:
+  - ''
+  resources:
+  - secrets
+  verbs:
+  - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -36,9 +36,9 @@ roleRef:
   kind: Role
   name: k8s-toolkit
 subjects:
-  - kind: ServiceAccount
-    name: k8s-toolkit
-    namespace: vault
+- kind: ServiceAccount
+  name: k8s-toolkit
+  namespace: vault
 ---
 apiVersion: batch/v1
 kind: Job
@@ -51,12 +51,12 @@ spec:
   template:
     spec:
       containers:
-        - args:
-            - wait-for
-            - vault-unseal
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
-          imagePullPolicy: IfNotPresent
-          name: wait
+      - args:
+        - wait-for
+        - vault-unseal
+        image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+        imagePullPolicy: IfNotPresent
+        name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit
 ---
@@ -71,18 +71,18 @@ spec:
   template:
     spec:
       containers:
-        - args:
-            - wait-for
-            - vault-init-complete
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
-          imagePullPolicy: IfNotPresent
-          name: wait
-          env:
-            - name: VAULT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: vault-unseal-secret
-                  key: root-token
+      - args:
+        - wait-for
+        - vault-init-complete
+        image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+        imagePullPolicy: IfNotPresent
+        name: wait
+        env:
+        - name: VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: vault-unseal-secret
+              key: root-token
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit
 ---
@@ -102,9 +102,9 @@ roleRef:
   kind: ClusterRole
   name: cert-manager-view
 subjects:
-  - kind: ServiceAccount
-    name: k8s-toolkit-vault-tls
-    namespace: vault
+- kind: ServiceAccount
+  name: k8s-toolkit-vault-tls
+  namespace: vault
 ---
 apiVersion: batch/v1
 kind: Job
@@ -117,17 +117,17 @@ spec:
   template:
     spec:
       containers:
-        - args:
-            - wait-for
-            - certificate
-            - --namespace
-            - vault
-            - --name
-            - vault-tls
-            - --timeout-seconds
-            - '1200'
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
-          imagePullPolicy: IfNotPresent
-          name: wait
+      - args:
+        - wait-for
+        - certificate
+        - --namespace
+        - cert-manager
+        - --name
+        - prod-wildcard-cert
+        - --timeout-seconds
+        - '1200'
+        image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+        imagePullPolicy: IfNotPresent
+        name: wait
       restartPolicy: OnFailure
       serviceAccountName: k8s-toolkit-vault-tls

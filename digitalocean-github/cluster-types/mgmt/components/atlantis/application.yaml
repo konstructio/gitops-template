@@ -31,15 +31,12 @@ spec:
             memory: 512Mi
         ingress:
           enabled: true
-          annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-prod"
           path: /
           host: atlantis.<DOMAIN_NAME>
           ingressClassName: "nginx"
           tls:
-            - secretName: atlantis-tls
-              hosts:
-                - atlantis.<DOMAIN_NAME>
+            - hosts:
+              - atlantis.<DOMAIN_NAME>
         loadEnvFromSecrets:
           - atlantis-secrets
         repoConfig: |
@@ -60,7 +57,7 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true
     retry:
       limit: 5
       backoff:

@@ -11,17 +11,17 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   rules:
-    - host: <DOMAIN_NAME>
-      http:
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: nginx
-                port:
-                  name: http
+  - host: <DOMAIN_NAME>
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: nginx
+            port:
+              name: http
   tls:
   - hosts:
     - <DOMAIN_NAME>
-    secretName: nginx-apex-tls
+

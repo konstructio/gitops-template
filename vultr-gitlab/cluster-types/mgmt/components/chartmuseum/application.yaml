@@ -30,13 +30,10 @@ spec:
         ingress:
           enabled: true
           pathType: "Prefix"
-          annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-prod"
           hosts:
             - name: chartmuseum.<DOMAIN_NAME>
               path: /
               tls: true
-              tlsSecret: chartmuseum-tls
           ingressClassName: nginx
     chart: chartmuseum
   destination:
@@ -47,4 +44,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true
