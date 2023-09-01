@@ -9,6 +9,7 @@ metadata:
 spec:
   args:
   - -d
+  - --poll=2m
   envFrom:
   - secretRef:
       name: crossplane-secrets
