@@ -2,13 +2,18 @@ locals {
   cluster_name = "<CLUSTER_NAME>"
 }
 
-variable "<EXTERNAL_DNS_PROVIDER_NAME>_secret" {
-  default = ""
+variable "b64_docker_auth" {
   type = string
 }
 
-variable "b64_docker_auth" {
+variable "cloudflare_origin_ca_api_key" {
   type = string
+  default = ""
+}
+
+variable "cloudflare_api_key" {
+  type = string
+  default = ""
 }
 
 variable "civo_token" {
