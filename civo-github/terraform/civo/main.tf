@@ -15,16 +15,22 @@ terraform {
     civo = {
       source = "civo/civo"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.23.0"
+    }
+    vault = {
+      source = "hashicorp/vault"
+      version = "3.19.0"
+    }
   }
 }
-
-# export CIVO_TOKEN=$MYTOKEN is set
 provider "civo" {
   region = "<CLOUD_REGION>"
 }
 
 locals {
-  cluster_name         = "<CLUSTER_NAME>"
+  cluster_name = "<CLUSTER_NAME>"
   kube_config_filename = "../../../kubeconfig"
 }
 
@@ -45,7 +51,7 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   pools {
     label      = local.cluster_name
     size       = "g4s.kube.medium"
-    node_count = 4
+    node_count = 6
   }
 }
 

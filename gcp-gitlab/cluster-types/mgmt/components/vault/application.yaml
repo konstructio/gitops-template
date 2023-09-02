@@ -40,7 +40,7 @@ spec:
               }
               seal "gcpckms" {
                 crypto_key  = "vault-unseal"
-                key_ring    = "vault-<CLUSTER_NAME>"
+                key_ring    = "vault-<CLUSTER_NAME>-<GOOGLE_UNIQUENESS>"
                 project     = "<GCP_PROJECT>"
                 region      = "global"
               }

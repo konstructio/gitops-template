@@ -1,7 +1,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: kubefirst-console
+  name: kubefirst
   namespace: kubefirst
 spec:
   entryPoints:
@@ -10,7 +10,7 @@ spec:
     - kind: Rule
       match: Host(`kubefirst.<DOMAIN_NAME>`)
       services:
-        - name: kubefirst-console
+        - name: kubefirst
           port: 80
   tls:
     secretName: kubefirst-tls
