@@ -25,8 +25,9 @@ resource "vault_generic_secret" "external_dns_secrets" {
 
   data_json = jsonencode(
     {
-      civo-token = var.civo_token,
-      cf-api-key = var.cloudflare_api_key,
+      civo-token        = var.civo_token,
+      cf-api-key        = var.cloudflare_api_key,
+      cloudflare-token  = var.cloudflare_api_key,
     }
   )
   depends_on = [vault_mount.secret]
@@ -153,6 +154,7 @@ resource "vault_generic_secret" "cloudflare" {
     {
       origin-ca-api-key = var.cloudflare_origin_ca_api_key,
       cf-api-key        = var.cloudflare_api_key,
+      cloudflare-token  = var.cloudflare_api_key,
     }
   )
 
@@ -184,6 +186,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,
       TF_VAR_cloudflare_origin_ca_api_key = var.cloudflare_origin_ca_api_key
+      TF_VAR_cloudflare_api_key           = var.cloudflare_api_key
       VAULT_ADDR                          = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       VAULT_TOKEN                         = var.vault_token,
