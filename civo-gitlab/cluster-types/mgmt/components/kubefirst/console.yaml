@@ -24,6 +24,10 @@ spec:
           env:
             - name: IN_CLUSTER
               value: "'true'"
+        kubefirst-api-ee:
+          env:
+            - name: IN_CLUSTER
+              value: "'true'"
         console:
           isClusterZero: "'false'"
           ingress:
