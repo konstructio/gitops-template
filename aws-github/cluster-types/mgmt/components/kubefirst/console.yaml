@@ -44,9 +44,8 @@ spec:
                   - path: /
                     pathType: Prefix
             tls:
-              - secretName: kubefirst-tls
-                hosts:
-                  - kubefirst.<DOMAIN_NAME>
+              - hosts:
+                - kubefirst.<DOMAIN_NAME>
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst
@@ -55,4 +54,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

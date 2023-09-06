@@ -64,9 +64,8 @@ spec:
                 - path: /
                   pathType: ImplementationSpecific
           tls:
-            - secretName: kubefirst-tls
-              hosts:
-                - kubefirst.<DOMAIN_NAME>
+            - hosts:
+              - kubefirst.<DOMAIN_NAME>  
   destination:
     server: https://kubernetes.default.svc
     namespace: kubefirst
