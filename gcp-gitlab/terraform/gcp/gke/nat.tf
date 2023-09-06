@@ -1,5 +1,5 @@
 resource "google_compute_router" "router" {
-  name    = "kubefirst-cloud-router"
+  name    = "gke-cloud-router-${local.cluster_name}"
   project = var.project
   network = var.network
   region  = var.gcp_region
