@@ -6,7 +6,7 @@ resource "google_compute_router" "router" {
 }
 
 module "cloud-nat" {
-  name                               = "kubefirst-nat-config"
+  name                               = "gke-nat-config-${local.cluster_name}"
   source                             = "terraform-google-modules/cloud-nat/google"
   version                            = "~> 4.0"
   project_id                         = var.project
