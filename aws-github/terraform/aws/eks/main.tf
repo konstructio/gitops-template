@@ -44,6 +44,7 @@ module "eks" {
   create_kms_key                 = false
   cluster_encryption_config      = {}
   cluster_addons = {
+    # AWS launch CoreDNS itself with their add-on https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html
     # coredns = {
     #   most_recent = true
     #   resolve_conflicts = "OVERWRITE"
