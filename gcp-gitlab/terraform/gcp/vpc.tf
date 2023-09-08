@@ -11,7 +11,7 @@ module "vpc" {
       subnet_name           = "subnet-01-${local.cluster_name}"
       subnet_ip             = "10.10.10.0/24"
       subnet_region         = var.gcp_region
-      subnet_private_access = "false"
+      subnet_private_access = "true"
       subnet_flow_logs      = "true"
       description           = "This base subnet."
     },

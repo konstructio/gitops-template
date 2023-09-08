@@ -9,12 +9,16 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source = "terraform-google-modules/kubernetes-engine/google"
+  source = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
 
   name            = var.cluster_name
   project_id      = var.project
   region          = var.gcp_region
   release_channel = "STABLE"
+
+  // External availability
+  enable_private_endpoint = false
+  enable_private_nodes    = true
 
   // Service Account
   create_service_account = true
@@ -65,6 +69,7 @@ module "gke" {
     all = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/devstorage.read_only",
     ]
   }
 
