@@ -15,7 +15,7 @@ spec:
     - dns01:
         webhook:
           solverName: 'civo'
-          groupName: civo.webhook.kubefirst.com
+          groupName: civo.webhook.okteto.com
           config:
             secretName: <EXTERNAL_DNS_PROVIDER_NAME>-auth
             secretKey: <EXTERNAL_DNS_PROVIDER_NAME>-auth
@@ -48,7 +48,7 @@ spec:
     - dns01:
         webhook:
           solverName: 'civo'
-          groupName: civo.webhook.kubefirst.com
+          groupName: civo.webhook.okteto.com
           config:
             secretName: <EXTERNAL_DNS_PROVIDER_NAME>-auth
             secretKey: <EXTERNAL_DNS_PROVIDER_NAME>-auth

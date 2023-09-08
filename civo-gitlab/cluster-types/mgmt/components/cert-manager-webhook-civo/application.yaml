@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.okteto.com
-    targetRevision: 0.3.1
+    targetRevision: 0.4.0
     helm:
       values: |-
         certManager:
@@ -25,10 +25,10 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
-      - RespectIgnoreDifferences=true
+    - CreateNamespace=true
+    - RespectIgnoreDifferences=true
   ignoreDifferences:
-    - group: cert-manager.io/v1
-      kind: Certificate
-      jqPathExpressions:
-        - .spec.duration
+  - group: cert-manager.io/v1
+    kind: Certificate
+    jqPathExpressions:
+    - .spec.duration
