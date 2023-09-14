@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>/components/nginx-apex
+    path: registry/clusters<CLUSTER_NAME>/components/nginx-apex
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

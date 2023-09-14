@@ -1,25 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: secrets
+  name: clusters
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '120'
+    argocd.argoproj.io/sync-wave: '1000'
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/clusters<CLUSTER_NAME>/components/secrets
+    path: registry/clusters/<CLUSTER_NAME>/components/clusters
     targetRevision: HEAD
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        maxDuration: 5m0s
-        factor: 2
+    syncOptions:
+      - CreateNamespace=true
