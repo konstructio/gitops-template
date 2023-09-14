@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/clusters<CLUSTER_NAME>/components/production/metaphor
+    path: registry/clusters/<CLUSTER_NAME>/components/production/metaphor
     targetRevision: HEAD
     helm:
       valueFiles:

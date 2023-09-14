@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: '<GITOPS_REPO_URL>'
-    path: registry/clusters<CLUSTER_NAME>/components/argocd
+    path: registry/clusters/<CLUSTER_NAME>/components/argocd
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
