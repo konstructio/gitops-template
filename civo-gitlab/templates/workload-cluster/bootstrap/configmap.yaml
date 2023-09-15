@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubefirst-cm
-  namespace: kube-system
-data:
-  mgmt-cluster: "<MGMT_CLUSTER_ID>"
