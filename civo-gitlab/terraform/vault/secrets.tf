@@ -21,6 +21,7 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
 }
 
 resource "vault_generic_secret" "external_dns_secrets" {
+  #* count = var.dns_provider == $cloud ? 1 ? 0
   path = "secret/external-dns"
 
   data_json = jsonencode(
