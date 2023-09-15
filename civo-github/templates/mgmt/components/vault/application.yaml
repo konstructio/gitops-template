@@ -34,11 +34,11 @@ spec:
           ingress:
             enabled: true
             annotations: 
-              # cert-manager.io/issuer: cloudflare-origin-issuer
-              # cert-manager.io/issuer-kind: OriginIssuer
-              # cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
-              # external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              cert-manager.io/issuer: cloudflare-origin-issuer
+              cert-manager.io/issuer-kind: OriginIssuer
+              cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+              external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
             ingressClassName: "nginx"
             pathType: Prefix
             # When HA mode is enabled and K8s service registration is being used,
