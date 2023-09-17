@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k8s-toolkit-argo
+  namespace: argo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: k8s-toolkit-argo
+  namespace: argo
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - statefulsets
+    verbs:
+      - get
+      - watch
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: k8s-toolkit-argo
+  namespace: argo
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: k8s-toolkit-argo
+subjects:
+  - kind: ServiceAccount
+    name: k8s-toolkit-argo
+    namespace: argo
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
+  name: wait-argo-workflow-controller
+  namespace: argo
+spec:
+  template:
+    spec:
+      containers:
+        - args:
+            - wait-for
+            - deployment
+            - --namespace
+            - argo
+            - --label
+            - app.kubernetes.io/name=argo-workflow-controller
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          imagePullPolicy: IfNotPresent
+          name: wait
+      restartPolicy: OnFailure
+      serviceAccountName: k8s-toolkit-argo
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
+  name: wait-argo-server
+  namespace: argo
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      containers:
+        - args:
+            - wait-for
+            - deployment
+            - --namespace
+            - argo
+            - --label
+            - app.kubernetes.io/name=argo-server
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          imagePullPolicy: IfNotPresent
+          name: wait
+      restartPolicy: OnFailure
+      serviceAccountName: k8s-toolkit-argo
