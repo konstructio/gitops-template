@@ -1,12 +1,12 @@
 resource "google_compute_router" "router" {
-  name    = "gke-cloud-router-${local.cluster_name}"
+  name    = "gke-cloud-router-${var.cluster_name}"
   project = var.project
   network = var.network
   region  = var.gcp_region
 }
 
 module "cloud-nat" {
-  name                               = "gke-nat-config-${local.cluster_name}"
+  name                               = "gke-nat-config-${var.cluster_name}"
   source                             = "terraform-google-modules/cloud-nat/google"
   version                            = "~> 4.0"
   project_id                         = var.project
