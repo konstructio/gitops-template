@@ -16,7 +16,7 @@ spec:
           create: true
           name: chartmuseum
           annotations:
-            iam.gke.io/gcp-service-account: chartmuseum-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
+            iam.gke.io/gcp-service-account: chartmuseum-<CLUSTER_NAME>@<GOOGLE_PROJECT>.iam.gserviceaccount.com
         env:
           open:
             AUTH_ANONYMOUS_GET: true
@@ -48,4 +48,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true

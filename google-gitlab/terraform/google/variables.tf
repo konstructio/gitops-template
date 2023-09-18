@@ -2,8 +2,8 @@ locals {
   cluster_name = "<CLUSTER_NAME>"
 }
 
-variable "gcp_region" {
-  description = "GCP Cloud Region"
+variable "google_region" {
+  description = "Google Cloud Region"
   type        = string
 
   default = "<CLOUD_REGION>"
@@ -17,10 +17,10 @@ variable "network_name" {
 }
 
 variable "project" {
-  description = "GCP Project ID"
+  description = "Google Project ID"
   type        = string
 
-  default = "<GCP_PROJECT>"
+  default = "<GOOGLE_PROJECT>"
 }
 
 variable "force_destroy" {

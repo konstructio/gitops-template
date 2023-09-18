@@ -12,59 +12,11 @@ spec:
     targetRevision: 0.22.0
     helm:
       parameters:
-        - name: server.route.host
-          value: vault.<DOMAIN_NAME>
-        - name: 'server.ingress.hosts[0].host'
-          value: vault.<DOMAIN_NAME>
-      values: |-
-        server:
-          serviceAccount:
-            create: true
-            name: vault
-            annotations:
-              iam.gke.io/gcp-service-account: vault-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
-          affinity: ""
-          ha:
-            enabled: true
-            replicas: 3
-            config: |
-              ui = true
-              listener "tcp" {
-                tls_disable     = 1
-                address         = "[::]:8200"
-                cluster_address = "[::]:8201"
-              }
-              storage "gcs" {
-                bucket     = "<VAULT_DATA_BUCKET>"
-                ha_enabled = "true"
-              }
-              seal "gcpckms" {
-                crypto_key  = "vault-unseal"
-                key_ring    = "vault-<CLUSTER_NAME>-<GOOGLE_UNIQUENESS>"
-                project     = "<GCP_PROJECT>"
-                region      = "global"
-              }
-              service_registration "kubernetes" {}
-          ingress:
-            enabled: true
-            annotations: 
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
-            ingressClassName: "nginx"
-            pathType: Prefix
-            # When HA mode is enabled and K8s service registration is being used,
-            # configure the ingress to point to the Vault active service.
-            # activeService: true
-            hosts:
-              - host: vault.<DOMAIN_NAME>
-            tls:
-              - secretName: vault-tls
-                hosts:
-                  - vault.<DOMAIN_NAME>
-          ui:
-            enabled: true
-            serviceType: "ClusterIP"
-            serviceNodePort: null
-            externalPort: 8200
+      - name: server.route.host
+        value: vault.<DOMAIN_NAME>
+      - name: 'server.ingress.hosts[0].host'
+        value: vault.<DOMAIN_NAME>
+      values: "server:\n  serviceAccount:\n    create: true\n    name: vault\n    annotations:\n      iam.gke.io/gcp-service-account: vault-<CLUSTER_NAME>@<GOOGLE_PROJECT>.iam.gserviceaccount.com\n  affinity: \"\"\n  ha:\n    enabled: true\n    replicas: 3\n    config: |\n      ui = true\n      listener \"tcp\" {\n        tls_disable     = 1\n        address         = \"[::]:8200\"\n        cluster_address = \"[::]:8201\"\n      }\n      storage \"gcs\" {\n        bucket     = \"<VAULT_DATA_BUCKET>\"\n        ha_enabled = \"true\"\n      }\n      seal \"gcpckms\" {\n        crypto_key  = \"vault-unseal\"\n        key_ring    = \"vault-<CLUSTER_NAME>-<GOOGLE_UNIQUENESS>\"\n        project     = \"<GOOGLE_PROJECT>\"\n        region      = \"global\"\n      }\n      service_registration \"kubernetes\" {}\n  ingress:\n    enabled: true\n    annotations: \n      cert-manager.io/cluster-issuer: \"letsencrypt-prod\"\n    ingressClassName: \"nginx\"\n    pathType: Prefix\n    # When HA mode is enabled and K8s service registration is being used,\n    # configure the ingress to point to the Vault active service.\n    # activeService: true\n    hosts:\n      - host: vault.<DOMAIN_NAME>\n    tls:\n      - secretName: vault-tls\n        hosts:\n          - vault.<DOMAIN_NAME>\n  ui:\n    enabled: true\n    serviceType: \"ClusterIP\"\n    serviceNodePort: null\n    externalPort: 8200"
     chart: vault
   destination:
     server: https://kubernetes.default.svc
@@ -74,9 +26,9 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true
   ignoreDifferences:
-    - group: admissionregistration.k8s.io
-      kind: MutatingWebhookConfiguration
-      jsonPointers:
-        - /webhooks
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+    jsonPointers:
+    - /webhooks

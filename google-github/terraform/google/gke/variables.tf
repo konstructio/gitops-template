@@ -3,8 +3,8 @@ variable "cluster_name" {
   type        = string
 }
 
-variable "gcp_region" {
-  description = "GCP Region"
+variable "google_region" {
+  description = "Google Region"
   type        = string
 }
 
@@ -21,7 +21,7 @@ variable "network" {
 }
 
 variable "project" {
-  description = "GCP Project ID"
+  description = "Google Project ID"
   type        = string
 }
 

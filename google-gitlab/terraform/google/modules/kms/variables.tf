@@ -3,7 +3,7 @@ locals {
 }
 
 variable "project" {
-  description = "GCP Project ID"
+  description = "Google Project ID"
   type        = string
 }
 

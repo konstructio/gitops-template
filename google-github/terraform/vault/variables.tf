@@ -41,15 +41,15 @@ variable "vault_token" {
 }
 
 variable "gcp_region" {
-  description = "GCP Cloud Region"
+  description = "Google Cloud Region"
   type        = string
 
   default = "<CLOUD_REGION>"
 }
 
 variable "project" {
-  description = "GCP Project ID"
+  description = "Google Project ID"
   type        = string
 
-  default = "<GCP_PROJECT>"
+  default = "<GOOGLE_PROJECT>"
 }

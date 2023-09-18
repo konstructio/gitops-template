@@ -20,7 +20,7 @@ terraform {
 
 provider "google" {
   project = var.project
-  region  = var.gcp_region
+  region  = var.google_region
 }
 
 provider "vault" {

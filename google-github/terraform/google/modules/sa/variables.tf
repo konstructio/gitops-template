@@ -1,5 +1,5 @@
 variable "service_account_name" {
-  description = "The name of the service account in GCP."
+  description = "The name of the service account in Google."
   type        = string
 }
 
@@ -14,7 +14,7 @@ variable "display_name" {
 }
 
 variable "project" {
-  description = "GCP Project ID"
+  description = "Google Project ID"
   type        = string
 }
 

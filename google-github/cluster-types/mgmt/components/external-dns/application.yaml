@@ -17,7 +17,7 @@ spec:
           create: true
           name: external-dns
           annotations:
-            iam.gke.io/gcp-service-account: external-dns-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
+            iam.gke.io/gcp-service-account: external-dns-<CLUSTER_NAME>@<GOOGLE_PROJECT>.iam.gserviceaccount.com
         provider: <EXTERNAL_DNS_PROVIDER_NAME>
         sources:
         - ingress

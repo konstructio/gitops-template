@@ -23,7 +23,7 @@ spec:
           create: true
           mount: true
           annotations:
-            iam.gke.io/gcp-service-account: atlantis-<CLUSTER_NAME>@<GCP_PROJECT>.iam.gserviceaccount.com
+            iam.gke.io/gcp-service-account: atlantis-<CLUSTER_NAME>@<GOOGLE_PROJECT>.iam.gserviceaccount.com
         resources:
           limits:
             cpu: 400m
@@ -59,7 +59,7 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true
     retry:
       limit: 5
       backoff:

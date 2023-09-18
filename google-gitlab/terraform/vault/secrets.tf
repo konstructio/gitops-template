@@ -137,7 +137,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ATLANTIS_GITLAB_WEBHOOK_SECRET      = var.atlantis_repo_webhook_secret,
       GITLAB_OWNER                        = "<GITLAB_OWNER>",
       GITLAB_TOKEN                        = var.gitlab_token,
-      GCP_PROJECT                         = "<GCP_PROJECT>"
+      GOOGLE_PROJECT                         = "<GOOGLE_PROJECT>"
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       TF_VAR_b64_docker_auth              = var.b64_docker_auth,
