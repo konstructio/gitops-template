@@ -6,7 +6,7 @@ namespace: argocd
 # https://github.com/argoproj/argo-cd/tags
 resources:
   - github.com:kubefirst/manifests.git/argocd/cloud?ref=main
-  - argocd-ui-ingress.yaml
+  # - argocd-ui-ingress.yaml
   - externalsecrets.yaml
   - argocd-oidc-restart-job.yaml
 

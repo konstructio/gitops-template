@@ -4,5 +4,5 @@ namespace: argocd
 
 resources:
   - github.com:kubefirst/manifests.git/nginx/apex?ref=main
-  - ingress.yaml
+  # - ingress.yaml
   - config-map.yaml
