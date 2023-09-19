@@ -4,7 +4,7 @@
 
 # Bucket
 resource "google_storage_bucket" "bucket" {
-  name = local.bucket_name
+  name = var.bucket_name
 
   uniform_bucket_level_access = var.uniform_bucket_policy
 
