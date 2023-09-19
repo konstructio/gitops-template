@@ -1,9 +1,9 @@
 locals {
   bucket_name    = "${var.project}-${var.bucket_name}"
-  logging_prefix = "${local.bucket_name}/"
+  logging_prefix = "${var.bucket_name}/"
 
   implicit_labels = {
-    name    = local.bucket_name
+    name    = var.bucket_name
     project = var.project
   }
 }
