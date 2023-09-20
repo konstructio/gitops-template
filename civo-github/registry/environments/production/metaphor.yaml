@@ -10,11 +10,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:your-company-io/gitops.git
+    repoURL: <GITOPS_REPO_URL>
     path: registry/environments/production/metaphor
     targetRevision: HEAD
   destination:
-    name: production
+    name: <WORKLOAD_CLUSTER_NAME>
     namespace: production
   syncPolicy:
     automated:
