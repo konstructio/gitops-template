@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: <WORKLOAD_CLUSTER_NAME>-environment
+  name: development-environment-metaphor
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,12 +10,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
-    path: registry/environments/<WORKLOAD_ENVIRONMENT>
+    repoURL: git@github.com:your-company-io/gitops.git
+    path: registry/environments/development/metaphor
     targetRevision: HEAD
   destination:
-    name: in-cluster
-    namespace: argocd
+    name: development-next
+    namespace: development
   syncPolicy:
     automated:
       prune: true
