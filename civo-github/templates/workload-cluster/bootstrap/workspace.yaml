@@ -116,7 +116,7 @@ spec:
         }
         data = {
           civo-token = data.vault_generic_secret.external_dns.data["civo-token"]
-          cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
+          # cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
         }
         type = "Opaque"
       }
@@ -204,6 +204,7 @@ spec:
           name = "kubefirst-cm"
           namespace = "kube-system"
         }
+
         data = {
           mgmt_cluster_id = "<CLUSTER_ID>"
         }
