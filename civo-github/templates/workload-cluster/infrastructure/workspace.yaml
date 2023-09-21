@@ -141,7 +141,7 @@ spec:
         }
         data = {
           civo-token = data.vault_generic_secret.external_dns.data["civo-token"]
-          # cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
+          cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
         }
         type = "Opaque"
       }

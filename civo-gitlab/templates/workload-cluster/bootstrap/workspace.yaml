@@ -13,15 +13,13 @@ spec:
     module: |
       locals {
         cluster_name = "<WORKLOAD_CLUSTER_NAME>"
+        mgmt_cluster_id = "<CLUSTER_ID>"
       }
-
       data "civo_kubernetes_cluster" "kubefirst" {
           name = local.cluster_name
       }
-
       resource "vault_generic_secret" "clusters" {
         path = "secret/clusters/${local.cluster_name}"
-
         data_json = jsonencode(
           {
             kubeconfig             = data.civo_kubernetes_cluster.kubefirst.kubeconfig
@@ -34,21 +32,16 @@ spec:
           }
         )
       }
-
-
-
       provider "kubernetes" {
         host                   = data.civo_kubernetes_cluster.kubefirst.api_endpoint
         client_certificate     = base64decode(yamldecode(data.civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
         client_key             = base64decode(yamldecode(data.civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
         cluster_ca_certificate = base64decode(yamldecode(data.civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
       }
-
       resource "kubernetes_cluster_role_v1" "argocd_manager" {
         metadata {
           name = "argocd-manager-role"
         }
-
         rule {
           api_groups = ["*"]
           resources  = ["*"]
@@ -59,8 +52,6 @@ spec:
           verbs = ["*"]
         }
       }
-
-
       resource "kubernetes_cluster_role_binding_v1" "argocd_manager" {
         metadata {
           name = "argocd-manager-role-binding"
@@ -76,7 +67,6 @@ spec:
           namespace = "kube-system"
         }
       }
-
       resource "kubernetes_service_account_v1" "argocd_manager" {
         metadata {
           name = "argocd-manager"
@@ -86,7 +76,6 @@ spec:
           name = "argocd-manager-token"
         }
       }
-
       resource "kubernetes_secret_v1" "argocd_manager" {
         metadata {
           name = "argocd-manager-token"
@@ -98,17 +87,14 @@ spec:
         type = "kubernetes.io/service-account-token"
         depends_on = [ kubernetes_service_account_v1.argocd_manager ]
       }
-
       resource "kubernetes_namespace_v1" "external_dns" {
         metadata {
           name = "external-dns"
         }
       }
-
       data "vault_generic_secret" "external_dns" {
         path = "secret/external-dns"
       }
-
       resource "kubernetes_secret_v1" "external_dns" {
         metadata {
           name = "${local.cluster_name}-cluster-vault-bootstrap"
@@ -116,45 +102,36 @@ spec:
         }
         data = {
           civo-token = data.vault_generic_secret.external_dns.data["civo-token"]
-          # cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
+          cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
         }
         type = "Opaque"
       }
-
-
       resource "kubernetes_namespace_v1" "external_secrets_operator" {
         metadata {
           name = "external-secrets-operator"
         }
       }
-
       resource "kubernetes_namespace_v1" "environment" {
         metadata {
           name = "<WORKLOAD_CLUSTER_NAME>"
         }
       }
-
       data "vault_generic_secret" "docker_config" {
         path = "secret/dockerconfigjson"
       }
-
       resource "kubernetes_secret_v1" "image_pull" {
         metadata {
           name = "docker-config"
           namespace = kubernetes_namespace_v1.environment.metadata.0.name
         }
-
         data = {
           ".dockerconfigjson" = data.vault_generic_secret.docker_config.data["dockerconfig"]
         }
-
         type = "kubernetes.io/dockerconfigjson"
       }
-
       data "vault_generic_secret" "external_secrets_operator" {
         path = "secret/atlantis"
       }
-
       resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
         metadata {
           name = "${local.cluster_name}-cluster-vault-bootstrap"
@@ -165,7 +142,6 @@ spec:
         }
         type = "Opaque"
       }
-
       resource "kubernetes_secret_v1" "external_secrets_operator" {
         metadata {
           name = "${local.cluster_name}-cluster-vault-bootstrap"
@@ -176,7 +152,6 @@ spec:
         }
         type = "Opaque"
       }
-
       resource "kubernetes_service_account_v1" "external_secrets" {
         metadata {
           name = "external-secrets"
@@ -186,7 +161,6 @@ spec:
           name = "external-secrets-token"
         }
       }
-
       resource "kubernetes_secret_v1" "external_secrets" {
         metadata {
           name = "external-secrets-token"
@@ -198,7 +172,6 @@ spec:
         type = "kubernetes.io/service-account-token"
         depends_on = [ kubernetes_service_account_v1.external_secrets ]
       }
-
       resource "kubernetes_config_map" "kubefirst_cm" {
         metadata {
           name = "kubefirst-cm"

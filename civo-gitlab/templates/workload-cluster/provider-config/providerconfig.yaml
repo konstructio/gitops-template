@@ -11,9 +11,7 @@ spec:
           bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
           endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
-
           region = "<CLOUD_REGION>"
-
           skip_credentials_validation = true
           skip_metadata_api_check     = true
           skip_region_validation      = true

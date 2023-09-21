@@ -41,6 +41,3 @@ spec:
           sleep 10
       restartPolicy: Never
   backoffLimit: 1
-
-
-
