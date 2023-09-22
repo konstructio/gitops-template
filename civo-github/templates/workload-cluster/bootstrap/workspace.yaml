@@ -116,7 +116,7 @@ spec:
         }
         data = {
           civo-token = data.vault_generic_secret.external_dns.data["civo-token"]
-          cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
+          # cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
         }
         type = "Opaque"
       }
@@ -197,4 +197,15 @@ spec:
         }
         type = "kubernetes.io/service-account-token"
         depends_on = [ kubernetes_service_account_v1.external_secrets ]
+      }
+
+      resource "kubernetes_config_map" "kubefirst_cm" {
+        metadata {
+          name = "kubefirst-cm"
+          namespace = "kube-system"
+        }
+
+        data = {
+          mgmt_cluster_id = "<CLUSTER_ID>"
+        }
       }
