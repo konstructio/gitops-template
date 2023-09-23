@@ -123,7 +123,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ATLANTIS_GH_WEBHOOK_SECRET          = var.atlantis_repo_webhook_secret,
       GITHUB_OWNER                        = "<GITHUB_OWNER>",
       GITHUB_TOKEN                        = var.github_token,
-      GOOGLE_PROJECT                         = "<GOOGLE_PROJECT>"
+      GOOGLE_PROJECT                      = "<GOOGLE_PROJECT>"
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       TF_VAR_b64_docker_auth              = var.b64_docker_auth,
