@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    endpoint = "<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>"
+    endpoint ="https://<CLOUD_REGION>.digitaloceanspaces.com"
     key      = "terraform/users/terraform.tfstate"
     bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
     // Don't change this.
