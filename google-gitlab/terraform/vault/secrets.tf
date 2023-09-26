@@ -19,7 +19,6 @@ resource "vault_generic_secret" "external_dns_secrets" {
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
-  # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
       BASIC_AUTH_USER = "kbot",
