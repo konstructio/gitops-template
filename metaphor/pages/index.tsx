@@ -6,26 +6,24 @@ import Dashboard from '../containers/dashboard';
 
 interface HomeProps {
   consoleUrl: string;
-  metaphorApiUrl: string;
 }
 
-const Home: FunctionComponent<HomeProps> = ({ consoleUrl, metaphorApiUrl }) => {
+const Home: FunctionComponent<HomeProps> = ({ consoleUrl }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setConfigValues({ consoleUrl, metaphorApiUrl }));
-  }, [consoleUrl, dispatch, metaphorApiUrl]);
+    dispatch(setConfigValues({ consoleUrl }));
+  }, [consoleUrl, dispatch]);
 
   return <Dashboard />;
 };
 
 export async function getServerSideProps() {
-  const { METAPHOR_API_URL = '', CONSOLE_URL = '' } = process.env;
+  const { CONSOLE_URL = '' } = process.env;
 
   return {
     props: {
       consoleUrl: CONSOLE_URL,
-      metaphorApiUrl: METAPHOR_API_URL,
     },
   };
 }
