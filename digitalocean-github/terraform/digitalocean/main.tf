@@ -38,7 +38,7 @@ data "digitalocean_kubernetes_versions" "versions" {
 
 resource "digitalocean_kubernetes_cluster" "kubefirst" {
   name    = local.cluster_name
-  region  = "<CLOUD_REGION>"
+  region  = lower(var.region)
   version = data.digitalocean_kubernetes_versions.versions.latest_version
 
   node_pool {
