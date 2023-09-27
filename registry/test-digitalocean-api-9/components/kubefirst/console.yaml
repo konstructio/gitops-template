@@ -1,0 +1,78 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubefirst-console
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  project: default
+  source:
+    repoURL: https://kubefirst.github.io/charts
+    targetRevision: 2.1.9
+    chart: console
+    helm:
+      values: |-
+        env:
+          ARGO_CD_URL:
+            value: "https://argocd.do.kuberfu.com"
+          ARGO_WORKFLOWS_URL:
+            value: "https://argo.do.kuberfu.com"
+          ATLANTIS_URL:
+            value: "https://atlantis.do.kuberfu.com"
+          CLOUD:
+            value: "digitalocean"
+          CLUSTER_ID:
+            value: "szzhux"
+          CLUSTER_TYPE:
+            value: "mgmt"
+          DOMAIN_NAME:
+            value: "do.kuberfu.com"
+          GIT_PROVIDER:
+            value: "github"
+          GITHUB_OWNER:
+            value: "digitalocean-https"
+          KUBEFIRST_VERSION:
+            value: "development"
+          KUBEFIRST_TEAM:
+            value: "true"
+          METAPHOR_DEVELOPMENT_URL:
+            value: "https://metaphor-development.do.kuberfu.com"
+          METAPHOR_STAGING_URL:
+            value: "https://metaphor-staging.do.kuberfu.com"
+          METAPHOR_PRODUCTION_URL:
+            value: "https://metaphor-production.do.kuberfu.com"
+          USE_TELEMETRY:
+            value: ""
+          VAULT_URL:
+            value: "https://vault.do.kuberfu.com"
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            # nginx.ingress.kubernetes.io/auth-signin: "https://vouch.do.kuberfu.com/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
+            # nginx.ingress.kubernetes.io/auth-url: https://vouch.do.kuberfu.com/validate
+            # nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
+            # nginx.ingress.kubernetes.io/auth-snippet: |
+            #   auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+            #   auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+            #   auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
+          hosts:
+            - host: kubefirst.do.kuberfu.com
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - secretName: kubefirst-tls
+              hosts:
+                - kubefirst.do.kuberfu.com
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kubefirst
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-cwfts
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '30'
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/digitalocean-https/gitops.git
+    path: registry/test-digitalocean-api-9/components/argo-workflows/cwfts
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

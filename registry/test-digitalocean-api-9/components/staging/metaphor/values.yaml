@@ -1,0 +1,23 @@
+metaphor:
+  image:
+    repository: ghcr.io/digitalocean-https/metaphor
+  imagePullSecrets:
+  - name: docker-config
+  ingress:
+    className: nginx
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    hosts:
+    - host: metaphor-staging.do.kuberfu.com
+      paths:
+      - path: /
+        pathType: Prefix
+    tls:
+    - secretName: metaphor-tls
+      hosts:
+      - metaphor-staging.do.kuberfu.com
+  metaphor:
+    host: https://metaphor-staging.do.kuberfu.com/api
+    console: https://kubefirst.do.kuberfu.com
+  vaultSecretPath: staging/metaphor
