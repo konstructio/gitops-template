@@ -7,7 +7,6 @@ resource "random_password" "chartmuseum_password" {
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
-  # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
       BASIC_AUTH_USER       = "kbot",
@@ -25,7 +24,7 @@ resource "vault_generic_secret" "external_dns_secrets" {
 
   data_json = jsonencode(
     {       
-      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_secret,    
+      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_token,    
     }
   )
   depends_on = [vault_mount.secret]

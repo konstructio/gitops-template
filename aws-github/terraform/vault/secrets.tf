@@ -7,7 +7,6 @@ resource "random_password" "chartmuseum_password" {
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
-  # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
       BASIC_AUTH_USER = "kbot",
