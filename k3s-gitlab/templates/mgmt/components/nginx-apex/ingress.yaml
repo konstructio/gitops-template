@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-apex
+  namespace: default
+  labels:
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/instance: nginx
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    <CERT_MANAGER_ISSUER_ANNOTATION_1>
+    <CERT_MANAGER_ISSUER_ANNOTATION_2>
+    <CERT_MANAGER_ISSUER_ANNOTATION_3>
+    <CERT_MANAGER_ISSUER_ANNOTATION_4>
+spec:
+  rules:
+  - host: <DOMAIN_NAME>
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: nginx
+            port:
+              name: http
+  tls:
+  - hosts:
+    - <DOMAIN_NAME>
+    secretName: nginx-apex-tls
