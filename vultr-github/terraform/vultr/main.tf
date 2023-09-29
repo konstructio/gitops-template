@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     endpoint = "<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>"
-bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
+    bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
     key      = "terraform/vultr/terraform.tfstate"
 
     // Don't change this.
@@ -27,7 +27,7 @@ locals {
   pool_name            = "${local.cluster_name}-node-pool"
   pool_instance_type   = "vc2-4c-8gb"
   kube_config_filename = "../../../kubeconfig"
-  kubernetes_version   = "v1.26.5+1"
+  kubernetes_version   = "v1.28.2+1"
 }
 
 resource "vultr_kubernetes" "kubefirst" {
