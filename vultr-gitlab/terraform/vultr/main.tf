@@ -1,6 +1,7 @@
 terraform {
   backend "s3" {
-    endpoint ="https://<CLOUD_REGION>.vultrobjects.com"
+    endpoint = "<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>"
+bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
     key      = "terraform/vultr/terraform.tfstate"
 
     // Don't change this.
