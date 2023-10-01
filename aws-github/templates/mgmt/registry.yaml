@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>
+    path: registry/clusters/<CLUSTER_NAME>
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
