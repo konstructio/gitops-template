@@ -30,7 +30,7 @@ spec:
         - name: <EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME>
           valueFrom:
             secretKeyRef:
-              name: <EXTERNAL_DNS_PROVIDER_SECRET_NAME>
+              name: cloudflare-auth # <EXTERNAL_DNS_PROVIDER_SECRET_NAME>
               key: <EXTERNAL_DNS_PROVIDER_SECRET_KEY>
     chart: external-dns
   destination:
