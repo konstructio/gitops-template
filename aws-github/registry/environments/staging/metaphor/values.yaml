@@ -26,7 +26,7 @@ metaphor:
     host: https://metaphor-staging.<DOMAIN_NAME>/api
     console: https://kubefirst.<DOMAIN_NAME>
 
-  clusterSecretStoreName: staging-next-vault-kv-secret
+  clusterSecretStoreName: <WORKLOAD_CLUSTER_NAME>-vault-kv-secret
   configs:
-    configOne: staging-cluster-override-one
-    configTwo: staging-cluster-override-two
+    configOne: <WORKLOAD_CLUSTER_NAME>-config-one
+    configTwo: <WORKLOAD_CLUSTER_NAME>-config-two
