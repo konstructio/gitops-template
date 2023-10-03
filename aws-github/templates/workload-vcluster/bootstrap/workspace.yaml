@@ -128,8 +128,7 @@ spec:
           namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
         }
         data = {
-          civo-auth = data.vault_generic_secret.external_dns.data["civo-token"]
-          cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
+          cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-auth"]
         }
         type = "Opaque"
       }
