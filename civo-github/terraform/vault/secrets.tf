@@ -24,6 +24,7 @@ resource "vault_generic_secret" "external_dns_secrets" {
 
   data_json = jsonencode(
     {
+      civo-auth         = var.civo_token,
       civo-token        = var.civo_token,
       cf-api-key        = var.cloudflare_api_key,
       cloudflare-token  = var.cloudflare_api_key,
