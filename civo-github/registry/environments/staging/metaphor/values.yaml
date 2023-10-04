@@ -11,7 +11,10 @@ metaphor:
     className: nginx
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+              <CERT_MANAGER_ISSUER_ANNOTATION_1>
+              <CERT_MANAGER_ISSUER_ANNOTATION_2>
+              <CERT_MANAGER_ISSUER_ANNOTATION_3>
+              <CERT_MANAGER_ISSUER_ANNOTATION_4>
       nginx.ingress.kubernetes.io/service-upstream: "true"
     hosts:
       - host: metaphor-staging.<DOMAIN_NAME>
