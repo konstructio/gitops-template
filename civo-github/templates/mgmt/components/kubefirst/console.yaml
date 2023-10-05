@@ -24,6 +24,8 @@ spec:
           env:
             - name: IN_CLUSTER
               value: "'true'"
+            - name: CLOUD_PROVIDER
+              value: "'true'"
         kubefirst-api-ee:
           env:
             - name: IN_CLUSTER
