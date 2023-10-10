@@ -124,7 +124,7 @@ spec:
       resource "kubernetes_secret_v1" "external_dns" {
         provider = "kubernetes.target"
         metadata {
-          name = "${var.cluster_name}-cluster-vault-bootstrap"
+          name = "external-dns-secrets"
           namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
         }
         data = {
