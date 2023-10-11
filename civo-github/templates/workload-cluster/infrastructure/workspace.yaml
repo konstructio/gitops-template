@@ -136,12 +136,11 @@ spec:
 
       resource "kubernetes_secret_v1" "external_dns" {
         metadata {
-          name = "${local.cluster_name}-cluster-vault-bootstrap"
+          name = "external-dns-secrets"
           namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
         }
         data = {
-          civo-token = data.vault_generic_secret.external_dns.data["civo-token"]
-          cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
+          token = data.vault_generic_secret.external_dns.data["token"]
         }
         type = "Opaque"
       }
@@ -222,4 +221,15 @@ spec:
         }
         type = "kubernetes.io/service-account-token"
         depends_on = [ kubernetes_service_account_v1.external_secrets ]
+      }
+
+      resource "kubernetes_config_map" "kubefirst_cm" {
+        metadata {
+          name = "kubefirst-cm"
+          namespace = "kube-system"
+        }
+
+        data = {
+          mgmt_cluster_id = "<CLUSTER_ID>"
+        }
       }

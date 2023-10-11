@@ -11,11 +11,11 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/apps/metaphor
+    path: registry/environments/<WORKLOAD_ENVIRONMENT>/metaphor
     targetRevision: HEAD
     helm:
       valueFiles:
-        - <WORKLOAD_CLUSTER_NAME>-values.yaml
+        - values.yaml
   destination:
     name: <WORKLOAD_CLUSTER_NAME>
     namespace: <WORKLOAD_CLUSTER_NAME>

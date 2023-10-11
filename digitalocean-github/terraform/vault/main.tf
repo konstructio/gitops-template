@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    endpoint = "<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>"
+    endpoint ="https://nyc3.digitaloceanspaces.com"
     key      = "terraform/vault/terraform.tfstate"
     bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
     // Don't change this.
@@ -8,6 +8,8 @@ terraform {
 
     skip_credentials_validation = true
     skip_metadata_api_check     = true
+    skip_region_validation      = true
+    force_path_style            = true
   }
   required_providers {
     digitalocean = {

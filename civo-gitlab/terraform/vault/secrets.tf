@@ -7,7 +7,6 @@ resource "random_password" "chartmuseum_password" {
 resource "vault_generic_secret" "chartmuseum_secrets" {
   path = "secret/chartmuseum"
 
-  # todo need to fix this user and password to be sensitive
   data_json = jsonencode(
     {
       BASIC_AUTH_USER       = "kbot",
@@ -17,17 +16,6 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
     }
   )
 
-  depends_on = [vault_mount.secret]
-}
-
-resource "vault_generic_secret" "external_dns_secrets" {
-  path = "secret/external-dns"
-
-  data_json = jsonencode(
-    {       
-      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_secret,    
-    }
-  )
   depends_on = [vault_mount.secret]
 }
 
@@ -171,5 +159,23 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_vault_token                  = var.vault_token,
     }
   )
+  depends_on = [vault_mount.secret]
+}
+
+resource "vault_generic_secret" "crossplane" {
+  path = "secret/crossplane"
+
+  data_json = jsonencode(
+    {
+      AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
+      AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
+      CIVO_TOKEN            = var.civo_token
+      VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
+      VAULT_TOKEN           = var.vault_token
+      password              = var.gitlab_token
+      username              = "kbot"
+    }
+  )
+
   depends_on = [vault_mount.secret]
 }
