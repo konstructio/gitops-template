@@ -32,6 +32,14 @@ spec:
               value: "'true'"
         console:
           isClusterZero: "'false'"
+          domain: "<DOMAIN_NAME>"
+          extraEnvSecrets:
+            CLIENT_ID:
+              name: kubefirst-console-secrets
+              key: client_id
+            SECRET_ID:
+              name: kubefirst-console-secrets
+              key: client_secret
           ingress:
             enabled: "true"
             annotations:
@@ -40,13 +48,6 @@ spec:
               <CERT_MANAGER_ISSUER_ANNOTATION_2>
               <CERT_MANAGER_ISSUER_ANNOTATION_3>
               <CERT_MANAGER_ISSUER_ANNOTATION_4>
-              # nginx.ingress.kubernetes.io/auth-signin: "https://vouch.<DOMAIN_NAME>/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
-              # nginx.ingress.kubernetes.io/auth-url: https://vouch.<DOMAIN_NAME>/validate
-              # nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
-              # nginx.ingress.kubernetes.io/auth-snippet: |
-              #   auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
-              #   auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
-              #   auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
             hosts:
               - host: kubefirst.<DOMAIN_NAME>
                 paths:
