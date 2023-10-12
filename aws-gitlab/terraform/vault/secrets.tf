@@ -41,17 +41,6 @@ resource "vault_generic_secret" "container_registry_auth" {
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "external_dns_secrets" {
-  path = "secret/external-dns"
-
-  data_json = jsonencode(
-    {       
-      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_secret,    
-    }
-  )
-  depends_on = [vault_mount.secret]
-}
-
 resource "vault_generic_secret" "development_metaphor" {
   path = "secret/development/metaphor"
   # note: these secrets are not actually sensitive.
