@@ -18,6 +18,8 @@ spec:
         syncer:
           extraArgs:
           - --tls-san=<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
+          - --kube-config-context-name=<WORKLOAD_CLUSTER_NAME>
+          - --out-kube-config-server=https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
           replicas: 4
         ingress:
           enabled: true
