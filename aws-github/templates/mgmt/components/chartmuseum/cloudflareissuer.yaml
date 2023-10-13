@@ -1,0 +1,31 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: cloudflare-creds
+  namespace: atlantis
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  target:
+    name: cloudflare-creds
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-kv-secret
+  refreshInterval: 10s
+  data:
+  - remoteRef:
+      key: cloudflare
+      property: origin-ca-api-key
+    secretKey: origin-ca-api-key
+---
+apiVersion: cert-manager.k8s.cloudflare.com/v1
+kind: OriginIssuer
+metadata:
+  name: cloudflare-origin-issuer
+  namespace: atlantis
+spec:
+  requestType: OriginECC
+  auth:
+    serviceKeyRef:
+      key: origin-ca-api-key
+      name: cloudflare-creds
