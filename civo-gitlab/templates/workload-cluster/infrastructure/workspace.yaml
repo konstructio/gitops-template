@@ -119,12 +119,11 @@ spec:
       }
       resource "kubernetes_secret_v1" "external_dns" {
         metadata {
-          name = "${local.cluster_name}-cluster-vault-bootstrap"
+          name = "external-dns-secrets"
           namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
         }
         data = {
-          civo-token = data.vault_generic_secret.external_dns.data["civo-auth"]
-          # cf-api-token = data.vault_generic_secret.external_dns.data["cloudflare-token"]
+          token = data.vault_generic_secret.external_dns.data["token"]
         }
         type = "Opaque"
       }
@@ -135,7 +134,7 @@ spec:
       }
       resource "kubernetes_namespace_v1" "environment" {
         metadata {
-          name = "<WORKLOAD_CLUSTER_NAME>"
+          name = "<WORKLOAD_ENVIRONMENT>"
         }
       }
       data "vault_generic_secret" "docker_config" {

@@ -1,24 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: <WORKLOAD_CLUSTER_NAME>-metaphor
+  name: <WORKLOAD_CLUSTER_NAME>-cloudflare-origin-issuer
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '100'
+    argocd.argoproj.io/sync-wave: '45'
 spec:
-  project: default
+  project: <WORKLOAD_CLUSTER_NAME>
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/clusters/apps/metaphor
+    path: registry/clusters/<WORKLOAD_CLUSTER_NAME>/cloudflare-origin-issuer
     targetRevision: HEAD
-    helm:
-      valueFiles:
-        - <WORKLOAD_CLUSTER_NAME>-values.yaml
   destination:
     name: <WORKLOAD_CLUSTER_NAME>
-    namespace: <WORKLOAD_CLUSTER_NAME>
+    namespace: <WORKLOAD_ENVIRONMENT>
   syncPolicy:
     automated:
       prune: true

@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.2.16
+    targetRevision: 2.3.0-rc38
     chart: kubefirst
     helm:
       values: |-
@@ -26,6 +26,14 @@ spec:
               value: "'true'"
         console:
           isClusterZero: "'false'"
+          domain: "<DOMAIN_NAME>"
+          extraEnvSecrets:
+            CLIENT_ID:
+              name: kubefirst-console-secrets
+              key: client_id
+            SECRET_ID:
+              name: kubefirst-console-secrets
+              key: client_secret
           ingress:
             enabled: "true"
             hosts:

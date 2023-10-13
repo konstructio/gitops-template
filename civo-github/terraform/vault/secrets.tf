@@ -19,19 +19,6 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "external_dns_secrets" {
-  path = "secret/external-dns"
-
-  data_json = jsonencode(
-    {
-      civo-token        = var.civo_token,
-      cf-api-key        = var.cloudflare_api_key,
-      cloudflare-token  = var.cloudflare_api_key,
-    }
-  )
-  depends_on = [vault_mount.secret]
-}
-
 resource "vault_generic_secret" "civo_creds" {
   path = "secret/argo"
 
