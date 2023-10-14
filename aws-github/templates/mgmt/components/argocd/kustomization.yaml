@@ -9,6 +9,7 @@ resources:
   - argocd-ui-ingress.yaml
   - externalsecrets.yaml
   - argocd-oidc-restart-job.yaml
+  - argocd-cmd-params-cm.yaml
 
 patchesStrategicMerge:
   - argocd-cm.yaml
