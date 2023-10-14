@@ -152,19 +152,22 @@ spec:
         }
       }
 
+      # todo need to consolidate token conventions
       data "vault_generic_secret" "docker_config" {
-        path = "secret/dockerconfigjson"
+        path = "secret/deploy-tokens/container-registry-auth"
       }
 
       resource "kubernetes_secret_v1" "image_pull" {
         provider = "kubernetes.target"
         metadata {
-          name = "docker-config"
+          name = "container-registry-auth"
           namespace = kubernetes_namespace_v1.environment.metadata.0.name
         }
 
         data = {
-          ".dockerconfigjson" = data.vault_generic_secret.docker_config.data["dockerconfig"]
+          # todo need to consolidate token conventions
+          # ".dockerconfigjson" = data.vault_generic_secret.docker_config.data["dockerconfig"]
+          ".dockerconfigjson" = data.vault_generic_secret.docker_config.data["auth"]
         }
 
         type = "kubernetes.io/dockerconfigjson"
