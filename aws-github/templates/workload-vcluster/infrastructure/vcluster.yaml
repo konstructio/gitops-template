@@ -18,6 +18,8 @@ spec:
         syncer:
           extraArgs:
           - --tls-san=<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
+          - --kube-config-context-name=<WORKLOAD_CLUSTER_NAME>
+          - --out-kube-config-server=https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
           replicas: 4
         ingress:
           enabled: true
@@ -29,7 +31,10 @@ spec:
             nginx.ingress.kubernetes.io/backend-protocol: HTTPS
             nginx.ingress.kubernetes.io/ssl-passthrough: "true"
             nginx.ingress.kubernetes.io/ssl-redirect: "true"
-            cert-manager.io/cluster-issuer: letsencrypt-prod
+            <CERT_MANAGER_ISSUER_ANNOTATION_1>
+            <CERT_MANAGER_ISSUER_ANNOTATION_2>
+            <CERT_MANAGER_ISSUER_ANNOTATION_3>
+            <CERT_MANAGER_ISSUER_ANNOTATION_4>
           tls:
             - secretName: <WORKLOAD_CLUSTER_NAME>-tls
               hosts:
