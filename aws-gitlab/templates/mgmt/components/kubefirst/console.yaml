@@ -41,6 +41,7 @@ spec:
               key: client_secret
           ingress:
             enabled: "true"
+            className: nginx
             annotations:
               kubernetes.io/ingress.class: "nginx"
               <CERT_MANAGER_ISSUER_ANNOTATION_1>
