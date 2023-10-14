@@ -25,7 +25,7 @@ spec:
         sources:
         - ingress
         domainFilters:
-        - <WORKLOAD_EXTERNAL_DNS_DOMAIN_NAME>
+        - <EXTERNAL_DNS_DOMAIN_NAME>
         env:
         - name: <EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME>
           valueFrom:
