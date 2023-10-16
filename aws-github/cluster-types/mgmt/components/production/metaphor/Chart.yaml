@@ -1,9 +1,0 @@
-apiVersion: v2
-dependencies:
-- name: metaphor
-  repository: http://chartmuseum.chartmuseum.svc.cluster.local:8080
-  version: 0.1.0
-description: metaphor example application
-name: metaphor-production
-type: application
-version: 1.0.0

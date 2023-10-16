@@ -1,0 +1,84 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
+spec:
+  project: default
+  source:
+    repoURL: https://helm.releases.hashicorp.com
+    targetRevision: 0.22.0
+    helm:
+      parameters:
+        - name: server.route.host
+          value: vault.<DOMAIN_NAME>
+        - name: 'server.ingress.hosts[0].host'
+          value: vault.<DOMAIN_NAME>
+      values: |-
+        server:
+          serviceAccount:
+            create: true
+            name: vault
+            annotations:
+              eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/vault-<CLUSTER_NAME>'
+          affinity: ""
+          ha:
+            enabled: true
+            replicas: 3
+            config: |
+              ui = true
+              listener "tcp" {
+                tls_disable     = 1
+                address         = "[::]:8200"
+                cluster_address = "[::]:8201"
+              }
+              storage "dynamodb" {
+                ha_enabled = "true"
+                region = "<CLOUD_REGION>"
+                table = "vault-backend-<CLUSTER_NAME>"
+              }
+              seal "awskms" {
+                region     = "<CLOUD_REGION>"
+                kms_key_id = "<AWS_KMS_KEY_ID>"
+              }
+              service_registration "kubernetes" {}
+          ingress:
+            enabled: true
+            annotations: 
+              <CERT_MANAGER_ISSUER_ANNOTATION_1>
+              <CERT_MANAGER_ISSUER_ANNOTATION_2>
+              <CERT_MANAGER_ISSUER_ANNOTATION_3>
+              <CERT_MANAGER_ISSUER_ANNOTATION_4>
+            ingressClassName: "nginx"
+            pathType: Prefix
+            # When HA mode is enabled and K8s service registration is being used,
+            # configure the ingress to point to the Vault active service.
+            # activeService: true
+            hosts:
+              - host: vault.<DOMAIN_NAME>
+            tls:
+              - secretName: vault-tls
+                hosts:
+                  - vault.<DOMAIN_NAME>
+          ui:
+            enabled: true
+            serviceType: "ClusterIP"
+            serviceNodePort: null
+            externalPort: 8200
+    chart: vault
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+      jsonPointers:
+        - /webhooks

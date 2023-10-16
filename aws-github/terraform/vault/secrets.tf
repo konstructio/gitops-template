@@ -17,6 +17,21 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "crossplane_secrets" {
+  path = "secret/crossplane"
+
+  data_json = jsonencode(
+    {
+      VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
+      VAULT_TOKEN           = var.vault_token
+      password              = var.github_token
+      username              = "kbot"
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "docker_config" {
   path = "secret/dockerconfigjson"
 
@@ -91,18 +106,6 @@ resource "vault_generic_secret" "ci_secrets" {
       BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
       SSH_PRIVATE_KEY       = var.kbot_ssh_private_key,
       PERSONAL_ACCESS_TOKEN = var.github_token,
-    }
-  )
-
-  depends_on = [vault_mount.secret]
-}
-
-resource "vault_generic_secret" "external_dns_secrets" {
-  path = "secret/external-dns"
-
-  data_json = jsonencode(
-    {       
-      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_secret,
     }
   )
 

@@ -2,11 +2,6 @@ locals {
   cluster_name = "<CLUSTER_NAME>"
 }
 
-variable "<EXTERNAL_DNS_PROVIDER_NAME>_secret" {
-  default = ""
-  type = string
-}
-
 variable "b64_docker_auth" {
   type = string
 }
