@@ -43,6 +43,18 @@ module "chartmuseum" {
   project                         = var.project
 
   service_account_namespace = "chartmuseum"
+  role                      = data.google_iam_role.owner.name
+}
+
+module "crossplane" {
+  source = "./modules/sa"
+
+  service_account_name            = "crossplane-${local.cluster_name}"
+  kubernetes_service_account_name = "crossplane"
+  display_name                    = "crossplane service account"
+  project                         = var.project
+
+  service_account_namespace = "crossplane"
   role                      = data.google_iam_role.storage_admin.name
 }
 
