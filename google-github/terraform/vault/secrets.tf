@@ -17,6 +17,21 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
+resource "vault_generic_secret" "crossplane_secrets" {
+  path = "secret/crossplane"
+
+  data_json = jsonencode(
+    {
+      VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
+      VAULT_TOKEN           = var.vault_token
+      password              = var.github_token
+      username              = "kbot"
+    }
+  )
+
+  depends_on = [vault_mount.secret]
+}
+
 resource "vault_generic_secret" "container_registry_auth" {
   path = "secret/registry-auth"
 
