@@ -10,7 +10,6 @@ spec:
         backend "s3" {
           bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          region = "<CLOUD_REGION>"
         }
         required_providers {
           kubernetes = {
@@ -35,4 +34,10 @@ spec:
     secretRef:
       namespace: crossplane-system
       name: git-credentials
+      key: creds
+  - filename: gcp-credentials
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: gcp-credentials
       key: creds

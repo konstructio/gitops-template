@@ -3,7 +3,6 @@ kind: ControllerConfig
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: '10'
-    iam.gke.io/gcp-service-account: crossplane-<CLUSTER_NAME>@<GOOGLE_PROJECT>.iam.gserviceaccount.com
   labels:
     app: crossplane-provider-terraform
   name: terraform-config
