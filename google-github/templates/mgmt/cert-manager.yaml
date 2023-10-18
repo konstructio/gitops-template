@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/<CLUSTER_NAME>/components/cert-manager
+    path: registry/clusters/<CLUSTER_NAME>/components/cert-manager
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
