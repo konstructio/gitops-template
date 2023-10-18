@@ -55,7 +55,7 @@ module "crossplane" {
   project                         = var.project
 
   service_account_namespace = "crossplane"
-  role                      = data.google_iam_role.storage_admin.name
+  role                      = data.google_iam_role.owner.name
 }
 
 module "external_dns" {
