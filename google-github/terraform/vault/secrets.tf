@@ -17,19 +17,6 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "external_dns_secrets" {
-  path = "secret/external-dns"
-
-  #! TODO: need a cohesive story on this convention across clouds, changed from _auth to match implementation vars
-  data_json = jsonencode(
-    {       
-      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_token,
-    }
-  )
-
-  depends_on = [vault_mount.secret]
-}
-
 resource "vault_generic_secret" "container_registry_auth" {
   path = "secret/registry-auth"
 
