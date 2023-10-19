@@ -43,7 +43,7 @@ module "chartmuseum" {
   project                         = var.project
 
   service_account_namespace = "chartmuseum"
-  role                      = data.google_iam_role.storage_admin.name
+  role                      = data.google_iam_role.owner.name
 }
 
 module "external_dns" {
