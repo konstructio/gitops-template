@@ -117,6 +117,35 @@ spec:
         }
       }
 
+      data "vault_generic_secret" "external_dns_gcp" {
+        path = "secret/gcp/application-default-credentials"
+      }
+
+      resource "kubernetes_secret" "external_dns_gcp" {
+        metadata {
+          name      = "external-dns"
+          namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
+        }
+        type = "Opaque"
+
+        data = {
+          "credentials.json" = jsonencode({
+            "type" : data.vault_generic_secret.external_dns_gcp.data["type"],
+            "project_id" : data.vault_generic_secret.external_dns_gcp.data["project_id"],
+            "private_key_id" : data.vault_generic_secret.external_dns_gcp.data["private_key_id"],
+            "private_key" : replace(data.vault_generic_secret.external_dns_gcp.data["private_key"], "\\n", "\n"),
+            "client_email" : data.vault_generic_secret.external_dns_gcp.data["client_email"],
+            "client_id" : data.vault_generic_secret.external_dns_gcp.data["client_id"],
+            "auth_uri" : data.vault_generic_secret.external_dns_gcp.data["auth_uri"],
+            "token_uri" : data.vault_generic_secret.external_dns_gcp.data["token_uri"],
+            "auth_provider_x509_cert_url" : data.vault_generic_secret.external_dns_gcp.data["auth_provider_x509_cert_url"],
+            "client_x509_cert_url" : data.vault_generic_secret.external_dns_gcp.data["client_x509_cert_url"],
+            "universe_domain" : data.vault_generic_secret.external_dns_gcp.data["universe_domain"],
+          })
+        }
+      }
+
+
       data "vault_generic_secret" "external_dns" {
         path = "secret/external-dns"
       }
