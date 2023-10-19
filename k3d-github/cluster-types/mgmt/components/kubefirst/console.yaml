@@ -9,11 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-<<<<<<< Updated upstream
-    targetRevision: 2.3.0-rc43
-=======
     targetRevision: 2.3.0-rc42
->>>>>>> Stashed changes
     chart: kubefirst
     helm:
       values: |-
