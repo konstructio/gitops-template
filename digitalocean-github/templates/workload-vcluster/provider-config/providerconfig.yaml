@@ -9,7 +9,7 @@ spec:
       terraform {
         backend "s3" {
           endpoint ="https://nyc3.digitaloceanspaces.com"
-          key      = "terraform/digitalocean/terraform.tfstate"
+          key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
           bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           // Don't change this.
           region = "us-east-1"
