@@ -44,7 +44,7 @@ resource "digitalocean_kubernetes_cluster" "kubefirst" {
   node_pool {
     name       = local.pool_name
     size       = local.pool_instance_size
-    node_count = 3
+    node_count = 4
   }
 }
 
