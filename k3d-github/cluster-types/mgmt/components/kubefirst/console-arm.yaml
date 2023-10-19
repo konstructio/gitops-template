@@ -34,6 +34,9 @@ spec:
         console:
           isClusterZero: "'false'"
           domain: "<DOMAIN_NAME>"
+          extraEnv:
+            - name: NEXTAUTH_SECRET
+              value: Dngy6Kv9Xq5DrV_OD5ADAzorwHPumPcx3j9rEEY209iuXkJYPInqHttFbyaOef0ygPbb2XRNqS3jramQtYInQg
           extraEnvSecrets:
             CLIENT_ID:
               name: kubefirst-console-secrets
