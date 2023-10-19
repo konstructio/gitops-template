@@ -54,6 +54,7 @@ module "console" {
   oidc_provider_key_name = vault_identity_oidc_key.key.name
   redirect_uris = [
     "https://kubefirst.<DOMAIN_NAME>/api/auth/callback/vault",
+    "http://localhost:3000/api/auth/callback/vault"
   ]
   secret_mount_path = "secret"
 }
