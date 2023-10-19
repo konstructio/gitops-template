@@ -122,6 +122,7 @@ spec:
       }
 
       resource "kubernetes_secret" "external_dns_gcp" {
+        provider = "kubernetes.target"
         metadata {
           name      = "external-dns"
           namespace = kubernetes_namespace_v1.external_dns.metadata.0.name

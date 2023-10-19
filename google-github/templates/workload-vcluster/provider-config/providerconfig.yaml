@@ -7,9 +7,9 @@ metadata:
 spec:
   configuration: |
       terraform {
-        backend "s3" {
+        backend "gcs" {
           bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
-          key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
+          prefix   = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
         }
         required_providers {
           kubernetes = {

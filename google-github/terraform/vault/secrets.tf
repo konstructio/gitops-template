@@ -22,10 +22,11 @@ resource "vault_generic_secret" "crossplane_secrets" {
 
   data_json = jsonencode(
     {
-      VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
-      VAULT_TOKEN           = var.vault_token
-      password              = var.github_token
-      username              = "kbot"
+      VAULT_ADDR                     = "http://vault.vault.svc.cluster.local:8200"
+      VAULT_TOKEN                    = var.vault_token
+      password                       = var.github_token
+      username                       = "kbot"
+      GOOGLE_APPLICATION_CREDENTIALS = "gcp-credentials"
     }
   )
 
