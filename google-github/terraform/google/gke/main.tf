@@ -46,11 +46,11 @@ module "gke" {
 
       // Autoscaling
       // PER ZONE
-      min_count = 1
+      min_count = 2
       // PER ZONE
-      max_count = 2
+      max_count = 3
       // PER ZONE
-      initial_node_count = 1
+      initial_node_count = 2
 
       local_ssd_count = 0
       spot            = false

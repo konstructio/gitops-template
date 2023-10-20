@@ -17,13 +17,16 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "external_dns_secrets" {
-  path = "secret/external-dns"
+resource "vault_generic_secret" "crossplane_secrets" {
+  path = "secret/crossplane"
 
-  #! TODO: need a cohesive story on this convention across clouds, changed from _auth to match implementation vars
   data_json = jsonencode(
-    {       
-      <EXTERNAL_DNS_PROVIDER_NAME>-auth = var.<EXTERNAL_DNS_PROVIDER_NAME>_token,
+    {
+      VAULT_ADDR                     = "http://vault.vault.svc.cluster.local:8200"
+      VAULT_TOKEN                    = var.vault_token
+      password                       = var.github_token
+      username                       = "kbot"
+      GOOGLE_APPLICATION_CREDENTIALS = "gcp-credentials"
     }
   )
 

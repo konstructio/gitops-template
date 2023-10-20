@@ -15,11 +15,10 @@ spec:
       values: |-
         global:
           kubefirstVersion: "<KUBEFIRST_VERSION>"
-        mongodb:
-          auth:
-            existingSecret: kubefirst-initial-secrets
         kubefirst-api-ee:
-          existingSecret: kubefirst-initial-secrets
+          env:
+            - name: IN_CLUSTER
+              value: "'true'"
         kubefirst-api:
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"

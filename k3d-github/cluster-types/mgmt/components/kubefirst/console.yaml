@@ -14,7 +14,11 @@ spec:
     helm:
       values: |-
         global:
-            kubefirstVersion: "<KUBEFIRST_VERSION>"
+          kubefirstVersion: "<KUBEFIRST_VERSION>"
+        kubefirst-api-ee:
+          env:
+            - name: IN_CLUSTER
+              value: "'true'"
         kubefirst-api:
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"
