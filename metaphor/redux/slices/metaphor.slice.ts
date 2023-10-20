@@ -21,21 +21,20 @@ export interface Config {
 
 export interface MetaphorState {
   consoleUrl?: string;
-  metaphorApiUrl?: string;
   metaphor?: Metaphor;
   metaphorStatus: boolean;
   kubernetesScrets?: Config;
   vaultSecrets?: Config;
+  isLoading: boolean;
 }
 
 export const initialState: MetaphorState = {
   consoleUrl: undefined,
-  metaphorApiUrl: undefined,
-
   metaphor: undefined,
   metaphorStatus: false,
   kubernetesScrets: undefined,
   vaultSecrets: undefined,
+  isLoading: true,
 };
 
 const metaphorSlice = createSlice({
@@ -43,26 +42,45 @@ const metaphorSlice = createSlice({
   initialState,
   reducers: {
     setConfigValues(state, payload) {
-      const { consoleUrl, metaphorApiUrl } = payload.payload;
+      const { consoleUrl } = payload.payload;
       state.consoleUrl = consoleUrl;
-      state.metaphorApiUrl = metaphorApiUrl;
     },
   },
   extraReducers(builder) {
+    builder.addCase(getHealthz.pending, (state) => {
+      state.isLoading = true;
+    });
     builder.addCase(getHealthz.rejected, (state) => {
       state.metaphorStatus = false;
+      state.isLoading = false;
     });
     builder.addCase(getHealthz.fulfilled, (state) => {
       state.metaphorStatus = true;
+      state.isLoading = false;
+    });
+    builder.addCase(getInfoApp.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getInfoApp.rejected, (state) => {
+      state.isLoading = false;
     });
     builder.addCase(getInfoApp.fulfilled, (state, action) => {
       state.metaphor = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getKubernetesData.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getKubernetesData.rejected, (state) => {
+      state.isLoading = false;
     });
     builder.addCase(getKubernetesData.fulfilled, (state, action) => {
       state.kubernetesScrets = action.payload;
+      state.isLoading = false;
     });
     builder.addCase(getVaultData.fulfilled, (state, action) => {
       state.vaultSecrets = action.payload;
+      state.isLoading = false;
     });
   },
 });

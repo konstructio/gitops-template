@@ -17,8 +17,8 @@ export const selectKubernetesData = () =>
 export const selectVaultData = () =>
   createSelector(metaphorSelector, ({ vaultSecrets }) => vaultSecrets || ({} as Config));
 
-export const selectMetaphorApiUrl = () =>
-  createSelector(metaphorSelector, ({ metaphorApiUrl }) => metaphorApiUrl || '');
-
 export const selectConsoleUrl = () =>
   createSelector(metaphorSelector, ({ consoleUrl }) => consoleUrl || '');
+
+export const selectIsLoading = () =>
+  createSelector(metaphorSelector, ({ isLoading }) => !!isLoading);
