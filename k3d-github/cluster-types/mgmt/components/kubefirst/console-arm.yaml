@@ -31,12 +31,14 @@ spec:
           env:
             - name: IN_CLUSTER
               value: "'true'"
+            - name: CLOUD_PROVIDER
+              value: "<CLOUD_PROVIDER>"
         console:
           isClusterZero: "'false'"
           domain: "<DOMAIN_NAME>"
           env:
             DISABLE_AUTH:
-              value: "'true'"
+              value: "true"
           extraEnvSecrets:
             CLIENT_ID:
               name: kubefirst-console-secrets
