@@ -4,12 +4,12 @@ metadata:
   name: kubefirst
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '10'
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.0-rc46
+    targetRevision: 2.3.0-rc47
     chart: kubefirst
     helm:
       values: |-
@@ -25,6 +25,12 @@ spec:
           useTelemetry: "'<USE_TELEMETRY>'"
           kubefirstTeam: "'<KUBEFIRST_TEAM>'"
           installMethod: "helm"
+          env:
+            - name: IN_CLUSTER
+              value: "'true'"
+            - name: ENTERPRISE_API_URL
+              value: "http://kubefirst-kubefirst-api-ee.kubefirst.svc.cluster.local"
+        kubefirst-api-ee:
           env:
             - name: IN_CLUSTER
               value: "'true'"
