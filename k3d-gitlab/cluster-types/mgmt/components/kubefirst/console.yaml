@@ -33,6 +33,9 @@ spec:
         console:
           isClusterZero: "'false'"
           domain: "<DOMAIN_NAME>"
+          env:
+            DISABLE_AUTH:
+              value: "'true'"
           extraEnvSecrets:
             CLIENT_ID:
               name: kubefirst-console-secrets
