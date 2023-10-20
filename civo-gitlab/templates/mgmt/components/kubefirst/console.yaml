@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.0-clay-21
+    targetRevision: 2.3.0-rc47
     chart: kubefirst
     helm:
       values: |-
@@ -28,8 +28,6 @@ spec:
           env:
             - name: IN_CLUSTER
               value: "'true'"
-            - name: CLOUD_PROVIDER
-              value: "<CLOUD_PROVIDER>"
             - name: ENTERPRISE_API_URL
               value: "http://kubefirst-kubefirst-api-ee.kubefirst.svc.cluster.local"
         kubefirst-api-ee:
