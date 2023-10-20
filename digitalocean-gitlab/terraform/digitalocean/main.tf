@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    endpoint = "<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>"
+    endpoint ="https://nyc3.digitaloceanspaces.com"
     key      = "terraform/digitalocean/terraform.tfstate"
     bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
     // Don't change this.
@@ -38,13 +38,13 @@ data "digitalocean_kubernetes_versions" "versions" {
 
 resource "digitalocean_kubernetes_cluster" "kubefirst" {
   name    = local.cluster_name
-  region  = "<CLOUD_REGION>"
+  region  = lower(var.region)
   version = data.digitalocean_kubernetes_versions.versions.latest_version
 
   node_pool {
     name       = local.pool_name
     size       = local.pool_instance_size
-    node_count = 3
+    node_count = 4
   }
 }
 

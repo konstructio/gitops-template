@@ -9,12 +9,16 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.2.16
+    targetRevision: 2.3.0-rc46
     chart: kubefirst
     helm:
       values: |-
         global:
-            kubefirstVersion: "<KUBEFIRST_VERSION>"
+          kubefirstVersion: "<KUBEFIRST_VERSION>"
+        kubefirst-api-ee:
+          env:
+            - name: IN_CLUSTER
+              value: "'true'"
         kubefirst-api:
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"
@@ -26,6 +30,17 @@ spec:
               value: "'true'"
         console:
           isClusterZero: "'false'"
+          domain: "<DOMAIN_NAME>"
+          env:
+            DISABLE_AUTH:
+              value: "true"
+          extraEnvSecrets:
+            CLIENT_ID:
+              name: kubefirst-console-secrets
+              key: client_id
+            SECRET_ID:
+              name: kubefirst-console-secrets
+              key: client_secret
           ingress:
             enabled: "true"
             hosts:

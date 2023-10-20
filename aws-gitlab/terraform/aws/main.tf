@@ -20,12 +20,11 @@ provider "aws" {
 
 module "eks" {
   source = "./eks"
+}
 
-  # aws_account_id     = var.aws_account_id
-  # cluster_name       = "<CLUSTER_NAME>"
-  # node_capacity_type = "<AWS_NODE_CAPACITY_TYPE>"
-  # ami_type           = var.ami_type
-  # instance_type      = var.instance_type
+resource "aws_iam_role_policy_attachment" "vcluster_external_dns" {
+  role       = module.eks.node_iam_role_name
+  policy_arn = module.eks.external_dns_policy_arn
 }
 
 module "kms" {
@@ -41,9 +40,4 @@ module "ecr_metaphor" {
 
   repository_name = "metaphor"
   use_ecr         = var.use_ecr
-}
-
-output "vault_unseal_kms_key" {
-  // todo https://github.com/terraform-aws-modules/terraform-aws-iam/tree/v4.0.0/examples/iam-assumable-role-with-oidc
-  value = module.kms.vault_unseal_kms_key
 }

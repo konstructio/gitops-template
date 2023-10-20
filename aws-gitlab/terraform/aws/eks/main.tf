@@ -87,8 +87,14 @@ module "eks" {
     # See https://github.com/aws/containers-roadmap/issues/1666 for more context
     iam_role_attach_cni_policy = true
   }
+  iam_role_additional_policies =  {
+
+  }
 
   eks_managed_node_groups = {
+    iam_role_additional_policies = {
+      S3Access = "arn:aws:iam::126827061464:policy/cert-manager-cyje-77"
+    }
     # Default node group - as provided by AWS EKS
     default_node_group = {
       desired_size = 6
@@ -424,6 +430,26 @@ module "chartmuseum" {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["chartmuseum:chartmuseum"]
+    }
+  }
+
+  tags = local.tags
+}
+
+module "crossplane" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+
+  role_name = "crossplane-${local.name}"
+  role_policy_arns = {
+    crossplane = "arn:aws:iam::aws:policy/AdministratorAccess",
+  }
+  assume_role_condition_test = "StringLike"
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["crossplane-system:crossplane-provider-terraform-*"]
     }
   }
 
