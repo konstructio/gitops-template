@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.0-rc46
+    targetRevision: 2.3.0-rc47
     chart: kubefirst
     helm:
       values: |-
@@ -28,6 +28,8 @@ spec:
           env:
             - name: IN_CLUSTER
               value: "'true'"
+            - name: CLUSTER_NAME
+              value: "<CLUSTER_NAME>"
         console:
           isClusterZero: "'false'"
           domain: "<DOMAIN_NAME>"
