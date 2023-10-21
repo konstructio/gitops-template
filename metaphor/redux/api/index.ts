@@ -14,16 +14,16 @@ export const metaphorApi = createApi({
   tagTypes: [],
   endpoints: (builder) => ({
     healthz: builder.query({
-      query: (baseuRL: string) => `${baseuRL}/healthz`,
+      query: () => `api/healthz`,
     }),
     getInfoApp: builder.query({
-      query: (baseuRL: string) => `${baseuRL}/app`,
+      query: () => `api/app`,
     }),
     getKubernetesInfo: builder.query({
-      query: (baseuRL: string) => `${baseuRL}/kubernetes`,
+      query: () => `api/kubernetes`,
     }),
     getVaultInfo: builder.query({
-      query: (baseuRL: string) => `${baseuRL}/vault`,
+      query: () => `api/vault`,
     }),
   }),
 });

@@ -5,8 +5,8 @@ import Card from '../../components/card';
 import {
   selectAppData,
   selectIsApiAvailable,
+  selectIsLoading,
   selectKubernetesData,
-  selectMetaphorApiUrl,
   selectVaultData,
 } from '../../redux/selectors/metaphor.selector';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
@@ -19,6 +19,7 @@ import {
 import Tag from '../../components/tag';
 
 import { Cards, Container, Header, LearnMoreLink, Title } from './dashboard.styled';
+import { Box, CircularProgress } from '@mui/material';
 
 const DOCS_LINK = 'https://docs.kubefirst.io';
 const RUNNING_TAG_PROPS = {
@@ -39,24 +40,22 @@ const INFO_TAG_PROPS = {
 const Dashboard: FunctionComponent = () => {
   const dispatch = useAppDispatch();
 
-  const metaphorApiUrl = useAppSelector(selectMetaphorApiUrl());
   const isApiAvailable = useAppSelector(selectIsApiAvailable());
   const appData = useAppSelector(selectAppData());
   const kubernetesData = useAppSelector(selectKubernetesData());
   const vaultData = useAppSelector(selectVaultData());
+  const isLoading = useAppSelector(selectIsLoading());
 
   useEffect(() => {
     const getApiData = async () => {
-      await dispatch(getHealthz(metaphorApiUrl)).unwrap();
-      await dispatch(getInfoApp(metaphorApiUrl)).unwrap();
-      await dispatch(getKubernetesData(metaphorApiUrl)).unwrap();
-      await dispatch(getVaultData(metaphorApiUrl)).unwrap();
+      await dispatch(getHealthz()).unwrap();
+      await dispatch(getInfoApp()).unwrap();
+      await dispatch(getKubernetesData()).unwrap();
+      await dispatch(getVaultData()).unwrap();
     };
 
-    if (metaphorApiUrl) {
-      getApiData();
-    }
-  }, [dispatch, metaphorApiUrl]);
+    getApiData();
+  }, [dispatch]);
 
   const cardValues = useMemo(
     () => [
@@ -152,11 +151,19 @@ const Dashboard: FunctionComponent = () => {
           </LearnMoreLink>
         </Typography>
       </Header>
-      <Cards>
-        {cardValues.map((card) => (
-          <Card key={card.title} {...card} />
-        ))}
-      </Cards>
+      {isLoading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Cards>
+          <>
+            {cardValues.map((card) => (
+              <Card key={card.title} {...card} />
+            ))}
+          </>
+        </Cards>
+      )}
     </Container>
   );
 };

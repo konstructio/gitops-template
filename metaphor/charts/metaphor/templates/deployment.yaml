@@ -33,8 +33,6 @@ spec:
           - secretRef:
               name: {{ template "metaphor.fullname" . }}
           env:
-          - name: METAPHOR_API_URL
-            value: "{{ .Values.metaphor.host }}"
           - name: CONSOLE_URL
             value: "{{ .Values.metaphor.console }}"
           - name: CHART_VERSION
