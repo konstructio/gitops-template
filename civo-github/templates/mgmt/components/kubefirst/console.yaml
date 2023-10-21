@@ -28,12 +28,10 @@ spec:
           env:
             - name: IN_CLUSTER
               value: "'true'"
+            - name: CLUSTER_NAME
+              value: "<CLUSTER_NAME>"
             - name: ENTERPRISE_API_URL
               value: "http://kubefirst-kubefirst-api-ee.kubefirst.svc.cluster.local"
-        kubefirst-api-ee:
-          env:
-            - name: IN_CLUSTER
-              value: "'true'"
         console:
           isClusterZero: "'false'"
           domain: "<DOMAIN_NAME>"
