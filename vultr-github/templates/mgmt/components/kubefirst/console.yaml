@@ -16,11 +16,16 @@ spec:
         global:
             kubefirstVersion: "<KUBEFIRST_VERSION>"
         kubefirst-api:
+          cloudProvider: "<CLOUD_PROVIDER>"
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"
-          useTelemetry: "'<USE_TELEMETRY>'"
-          kubefirstTeam: "'<KUBEFIRST_TEAM>'"
+          domainName: "<DOMAIN_NAME>"
+          gitProvider: "<GIT_PROVIDER>"
           installMethod: "helm"
+          kubefirstClient: "<KUBEFIRST_CLIENT>"
+          kubefirstTeam: "<KUBEFIRST_TEAM>"
+          kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
+          useTelemetry: "<USE_TELEMETRY>"
           env:
             - name: IN_CLUSTER
               value: "'true'"
