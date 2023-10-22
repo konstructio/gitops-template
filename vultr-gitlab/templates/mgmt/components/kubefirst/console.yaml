@@ -15,7 +15,6 @@ spec:
       values: |-
         global:
           kubefirstVersion: "<KUBEFIRST_VERSION>"
-        kubefirst-api:
           cloudProvider: "<CLOUD_PROVIDER>"
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"
@@ -25,7 +24,8 @@ spec:
           kubefirstClient: "<KUBEFIRST_CLIENT>"
           kubefirstTeam: "<KUBEFIRST_TEAM>"
           kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
-          useTelemetry: "<USE_TELEMETRY>"          
+          useTelemetry: "<USE_TELEMETRY>"
+        kubefirst-api:
           env:
             - name: IN_CLUSTER
               value: "'true'"

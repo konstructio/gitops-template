@@ -14,15 +14,7 @@ spec:
     helm:
       values: |-
         global:
-            kubefirstVersion: "<KUBEFIRST_VERSION>"
-        mongodb:
-          image:
-            repository: arm64v8/mongo
-            tag: latest
-          persistence:
-            mountPath: /data/db
-          extraEnvVarsSecret: kubefirst-initial-secrets
-        kubefirst-api:
+          kubefirstVersion: "<KUBEFIRST_VERSION>"
           cloudProvider: "<CLOUD_PROVIDER>"
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"
@@ -33,6 +25,14 @@ spec:
           kubefirstTeam: "<KUBEFIRST_TEAM>"
           kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
           useTelemetry: "<USE_TELEMETRY>"
+        mongodb:
+          image:
+            repository: arm64v8/mongo
+            tag: latest
+          persistence:
+            mountPath: /data/db
+          extraEnvVarsSecret: kubefirst-initial-secrets
+        kubefirst-api:
           env:
             - name: IN_CLUSTER
               value: "'true'"
