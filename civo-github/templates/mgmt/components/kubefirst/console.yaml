@@ -9,22 +9,27 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.0-rc48
+    targetRevision: 2.3.0-rc49
     chart: kubefirst
     helm:
       values: |-
         global:
+          cloudProvider: "<CLOUD_PROVIDER>"
+          clusterId: "<CLUSTER_ID>"
+          clusterType: "<CLUSTER_TYPE>"
+          domainName: "<DOMAIN_NAME>"
+          gitProvider: "<GIT_PROVIDER>"
+          installMethod: "helm"
+          kubefirstClient: "<KUBEFIRST_CLIENT>"
+          kubefirstTeam: "<KUBEFIRST_TEAM>"
+          kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
           kubefirstVersion: "<KUBEFIRST_VERSION>"
+          useTelemetry: "<USE_TELEMETRY>"
         kubefirst-api-ee:
           env:
             - name: IN_CLUSTER
               value: "'true'"
         kubefirst-api:
-          clusterId: "<CLUSTER_ID>"
-          clusterType: "<CLUSTER_TYPE>"
-          useTelemetry: "'<USE_TELEMETRY>'"
-          kubefirstTeam: "'<KUBEFIRST_TEAM>'"
-          installMethod: "helm"
           env:
             - name: IN_CLUSTER
               value: "'true'"

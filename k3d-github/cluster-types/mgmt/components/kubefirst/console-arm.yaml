@@ -9,12 +9,22 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.0-rc47
+    targetRevision: 2.3.0-rc49
     chart: kubefirst
     helm:
       values: |-
         global:
-            kubefirstVersion: "<KUBEFIRST_VERSION>"
+          kubefirstVersion: "<KUBEFIRST_VERSION>"
+          cloudProvider: "<CLOUD_PROVIDER>"
+          clusterId: "<CLUSTER_ID>"
+          clusterType: "<CLUSTER_TYPE>"
+          domainName: "<DOMAIN_NAME>"
+          gitProvider: "<GIT_PROVIDER>"
+          installMethod: "helm"
+          kubefirstClient: "<KUBEFIRST_CLIENT>"
+          kubefirstTeam: "<KUBEFIRST_TEAM>"
+          kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
+          useTelemetry: "<USE_TELEMETRY>"
         mongodb:
           image:
             repository: arm64v8/mongo
@@ -23,11 +33,6 @@ spec:
             mountPath: /data/db
           extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
-          clusterId: "<CLUSTER_ID>"
-          clusterType: "<CLUSTER_TYPE>"
-          useTelemetry: "'<USE_TELEMETRY>'"
-          kubefirstTeam: "'<KUBEFIRST_TEAM>'"
-          installMethod: "helm"
           env:
             - name: IN_CLUSTER
               value: "'true'"
