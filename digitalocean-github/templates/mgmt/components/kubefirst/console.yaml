@@ -30,6 +30,19 @@ spec:
             - name: IN_CLUSTER
               value: "'true'"
         kubefirst-api:
+<<<<<<< HEAD
+=======
+          cloudProvider: "<CLOUD_PROVIDER>"
+          clusterId: "<CLUSTER_ID>"
+          clusterType: "<CLUSTER_TYPE>"
+          domainName: "<DOMAIN_NAME>"
+          gitProvider: "<GIT_PROVIDER>"
+          installMethod: "helm"
+          kubefirstClient: "<KUBEFIRST_CLIENT>"
+          kubefirstTeam: "<KUBEFIRST_TEAM>"
+          kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
+          useTelemetry: "<USE_TELEMETRY>"
+>>>>>>> bf2396ebc22b47bc9c76667f4d41ca10c7901919
           env:
             - name: IN_CLUSTER
               value: "'true'"
