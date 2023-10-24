@@ -44,8 +44,8 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   firewall_id = civo_firewall.kubefirst.id
   pools {
     label      = local.cluster_name
-    size       = "g4s.kube.medium"
-    node_count = 4
+    size       = "<MACHINE_TYPE>"
+    node_count = "<MACHINE_INSTANCE_COUNT>"
   }
 }
 
