@@ -51,7 +51,7 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   pools {
     label      = local.cluster_name
     size       = "<MACHINE_TYPE>"
-    node_count = "<MACHINE_INSTANCE_COUNT>"
+    node_count = "<MACHINE_TYPE_COUNT>"
   }
 }
 
