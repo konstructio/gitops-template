@@ -148,7 +148,7 @@ spec:
       resource "kubernetes_namespace_v1" "environment" {
         provider = "kubernetes.target"
         metadata {
-          name = "<WORKLOAD_ENVIRONMENT>"
+          name = "<WORKLOAD_CLUSTER_NAME>"
         }
       }
 
