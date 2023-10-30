@@ -16,6 +16,7 @@ spec:
         global:
             kubefirstVersion: "<KUBEFIRST_VERSION>"
         kubefirst-api:
+          isClusterZero: "'false'"
           cloudProvider: "<CLOUD_PROVIDER>"
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"

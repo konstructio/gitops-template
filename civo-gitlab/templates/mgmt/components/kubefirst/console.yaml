@@ -30,6 +30,7 @@ spec:
             - name: IN_CLUSTER
               value: "'true'"
         kubefirst-api:
+          isClusterZero: "'false'"
           env:
             - name: IN_CLUSTER
               value: "'true'"

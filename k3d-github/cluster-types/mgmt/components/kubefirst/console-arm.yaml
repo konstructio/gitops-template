@@ -33,6 +33,7 @@ spec:
             mountPath: /data/db
           extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
+          isClusterZero: "'false'"
           env:
             - name: IN_CLUSTER
               value: "'true'"
