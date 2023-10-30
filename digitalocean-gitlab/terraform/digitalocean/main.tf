@@ -43,8 +43,8 @@ resource "digitalocean_kubernetes_cluster" "kubefirst" {
 
   node_pool {
     name       = local.pool_name
-    size       = "<MACHINE_TYPE>"
-    node_count = "<MACHINE_TYPE_COUNT>"
+    size       = "<NODE_TYPE>"
+    node_count = "<NODE_COUNT>"
   }
 }
 

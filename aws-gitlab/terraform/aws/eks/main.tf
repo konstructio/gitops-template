@@ -78,7 +78,7 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
-    instance_types = ["<MACHINE_TYPE>"]
+    instance_types = ["<NODE_TYPE>"]
 
     # We are using the IRSA created below for permissions
     # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
@@ -97,9 +97,9 @@ module "eks" {
     }
     # Default node group - as provided by AWS EKS
     default_node_group = {
-      desired_size = "<MACHINE_TYPE_COUNT>"
-      min_size     = "<MACHINE_TYPE_COUNT>"
-      max_size     = "<MACHINE_TYPE_COUNT>"
+      desired_size = "<NODE_COUNT>"
+      min_size     = "<NODE_COUNT>"
+      max_size     = "<NODE_COUNT>"
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false

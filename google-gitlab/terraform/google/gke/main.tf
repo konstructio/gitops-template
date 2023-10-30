@@ -42,15 +42,15 @@ module "gke" {
   node_pools = [
     {
       name         = "kubefirst"
-      machine_type = var.instance_type
+      NODE_TYPE = var.instance_type
 
       // Autoscaling
       // PER ZONE
-      min_count = "<MACHINE_TYPE_COUNT>"
+      min_count = "<NODE_COUNT>"
       // PER ZONE
-      max_count = "<MACHINE_TYPE_COUNT>"
+      max_count = "<NODE_COUNT>"
       // PER ZONE
-      initial_node_count = "<MACHINE_TYPE_COUNT>"
+      initial_node_count = "<NODE_COUNT>"
 
       local_ssd_count = 0
       spot            = false

@@ -25,7 +25,7 @@ provider "vultr" {}
 locals {
   cluster_name         = "<CLUSTER_NAME>"
   pool_name            = "${local.cluster_name}-node-pool"
-  pool_instance_type   = "<MACHINE_TYPE>"
+  pool_instance_type   = "<NODE_TYPE>"
   kube_config_filename = "../../../kubeconfig"
   kubernetes_version   = "v1.28.2+1"
 }
@@ -39,9 +39,9 @@ resource "vultr_kubernetes" "kubefirst" {
     plan          = local.pool_instance_type
     label         = local.pool_name
     auto_scaler   = true
-    node_quantity = "<MACHINE_TYPE_COUNT>"
-    min_nodes     = "<MACHINE_TYPE_COUNT>"
-    max_nodes     = "<MACHINE_TYPE_COUNT>"
+    node_quantity = "<NODE_COUNT>"
+    min_nodes     = "<NODE_COUNT>"
+    max_nodes     = "<NODE_COUNT>"
   }
 }
 

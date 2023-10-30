@@ -50,8 +50,8 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   firewall_id = civo_firewall.kubefirst.id
   pools {
     label      = local.cluster_name
-    size       = "<MACHINE_TYPE>"
-    node_count = "<MACHINE_TYPE_COUNT>"
+    size       = "<NODE_TYPE>"
+    node_count = "<NODE_COUNT>"
   }
 }
 
