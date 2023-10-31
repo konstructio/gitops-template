@@ -2,6 +2,7 @@ name: release
 env:
   ARGO_NAMESPACE: argo
   ARGO_VERSION: v3.4.1
+  CONTAINER_REGISTRY_URL: '<CONTAINER_REGISTRY_URL>'
 on:
   push:
     branches:
@@ -49,7 +50,7 @@ jobs:
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-publish-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
-            -p containerRegistryURL="ghcr.io/${GITHUB_REPOSITORY_OWNER_PART_SLUG}/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}" \
+            -p containerRegistryURL="${CONTAINER_REGISTRY_URL}/${GITHUB_REPOSITORY_OWNER_PART_SLUG}/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}" \
             -p gitUrlNoProtocol="<GIT_FQDN>${GITHUB_REPOSITORY_OWNER_PART_SLUG}" \
             -p shortSha="${GITHUB_SHA_SHORT}" \
             --wait --log
