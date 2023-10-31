@@ -91,9 +91,9 @@ module "eks" {
   eks_managed_node_groups = {
     # Default node group - as provided by AWS EKS
     default_node_group = {
-      desired_size = "<NODE_COUNT>"
-      min_size     = "<NODE_COUNT>"
-      max_size     = "<NODE_COUNT>"
+      desired_size = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
+      min_size     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
+      max_size     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false

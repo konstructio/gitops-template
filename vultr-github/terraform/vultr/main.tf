@@ -39,9 +39,9 @@ resource "vultr_kubernetes" "kubefirst" {
     plan          = local.pool_instance_type
     label         = local.pool_name
     auto_scaler   = true
-    node_quantity = "<NODE_COUNT>"
-    min_nodes     = "<NODE_COUNT>"
-    max_nodes     = "<NODE_COUNT>"
+    node_quantity = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
+    min_nodes     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
+    max_nodes     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
   }
 }
 

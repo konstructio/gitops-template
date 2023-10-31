@@ -45,7 +45,7 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   pools {
     label      = local.cluster_name
     size       = "<NODE_TYPE>"
-    node_count = "<NODE_COUNT>"
+    node_count = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
   }
 }
 

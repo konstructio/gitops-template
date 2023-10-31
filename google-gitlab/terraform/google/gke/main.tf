@@ -46,11 +46,11 @@ module "gke" {
 
       // Autoscaling
       // PER ZONE
-      min_count = "<NODE_COUNT>"
+      min_count = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
       // PER ZONE
-      max_count = "<NODE_COUNT>"
+      max_count = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
       // PER ZONE
-      initial_node_count = "<NODE_COUNT>"
+      initial_node_count = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
 
       local_ssd_count = 0
       spot            = false

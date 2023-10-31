@@ -44,7 +44,7 @@ resource "digitalocean_kubernetes_cluster" "kubefirst" {
   node_pool {
     name       = local.pool_name
     size       = "<NODE_TYPE>"
-    node_count = tonumber("<NODE_COUNT>")
+    node_count = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
   }
 }
 
