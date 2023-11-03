@@ -31,7 +31,7 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   - namespace: default
     name: <WORKLOAD_CLUSTER_NAME>
-  - namespace: <WORKLOAD_ENVIRONMENT>
+  - namespace: <WORKLOAD_CLUSTER_NAME>
     name: <WORKLOAD_CLUSTER_NAME>
   - namespace: external-secrets-operator
     name: <WORKLOAD_CLUSTER_NAME>
