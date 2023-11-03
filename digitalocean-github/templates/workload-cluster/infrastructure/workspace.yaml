@@ -1,0 +1,21 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-infrastructure
+spec:
+  providerConfigRef: 
+    name: <WORKLOAD_CLUSTER_NAME>
+  forProvider:
+    source: Remote
+    module: git::https://github.com/kubewhatever-com/gitops//terraform/<WORKLOAD_CLUSTER_NAME>?ref=main
+    vars:
+    - key: cluster_name
+      value: <WORKLOAD_CLUSTER_NAME>
+    - key: cluster_region
+      value: nyc1
+    - key: environment
+      value: <WORKLOAD_CLUSTER_NAME>
+    - key: node_type
+      value: s-4vcpu-8gb
+    - key: node_count
+      value: "2"
