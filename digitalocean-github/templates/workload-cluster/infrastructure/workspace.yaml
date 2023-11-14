@@ -7,15 +7,15 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   forProvider:
     source: Remote
-    module: git::https://github.com/kubewhatever-com/gitops//terraform/<WORKLOAD_CLUSTER_NAME>?ref=main
+    module: <WORKLOAD_CLUSTER_TERRAFORM_MODULE_URL>
     vars:
     - key: cluster_name
       value: <WORKLOAD_CLUSTER_NAME>
     - key: cluster_region
-      value: nyc1
+      value: <WORKLOAD_CLUSTER_REGION>
     - key: environment
       value: <WORKLOAD_CLUSTER_NAME>
     - key: node_type
-      value: s-4vcpu-8gb
+      value: <WORKLOAD_NODE_TYPE>
     - key: node_count
-      value: "2"
+      value: <WORKLOAD_NODE_COUNT>
