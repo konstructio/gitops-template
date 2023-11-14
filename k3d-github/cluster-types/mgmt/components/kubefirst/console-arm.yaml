@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.3
+    targetRevision: 2.3.5
     chart: kubefirst
     helm:
       values: |-
@@ -33,6 +33,7 @@ spec:
             mountPath: /data/db
           extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api:
+          isClusterZero: "'false'"
           env:
             - name: IN_CLUSTER
               value: "'true'"

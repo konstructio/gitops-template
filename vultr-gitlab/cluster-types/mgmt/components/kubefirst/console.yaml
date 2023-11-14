@@ -9,13 +9,14 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.3
+    targetRevision: 2.3.5
     chart: kubefirst
     helm:
       values: |-
         global:
             kubefirstVersion: "<KUBEFIRST_VERSION>"
         kubefirst-api:
+          isClusterZero: "'false'"
           cloudProvider: "<CLOUD_PROVIDER>"
           clusterId: "<CLUSTER_ID>"
           clusterType: "<CLUSTER_TYPE>"

@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.3
+    targetRevision: 2.3.5
     chart: kubefirst
     helm:
       values: |-
@@ -26,6 +26,7 @@ spec:
           kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
           useTelemetry: "<USE_TELEMETRY>"
         kubefirst-api:
+          isClusterZero: "'false'"
           env:
             - name: IN_CLUSTER
               value: "'true'"
