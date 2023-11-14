@@ -42,7 +42,7 @@ module "gke" {
   node_pools = [
     {
       name         = "kubefirst"
-      NODE_TYPE = var.instance_type
+      node_type = var.instance_type
 
       // Autoscaling
       // PER ZONE
