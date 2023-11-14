@@ -19,8 +19,8 @@ spec:
                   value: '{{workflow.parameters.appName}}'
                 - name: branch
                   value: '{{workflow.parameters.branch}}'
-                - name: containerRegistryURL
-                  value: '{{workflow.parameters.containerRegistryURL}}'
+                - name: shortSha
+                  value: '{{workflow.parameters.shortSha}}'
                 - name: gitUrlNoProtocol
                   value: '{{workflow.parameters.gitUrlNoProtocol}}'
         - - name: checkout
