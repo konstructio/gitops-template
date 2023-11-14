@@ -28,7 +28,6 @@ provider "digitalocean" {
 locals {
   cluster_name         = "<CLUSTER_NAME>"
   pool_name            = "${local.cluster_name}-node-pool"
-  pool_instance_size   = "s-4vcpu-8gb"
   kube_config_filename = "../../../kubeconfig"
 }
 
