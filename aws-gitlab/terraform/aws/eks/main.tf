@@ -93,7 +93,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     iam_role_additional_policies = {
-      iam_role_name = "<CLUSTER_NAME>"
+      iam_role_name = "<CLUSTER_NAME>-ng"
       S3Access = "arn:aws:iam::126827061464:policy/cert-manager-cyje-77"
     }
     # Default node group - as provided by AWS EKS
