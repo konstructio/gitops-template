@@ -22,13 +22,13 @@ spec:
               cpu: 1
               memory: 1024Mi
         server:
+          secure: false
           serviceAccount:
             create: true
             name: argo-server
             annotations:
               iam.gke.io/gcp-service-account: argo-server-<CLUSTER_NAME>@<GOOGLE_PROJECT>.iam.gserviceaccount.com
           extraArgs:
-          - --secure
           - --auth-mode=client
           - --auth-mode=sso
           ingress:

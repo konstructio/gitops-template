@@ -22,7 +22,7 @@ spec:
               cpu: 1
               memory: 1024Mi
         server:
-          secure: false # true # used for origin certs
+          secure: false
           serviceAccount:
             create: true
             name: argo-server
