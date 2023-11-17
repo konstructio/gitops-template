@@ -22,8 +22,8 @@ spec:
               cpu: 1
               memory: 1024Mi
         server:
+          secure: false
           extraArgs:
-          - --secure
           - --auth-mode=client
           - --auth-mode=sso
           ingress:

@@ -22,6 +22,7 @@ spec:
               cpu: 1
               memory: 1024Mi
         server:
+          secure: false
           extraArgs:
           - --auth-mode=client
           - --auth-mode=server
