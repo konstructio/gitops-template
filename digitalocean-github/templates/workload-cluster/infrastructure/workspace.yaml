@@ -18,4 +18,4 @@ spec:
     - key: node_type
       value: <WORKLOAD_NODE_TYPE>
     - key: node_count
-      value: <WORKLOAD_NODE_COUNT>
+      value: "<WORKLOAD_NODE_COUNT>"
