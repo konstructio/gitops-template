@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.6-rc19
+    targetRevision: {{steps.output-next-chart-version.outputs.artifacts.repo-source}}
     chart: kubefirst
     helm:
       values: |-
