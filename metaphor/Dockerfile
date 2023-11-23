@@ -1,31 +1,22 @@
-FROM mitchpash/pnpm AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY pnpm-lock.yaml .npmr[c] ./
-
-RUN pnpm fetch
-
-FROM mitchpash/pnpm AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-RUN pnpm install -r
-
-RUN pnpm build
-
-FROM mitchpash/pnpm AS runner
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
 
-ENV NODE_ENV production
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+FROM base AS builder
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
+
+FROM base
 
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
-
-# Automatically leverage output traces to reduce image size 
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-# Some things are not allowed (see https://github.com/vercel/next.js/issues/38119#issuecomment-1172099259)
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
