@@ -2,7 +2,7 @@
 # kind: ExternalSecret
 # metadata:
 #   name: cloudflare-creds
-#   namespace: <WORKLOAD_ENVIRONMENT>
+#   namespace: <WORKLOAD_CLUSTER_NAME>
 #   annotations:
 #     argocd.argoproj.io/sync-wave: "0"
 # spec:
@@ -22,7 +22,7 @@
 # kind: OriginIssuer
 # metadata:
 #   name: cloudflare-origin-issuer
-#   namespace: <WORKLOAD_ENVIRONMENT>
+#   namespace: <WORKLOAD_CLUSTER_NAME>
 # spec:
 #   requestType: OriginECC
 #   auth:

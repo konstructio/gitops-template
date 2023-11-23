@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: <WORKLOAD_CLUSTER_NAME>-environment
+  name: registry-<WORKLOAD_CLUSTER_NAME>
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '100'
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    argocd.argoproj.io/sync-wave: '45'
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/environments/<WORKLOAD_CLUSTER_NAME>
+    path: registry/clusters/<WORKLOAD_CLUSTER_NAME>
     targetRevision: HEAD
   destination:
-    name: in-cluster
+    server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
     automated:
@@ -22,3 +22,9 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        maxDuration: 5m0s
+        factor: 2

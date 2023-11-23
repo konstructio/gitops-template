@@ -12,7 +12,7 @@ variable "instance_type" {
   description = "Instance type to use on cluster Nodes."
   type        = string
 
-  default = "e2-medium"
+  default = "<NODE_TYPE>"
 }
 
 variable "network" {

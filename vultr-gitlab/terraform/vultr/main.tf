@@ -25,7 +25,7 @@ provider "vultr" {}
 locals {
   cluster_name         = "<CLUSTER_NAME>"
   pool_name            = "${local.cluster_name}-node-pool"
-  pool_instance_type   = "vc2-4c-8gb"
+  pool_instance_type   = "<NODE_TYPE>"
   kube_config_filename = "../../../kubeconfig"
   kubernetes_version   = "v1.28.2+1"
 }
@@ -36,12 +36,12 @@ resource "vultr_kubernetes" "kubefirst" {
   version = local.kubernetes_version
 
   node_pools {
-    node_quantity = 5
     plan          = local.pool_instance_type
     label         = local.pool_name
     auto_scaler   = true
-    min_nodes     = 5
-    max_nodes     = 7
+    node_quantity = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
+    min_nodes     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
+    max_nodes     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
   }
 }
 
