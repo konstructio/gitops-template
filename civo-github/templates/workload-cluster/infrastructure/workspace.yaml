@@ -18,7 +18,7 @@ spec:
 
       variable "node_count" {
         type    = number
-        default = "3"
+        default = "<WORKLOAD_NODE_COUNT>"
       }
 
       locals {
