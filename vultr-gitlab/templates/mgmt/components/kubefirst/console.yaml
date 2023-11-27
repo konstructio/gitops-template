@@ -26,7 +26,7 @@ spec:
           kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
           useTelemetry: "<USE_TELEMETRY>"
         kubefirst-api:
-          isClusterZero: "'false'"
+          isClusterZero: false
           env:
             - name: IN_CLUSTER
               value: "'true'"
