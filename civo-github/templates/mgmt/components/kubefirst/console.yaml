@@ -26,20 +26,25 @@ spec:
           kubefirstVersion: "<KUBEFIRST_VERSION>"
           useTelemetry: "<USE_TELEMETRY>"
         kubefirst-api-ee:
-          env:
+          extraEnv:
             - name: IN_CLUSTER
-              value: "'true'"
+              value: "true"
         kubefirst-api:
+<<<<<<< Updated upstream
           isClusterZero: "'false'"
           env:
+=======
+          isClusterZero: "false"
+          extraEnv:
+>>>>>>> Stashed changes
             - name: IN_CLUSTER
-              value: "'true'"
+              value: "true"
             - name: CLUSTER_NAME
               value: "<CLUSTER_NAME>"
             - name: ENTERPRISE_API_URL
               value: "http://kubefirst-kubefirst-api-ee.kubefirst.svc.cluster.local"
         console:
-          isClusterZero: "'false'"
+          isClusterZero: "false"
           domain: "<DOMAIN_NAME>"
           extraEnvSecrets:
             CLIENT_ID:
