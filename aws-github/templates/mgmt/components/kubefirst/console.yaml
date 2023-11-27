@@ -30,13 +30,8 @@ spec:
             - name: IN_CLUSTER
               value: "true"
         kubefirst-api:
-<<<<<<< Updated upstream
-          isClusterZero: "'false'"
-          env:
-=======
           isClusterZero: "false"
           extraEnv:
->>>>>>> Stashed changes
             - name: IN_CLUSTER
               value: "true"
             - name: CLUSTER_NAME

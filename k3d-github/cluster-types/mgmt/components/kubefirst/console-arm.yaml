@@ -32,14 +32,8 @@ spec:
           persistence:
             mountPath: /data/db
           extraEnvVarsSecret: kubefirst-initial-secrets
-<<<<<<< Updated upstream
-        kubefirst-api:
-          isClusterZero: "'false'"
-          env:
-=======
         kubefirst-api-ee:
           extraEnv:
->>>>>>> Stashed changes
             - name: IN_CLUSTER
               value: "true"
         kubefirst-api:
