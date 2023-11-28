@@ -4,6 +4,11 @@ metadata:
   name: {{ include "metaphor.fullname" . }}
   labels:
     {{- include "metaphor.labels" . | nindent 4 }}
+  {{- with .Values.deploymentAnnotations }}
+  annotations:
+    {{- include "Values.annotations" . | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
