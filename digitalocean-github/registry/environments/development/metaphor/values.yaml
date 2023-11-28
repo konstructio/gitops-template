@@ -30,6 +30,7 @@ metaphor:
     console: https://kubefirst.<DOMAIN_NAME>
 
   clusterSecretStoreName: <WORKLOAD_CLUSTER_NAME>-vault-kv-secret
+  vaultSecretPath: <WORKLOAD_CLUSTER_NAME>/metaphor
   configs:
     configOne: <WORKLOAD_CLUSTER_NAME>-config-one
     configTwo: <WORKLOAD_CLUSTER_NAME>-config-two
