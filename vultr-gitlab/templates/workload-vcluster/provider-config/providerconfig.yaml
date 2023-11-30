@@ -8,7 +8,7 @@ spec:
   configuration: |
       terraform {
         backend "s3" {
-          endpoint ="https://nyc3.digitaloceanspaces.com"
+          endpoint = "<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
           bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           // Don't change this.
