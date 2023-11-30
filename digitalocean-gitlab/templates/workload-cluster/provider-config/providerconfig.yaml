@@ -1,0 +1,49 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  configuration: |
+      terraform {
+        backend "s3" {
+          endpoint = "nyc3.digitaloceanspaces.com"
+          key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
+          bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
+          // Don't change this.
+          region = "us-east-1"
+
+          skip_credentials_validation = true
+          skip_metadata_api_check     = true
+          skip_region_validation      = true
+          force_path_style            = true
+        }
+        required_providers {
+          digitalocean = {
+            source  = "digitalocean/digitalocean"
+            version = "~> 2.0"
+          }
+          kubernetes = {
+            source = "hashicorp/kubernetes"
+            version = "2.23.0"
+          }
+          vault = {
+            source = "hashicorp/vault"
+            version = "3.19.0"
+          }
+        }
+      }
+  credentials:
+  - filename: gen-nothing
+    source: None
+    secretRef:
+      namespace: crossplane-system
+      name: digitalocean-creds
+      key: token
+  - filename: .git-credentials
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: git-credentials
+      key: creds
