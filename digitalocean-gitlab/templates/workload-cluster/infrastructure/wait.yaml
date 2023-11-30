@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-infrastructure-wait
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  template:
+    spec:
+      serviceAccountName: argocd-server
+      containers:
+      - name: wait
+        image: bitnami/kubectl:1.25.12
+        command:
+        - /bin/sh
+        - -c
+        - |
+          while ! kubectl wait --for=jsonpath='{.status.conditions[0].status}'='True' workspace/<WORKLOAD_CLUSTER_NAME>-infrastructure; do echo "waiting for cluster to provision"; sleep 5; done
+      restartPolicy: Never
+  backoffLimit: 1
+
+
+
