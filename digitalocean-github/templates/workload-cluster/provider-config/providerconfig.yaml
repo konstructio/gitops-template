@@ -8,14 +8,16 @@ spec:
   configuration: |
       terraform {
         backend "s3" {
-          endpoint ="https://nyc3.digitaloceanspaces.com"
+          endpoint = "nyc3.digitaloceanspaces.com"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          bucket   = "k1-state-store-cyje-f0-y05ga7"
+          bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           // Don't change this.
           region = "us-east-1"
 
           skip_credentials_validation = true
           skip_metadata_api_check     = true
+          skip_region_validation      = true
+          force_path_style            = true
         }
         required_providers {
           digitalocean = {
