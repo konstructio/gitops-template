@@ -37,7 +37,7 @@ resource "vault_generic_secret" "crossplane_secrets" {
       VAULT_ADDR                     = "http://vault.vault.svc.cluster.local:8200"
       VAULT_TOKEN                    = var.vault_token
       password                       = var.gitlab_token
-      username                       = "kbot"
+      username                       = "<GITLAB_USER>"
       GOOGLE_APPLICATION_CREDENTIALS = "gcp-credentials"
     }
   )
