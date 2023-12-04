@@ -43,7 +43,7 @@ spec:
         echo "setting ./{{inputs.parameters.chartDir}}/Chart.yaml to version: ${NEW_CHART_VERSION}"
         sed -i "s/version:.*/version: ${NEW_CHART_VERSION}/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
         echo "setting ./{{inputs.parameters.chartDir}}/Chart.yaml to appVersion: {{inputs.parameters.shortSha}}"
-        sed -i "s/appVersion:.*/appVersion: {{inputs.parameters.shortSha}}/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
+        sed -i "s/appVersion:.*/appVersion: '{{inputs.parameters.shortSha}}'/g" /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
         echo "adjusted chart:"
         cat /src/{{inputs.parameters.appName}}/{{inputs.parameters.chartDir}}/Chart.yaml
     outputs:
