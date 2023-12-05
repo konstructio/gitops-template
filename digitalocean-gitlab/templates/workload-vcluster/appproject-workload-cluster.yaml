@@ -48,9 +48,9 @@ spec:
   - group: '*'
     kind: '*'
   roles:
-  - description: <CLUSTER_NAMEWORKLOAD_>-admin-role
+  - description: <WORKLOAD_CLUSTER_NAME>-admin-role
     groups:
     - admins
     name: admin-role
     policies:
-    - p, proj:<CLUSTER_NAMEWORKLOAD_>:admin-role, applications, *, <CLUSTER_NAMEWORKLOAD_>/*, allow
+    - p, proj:<WORKLOAD_CLUSTER_NAME>:admin-role, applications, *, <WORKLOAD_CLUSTER_NAME>/*, allow
