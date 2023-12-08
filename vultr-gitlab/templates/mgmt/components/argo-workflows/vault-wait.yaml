@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault-wait
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: <GITOPS_REPO_URL>
+    path: registry/clusters/<CLUSTER_NAME>/components/argo-workflows/wait
+    targetRevision: HEAD
+  destination:
+    name: in-cluster
+    namespace: vault
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Replace=true
