@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-cloudflare-cloudflare-origin-ca-issuer
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '41'
+spec:
+  project: <WORKLOAD_CLUSTER_NAME>
+  source:
+    repoURL: https://cloudflare.github.io/origin-ca-issuer/charts
+    chart: origin-ca-issuer
+    targetRevision: v0.5.0
+    helm:
+      values: |-
+        global:
+          rbac:
+            create: true
+        controller:
+          image:
+            repository: cloudflare/origin-ca-issuer
+            tag: v0.6.1
+            pullPolicy: Always
+  destination:
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

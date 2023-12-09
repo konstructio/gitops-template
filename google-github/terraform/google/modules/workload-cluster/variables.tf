@@ -1,5 +1,15 @@
-locals {
-  cluster_name = "<CLUSTER_NAME>"
+variable "cluster_name" {
+  description = "cluster name"
+  type        = string
+
+  default = "<CLUSTER_NAME>"
+}
+
+variable "environment" {
+  description = "environment for the clusters"
+  type        = string
+
+  default = "<CLUSTER_NAME>"
 }
 
 variable "google_region" {
@@ -13,14 +23,14 @@ variable "network_name" {
   description = "The name of the created network."
   type        = string
 
-  default = "kubefirst"
+  default = "<CLUSTER_NAME>"
 }
 
 variable "node_count" {
   description = "The node count per zone for the cluster."
   type        = string
 
-  default = "2"
+  default = "<NODE_COUNT>"
 }
 
 variable "project" {
@@ -37,7 +47,3 @@ variable "force_destroy" {
   default = "false"
 }
 
-variable "uniqueness" {
-  description = "variable used to avoid collision amongst immutable resource names"
-  type        = string
-}

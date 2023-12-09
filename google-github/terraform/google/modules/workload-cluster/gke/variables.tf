@@ -12,7 +12,7 @@ variable "instance_type" {
   description = "Instance type to use on cluster Nodes."
   type        = string
 
-  default = "<NODE_TYPE>"
+  default = "e2-standard-4"
 }
 
 variable "network" {
@@ -23,7 +23,6 @@ variable "network" {
 variable "node_count" {
   description = "The node count per zone for the cluster."
   type        = string
-  default = "<NODE_COUNT>"
 }
 
 variable "project" {
