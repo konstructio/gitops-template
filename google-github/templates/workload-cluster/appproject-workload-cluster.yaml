@@ -12,7 +12,7 @@ spec:
   description: <WORKLOAD_CLUSTER_NAME> description
   # Allow manifests to deploy from any Git repos
   sourceRepos:
-  - 'git@github.com:barbekubes-com/gitops.git'
+  - '<GITOPS_REPO_URL>'
   - 'https://kubernetes.github.io/ingress-nginx'
   - 'https://kubernetes-sigs.github.io/external-dns'
   - 'https://charts.jetstack.io'
