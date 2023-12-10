@@ -42,7 +42,7 @@ module "gke" {
   node_pools = [
     {
       name         = "${var.cluster_name}-node-pool"
-      node_type = var.instance_type
+      node_type = var.node_type
 
       // Autoscaling
       // PER ZONE

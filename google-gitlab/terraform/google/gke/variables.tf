@@ -8,7 +8,7 @@ variable "google_region" {
   type        = string
 }
 
-variable "instance_type" {
+variable "node_type" {
   description = "Instance type to use on cluster Nodes."
   type        = string
 
