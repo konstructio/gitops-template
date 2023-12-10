@@ -26,7 +26,7 @@ resource "vault_generic_secret" "crossplane_secrets" {
       VAULT_TOKEN                    = var.vault_token
       password                       = var.github_token
       username                       = "<GITHUB_USER>"
-      GOOGLE_APPLICATION_CREDENTIALS = "gcp-credentials"
+      GOOGLE_APPLICATION_CREDENTIALS = "gcp-credentials.json"
     }
   )
 

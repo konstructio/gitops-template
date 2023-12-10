@@ -12,13 +12,13 @@ spec:
     - key: cluster_name
       value: <WORKLOAD_CLUSTER_NAME>
     - key: environment
-      value: <WORKLOAD_ENVIRONMENT>
+      value: "<WORKLOAD_CLUSTER_NAME>"
     - key: google_region
       value: <WORKLOAD_CLUSTER_REGION>
     - key: network_name
       value: <WORKLOAD_CLUSTER_NAME>
     - key: node_count
-      value: <WORKLOAD_NODE_COUNT>
+      value: "<WORKLOAD_NODE_COUNT>"
     - key: project
       value: <GOOGLE_PROJECT>
     - key: force_destroy

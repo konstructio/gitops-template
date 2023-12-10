@@ -35,7 +35,7 @@ spec:
       namespace: crossplane-system
       name: git-credentials
       key: creds
-  - filename: gcp-credentials
+  - filename: gcp-credentials.json
     source: Secret
     secretRef:
       namespace: crossplane-system
