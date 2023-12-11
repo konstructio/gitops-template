@@ -1,0 +1,19 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-infrastructure
+spec:
+  providerConfigRef: 
+    name: <WORKLOAD_CLUSTER_NAME>
+  forProvider:
+    source: Remote
+    module: git::https://github.com/barbekubes-com/gitops.git//terraform/aws/modules/workload-cluster?ref=main
+    vars:
+    - key: cluster_name
+      value: "<WORKLOAD_CLUSTER_NAME>"
+    - key: cluster_region
+      value: "us-east-2"
+    - key: node_count
+      value: "3"
+    - key: node_type
+      value: "m5.large"

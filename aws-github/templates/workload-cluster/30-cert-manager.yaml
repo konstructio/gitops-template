@@ -1,12 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: <WORKLOAD_CLUSTER_NAME>-cert-manager
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '10'
+    argocd.argoproj.io/sync-wave: '30'
 spec:
-  project: default
+  project: <WORKLOAD_CLUSTER_NAME>
   source:
     repoURL: https://charts.jetstack.io
     targetRevision: v1.11.0
@@ -16,11 +18,11 @@ spec:
           create: true
           name: cert-manager
           annotations:
-            eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/cert-manager-<CLUSTER_NAME>'
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::126827061464:role/cert-manager-<WORKLOAD_CLUSTER_NAME>'
         installCRDs: true
     chart: cert-manager
   destination:
-    server: https://kubernetes.default.svc
+    name: <WORKLOAD_CLUSTER_NAME>
     namespace: cert-manager
   syncPolicy:
     automated:
