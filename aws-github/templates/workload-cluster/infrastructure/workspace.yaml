@@ -7,7 +7,7 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   forProvider:
     source: Remote
-    module: git::https://github.com/barbekubes-com/gitops.git//terraform/aws/modules/workload-cluster?ref=main
+    module: <WORKLOAD_CLUSTER_TERRAFORM_MODULE_URL>
     vars:
     - key: cluster_name
       value: "<WORKLOAD_CLUSTER_NAME>"
