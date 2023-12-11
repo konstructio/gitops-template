@@ -132,6 +132,6 @@ resource "kubernetes_config_map" "kubefirst_cm" {
   }
 
   data = {
-    mgmt_cluster_id = "x8x68z"
+    mgmt_cluster_id = "<CLUSTER_ID>"
   }
 }

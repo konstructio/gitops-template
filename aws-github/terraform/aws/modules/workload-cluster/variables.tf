@@ -10,7 +10,7 @@ variable "cluster_region" {
 
 variable "node_count" {
   description = "The node count for the node group"
-  default     = "6"
+  default     = "2"
   type        = string
 }
 
