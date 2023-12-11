@@ -21,7 +21,7 @@ spec:
           name: external-dns
           annotations:
             eks.amazonaws.com/role-arn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/external-dns-<WORKLOAD_CLUSTER_NAME>'
-        provider: cloudflare
+        provider: <EXTERNAL_DNS_PROVIDER_NAME>
         sources:
         - ingress
         domainFilters:
