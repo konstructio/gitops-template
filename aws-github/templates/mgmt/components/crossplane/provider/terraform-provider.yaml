@@ -8,7 +8,7 @@ spec:
   controllerConfigRef:
     name: terraform-config
   ignoreCrossplaneConstraints: false
-  package: xpkg.upbound.io/upbound/provider-terraform:v0.2.0
+  package: xpkg.upbound.io/upbound/provider-terraform:v0.12.0
   packagePullPolicy: IfNotPresent
   revisionActivationPolicy: Automatic
   revisionHistoryLimit: 1
