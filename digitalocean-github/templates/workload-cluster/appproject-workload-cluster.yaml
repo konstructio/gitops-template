@@ -5,12 +5,10 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
-  
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   description: <WORKLOAD_CLUSTER_NAME> description
-  
   sourceRepos:
   - '<GITOPS_REPO_URL>'
   - 'https://kubernetes.github.io/ingress-nginx'
@@ -23,7 +21,6 @@ spec:
   - 'https://charts.loft.sh'
   - 'https://github.com/cloudflare/origin-ca-issuer'
   - 'https://cloudflare.github.io/origin-ca-issuer/charts'
-
   destinations:
   - namespace: external-dns
     name: <WORKLOAD_CLUSTER_NAME>
@@ -43,7 +40,6 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   - namespace: kube-system
     name: <WORKLOAD_CLUSTER_NAME>
-  
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'

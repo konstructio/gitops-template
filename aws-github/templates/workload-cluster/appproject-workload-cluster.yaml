@@ -5,14 +5,12 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
-  # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   description: <WORKLOAD_CLUSTER_NAME> description
-  # Allow manifests to deploy from any Git repos
   sourceRepos:
-  - 'git@github.com:barbekubes-com/gitops.git'
+  - '<GITOPS_REPO_URL>'
   - 'https://kubernetes.github.io/ingress-nginx'
   - 'https://kubernetes-sigs.github.io/external-dns'
   - 'https://charts.jetstack.io'
@@ -23,7 +21,6 @@ spec:
   - 'https://charts.loft.sh'
   - 'https://github.com/cloudflare/origin-ca-issuer'
   - 'https://cloudflare.github.io/origin-ca-issuer/charts'
-  # Only permit applications to deploy to the guestbook namespace in the same cluster
   destinations:
   - namespace: external-dns
     name: <WORKLOAD_CLUSTER_NAME>
@@ -43,7 +40,6 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   - namespace: kube-system
     name: <WORKLOAD_CLUSTER_NAME>
-  # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'

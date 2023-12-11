@@ -12,8 +12,8 @@ spec:
     - key: cluster_name
       value: "<WORKLOAD_CLUSTER_NAME>"
     - key: cluster_region
-      value: "us-east-2"
+      value: "<WORKLOAD_CLUSTER_REGION>"
     - key: node_count
-      value: "3"
+      value: "<WORKLOAD_NODE_COUNT>"
     - key: node_type
-      value: "m5.large"
+      value: "<WORKLOAD_NODE_TYPE>"
