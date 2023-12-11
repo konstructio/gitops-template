@@ -21,7 +21,7 @@ resource "vault_generic_secret" "clusters" {
       host                    = module.eks.cluster_endpoint
       cluster_name            = var.cluster_name
       environment             = var.cluster_name
-      argocd_role_arn         = "arn:aws:iam::126827061464:role/argocd-kray-one"
+      argocd_role_arn         = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<WORKLOAD_CLUSTER_NAME>"
     }
   )
   depends_on = [ module.eks ]
