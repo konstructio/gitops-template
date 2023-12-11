@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/default_node_group-eks-node-group-20231210033716661500000003
+      username: system:node:{{EC2PrivateDNSName}}
+    - "groups":
+      - "system:masters"
+      "rolearn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"
+      "username": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"
+    - "groups":
+      - "system:masters"
+      "rolearn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      "username": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
