@@ -8,7 +8,7 @@ data:
     - groups:
       - system:bootstrappers
       - system:nodes
-      rolearn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/default_node_group-eks-node-group-20231210033716661500000003
+      rolearn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/<EKS_NODE_ROLE_ARN>
       username: system:node:{{EC2PrivateDNSName}}
     - "groups":
       - "system:masters"
