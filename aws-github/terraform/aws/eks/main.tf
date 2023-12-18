@@ -345,6 +345,26 @@ module "argo_workflows" {
   tags = local.tags
 }
 
+module "argocd" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.32.0"
+
+  role_name = "argocd-${local.name}"
+  role_policy_arns = {
+    argocd = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["argocd:argocd-application-controller", "argocd:argocd-server"]
+    }
+  }
+
+  tags = local.tags
+}
+
 module "atlantis" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.32.0"
