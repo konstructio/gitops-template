@@ -1,6 +1,6 @@
 
 data "vault_generic_secret" "cluster" {
-  path = "secret/clusters/first-try"
+  path = "secret/clusters/<WORKLOAD_CLUSTER_NAME>"
 }
 
 data "aws_eks_cluster" "cluster" {

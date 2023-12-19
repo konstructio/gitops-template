@@ -8,9 +8,9 @@ spec:
   configuration: |
       terraform {
         backend "s3" {
-          bucket   = "k1-state-store-kray-one-gwa4lf"
+          bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          region = "us-east-2"
+          region = "<CLUSTER_REGION>"
           encrypt = true
         }
         required_providers {
@@ -29,7 +29,7 @@ spec:
         }
       }
       provider "aws" {
-        region = "us-east-2"
+        region = "<WORKLOAD_CLUSTER_REGION>"
       }
   credentials:
   - filename: gen-nothing
