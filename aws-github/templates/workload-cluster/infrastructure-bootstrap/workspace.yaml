@@ -7,4 +7,4 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   forProvider:
     source: Remote
-    module: <WORKLOAD_CLUSTER_TERRAFORM_MODULE_URL>
+    module: <WORKLOAD_CLUSTER_BOOTSTRAP_TERRAFORM_MODULE_URL>

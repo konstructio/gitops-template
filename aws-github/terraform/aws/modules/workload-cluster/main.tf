@@ -426,7 +426,7 @@ resource "vault_generic_secret" "clusters" {
 
   data_json = jsonencode(
     {
-      cluster_ca_certificate  = base64decode(module.eks.cluster_certificate_authority_data)
+      cluster_ca_certificate  = module.eks.cluster_certificate_authority_data
       host                    = module.eks.cluster_endpoint
       cluster_name            = var.cluster_name
       environment             = var.cluster_name
