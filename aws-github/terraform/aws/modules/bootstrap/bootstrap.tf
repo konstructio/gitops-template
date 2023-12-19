@@ -12,7 +12,7 @@ data "aws_eks_cluster_auth" "cluster" {
 }
 
 provider "kubernetes" {
-  host                   = data.vault_generic_secret.cluster.data["cluster_endpoint"]
+  host                   = data.vault_generic_secret.cluster.data["host"]
   cluster_ca_certificate = base64decode(data.vault_generic_secret.cluster.data["cluster_ca_certificate"])
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
