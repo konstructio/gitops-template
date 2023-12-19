@@ -54,7 +54,21 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-  manage_aws_auth_configmap = false
+  manage_aws_auth_configmap = true
+  
+  aws_auth_roles = [
+    # managed node group is automatically added to the configmap
+    {
+      rolearn  = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"
+      username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"
+      groups   = ["system:masters"]
+    },
+    {
+      rolearn  = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      groups   = ["system:masters"]
+    },
+  ]
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
@@ -405,4 +419,18 @@ resource "aws_iam_policy" "external_dns" {
   ]
 }
 EOT
+}
+
+resource "vault_generic_secret" "clusters" {
+  path = "secret/clusters/${var.cluster_name}"
+
+  data_json = jsonencode(
+    {
+      cluster_ca_certificate  = base64decode(module.eks.cluster_certificate_authority_data)
+      host                    = module.eks.cluster_endpoint
+      cluster_name            = var.cluster_name
+      environment             = var.cluster_name
+      argocd_role_arn         = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+    }
+  )
 }

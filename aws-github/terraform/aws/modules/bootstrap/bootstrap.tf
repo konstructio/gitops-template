@@ -1,30 +1,20 @@
+
+data "vault_generic_secret" "cluster" {
+  path = "secret/clusters/first-try"
+}
+
 data "aws_eks_cluster" "cluster" {
-  name = var.cluster_name
+  name = data.vault_generic_secret.cluster.data["cluster_name"]
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = var.cluster_name
+  name = data.vault_generic_secret.cluster.data["cluster_name"]
 }
 
 provider "kubernetes" {
-  host                   = module.eks.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data != null ? module.eks.cluster_certificate_authority_data : "")
+  host                   = data.vault_generic_secret.cluster.data["cluster_endpoint"]
+  cluster_ca_certificate = base64decode(data.vault_generic_secret.cluster.data["cluster_ca_certificate"])
   token                  = data.aws_eks_cluster_auth.cluster.token
-}
-
-resource "vault_generic_secret" "clusters" {
-  path = "secret/clusters/${var.cluster_name}"
-
-  data_json = jsonencode(
-    {
-      cluster_ca_certificate  = base64decode(module.eks.cluster_certificate_authority_data)
-      host                    = module.eks.cluster_endpoint
-      cluster_name            = var.cluster_name
-      environment             = var.cluster_name
-      argocd_role_arn         = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
-    }
-  )
-  depends_on = [ module.eks ]
 }
 
 resource "kubernetes_namespace_v1" "external_dns" {
@@ -56,7 +46,7 @@ resource "kubernetes_namespace_v1" "external_secrets_operator" {
 
 resource "kubernetes_namespace_v1" "environment" {
   metadata {
-    name = var.cluster_name
+    name = data.vault_generic_secret.cluster.data["cluster_name"]
   }
 }
 
@@ -83,7 +73,7 @@ data "vault_generic_secret" "external_secrets_operator" {
 
 resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
   metadata {
-    name      = "${var.cluster_name}-cluster-vault-bootstrap"
+    name      = "${data.vault_generic_secret.cluster.data["cluster_name"]}-cluster-vault-bootstrap"
     namespace = kubernetes_namespace_v1.environment.metadata.0.name
   }
   data = {
@@ -94,7 +84,7 @@ resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
 
 resource "kubernetes_secret_v1" "external_secrets_operator" {
   metadata {
-    name      = "${var.cluster_name}-cluster-vault-bootstrap"
+    name      = "${data.vault_generic_secret.cluster.data["cluster_name"]}-cluster-vault-bootstrap"
     namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name
   }
   data = {
@@ -132,6 +122,6 @@ resource "kubernetes_config_map" "kubefirst_cm" {
   }
 
   data = {
-    mgmt_cluster_id = "<CLUSTER_ID>"
+    mgmt_cluster_id = "8ikfaj"
   }
 }

@@ -1,0 +1,10 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-infrastructure-bootstrap
+spec:
+  providerConfigRef: 
+    name: <WORKLOAD_CLUSTER_NAME>
+  forProvider:
+    source: Remote
+    module: <WORKLOAD_CLUSTER_TERRAFORM_MODULE_URL>
