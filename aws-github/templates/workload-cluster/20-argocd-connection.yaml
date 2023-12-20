@@ -26,7 +26,7 @@ spec:
               },
               "tlsClientConfig": {
                   "insecure": false,
-                  "caData": "{{ .cluster_ca_certificate | b64enc }}"
+                  "caData": "{{ .cluster_ca_certificate }}"
               }
           }
   secretStoreRef:
