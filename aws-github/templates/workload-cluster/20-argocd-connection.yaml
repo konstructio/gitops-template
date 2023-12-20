@@ -21,7 +21,7 @@ spec:
         config: |
           {
               "awsAuthConfig": {
-                  "clusterName": "{{ .cluster_name }}"
+                  "clusterName": "{{ .cluster_name }}",
                   "roleARN": "{{ .argocd_role_arn }}"
               },
               "tlsClientConfig": {
