@@ -1,0 +1,5 @@
+{
+  "argocd": {
+    "fileMatch": ["templates/.+\\.yaml$"]
+  }
+}
