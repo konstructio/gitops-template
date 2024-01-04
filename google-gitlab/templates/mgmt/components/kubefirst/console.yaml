@@ -28,6 +28,7 @@ spec:
         kubefirst-api-ee:
           extraEnv:
             IN_CLUSTER: "true"
+            SAAS_API_URL: "https://saas-api-development.mgmt-20.kubefirst.com"
         kubefirst-api:
           isClusterZero: "false"
           extraEnv:
@@ -37,6 +38,9 @@ spec:
         console:
           isClusterZero: "false"
           domain: "<DOMAIN_NAME>"
+          extraEnv:
+            SAAS_API_URL: "https://saas-api-development.mgmt-20.kubefirst.com"
+            SAAS_URL: "https://saas-development.mgmt-20.kubefirst.com"
           extraEnvSecrets:
             CLIENT_ID:
               name: kubefirst-console-secrets
