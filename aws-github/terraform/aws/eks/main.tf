@@ -74,7 +74,27 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-  manage_aws_auth_configmap = false
+  manage_aws_auth_configmap = true
+  
+  aws_auth_roles = [
+    # managed node group is automatically added to the configmap
+    {
+      rolearn  = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"
+      username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"
+      groups   = ["system:masters"]
+    },
+    {
+      rolearn  = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      groups   = ["system:masters"]
+    },
+    {
+      rolearn  = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
+      username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
+      groups   = ["system:masters"]
+    },
+  ]
+
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
@@ -145,7 +165,7 @@ module "vpc" {
 
 module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name             = upper("VPC-CNI-IRSA-<CLUSTER_NAME>")
   attach_vpc_cni_policy = true
@@ -166,7 +186,7 @@ module "vpc_cni_irsa" {
 
 module "aws_ebs_csi_driver" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name = upper("EBS-CSI-DRIVER-<CLUSTER_NAME>")
 
@@ -328,7 +348,7 @@ EOT
 
 module "argo_workflows" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name = "argo-${local.name}"
   role_policy_arns = {
@@ -345,9 +365,29 @@ module "argo_workflows" {
   tags = local.tags
 }
 
+module "argocd" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.32.0"
+
+  role_name = "argocd-${local.name}"
+  role_policy_arns = {
+    argocd = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["argocd:argocd-application-controller", "argocd:argocd-server"]
+    }
+  }
+
+  tags = local.tags
+}
+
 module "atlantis" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name = "atlantis-${local.name}"
   role_policy_arns = {
@@ -365,7 +405,7 @@ module "atlantis" {
 
 module "cert_manager" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name = "cert-manager-${local.name}"
   role_policy_arns = {
@@ -415,7 +455,7 @@ EOT
 
 module "chartmuseum" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name = "chartmuseum-${local.name}"
   role_policy_arns = {
@@ -431,29 +471,64 @@ module "chartmuseum" {
   tags = local.tags
 }
 
-module "crossplane" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+module "crossplane_custom_trust" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "5.33.0"
 
+  create_role = true
 
   role_name = "crossplane-${local.name}"
-  role_policy_arns = {
-    crossplane = "arn:aws:iam::aws:policy/AdministratorAccess",
-  }
-  assume_role_condition_test = "StringLike"
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["crossplane-system:crossplane-provider-terraform-*"]
+
+  create_custom_role_trust_policy = true
+  custom_role_trust_policy        = data.aws_iam_policy_document.custom_trust_policy.json
+  custom_role_policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+}
+
+data "aws_iam_policy_document" "crossplane_custom_trust_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider_arn}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "${module.eks.oidc_provider_arn}:sub"
+      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-*"]
+    }
+
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
     }
   }
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
 
-  tags = local.tags
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"]
+    }
+  }
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-${local.name}"]
+    }
+  }
 }
 
 module "ecr_publish_permissions_sync" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name = "ecr-publish-permissions-sync-${local.name}"
   role_policy_arns = {
@@ -472,7 +547,7 @@ module "ecr_publish_permissions_sync" {
 
 module "external_dns" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name = "external-dns-${local.name}"
   role_policy_arns = {
@@ -523,7 +598,7 @@ EOT
 
 module "vault" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
+  version = "5.32.0"
 
   role_name = "vault-${local.name}"
   role_policy_arns = {
