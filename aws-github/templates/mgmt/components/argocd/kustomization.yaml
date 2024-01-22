@@ -13,6 +13,10 @@ resources:
 patchesStrategicMerge:
   - argocd-cm.yaml
   - argocd-cmd-params-cm.yaml
+  - argocd-server-sa.yaml
+  - argocd-application-controller-sa.yaml
+  - argocd-applicationset-controller-sa.yaml
+  - argocd-server-deployment.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

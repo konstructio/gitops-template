@@ -1,0 +1,11 @@
+apiVersion: v1 
+kind: ServiceAccount
+metadata:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>
+  labels:    
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: argocd-applicationset-controller
+    app.kubernetes.io/part-of: argocd-applicationset
+  name: argocd-applicationset-controller
+  namespace: argocd
