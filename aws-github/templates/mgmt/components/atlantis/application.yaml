@@ -13,6 +13,9 @@ spec:
     targetRevision: 4.11.2
     helm:
       values: |-
+        image:
+          repository: public.ecr.aws/kubefirst/atlantis
+          tag: "0.0.5"
         statefulSet:
           annotations:
             secret.reloader.stakater.com/reload: "atlantis-secrets"

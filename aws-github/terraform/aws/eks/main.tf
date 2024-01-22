@@ -88,6 +88,11 @@ module "eks" {
       username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
       groups   = ["system:masters"]
     },
+    {
+      rolearn  = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
+      username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
+      groups   = ["system:masters"]
+    },
   ]
 
 
@@ -466,24 +471,59 @@ module "chartmuseum" {
   tags = local.tags
 }
 
-module "crossplane" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
+module "crossplane_custom_trust" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "5.33.0"
 
+  create_role = true
 
   role_name = "crossplane-${local.name}"
-  role_policy_arns = {
-    crossplane = "arn:aws:iam::aws:policy/AdministratorAccess",
-  }
-  assume_role_condition_test = "StringLike"
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["crossplane-system:crossplane-provider-terraform-*"]
+
+  create_custom_role_trust_policy = true
+  custom_role_trust_policy        = data.aws_iam_policy_document.custom_trust_policy.json
+  custom_role_policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+}
+
+data "aws_iam_policy_document" "crossplane_custom_trust_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider_arn}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "${module.eks.oidc_provider_arn}:sub"
+      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-*"]
+    }
+
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
     }
   }
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
 
-  tags = local.tags
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"]
+    }
+  }
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-${local.name}"]
+    }
+  }
 }
 
 module "ecr_publish_permissions_sync" {

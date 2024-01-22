@@ -8,3 +8,6 @@ spec:
   forProvider:
     source: Remote
     module: <WORKLOAD_CLUSTER_BOOTSTRAP_TERRAFORM_MODULE_URL>
+    vars:
+    - key: cluster_name
+      value: "<WORKLOAD_CLUSTER_NAME>"

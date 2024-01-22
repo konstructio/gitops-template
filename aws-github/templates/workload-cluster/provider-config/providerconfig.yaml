@@ -10,7 +10,7 @@ spec:
         backend "s3" {
           bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          region = "<CLUSTER_REGION>"
+          region = "<CLOUD_REGION>"
           encrypt = true
         }
         required_providers {

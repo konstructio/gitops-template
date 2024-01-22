@@ -54,21 +54,16 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-  manage_aws_auth_configmap = true
+  manage_aws_auth_configmap = false
   
-  aws_auth_roles = [
-    # managed node group is automatically added to the configmap
-    {
-      rolearn  = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"
-      username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"
-      groups   = ["system:masters"]
-    },
-    {
-      rolearn  = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
-      username = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
-      groups   = ["system:masters"]
-    },
-  ]
+  # aws_auth_roles = [
+  #   # managed node group is automatically added to the configmap
+  #   {
+  #     rolearn  = ""
+  #     username = ""
+  #     groups   = ["system:masters"]
+  #   },
+  # ]
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"

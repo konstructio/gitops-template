@@ -1,19 +1,19 @@
 
 data "vault_generic_secret" "cluster" {
-  path = "secret/clusters/<WORKLOAD_CLUSTER_NAME>"
+  path = "secret/clusters/${var.cluster_name}"
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = data.vault_generic_secret.cluster.data["cluster_name"]
+  name = var.cluster_name
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = data.vault_generic_secret.cluster.data["cluster_name"]
+  name = var.cluster_name
 }
 
 provider "kubernetes" {
   host                   = data.vault_generic_secret.cluster.data["host"]
-  cluster_ca_certificate = data.vault_generic_secret.cluster.data["cluster_ca_certificate"]
+  cluster_ca_certificate = base64decode(data.vault_generic_secret.cluster.data["cluster_ca_certificate"])
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
@@ -46,7 +46,7 @@ resource "kubernetes_namespace_v1" "external_secrets_operator" {
 
 resource "kubernetes_namespace_v1" "environment" {
   metadata {
-    name = data.vault_generic_secret.cluster.data["cluster_name"]
+    name = var.cluster_name
   }
 }
 
@@ -73,7 +73,7 @@ data "vault_generic_secret" "external_secrets_operator" {
 
 resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
   metadata {
-    name      = "${data.vault_generic_secret.cluster.data["cluster_name"]}-cluster-vault-bootstrap"
+    name      = "${var.cluster_name}-cluster-vault-bootstrap"
     namespace = kubernetes_namespace_v1.environment.metadata.0.name
   }
   data = {
@@ -84,7 +84,7 @@ resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
 
 resource "kubernetes_secret_v1" "external_secrets_operator" {
   metadata {
-    name      = "${data.vault_generic_secret.cluster.data["cluster_name"]}-cluster-vault-bootstrap"
+    name      = "${var.cluster_name}-cluster-vault-bootstrap"
     namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name
   }
   data = {
