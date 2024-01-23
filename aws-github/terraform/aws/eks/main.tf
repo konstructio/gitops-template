@@ -480,7 +480,7 @@ module "crossplane_custom_trust" {
   role_name = "crossplane-${local.name}"
 
   create_custom_role_trust_policy = true
-  custom_role_trust_policy        = data.aws_iam_policy_document.custom_trust_policy.json
+  custom_role_trust_policy        = data.aws_iam_policy_document.crossplane_custom_trust_policy.json
   custom_role_policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
 }
 
