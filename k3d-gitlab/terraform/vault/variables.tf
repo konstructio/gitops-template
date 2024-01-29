@@ -1,3 +1,8 @@
+variable "atlantis_repo_webhook_secret" {
+  default = ""
+  type    = string
+}
+
 variable "aws_access_key_id" {
   default = ""
   type    = string
@@ -20,11 +25,6 @@ variable "gitlab_token" {
   type = string
 }
 
-variable "atlantis_repo_webhook_secret" {
-  default = ""
-  type    = string
-}
-
 variable "kbot_ssh_private_key" {
   default = ""
   type    = string
@@ -35,17 +35,22 @@ variable "kbot_ssh_public_key" {
   type    = string
 }
 
+variable "kubernetes_api_endpoint" {
+  default = ""
+  type    = string
+}
+
+variable "ngrok_authtoken" {
+  default = ""
+  type    = string
+}
+
 variable "owner_group_id" {
   description = "gitlab owner group id"
   type        = string
 }
 
 variable "vault_token" {
-  default = ""
-  type    = string
-}
-
-variable "kubernetes_api_endpoint" {
   default = ""
   type    = string
 }
