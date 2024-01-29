@@ -7,6 +7,7 @@ resource "vault_generic_secret" "atlantis_ngrok_secrets" {
       GIT_OWNER      = "<GITHUB_OWNER>",
       GIT_TOKEN      = var.github_token,
       GIT_REPOSITORY = "gitops",
+      NGROK_AUTHTOKEN = "<NGROK_AUTHTOKEN>",
     }
   )
 
