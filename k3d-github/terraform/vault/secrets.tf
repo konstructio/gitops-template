@@ -7,6 +7,7 @@ resource "vault_generic_secret" "atlantis_ngrok_secrets" {
       GIT_OWNER      = "<GITHUB_OWNER>",
       GIT_TOKEN      = var.github_token,
       GIT_REPOSITORY = "gitops",
+      NGROK_AUTHTOKEN = var.ngrok_authtoken,
     }
   )
 
@@ -162,6 +163,7 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,
       TF_VAR_kubernetes_api_endpoint      = var.kubernetes_api_endpoint,
+      TF_VAR_ngrok_authtoken              = var.ngrok_authtoken,
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_token                  = var.vault_token,
       VAULT_ADDR                          = "http://vault.vault.svc.cluster.local:8200",

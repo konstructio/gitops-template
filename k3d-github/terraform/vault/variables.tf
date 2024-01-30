@@ -1,3 +1,8 @@
+variable "atlantis_repo_webhook_secret" {
+  default = ""
+  type    = string
+}
+
 variable "aws_access_key_id" {
   default = ""
   type    = string
@@ -16,11 +21,6 @@ variable "github_token" {
   type = string
 }
 
-variable "atlantis_repo_webhook_secret" {
-  default = ""
-  type    = string
-}
-
 variable "kbot_ssh_private_key" {
   default = ""
   type    = string
@@ -31,12 +31,17 @@ variable "kbot_ssh_public_key" {
   type    = string
 }
 
+variable "kubernetes_api_endpoint" {
+  default = ""
+  type    = string
+}
+
 variable "vault_token" {
   default = ""
   type    = string
 }
 
-variable "kubernetes_api_endpoint" {
+variable "ngrok_authtoken" {
   default = ""
   type    = string
 }
