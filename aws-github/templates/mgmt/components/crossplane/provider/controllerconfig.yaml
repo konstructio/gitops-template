@@ -8,9 +8,10 @@ metadata:
     app: crossplane-provider-terraform
   name: terraform-config
 spec:
+  serviceAccountName: crossplane-provider-terraform-<CLUSTER_NAME>
   args:
   - -d
-  - --poll=2m
+  - --poll=4m
   envFrom:
   - secretRef:
       name: crossplane-secrets

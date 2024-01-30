@@ -491,14 +491,14 @@ data "aws_iam_policy_document" "crossplane_custom_trust_policy" {
 
     condition {
       test     = "StringEquals"
-      variable = "${module.eks.oidc_provider_arn}:aud"
+      variable = "${split("arn:aws:iam::<AWS_ACCOUNT_ID>:oidc-provider/", module.eks.oidc_provider_arn)[1]}:aud"
       values   = ["sts.amazonaws.com"]
     }
 
     condition {
       test     = "StringLike"
-      variable = "${module.eks.oidc_provider_arn}:sub"
-      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-*"]
+      variable = "${split("arn:aws:iam::<AWS_ACCOUNT_ID>:oidc-provider/", module.eks.oidc_provider_arn)[1]}:sub"
+      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-<CLUSTER_NAME>"]
     }
 
     principals {
@@ -594,6 +594,26 @@ resource "aws_iam_policy" "external_dns" {
   ]
 }
 EOT
+}
+
+module "kubefirst_api" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.32.0"
+
+  role_name = "kubefirst-api-${local.name}"
+  role_policy_arns = {
+    kubefirst = "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kubefirst:kubefirst-kubefirst-api"]
+    }
+  }
+
+  tags = local.tags
 }
 
 module "vault" {
