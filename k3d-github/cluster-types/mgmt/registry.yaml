@@ -4,7 +4,7 @@ metadata:
   name: registry
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '0'
+    argocd.argoproj.io/sync-wave: '1001'
 spec:
   project: default
   source:
