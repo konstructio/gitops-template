@@ -4,10 +4,10 @@ metadata:
   name: {{ include "metaphor.fullname" . }}
   labels:
     {{- include "metaphor.labels" . | nindent 4 }}
-  {{- with .Values.deploymentAnnotations }}
   annotations:
-    {{- include "Values.annotations" . | nindent 4 }}
-    {{- toYaml . | nindent 4 }}
+    secret.reloader.stakater.com/reload: {{ include "metaphor.fullname" . }}
+  {{- range $key, $value := .Values.deploymentAnnotations }}
+      {{- $key | nindent 4 }}: {{ $value | quote }}
   {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}

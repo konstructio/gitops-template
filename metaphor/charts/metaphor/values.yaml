@@ -7,8 +7,8 @@ replicaCount: 1
 image:
   repository: <CONTAINER_REGISTRY_URL>
   pullPolicy: IfNotPresent
-deploymentAnnotations: {}
-  # my-example-annotation: "metaphor-my-secrets"  
+deploymentAnnotations:
+  linkerd.io/inject: "enabled"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
