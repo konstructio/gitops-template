@@ -21,6 +21,7 @@ spec:
   - 'https://charts.loft.sh'
   - 'https://github.com/cloudflare/origin-ca-issuer'
   - 'https://cloudflare.github.io/origin-ca-issuer/charts'
+  - '*' # Adding wildcard for the gitops catalog. This wildcard can be removed from the template or after provisioning
   destinations:
   - namespace: external-dns
     name: <WORKLOAD_CLUSTER_NAME>
@@ -40,6 +41,8 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   - namespace: kube-system
     name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: '*' # Adding wildcard for the gitops catalog. This wildcard can be removed from the template or after provisioning
+    server: '*' # Adding wildcard for the gitops catalog. This wildcard can be removed from the template or after provisioning
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
