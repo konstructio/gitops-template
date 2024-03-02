@@ -21,6 +21,10 @@ spec:
           existingSecretMappings:
             BASIC_AUTH_USER: BASIC_AUTH_USER
             BASIC_AUTH_PASS: BASIC_AUTH_PASS
+        persistence:
+          enabled: true
+          accessMode: ReadWriteOnce
+          size: 5Gi
         ingress:
           enabled: true
           pathType: "Prefix"
