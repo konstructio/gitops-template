@@ -15,7 +15,7 @@ spec:
         env:
           open:
             AUTH_ANONYMOUS_GET: true
-            STORAGE: LOCAL
+            STORAGE: local
             DISABLE_API: false
           existingSecret: chartmuseum-secrets
           existingSecretMappings:
