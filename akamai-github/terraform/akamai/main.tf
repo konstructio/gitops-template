@@ -43,7 +43,7 @@ resource "linode_lke_cluster" "kubefirst" {
     pool {
         # NOTE: If count is undefined, the initial node count will
         # equal the minimum autoscaler node count.
-        type  = "<NODE_TYPE>" # "g6-standard-2" 4
+        type  = "<NODE_TYPE>" # "g6-standard-4" 4
 
         autoscaler {
           min = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
