@@ -16,7 +16,7 @@ variable "cloudflare_api_key" {
   default = ""
 }
 
-variable "civo_token" {
+variable "akamai_token" {
   type = string
 }
 

@@ -21,7 +21,7 @@ terraform {
   }
 }
 
-# export CIVO_TOKEN=$MYTOKEN is set 
+# export LINODE_TOKEN=$MYTOKEN is set 
 provider "civo" {
   region = "<CLOUD_REGION>"
 }

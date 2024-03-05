@@ -39,7 +39,7 @@ resource "vault_generic_secret" "crossplane" {
     {
       AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
-      CIVO_TOKEN            = var.civo_token
+      LINODE_TOKEN            = var.akamai_token
       VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
       VAULT_TOKEN           = var.vault_token
       password              = var.github_token
@@ -164,8 +164,8 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
       TF_VAR_b64_docker_auth              = var.b64_docker_auth,
-      CIVO_TOKEN                          = var.civo_token,
-      TF_VAR_civo_token                   = var.civo_token,
+      LINODE_TOKEN                          = var.akamai_token,
+      TF_VAR_akamai_token                   = var.akamai_token,
       GITHUB_OWNER                        = "<GITHUB_OWNER>",
       GITHUB_TOKEN                        = var.github_token,
       TF_VAR_github_token                 = var.github_token,
