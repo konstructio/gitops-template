@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
     key      = "terraform/vault/terraform.tfstate"
-    endpoint = "https://us-east-1.linodeobjects.com" #! edit
+    endpoint = "https://<CLUSTER_NAME>.us-east-1.linodeobjects.com" #! edit
 
     region = "us-east-1" #! edit
 
