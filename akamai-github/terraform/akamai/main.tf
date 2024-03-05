@@ -29,8 +29,7 @@ terraform {
 provider "linode" {}
 
 locals {
-  # cluster_name = "<CLUSTER_NAME>"
-  cluster_name = "kubefirst-test"
+  cluster_name = "<CLUSTER_NAME>"
   kube_config_filename = "../../../kubeconfig"
 }
 
@@ -53,7 +52,7 @@ resource "linode_lke_cluster" "kubefirst" {
 }
 
 resource "local_file" "kubeconfig" {
-  content  = linode_lke_cluster.kubefirst.kubeconfig
+  content  = base64decode(linode_lke_cluster.kubefirst.kubeconfig)
   filename = local.kube_config_filename
 }
 
