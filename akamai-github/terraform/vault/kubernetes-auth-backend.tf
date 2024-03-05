@@ -2,10 +2,16 @@ provider "kubernetes" {
   config_path = "<KUBE_CONFIG_PATH>"
 }
 
-data "civo_kubernetes_cluster" "kubefirst" {
-  name = local.cluster_name
+data "linode_lke_clusters" "kubefirst" {
+  filter {
+    name = "tags"
+    values = ["management"]
+  }
 }
 
+data "linode_lke_cluster" "kubefirst" {
+    id = data.linode_lke_clusters.kubefirst.lke_clusters.0.id
+}
 resource "vault_auth_backend" "k8s" {
   type = "kubernetes"
   path = "kubernetes/kubefirst"
@@ -13,7 +19,7 @@ resource "vault_auth_backend" "k8s" {
 
 resource "vault_kubernetes_auth_backend_config" "k8s" {
   backend         = vault_auth_backend.k8s.path
-  kubernetes_host = data.civo_kubernetes_cluster.kubefirst.api_endpoint
+  kubernetes_host = data.linode_lke_cluster.kubefirst.api_endpoints
 }
 
 resource "vault_kubernetes_auth_backend_role" "k8s_atlantis" {

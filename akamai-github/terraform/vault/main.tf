@@ -12,18 +12,14 @@ terraform {
     force_path_style            = true
   }
   required_providers {
-    civo = {
-      source = "civo/civo"
+    linode = {
+      source = "linode/linode"
+      version = "2.16.0"
     }
     vault = {
       source = "hashicorp/vault"
     }
   }
-}
-
-# export LINODE_TOKEN=$MYTOKEN is set 
-provider "civo" {
-  region = "<CLOUD_REGION>"
 }
 
 provider "vault" {
