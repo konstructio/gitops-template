@@ -2,9 +2,9 @@ terraform {
   backend "s3" {
     bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
     key      = "terraform/civo/terraform.tfstate"
-    endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
+    endpoint = "https://<CLUSTER_NAME>.us-east-1.linodeobjects.com" #! edit
 
-    region = "<CLOUD_REGION>"
+    region = "us-east-1" #! edit
 
     skip_credentials_validation = true
     skip_metadata_api_check     = true
