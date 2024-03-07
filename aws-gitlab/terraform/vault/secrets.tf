@@ -5,7 +5,7 @@ resource "random_password" "chartmuseum_password" {
 }
 
 resource "vault_generic_secret" "chartmuseum_secrets" {
-  path = "secret/chartmuseum"
+  path = "${vault_mount.secret.path}/chartmuseum"
 
   data_json = jsonencode(
     {
@@ -13,52 +13,44 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
       BASIC_AUTH_PASS = random_password.chartmuseum_password.result,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "crossplane_secrets" {
-  path = "secret/crossplane"
+  path = "${vault_mount.secret.path}/crossplane"
 
   data_json = jsonencode(
     {
-      VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
-      VAULT_TOKEN           = var.vault_token
-      password              = var.gitlab_token
-      username              = "<GITLAB_USER>"
+      VAULT_ADDR  = "http://vault.vault.svc.cluster.local:8200"
+      VAULT_TOKEN = var.vault_token
+      password    = var.gitlab_token
+      username    = "<GITLAB_USER>"
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 
 resource "vault_generic_secret" "docker_config" {
-  path = "secret/dockerconfigjson"
+  path = "${vault_mount.secret.path}/dockerconfigjson"
 
   data_json = jsonencode(
     {
       dockerconfig = jsonencode({ "auths" : { "registry.gitlab.io" : { "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "container_registry_auth" {
-  path = "secret/deploy-tokens/container-registry-auth"
+  path = "${vault_mount.secret.path}/deploy-tokens/container-registry-auth"
 
   data_json = jsonencode(
     {
       auth = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "development_metaphor" {
-  path = "secret/development/metaphor"
+  path = "${vault_mount.secret.path}/development/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -67,12 +59,10 @@ resource "vault_generic_secret" "development_metaphor" {
   "SECRET_TWO" : "development secret 2"
 }
 EOT
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "staging_metaphor" {
-  path = "secret/staging/metaphor"
+  path = "${vault_mount.secret.path}/staging/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -81,12 +71,10 @@ resource "vault_generic_secret" "staging_metaphor" {
   "SECRET_TWO" : "staging secret 2"
 }
 EOT
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "production_metaphor" {
-  path = "secret/production/metaphor"
+  path = "${vault_mount.secret.path}/production/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -95,12 +83,10 @@ resource "vault_generic_secret" "production_metaphor" {
   "SECRET_TWO" : "production secret 2"
 }
 EOT
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "ci_secrets" {
-  path = "secret/ci-secrets"
+  path = "${vault_mount.secret.path}/ci-secrets"
 
   data_json = jsonencode(
     {
@@ -110,8 +96,6 @@ resource "vault_generic_secret" "ci_secrets" {
       PERSONAL_ACCESS_TOKEN = var.gitlab_token,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 data "gitlab_group" "owner" {
@@ -119,18 +103,17 @@ data "gitlab_group" "owner" {
 }
 
 resource "vault_generic_secret" "gitlab_runner" {
-  path       = "secret/gitlab-runner"
-  data_json  = <<EOT
+  path      = "${vault_mount.secret.path}/gitlab-runner"
+  data_json = <<EOT
 {
   "RUNNER_TOKEN" : "",
   "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
 }
 EOT
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
-  path = "secret/atlantis"
+  path = "${vault_mount.secret.path}/atlantis"
 
   data_json = jsonencode(
     {
@@ -157,6 +140,4 @@ resource "vault_generic_secret" "atlantis_secrets" {
       VAULT_TOKEN                         = var.vault_token,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }

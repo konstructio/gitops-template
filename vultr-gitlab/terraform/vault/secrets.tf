@@ -5,7 +5,7 @@ resource "random_password" "chartmuseum_password" {
 }
 
 resource "vault_generic_secret" "chartmuseum_secrets" {
-  path = "secret/chartmuseum"
+  path = "${vault_mount.secret.path}/secret/chartmuseum"
 
   data_json = jsonencode(
     {
@@ -15,12 +15,10 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "crossplane" {
-  path = "secret/crossplane"
+  path = "${vault_mount.secret.path}/crossplane"
 
   data_json = jsonencode(
     {
@@ -33,24 +31,20 @@ resource "vault_generic_secret" "crossplane" {
       username              = "<GITLAB_USER>"
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "container_registry_auth" {
-  path = "secret/deploy-tokens/container-registry-auth"
+  path = "${vault_mount.secret.path}/deploy-tokens/container-registry-auth"
 
   data_json = jsonencode(
     {
       auth = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "vultr_creds" {
-  path = "secret/argo"
+  path = "${vault_mount.secret.path}/argo"
 
   data_json = jsonencode(
     {
@@ -58,51 +52,46 @@ resource "vault_generic_secret" "vultr_creds" {
       secretkey = var.aws_secret_access_key,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 
 resource "vault_generic_secret" "docker_config" {
-  path = "secret/dockerconfigjson"
+  path = "${vault_mount.secret.path}/dockerconfigjson"
 
   data_json = jsonencode(
     {
       dockerconfig = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbot@example.com", "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
-  depends_on = [vault_mount.secret]
 }
 
 
 resource "vault_generic_secret" "development_metaphor" {
-  path = "secret/development/metaphor"
+  path = "${vault_mount.secret.path}/development/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
-  data_json  = <<EOT
+  data_json = <<EOT
 {
   "SECRET_ONE" : "development secret 1",
   "SECRET_TWO" : "development secret 2"
 }
 EOT
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "staging_metaphor" {
-  path = "secret/staging/metaphor"
+  path = "${vault_mount.secret.path}/staging/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
-  data_json  = <<EOT
+  data_json = <<EOT
 {
   "SECRET_ONE" : "staging secret 1",
   "SECRET_TWO" : "staging secret 2"
 }
 EOT
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "production_metaphor" {
-  path = "secret/production/metaphor"
+  path = "${vault_mount.secret.path}/production/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -111,12 +100,10 @@ resource "vault_generic_secret" "production_metaphor" {
   "SECRET_TWO" : "production secret 2"
 }
 EOT
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "ci_secrets" {
-  path = "secret/ci-secrets"
+  path = "${vault_mount.secret.path}/ci-secrets"
 
   data_json = jsonencode(
     {
@@ -128,7 +115,6 @@ resource "vault_generic_secret" "ci_secrets" {
       PERSONAL_ACCESS_TOKEN = var.gitlab_token,
     }
   )
-  depends_on = [vault_mount.secret]
 }
 
 data "gitlab_group" "owner" {
@@ -136,18 +122,18 @@ data "gitlab_group" "owner" {
 }
 
 resource "vault_generic_secret" "gitlab_runner" {
-  path       = "secret/gitlab-runner"
-  data_json  = <<EOT
+  path = "${vault_mount.secret.path}/gitlab-runner"
+
+  data_json = <<EOT
 {
   "RUNNER_TOKEN" : "",
   "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
 }
 EOT
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
-  path = "secret/atlantis"
+  path = "${vault_mount.secret.path}/atlantis"
 
   data_json = jsonencode(
     {
@@ -163,8 +149,8 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_b64_docker_auth              = var.b64_docker_auth,
       TF_VAR_aws_access_key_id            = var.aws_access_key_id,
       TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
-      VULTR_API_KEY                         = var.vultr_api_key,
-      TF_VAR_vultr_api_key                  = var.vultr_api_key,
+      VULTR_API_KEY                       = var.vultr_api_key,
+      TF_VAR_vultr_api_key                = var.vultr_api_key,
       GITLAB_OWNER                        = "<GITLAB_OWNER>",
       GITLAB_TOKEN                        = var.gitlab_token,
       TF_VAR_gitlab_token                 = var.gitlab_token,
@@ -178,5 +164,4 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_vault_token                  = var.vault_token,
     }
   )
-  depends_on = [vault_mount.secret]
 }

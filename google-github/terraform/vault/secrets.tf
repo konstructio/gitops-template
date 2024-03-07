@@ -5,7 +5,7 @@ resource "random_password" "chartmuseum_password" {
 }
 
 resource "vault_generic_secret" "chartmuseum_secrets" {
-  path = "secret/chartmuseum"
+  path = "${vault_mount.secret.path}/chartmuseum"
 
   data_json = jsonencode(
     {
@@ -13,12 +13,10 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
       BASIC_AUTH_PASS = random_password.chartmuseum_password.result,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "crossplane_secrets" {
-  path = "secret/crossplane"
+  path = "${vault_mount.secret.path}/crossplane"
 
   data_json = jsonencode(
     {
@@ -34,31 +32,27 @@ resource "vault_generic_secret" "crossplane_secrets" {
 }
 
 resource "vault_generic_secret" "container_registry_auth" {
-  path = "secret/registry-auth"
+  path = "${vault_mount.secret.path}/registry-auth"
 
   data_json = jsonencode(
     {
       auth = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "docker_config" {
-  path = "secret/dockerconfigjson"
+  path = "${vault_mount.secret.path}/dockerconfigjson"
 
   data_json = jsonencode(
     {
       dockerconfig = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "development_metaphor" {
-  path = "secret/development/metaphor"
+  path = "${vault_mount.secret.path}/development/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -67,12 +61,10 @@ resource "vault_generic_secret" "development_metaphor" {
   "SECRET_TWO" : "development secret 2"
 }
 EOT
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "staging_metaphor" {
-  path = "secret/staging/metaphor"
+  path = "${vault_mount.secret.path}/staging/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -81,12 +73,10 @@ resource "vault_generic_secret" "staging_metaphor" {
   "SECRET_TWO" : "staging secret 2"
 }
 EOT
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "production_metaphor" {
-  path = "secret/production/metaphor"
+  path = "${vault_mount.secret.path}/production/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = <<EOT
@@ -95,12 +85,10 @@ resource "vault_generic_secret" "production_metaphor" {
   "SECRET_TWO" : "production secret 2"
 }
 EOT
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "ci_secrets" {
-  path = "secret/ci-secrets"
+  path = "${vault_mount.secret.path}/ci-secrets"
 
   data_json = jsonencode(
     {
@@ -110,12 +98,10 @@ resource "vault_generic_secret" "ci_secrets" {
       PERSONAL_ACCESS_TOKEN = var.github_token,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
-  path = "secret/atlantis"
+  path = "${vault_mount.secret.path}/atlantis"
 
   data_json = jsonencode(
     {
@@ -141,5 +127,4 @@ resource "vault_generic_secret" "atlantis_secrets" {
     }
   )
 
-  depends_on = [vault_mount.secret]
 }
