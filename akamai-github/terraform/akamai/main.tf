@@ -37,7 +37,7 @@ resource "linode_lke_cluster" "kubefirst" {
     label       = local.cluster_name
     k8s_version = "1.28"
     region      = "us-central"
-    tags        = ["management"]
+    tags        = ["<CLUSTER_NAME>"]
 
     pool {
         # NOTE: If count is undefined, the initial node count will

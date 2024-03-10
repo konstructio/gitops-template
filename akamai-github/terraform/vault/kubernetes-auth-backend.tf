@@ -5,7 +5,7 @@ provider "kubernetes" {
 data "linode_lke_clusters" "kubefirst" {
   filter {
     name = "tags"
-    values = ["management"]
+    values = ["<CLUSTER_NAME>"]
   }
 }
 
@@ -19,7 +19,7 @@ resource "vault_auth_backend" "k8s" {
 
 resource "vault_kubernetes_auth_backend_config" "k8s" {
   backend         = vault_auth_backend.k8s.path
-  kubernetes_host = data.linode_lke_cluster.kubefirst.api_endpoints
+  kubernetes_host = data.linode_lke_cluster.kubefirst.api_endpoints[0]
 }
 
 resource "vault_kubernetes_auth_backend_role" "k8s_atlantis" {
