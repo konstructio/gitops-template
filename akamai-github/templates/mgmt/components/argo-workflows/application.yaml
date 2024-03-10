@@ -74,7 +74,7 @@ spec:
               key: secretkey
             insecure: false
             bucket: <KUBEFIRST_STATE_STORE_BUCKET>
-            endpoint: objectstore.<CLOUD_REGION>.civo.com
+            endpoint: https://us-east-1.linodeobjects.com
             region: <CLOUD_REGION>
             useSDKCreds: false
             encryptionOptions:
