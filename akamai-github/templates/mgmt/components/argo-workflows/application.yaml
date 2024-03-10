@@ -74,8 +74,8 @@ spec:
               key: secretkey
             insecure: false
             bucket: <KUBEFIRST_STATE_STORE_BUCKET>
-            endpoint: https://us-east-1.linodeobjects.com
-            region: <CLOUD_REGION>
+            endpoint: us-east-1.linodeobjects.com
+            region: us-east-1
             useSDKCreds: false
             encryptionOptions:
               enableEncryption: false
