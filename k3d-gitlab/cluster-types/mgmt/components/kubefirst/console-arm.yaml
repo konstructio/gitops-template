@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.3.9-rc32
+    targetRevision: 2.4.0
     chart: kubefirst
     helm:
       values: |-
@@ -25,13 +25,6 @@ spec:
           kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
           kubefirstVersion: "<KUBEFIRST_VERSION>"
           useTelemetry: "<USE_TELEMETRY>"
-        mongodb:
-          image:
-            repository: arm64v8/mongo
-            tag: latest
-          persistence:
-            mountPath: /data/db
-          extraEnvVarsSecret: kubefirst-initial-secrets
         kubefirst-api-ee:
           extraEnv:
             IN_CLUSTER: "true"
