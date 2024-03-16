@@ -72,54 +72,22 @@ resource "vault_generic_secret" "external_secrets_token" {
   )
 }
 
-resource "vault_generic_secret" "development_metaphor" {
-  path = "${vault_mount.secret.path}/development/metaphor"
-  # note: these secrets are not actually sensitive.
-  # do not hardcode passwords in git under normal circumstances.
-  data_json = <<EOT
-{
-  "SECRET_ONE" : "development secret 1",
-  "SECRET_TWO" : "development secret 2"
-}
-EOT
-}
-
 data "gitlab_group" "owner" {
   group_id = var.owner_group_id
 }
 
-resource "vault_generic_secret" "gitlab_runner" {
-  path      = "${vault_mount.secret.path}/gitlab-runner"
-  data_json = <<EOT
-{
-  "RUNNER_TOKEN" : "",
-  "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
-}
-EOT
-}
+resource "vault_generic_secret" "metaphor" {
+  for_each = toset(["development", "staging", "production"])
 
-resource "vault_generic_secret" "staging_metaphor" {
-  path = "${vault_mount.secret.path}/staging/metaphor"
+  path = "${vault_mount.secret.path}/${each.key}/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
-  data_json = <<EOT
-{
-  "SECRET_ONE" : "staging secret 1",
-  "SECRET_TWO" : "staging secret 2"
-}
-EOT
-}
-
-resource "vault_generic_secret" "production_metaphor" {
-  path = "${vault_mount.secret.path}/production/metaphor"
-  # note: these secrets are not actually sensitive.
-  # do not hardcode passwords in git under normal circumstances.
-  data_json = <<EOT
-{
-  "SECRET_ONE" : "production secret 1",
-  "SECRET_TWO" : "production secret 2"
-}
-EOT
+  data_json = jsonencode(
+    {
+      SECRET_ONE = "${each.key} secret 1"
+      SECRET_TWO = "${each.key} secret 2"
+    }
+  )
 }
 
 resource "vault_generic_secret" "ci_secrets" {
