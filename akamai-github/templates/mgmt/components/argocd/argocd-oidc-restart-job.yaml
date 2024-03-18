@@ -58,3 +58,23 @@ spec:
             - kubectl -n argocd rollout restart deployment/argocd-server
       restartPolicy: OnFailure
       serviceAccountName: argocd-oidc-restart-job
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '120'
+    argocd.argoproj.io/hook: PostSync
+  name: argocd-sleep-after-restart
+  namespace: argocd
+spec:
+  template:
+    spec:
+      containers:
+        - name: argocd-sleep-after-restart-job
+          image: public.ecr.aws/bitnami/kubectl:1.24
+          command:
+            - /bin/sh
+            - -c
+            - "sleep 120"
+      restartPolicy: OnFailure
