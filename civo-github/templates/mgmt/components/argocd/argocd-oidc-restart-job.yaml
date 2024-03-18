@@ -76,5 +76,5 @@ spec:
           command:
             - /bin/sh
             - -c
-            - "sleep 120"
+            - "sleep 240"
       restartPolicy: OnFailure
