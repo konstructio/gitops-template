@@ -8,7 +8,7 @@ metadata:
 spec:
   destination:
     namespace: argocd
-    server: https://kubernetes.default.svc
+    name: in-cluster
   project: default
   source:
     path: registry/clusters/<CLUSTER_NAME>/components/argocd
