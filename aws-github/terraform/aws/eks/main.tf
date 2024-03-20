@@ -141,7 +141,7 @@ module "vpc" {
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
-  enable_ipv6            = true
+  enable_ipv6            = false
   create_egress_only_igw = true
 
   public_subnet_ipv6_prefixes  = [0, 1, 2]
