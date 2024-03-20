@@ -55,6 +55,6 @@ spec:
           command:
             - /bin/sh
             - -c
-            - kubectl -n argocd rollout restart deployment/argocd-server
+            - "echo sleeping 3m && sleep 180 && echo rolling && kubectl -n argocd rollout restart deployment/argocd-server && echo sleeping 3m && sleep 180"
       restartPolicy: OnFailure
       serviceAccountName: argocd-oidc-restart-job
