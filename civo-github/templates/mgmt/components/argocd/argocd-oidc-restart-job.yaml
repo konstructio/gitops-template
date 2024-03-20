@@ -58,4 +58,3 @@ spec:
             - kubectl -n argocd rollout restart deployment/argocd-server
       restartPolicy: OnFailure
       serviceAccountName: argocd-oidc-restart-job
-
