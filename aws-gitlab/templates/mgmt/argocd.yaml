@@ -1,19 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: argocd-kustomized-app
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: '100'
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
+  destination:
+    namespace: argocd
+    name: in-cluster
   project: default
   source:
-    repoURL: <GITOPS_REPO_URL>
     path: registry/clusters/<CLUSTER_NAME>/components/argocd
+    repoURL: '<GITOPS_REPO_URL>'
     targetRevision: HEAD
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: argocd
+    kustomize:
+      forceCommonLabels: true
+      forceCommonAnnotations: true
   syncPolicy:
     automated:
       prune: true
@@ -24,3 +29,6 @@ spec:
         duration: 5s
         maxDuration: 5m0s
         factor: 2
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
