@@ -52,7 +52,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - echo restarting argocd-server in 180 seconds && sleep 180 && echo restarting && kubectl -n argocd get deployment/argocd-server -oyaml | kubectl -n argocd replace --force -f -
+            - echo restarting argocd-server in 15 seconds && sleep 15 && echo restarting && kubectl -n argocd get deployment/argocd-server -oyaml | kubectl -n argocd replace --force -f -
       restartPolicy: OnFailure
       serviceAccountName: argocd-oidc-restart-job
 
