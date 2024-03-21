@@ -16,9 +16,6 @@ spec:
     path: registry/clusters/<CLUSTER_NAME>/components/argocd
     repoURL: '<GITOPS_REPO_URL>'
     targetRevision: HEAD
-    kustomize:
-      forceCommonLabels: true
-      forceCommonAnnotations: true
   syncPolicy:
     automated:
       prune: true
