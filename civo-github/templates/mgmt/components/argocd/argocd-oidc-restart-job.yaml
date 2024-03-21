@@ -42,8 +42,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '110'
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: '100'
   name: argocd-oidc-restart-job
   namespace: argocd
 spec:
@@ -55,6 +54,6 @@ spec:
           command:
             - /bin/sh
             - -c
-            - kubectl -n argocd rollout restart deployment/argocd-server
+            - echo restarting argocd-server in 180 seconds && sleep 180 && echo restarting && kubectl -n argocd get deployment/argocd-server -oyaml | kubectl -n argocd replace --force -f -
       restartPolicy: OnFailure
       serviceAccountName: argocd-oidc-restart-job
