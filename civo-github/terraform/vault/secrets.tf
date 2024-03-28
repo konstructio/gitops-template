@@ -5,7 +5,7 @@ resource "random_password" "chartmuseum_password" {
 }
 
 resource "vault_generic_secret" "chartmuseum_secrets" {
-  path = "secret/chartmuseum"
+  path = "${vault_mount.secret.path}/chartmuseum"
 
   data_json = jsonencode(
     {
@@ -15,12 +15,10 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "civo_creds" {
-  path = "secret/argo"
+  path = "${vault_mount.secret.path}/argo"
 
   data_json = jsonencode(
     {
@@ -28,12 +26,10 @@ resource "vault_generic_secret" "civo_creds" {
       secretkey = var.aws_secret_access_key,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "crossplane" {
-  path = "secret/crossplane"
+  path = "${vault_mount.secret.path}/crossplane"
 
   data_json = jsonencode(
     {
@@ -46,78 +42,44 @@ resource "vault_generic_secret" "crossplane" {
       username              = "<GITHUB_USER>"
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "docker_config" {
-  path = "secret/dockerconfigjson"
+  path = "${vault_mount.secret.path}/dockerconfigjson"
 
   data_json = jsonencode(
     {
       dockerconfig = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "regsitry_auth" {
-  path = "secret/registry-auth"
+  path = "${vault_mount.secret.path}/registry-auth"
 
   data_json = jsonencode(
     {
       auth = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
-resource "vault_generic_secret" "development_metaphor" {
-  path = "secret/development/metaphor"
+resource "vault_generic_secret" "metaphor" {
+  for_each = toset(["development", "staging", "production"])
+
+  path = "${vault_mount.secret.path}/${each.key}/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
-  data_json = <<EOT
-{
-  "SECRET_ONE" : "development secret 1",
-  "SECRET_TWO" : "development secret 2"
-}
-EOT
-
-  depends_on = [vault_mount.secret]
-}
-
-resource "vault_generic_secret" "staging_metaphor" {
-  path = "secret/staging/metaphor"
-  # note: these secrets are not actually sensitive.
-  # do not hardcode passwords in git under normal circumstances.
-  data_json = <<EOT
-{
-  "SECRET_ONE" : "staging secret 1",
-  "SECRET_TWO" : "staging secret 2"
-}
-EOT
-
-  depends_on = [vault_mount.secret]
-}
-
-resource "vault_generic_secret" "production_metaphor" {
-  path = "secret/production/metaphor"
-  # note: these secrets are not actually sensitive.
-  # do not hardcode passwords in git under normal circumstances.
-  data_json = <<EOT
-{
-  "SECRET_ONE" : "production secret 1",
-  "SECRET_TWO" : "production secret 2"
-}
-EOT
-
-  depends_on = [vault_mount.secret]
+  data_json = jsonencode(
+    {
+      SECRET_ONE = "${each.key} secret 1"
+      SECRET_TWO = "${each.key} secret 2"
+    }
+  )
 }
 
 resource "vault_generic_secret" "ci_secrets" {
-  path = "secret/ci-secrets"
+  path = "${vault_mount.secret.path}/ci-secrets"
 
   data_json = jsonencode(
     {
@@ -129,12 +91,10 @@ resource "vault_generic_secret" "ci_secrets" {
       PERSONAL_ACCESS_TOKEN = var.github_token,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "cloudflare" {
-  path = "secret/cloudflare"
+  path = "${vault_mount.secret.path}/cloudflare"
 
   data_json = jsonencode(
     {
@@ -143,12 +103,10 @@ resource "vault_generic_secret" "cloudflare" {
       cloudflare-token  = var.cloudflare_api_key,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
-  path = "secret/atlantis"
+  path = "${vault_mount.secret.path}/atlantis"
 
   data_json = jsonencode(
     {
@@ -179,6 +137,4 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_vault_token                  = var.vault_token,
     }
   )
-
-  depends_on = [vault_mount.secret]
 }

@@ -29,7 +29,7 @@ data "vault_generic_secret" "external_dns" {
 
 resource "kubernetes_secret_v1" "external_dns" {
   metadata {
-    name = "external-dns-secrets"
+    name      = "external-dns-secrets"
     namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
   }
   data = {

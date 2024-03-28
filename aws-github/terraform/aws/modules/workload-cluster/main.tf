@@ -3,8 +3,8 @@ data "aws_availability_zones" "available" {}
 
 locals {
   cluster_version = "1.26"
-  vpc_cidr = "10.0.0.0/16"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  vpc_cidr        = "10.0.0.0/16"
+  azs             = slice(data.aws_availability_zones.available.names, 0, 3)
   tags = {
     kubefirst = "true"
   }
@@ -18,14 +18,14 @@ module "iam_node_group_role" {
 
   create_role = true
 
-  role_name_prefix  = "${var.cluster_name}-node-group"
+  role_name_prefix = "${var.cluster_name}-node-group"
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
     "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
     "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
   ]
-   number_of_custom_role_policy_arns = 3
+  number_of_custom_role_policy_arns = 3
 }
 
 module "eks" {
@@ -71,7 +71,7 @@ module "eks" {
   control_plane_subnet_ids = module.vpc.intra_subnets
 
   manage_aws_auth_configmap = false
-  
+
   # aws_auth_roles = [
   #   # managed node group is automatically added to the configmap
   #   {
@@ -437,11 +437,11 @@ resource "vault_generic_secret" "clusters" {
 
   data_json = jsonencode(
     {
-      cluster_ca_certificate  = module.eks.cluster_certificate_authority_data
-      host                    = module.eks.cluster_endpoint
-      cluster_name            = var.cluster_name
-      environment             = var.cluster_name
-      argocd_role_arn         = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      cluster_ca_certificate = module.eks.cluster_certificate_authority_data
+      host                   = module.eks.cluster_endpoint
+      cluster_name           = var.cluster_name
+      environment            = var.cluster_name
+      argocd_role_arn        = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
     }
   )
 }

@@ -34,7 +34,7 @@ resource "random_password" "password" {
 }
 
 resource "vault_generic_endpoint" "user" {
-  depends_on = [ vault_generic_endpoint.user_password ] # avoids race condition
+  depends_on           = [vault_generic_endpoint.user_password] # avoids race condition
   path                 = "auth/userpass/users/${var.username}"
   ignore_absent_fields = true
 
@@ -50,7 +50,7 @@ resource "vault_generic_endpoint" "user_password" {
   path                 = "auth/userpass/users/${var.username}"
   ignore_absent_fields = true
   lifecycle {
-    ignore_changes=[data_json]
+    ignore_changes = [data_json]
   }
 
   # note: this resource includes the initial password and only gets applied once
