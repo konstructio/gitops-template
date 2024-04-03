@@ -52,7 +52,7 @@ spec:
             - external-secrets-operator
             - --label
             - app.kubernetes.io/name=external-secrets-cert-controller
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
@@ -76,7 +76,7 @@ spec:
             - external-secrets-operator
             - --label
             - app.kubernetes.io/name=external-secrets
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
@@ -100,7 +100,7 @@ spec:
             - external-secrets-operator
             - --label
             - app.kubernetes.io/name=external-secrets-webhook
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure

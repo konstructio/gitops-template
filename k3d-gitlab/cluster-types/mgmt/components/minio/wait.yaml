@@ -48,7 +48,7 @@ spec:
         - args:
             - wait-for
             - minio-buckets
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure

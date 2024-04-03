@@ -52,7 +52,7 @@ spec:
             - github-runner
             - --label
             - app.kubernetes.io/name=actions-runner-controller
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
