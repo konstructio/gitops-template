@@ -75,7 +75,7 @@ module "eks" {
   control_plane_subnet_ids = module.vpc.intra_subnets
 
   manage_aws_auth_configmap = true
-  
+
   aws_auth_roles = [
     # managed node group is automatically added to the configmap
     {
@@ -374,7 +374,7 @@ module "argocd" {
     argocd = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
   }
   assume_role_condition_test = "StringLike"
-  allow_self_assume_role = true
+  allow_self_assume_role     = true
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
@@ -605,7 +605,7 @@ module "kubefirst_api" {
     kubefirst = "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
   }
   assume_role_condition_test = "StringLike"
-  allow_self_assume_role = true
+  allow_self_assume_role     = true
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn

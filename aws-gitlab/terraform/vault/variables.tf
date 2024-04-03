@@ -42,5 +42,5 @@ variable "vault_token" {
 
 variable "container_registry_auth" {
   default = ""
-  type = string
+  type    = string
 }

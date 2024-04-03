@@ -11,7 +11,7 @@ module "argo" {
   redirect_uris = [
     "<ARGO_WORKFLOWS_INGRESS_URL>/oauth2/callback",
   ]
-  secret_mount_path = "secret"
+  secret_mount_path = vault_mount.secret.path
 }
 
 module "argocd" {
@@ -27,7 +27,7 @@ module "argocd" {
   redirect_uris = [
     "<ARGOCD_INGRESS_URL>/auth/callback",
   ]
-  secret_mount_path = "secret"
+  secret_mount_path = vault_mount.secret.path
 }
 
 module "console" {
@@ -43,7 +43,7 @@ module "console" {
   redirect_uris = [
     "https://kubefirst.<DOMAIN_NAME>/api/auth/callback/vault",
   ]
-  secret_mount_path = "secret"
+  secret_mount_path = vault_mount.secret.path
 }
 
 # todo kubectl-oidc

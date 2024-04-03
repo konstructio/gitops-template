@@ -4,6 +4,7 @@
 **/.terraform.lock.hcl
 **/terraform.tfstate
 */**/terraform.tfstate.backup
+.plugin-cache/*
 .vscode
 .DS_Store
 deprecated-*
