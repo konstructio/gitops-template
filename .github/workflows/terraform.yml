@@ -13,4 +13,5 @@ jobs:
         uses: hashicorp/setup-terraform@v2
           
       - name: Terraform fmt
-        run: make fmt
+        run: |
+          terraform fmt -check -recursive .

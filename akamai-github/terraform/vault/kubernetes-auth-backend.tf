@@ -4,13 +4,13 @@ provider "kubernetes" {
 
 data "linode_lke_clusters" "kubefirst" {
   filter {
-    name = "tags"
+    name   = "tags"
     values = ["<CLUSTER_NAME>"]
   }
 }
 
 data "linode_lke_cluster" "kubefirst" {
-    id = data.linode_lke_clusters.kubefirst.lke_clusters.0.id
+  id = data.linode_lke_clusters.kubefirst.lke_clusters.0.id
 }
 resource "vault_auth_backend" "k8s" {
   type = "kubernetes"
