@@ -27,17 +27,18 @@ spec:
           clusterWideAccess: true
         runners:
           secret: gitlab-runner
-          privileged: true
+          privileged: false
           serviceAccountName: gitlab-runner
           config: |
             [[runners]]
               [runners.kubernetes]
                 image = "ubuntu:20.04"
-                privileged = true
+                privileged = false
               [[runners.kubernetes.volumes.empty_dir]]
                 name = "docker-certs"
                 mount_path = "/certs/client"
                 medium = "Memory"
+                privileged = false
     chart: gitlab-runner
   syncPolicy:
     automated:
