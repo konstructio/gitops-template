@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://kubernetes.github.io/ingress-nginx
-    targetRevision: 4.10.0
+    targetRevision: 4.5.2
     helm:
       values: |-
         controller:
