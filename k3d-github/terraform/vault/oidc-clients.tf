@@ -28,21 +28,6 @@ module "argocd" {
   secret_mount_path = vault_mount.secret.path
 }
 
-module "gitlab" {
-  source = "./modules/oidc-client"
-
-  depends_on = [
-    vault_identity_oidc_provider.kubefirst
-  ]
-
-  app_name               = "gitlab"
-  oidc_provider_key_name = vault_identity_oidc_key.key.name
-  redirect_uris = [
-    "https://gitlab.<DOMAIN_NAME>/users/auth/openid_connect/callback",
-  ]
-  secret_mount_path = vault_mount.secret.pat
-}
-
 module "console" {
   source = "./modules/oidc-client"
 
@@ -57,5 +42,3 @@ module "console" {
   ]
   secret_mount_path = vault_mount.secret.path
 }
-
-# todo kubectl-oidc
