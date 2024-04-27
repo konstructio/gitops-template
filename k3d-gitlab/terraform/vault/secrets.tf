@@ -107,6 +107,16 @@ resource "vault_generic_secret" "ci_secrets" {
   )
 }
 
+resource "vault_generic_secret" "gitlab_runner" {
+  path      = "${vault_mount.secret.path}/gitlab-runner"
+  data_json = <<EOT
+{
+  "RUNNER_TOKEN" : "",
+  "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
+}
+EOT
+}
+
 resource "vault_generic_secret" "atlantis_secrets" {
   path = "${vault_mount.secret.path}/atlantis"
 
