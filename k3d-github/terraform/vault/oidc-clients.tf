@@ -57,5 +57,3 @@ module "console" {
   ]
   secret_mount_path = vault_mount.secret.path
 }
-
-# todo kubectl-oidc
