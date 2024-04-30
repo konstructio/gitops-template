@@ -21,19 +21,6 @@ jobs:
     if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: self-hosted
     steps:
-      - name: Setup Runner for Argo
-        run: |
-          cd $HOME
-          echo "Install argo"
-          # Download the binary
-          curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${ARGO_VERSION}/argo-linux-amd64.gz
-          # Unzip
-          gunzip argo-linux-amd64.gz
-          # Make binary executable
-          chmod +x argo-linux-amd64
-          # Move binary to path
-          sudo mv ./argo-linux-amd64 /usr/local/bin/argo
-          # Test installation
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Inject slug/short variables
@@ -43,9 +30,16 @@ jobs:
       - run: echo ${GITHUB_SERVER_URL}
       - name: publish
         run: |
+          echo "Install argo"
+          # Download the binary
+          curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${ARGO_VERSION}/argo-linux-amd64.gz
+          # Unzip
+          gunzip argo-linux-amd64.gz
+          # Make binary executable
+          chmod +x argo-linux-amd64
           echo "commit sha ${GITHUB_SHA}"
-          argo version --short
-          argo submit .argo/publish.yaml \
+          ./argo-linux-amd64 version --short
+          ./argo-linux-amd64 submit .argo/publish.yaml \
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-publish-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
@@ -58,9 +52,12 @@ jobs:
     needs: publish
     runs-on: self-hosted
     steps:
-      - name: Setup Runner for Argo
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+      - name: development
         run: |
-          cd $HOME
           echo "Install argo"
           # Download the binary
           curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${ARGO_VERSION}/argo-linux-amd64.gz
@@ -68,19 +65,9 @@ jobs:
           gunzip argo-linux-amd64.gz
           # Make binary executable
           chmod +x argo-linux-amd64
-          # Move binary to path
-          sudo mv ./argo-linux-amd64 /usr/local/bin/argo
-          # Test installation
-          argo version --short
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4
-      - name: development
-        run: |
-          echo "commit sha $GITHUB_SHA"
-          argo version --short
-          argo submit .argo/deploy.yaml \
+          echo "commit sha ${GITHUB_SHA}"
+          ./argo-linux-amd64 version --short
+          ./argo-linux-amd64 submit .argo/deploy.yaml \
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-development-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
@@ -94,9 +81,12 @@ jobs:
     needs: development
     runs-on: self-hosted
     steps:
-      - name: Setup Runner for Argo
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+      - name: staging
         run: |
-          cd $HOME
           echo "Install argo"
           # Download the binary
           curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${ARGO_VERSION}/argo-linux-amd64.gz
@@ -104,19 +94,9 @@ jobs:
           gunzip argo-linux-amd64.gz
           # Make binary executable
           chmod +x argo-linux-amd64
-          # Move binary to path
-          sudo mv ./argo-linux-amd64 /usr/local/bin/argo
-          # Test installation
-          argo version --short
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4
-      - name: staging
-        run: |
-          echo "commit sha $GITHUB_SHA"
-          argo version --short
-          argo submit .argo/deploy.yaml \
+          echo "commit sha ${GITHUB_SHA}"
+          ./argo-linux-amd64 version --short
+          ./argo-linux-amd64 submit .argo/deploy.yaml \
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-staging-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \
@@ -130,20 +110,6 @@ jobs:
     needs: staging
     runs-on: self-hosted
     steps:
-      - name: Setup Runner for Argo
-        run: |
-          cd $HOME
-          echo "Install argo"
-          # Download the binary
-          curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${ARGO_VERSION}/argo-linux-amd64.gz
-          # Unzip
-          gunzip argo-linux-amd64.gz
-          # Make binary executable
-          chmod +x argo-linux-amd64
-          # Move binary to path
-          sudo mv ./argo-linux-amd64 /usr/local/bin/argo
-          # Test installation
-          argo version --short
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Inject slug/short variables
@@ -151,9 +117,16 @@ jobs:
       # todo need to look repositoryGitURL, this needs to be overrideable from here and respected on the template side for both repositories
       - name: release
         run: |
-          echo "commit sha $GITHUB_SHA"
-          argo version --short
-          argo submit .argo/release.yaml \
+          echo "Install argo"
+          # Download the binary
+          curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${ARGO_VERSION}/argo-linux-amd64.gz
+          # Unzip
+          gunzip argo-linux-amd64.gz
+          # Make binary executable
+          chmod +x argo-linux-amd64
+          echo "commit sha ${GITHUB_SHA}"
+          ./argo-linux-amd64 version --short
+          ./argo-linux-amd64 submit .argo/release.yaml \
             --generate-name="${GITHUB_REPOSITORY_NAME_PART}-release-${GITHUB_SHA_SHORT}-" \
             -p appName="${GITHUB_REPOSITORY_NAME_PART}" \
             -p branch="${GITHUB_REF_NAME}" \

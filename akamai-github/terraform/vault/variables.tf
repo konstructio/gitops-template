@@ -7,12 +7,12 @@ variable "b64_docker_auth" {
 }
 
 variable "cloudflare_origin_ca_api_key" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "cloudflare_api_key" {
-  type = string
+  type    = string
   default = ""
 }
 

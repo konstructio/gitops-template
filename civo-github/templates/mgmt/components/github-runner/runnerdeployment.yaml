@@ -9,7 +9,12 @@ spec:
   template:
     spec:
       organization: <GITHUB_OWNER>
-      image: summerwind/actions-runner-dind
+      image: ghcr.io/actions-runner-controller/actions-runner-controller/actions-runner-dind-rootless:v2.315.0-ubuntu-20.04-5b9b9f7
       serviceAccountName: github-runner
-      dockerdWithinRunnerContainer: true
       automountServiceAccountToken: true
+      dockerEnabled: false
+      dockerdWithinRunnerContainer: false
+      resources: {}
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000

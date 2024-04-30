@@ -40,7 +40,7 @@ module "gitlab" {
   redirect_uris = [
     "https://gitlab.<DOMAIN_NAME>/users/auth/openid_connect/callback",
   ]
-  secret_mount_path = vault_mount.secret.pat
+  secret_mount_path = vault_mount.secret.path
 }
 
 module "console" {
@@ -57,5 +57,3 @@ module "console" {
   ]
   secret_mount_path = vault_mount.secret.path
 }
-
-# todo kubectl-oidc
