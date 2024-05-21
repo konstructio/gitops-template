@@ -1,16 +1,8 @@
 terraform {
-  backend "gcs" {
-    bucket = "<KUBEFIRST_STATE_STORE_BUCKET>"
-    prefix = "terraform/github/terraform.tfstate"
-  }
   required_providers {
     github = {
       source  = "integrations/github"
       version = "~> 5.17.0"
-    }
-    google = {
-      source  = "hashicorp/google"
-      version = "4.68.0"
     }
   }
 }
@@ -39,6 +31,7 @@ resource "github_repository_webhook" "gitops_atlantis_webhook" {
 
   events = ["pull_request_review", "push", "issue_comment", "pull_request"]
 }
+
 variable "atlantis_repo_webhook_secret" {
   type    = string
   default = ""
