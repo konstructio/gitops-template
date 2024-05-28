@@ -7,10 +7,10 @@ jobs:
     name: Workflow
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-          
+        uses: hashicorp/setup-terraform@v3.1.1
+
       - name: Terraform fmt
         run: make fmt
