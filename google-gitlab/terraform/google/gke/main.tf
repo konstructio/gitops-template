@@ -16,6 +16,8 @@ module "gke" {
   region          = var.google_region
   release_channel = "STABLE"
 
+  deletion_protection = false
+
   // External availability
   enable_private_endpoint = false
   enable_private_nodes    = true
