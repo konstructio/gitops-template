@@ -1,0 +1,50 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  configuration: |
+      terraform {
+        backend "gcs" {
+          bucket   = "k1-state-store-sje-trygitops-aon17u"
+          prefix   = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
+        }
+        required_providers {
+          google = {
+            source = "hashicorp/google"
+            version = "5.35.0"
+          }
+          kubernetes = {
+            source = "hashicorp/kubernetes"
+            version = "2.23.0"
+          }
+          vault = {
+            source = "hashicorp/vault"
+            version = "3.19.0"
+          }
+        }
+      }
+      provider "google" {
+        project = "<GOOGLE_PROJECT>"
+      }
+  credentials:
+  - filename: gen-nothing
+    source: None
+    secretRef:
+      namespace: crossplane-system
+      name: civo-creds
+      key: token
+  - filename: .git-credentials
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: git-credentials
+      key: creds
+  - filename: gcp-credentials
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: gcp-credentials
+      key: creds
