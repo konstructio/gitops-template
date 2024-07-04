@@ -76,16 +76,21 @@ resource "vault_generic_secret" "ci_secrets" {
   )
 }
 
+
 data "gitlab_group" "owner" {
   group_id = var.owner_group_id
 }
 
-resource "vault_generic_secret" "gitlab_runner" {
+resource "gitlab_runner" "basic_runner" {
+  registration_token = data.gitlab_group.owner.runners_token
+}
+
+resource "vault_generic_secret" "gitlab_runner_secret" {
   path      = "${vault_mount.secret.path}/gitlab-runner"
   data_json = <<EOT
 {
-  "RUNNER_TOKEN" : "",
-  "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
+  "RUNNER_TOKEN" : "${gitlab_runner.basic_runner.authentication_token}}",
+  "RUNNER_REGISTRATION_TOKEN" : ""
 }
 EOT
 }
