@@ -21,7 +21,7 @@ module "k3s" {
       ip = ip // internal node IP
       connection = {
         user        = var.ssh_user
-        private_key = file(var.ssh_private_key)
+        private_key = var.ssh_private_key
         host        = local.l_servers_public_ips[idx]
       },
       flags = local.l_tls_san_from_public_ips != [] ? concat(var.servers_args, local.l_tls_san_from_public_ips, ["--node-external-ip ${local.l_servers_public_ips[idx]}"]) : var.servers_args
