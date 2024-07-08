@@ -76,7 +76,7 @@ data "gitlab_group" "owner" {
   group_id = var.owner_group_id
 }
 
-resource "gitlab_user_runner" "group_runner" {
+resource "gitlab_user_runner" "instance_runner" {
   runner_type = "instance_type"
 }
 
@@ -115,7 +115,7 @@ resource "vault_generic_secret" "gitlab_runner_secret" {
   path      = "${vault_mount.secret.path}/gitlab-runner"
   data_json = <<EOT
 {
-  "RUNNER_TOKEN" : "${gitlab_user_runner.group_runner.token}",
+  "RUNNER_TOKEN" : "${gitlab_user_runner.instance_runner.token}",
   "RUNNER_REGISTRATION_TOKEN" : ""
 }
 EOT
