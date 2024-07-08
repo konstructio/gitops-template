@@ -16,7 +16,7 @@ resource "gitlab_project" "project" {
   namespace_id           = var.group_name
   import_url             = var.import_url
   initialize_with_readme = var.initialize_with_readme
-  shared_runners_enabled = true
+  shared_runners_enabled = false
   # https://docs.gitlab.com/ee/user/packages/container_registry/
   only_allow_merge_if_all_discussions_are_resolved = true
   only_allow_merge_if_pipeline_succeeds            = var.only_allow_merge_if_pipeline_succeeds
