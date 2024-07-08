@@ -78,7 +78,6 @@ data "gitlab_group" "owner" {
 
 resource "gitlab_user_runner" "group_runner" {
   runner_type = "instance_type"
-  group_id    = var.owner_group_id
 }
 
 resource "vault_generic_secret" "metaphor" {
