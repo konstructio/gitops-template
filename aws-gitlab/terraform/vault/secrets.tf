@@ -77,19 +77,19 @@ resource "vault_generic_secret" "ci_secrets" {
 }
 
 
-data "gitlab_group" "owner" {
-  group_id = var.owner_group_id
+resource "gitlab_user_runner" "shared_runner" {
+  group_id  = var.owner_group_id
+  runner_type = "group_type"
+  description = "Shared Runner for Group Projects"
+  tag_list    = ["shared"]
+  untagged = true
 }
 
-resource "gitlab_runner" "basic_runner" {
-  registration_token = data.gitlab_group.owner.runners_token
-}
-
-resource "vault_generic_secret" "gitlab_runner_secret" {
+resource "vault_generic_secret" "gitlab_runner" {
   path      = "${vault_mount.secret.path}/gitlab-runner"
   data_json = <<EOT
 {
-  "RUNNER_TOKEN" : "${gitlab_runner.basic_runner.authentication_token}}",
+  "RUNNER_TOKEN" : "${gitlab_user_runner.shared_runner.token}",
   "RUNNER_REGISTRATION_TOKEN" : ""
 }
 EOT
