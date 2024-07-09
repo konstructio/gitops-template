@@ -18,7 +18,7 @@ spec:
     helm:
       values: |-
         gitlabUrl: https://gitlab.com
-        replicas: 2
+        replicas: 1
         concurrent: 10
         hostNetwork: true
         unregisterRunners: true
