@@ -31,6 +31,8 @@ publish:
   stage: publish
   only:
   - main
+  tags:
+  - shared
   script:
   - *setup-argocd
   - echo "commit sha $CI_COMMIT_SHA"
