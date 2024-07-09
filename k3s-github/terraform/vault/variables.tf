@@ -2,6 +2,16 @@ locals {
   cluster_name = "<CLUSTER_NAME>"
 }
 
+variable "aws_access_key_id" {
+  default = ""
+  type    = string
+}
+
+variable "aws_secret_access_key" {
+  default = ""
+  type    = string
+}
+
 variable "<EXTERNAL_DNS_PROVIDER_NAME>_secret" {
   default = ""
   type    = string
