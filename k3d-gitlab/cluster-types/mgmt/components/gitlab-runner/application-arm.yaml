@@ -27,19 +27,20 @@ spec:
           clusterWideAccess: true
         runners:
           secret: gitlab-runner
-          privileged: false
+          privileged: true
           serviceAccountName: gitlab-runner
           config: |
             [[runners]]
               [runners.kubernetes]
                 image = "ubuntu:20.04"
-                privileged = false
+                privileged = true
                 poll_timeout = 360
+              [runners.kubernetes.node_selector]
+                "kubernetes.io/arch" = "arm64"
               [[runners.kubernetes.volumes.empty_dir]]
                 name = "docker-certs"
                 mount_path = "/certs/client"
                 medium = "Memory"
-                privileged = false
     chart: gitlab-runner
   syncPolicy:
     automated:
@@ -53,7 +54,7 @@ kind: ClusterRoleBinding
 metadata:
   name: gitlab-runner-argo-workflows-admin
   annotations:
-    argocd.argoproj.io/sync-wave: '20'
+    argocd.argoproj.io/sync-wave: '2'
 subjects:
   - kind: ServiceAccount
     name: gitlab-runner

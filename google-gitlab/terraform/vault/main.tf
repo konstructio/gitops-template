@@ -6,7 +6,7 @@ terraform {
   required_providers {
     gitlab = {
       source  = "gitlabhq/gitlab"
-      version = "15.8.0"
+      version = "17.1.0"
     }
     google = {
       source  = "hashicorp/google"
@@ -25,4 +25,8 @@ provider "google" {
 
 provider "vault" {
   skip_tls_verify = "true"
+}
+
+provider "gitlab" {
+  token = var.gitlab_token
 }

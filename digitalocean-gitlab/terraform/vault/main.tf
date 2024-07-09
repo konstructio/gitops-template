@@ -19,7 +19,7 @@ terraform {
     }
     gitlab = {
       source  = "gitlabhq/gitlab"
-      version = "15.8.0"
+      version = "17.1.0"
     }
   }
 }
@@ -30,4 +30,8 @@ provider "digitalocean" {
 
 provider "vault" {
   skip_tls_verify = "true"
+}
+
+provider "gitlab" {
+  token = var.gitlab_token
 }

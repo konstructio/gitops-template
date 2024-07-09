@@ -72,8 +72,12 @@ resource "vault_generic_secret" "external_secrets_token" {
   )
 }
 
-data "gitlab_group" "owner" {
-  group_id = var.owner_group_id
+resource "gitlab_user_runner" "shared_runner" {
+  group_id  = var.owner_group_id
+  runner_type = "group_type"
+  description = "Shared Runner for Group Projects"
+  tag_list    = ["shared"]
+  untagged = true
 }
 
 resource "vault_generic_secret" "metaphor" {
@@ -107,12 +111,12 @@ resource "vault_generic_secret" "ci_secrets" {
   )
 }
 
-resource "vault_generic_secret" "gitlab_runner" {
+resource "vault_generic_secret" "gitlab_runner_secret" {
   path      = "${vault_mount.secret.path}/gitlab-runner"
   data_json = <<EOT
 {
-  "RUNNER_TOKEN" : "",
-  "RUNNER_REGISTRATION_TOKEN" : "${data.gitlab_group.owner.runners_token}"
+  "RUNNER_TOKEN" : "${gitlab_user_runner.shared_runner.token}",
+  "RUNNER_REGISTRATION_TOKEN" : ""
 }
 EOT
 }
