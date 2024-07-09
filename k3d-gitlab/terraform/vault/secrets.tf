@@ -80,8 +80,8 @@ resource "gitlab_user_runner" "shared_runner" {
   group_id  = var.owner_group_id
   runner_type = "group_type"
   description = "Shared Runner for Group Projects"
-  locked = true
-  tag_list    = ["shared", "group-runner"]
+  tag_list    = ["shared"]
+  untagged = true
 }
 
 resource "vault_generic_secret" "metaphor" {
