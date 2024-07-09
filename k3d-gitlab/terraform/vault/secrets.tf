@@ -72,10 +72,6 @@ resource "vault_generic_secret" "external_secrets_token" {
   )
 }
 
-data "gitlab_group" "owner" {
-  group_id = var.owner_group_id
-}
-
 resource "gitlab_user_runner" "shared_runner" {
   group_id  = var.owner_group_id
   runner_type = "group_type"
