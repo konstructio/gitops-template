@@ -35,6 +35,8 @@ spec:
                 image = "ubuntu:20.04"
                 privileged = true
                 poll_timeout = 360
+              [runners.kubernetes.node_selector]
+                "kubernetes.io/arch" = "arm64"
               [[runners.kubernetes.volumes.empty_dir]]
                 name = "docker-certs"
                 mount_path = "/certs/client"
