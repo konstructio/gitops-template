@@ -6,15 +6,15 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '45'
+    argocd.argoproj.io/sync-wave: '500'
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/environments/production/metaphor
+    path: registry/clusters/<CLUSTER-NAME>/components/metaphor/production/metaphor
     targetRevision: HEAD
   destination:
-    name: <WORKLOAD_CLUSTER_NAME>
+    name: in-cluster
     namespace: production
   syncPolicy:
     automated:

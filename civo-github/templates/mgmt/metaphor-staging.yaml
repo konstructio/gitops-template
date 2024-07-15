@@ -1,24 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: development-environment-metaphor
+  name: staging-environment-metaphor
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '45'
+    argocd.argoproj.io/sync-wave: '500'
 spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/environments/development/metaphor
+    path: registry/clusters/<CLUSTER-NAME>/components/metaphor/staging/metaphor
     targetRevision: HEAD
   destination:
-    name: <WORKLOAD_CLUSTER_NAME>
-    namespace: development
+    name: in-cluster
+    namespace: staging
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
