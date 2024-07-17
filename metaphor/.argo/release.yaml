@@ -76,7 +76,7 @@ spec:
                   from: '{{steps.checkout.outputs.artifacts.repo-source}}'
               parameters:
                 - name: fullChartPath
-                  value: 'registry/environments/{{workflow.parameters.environment}}/{{workflow.parameters.appName}}/Chart.yaml'
+                  value: 'registry/clusters/{{workflow.parameters.clusterName}}/components/{{workflow.parameters.environment}}/{{workflow.parameters.appName}}/Chart.yaml'
                 - name: chartVersion
                   value: '{{steps.get-initial-chart-version.outputs.result}}'
                 - name: environment
