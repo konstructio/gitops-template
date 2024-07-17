@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/clusters/<CLUSTER_NAME>/components/staging
+    path: registry/environments/staging
     targetRevision: HEAD
   destination:
     name: in-cluster
