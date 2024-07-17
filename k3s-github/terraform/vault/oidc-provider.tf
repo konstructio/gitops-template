@@ -2,13 +2,12 @@ resource "vault_identity_oidc_key" "key" {
   name               = "kubefirst"
   algorithm          = "RS256"
   allowed_client_ids = ["*"] # todo make explicit list of client ids
-  verification_ttl   = 2500  # 41min
 }
 
 resource "vault_identity_oidc_provider" "kubefirst" {
   name          = "kubefirst"
   https_enabled = true
-  issuer_host   = "vault.<DOMAIN_NAME>"
+  issuer_host   = "<VAULT_INGRESS_NO_HTTPS_URL>"
   allowed_client_ids = [
     "*" # todo make explicit list of client ids
   ]

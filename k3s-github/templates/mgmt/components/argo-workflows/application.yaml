@@ -1,0 +1,77 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  project: default
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    targetRevision: 0.20.1
+    helm:
+      values: |-
+        nameOverride: argo
+        executor:
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1
+              memory: 1024Mi
+        server:
+          extraArgs:
+          - --secure
+          - --auth-mode=client
+          - --auth-mode=sso
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            annotations:
+              <CERT_MANAGER_ISSUER_ANNOTATION_1>
+              <CERT_MANAGER_ISSUER_ANNOTATION_2>
+              <CERT_MANAGER_ISSUER_ANNOTATION_3>
+              <CERT_MANAGER_ISSUER_ANNOTATION_4>
+            hosts:
+              - argo.<DOMAIN_NAME>
+            paths:
+              - /
+            pathType: Prefix
+            tls:
+              - secretName: argo-tls
+                hosts:
+                  - argo.<DOMAIN_NAME>
+          sso:
+            issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst
+            clientId:
+              name: argo-secrets
+              key: client-id
+            clientSecret:
+              name: argo-secrets
+              key: client-secret
+            redirectUrl: https://argo.<DOMAIN_NAME>/oauth2/callback
+            scopes:
+              - email
+              - openid
+              - groups
+              - user
+              - profile
+            # RBAC Config. >= v2.12
+            rbac:
+              enabled: true
+        useDefaultArtifactRepo: true
+        useStaticCredentials: true
+        artifactRepository:
+          archiveLogs: false
+    chart: argo-workflows
+  destination:
+    name: in-cluster
+    namespace: argo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

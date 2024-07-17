@@ -1,0 +1,84 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: cwft-kaniko
+spec:
+  entrypoint: build-push
+  templates:
+  - name: build-push-ssh
+    inputs:
+      parameters:
+      - name: appName
+      - name: branch
+      - name: containerRegistryURL
+      - name: gitUrlNoProtocol
+      artifacts:
+      - name: app-source
+        path: '/src/{{inputs.parameters.appName}}'
+        git:
+          repo: '{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.appName}}.git'
+          branch: '{{inputs.parameters.branch}}'
+          singleBranch: true
+          insecureIgnoreHostKey: true
+          sshPrivateKeySecret:
+            name: ci-secrets
+            key: SSH_PRIVATE_KEY
+    volumes:
+    - name: docker-config
+      secret:
+        secretName: 'container-registry-auth'
+    container:
+      image: gcr.io/kaniko-project/executor:latest
+      volumeMounts:
+      - name: docker-config
+        mountPath: /.docker
+      env:
+      - name: DOCKER_CONFIG
+        value: /.docker
+      args:
+      - '--dockerfile'
+      - 'Dockerfile'
+      - '--context'
+      - 'dir:///src/{{inputs.parameters.appName}}/'
+      - '--destination'
+      - '{{inputs.parameters.containerRegistryURL}}'
+  - name: build-push-https
+    inputs:
+      parameters:
+      - name: appName
+      - name: branch
+      - name: containerRegistryURL
+      - name: gitUrlNoProtocol
+      artifacts:
+      - name: app-source
+        path: '/src/{{inputs.parameters.appName}}'
+        git:
+          repo: '{{inputs.parameters.gitUrlNoProtocol}}/{{inputs.parameters.appName}}.git'
+          branch: '{{inputs.parameters.branch}}'
+          singleBranch: true
+          insecureIgnoreHostKey: true
+          usernameSecret:
+            name: ci-secrets
+            key: BASIC_AUTH_USER
+          passwordSecret:
+            name: ci-secrets
+            key: PERSONAL_ACCESS_TOKEN
+    volumes:
+    - name: docker-config
+      secret:
+        secretName: 'container-registry-auth'
+    container:
+      image: gcr.io/kaniko-project/executor:latest
+      volumeMounts:
+      - name: docker-config
+        mountPath: /.docker
+      env:
+      - name: DOCKER_CONFIG
+        value: /.docker
+      args:
+      - '--dockerfile'
+      - 'Dockerfile'
+      - '--context'
+      - 'dir:///src/{{inputs.parameters.appName}}/'
+      - '--destination'
+      - '{{inputs.parameters.containerRegistryURL}}'
