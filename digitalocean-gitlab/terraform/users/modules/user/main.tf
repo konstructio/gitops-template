@@ -133,7 +133,7 @@ variable "group_id" {
 }
 
 data "vault_identity_group" "admins" {
-  group_name = "admins"
+  group_name = "<ADMIN-TEAM>"
 }
 
 data "gitlab_group" "admins" {

@@ -15,11 +15,11 @@ terraform {
 }
 
 data "github_team" "admins" {
-  slug = "admins"
+  slug = "<ADMIN-TEAM>"
 }
 
 data "github_team" "developers" {
-  slug = "developers"
+  slug = "<DEVELOPER-TEAM>"
 }
 
 data "vault_auth_backend" "userpass" {

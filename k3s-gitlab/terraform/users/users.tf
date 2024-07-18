@@ -12,7 +12,7 @@ data "vault_auth_backend" "userpass" {
 }
 
 data "vault_identity_group" "admins" {
-  group_name = "admins"
+  group_name = "<ADMIN-TEAM>"
 }
 
 variable "initial_password" {
@@ -21,7 +21,7 @@ variable "initial_password" {
 }
 
 data "vault_identity_group" "developers" {
-  group_name = "developers"
+  group_name = "<DEVELOPER-TEAM>"
 }
 
 module "admins" {

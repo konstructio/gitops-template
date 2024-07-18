@@ -10,7 +10,7 @@ terraform {
 module "gitops" {
   source = "./modules/repository"
 
-  repo_name          = "gitops"
+  repo_name          = "<GIT-REPO-NAME> "
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
   team_developers_id = github_team.developers.id
@@ -40,7 +40,7 @@ variable "atlantis_repo_webhook_secret" {
 module "metaphor" {
   source = "./modules/repository"
 
-  repo_name          = "metaphor"
+  repo_name          = "<METPAHOR-REPO-NAME>"
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
   create_ecr         = true
