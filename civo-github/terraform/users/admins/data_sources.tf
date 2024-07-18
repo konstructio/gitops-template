@@ -1,5 +1,5 @@
 data "github_team" "admins" {
-  slug = "admins"
+  slug = "<ADMIN-TEAM>"
 }
 
 data "vault_auth_backend" "userpass" {
