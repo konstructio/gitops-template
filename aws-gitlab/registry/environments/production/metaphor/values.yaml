@@ -11,7 +11,10 @@ metaphor:
     className: nginx
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+      <CERT_MANAGER_ISSUER_ANNOTATION_1>
+      <CERT_MANAGER_ISSUER_ANNOTATION_2>
+      <CERT_MANAGER_ISSUER_ANNOTATION_3>
+      <CERT_MANAGER_ISSUER_ANNOTATION_4>
       nginx.ingress.kubernetes.io/service-upstream: "true"
     hosts:
       - host: metaphor-production.<DOMAIN_NAME>
@@ -26,8 +29,8 @@ metaphor:
     host: https://metaphor-production.<DOMAIN_NAME>/api
     console: https://kubefirst.<DOMAIN_NAME>
 
-  clusterSecretStoreName: <WORKLOAD_CLUSTER_NAME>-vault-kv-secret
-  vaultSecretPath: <WORKLOAD_CLUSTER_NAME>/metaphor
+  clusterSecretStoreName: vault-kv-secret
+  vaultSecretPath: production/metaphor
   configs:
-    configOne: <WORKLOAD_CLUSTER_NAME>-config-one
-    configTwo: <WORKLOAD_CLUSTER_NAME>-config-two
+    configOne: production-config-one
+    configTwo: production-config-two
