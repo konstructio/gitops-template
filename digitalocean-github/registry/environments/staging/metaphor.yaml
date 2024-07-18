@@ -14,7 +14,7 @@ spec:
     path: registry/environments/staging/metaphor
     targetRevision: HEAD
   destination:
-    name: <WORKLOAD_CLUSTER_NAME>
+    name: in-cluster
     namespace: staging
   syncPolicy:
     automated:

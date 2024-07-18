@@ -29,8 +29,8 @@ metaphor:
     host: https://metaphor-production.<DOMAIN_NAME>/api
     console: https://kubefirst.<DOMAIN_NAME>
 
-  clusterSecretStoreName: <WORKLOAD_CLUSTER_NAME>-vault-kv-secret
-  vaultSecretPath: <WORKLOAD_CLUSTER_NAME>/metaphor
+  clusterSecretStoreName: vault-kv-secret
+  vaultSecretPath: production/metaphor
   configs:
-    configOne: <WORKLOAD_CLUSTER_NAME>-config-one
-    configTwo: <WORKLOAD_CLUSTER_NAME>-config-two
+    configOne: production-config-one
+    configTwo: production-config-two
