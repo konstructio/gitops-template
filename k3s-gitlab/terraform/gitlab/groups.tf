@@ -2,7 +2,8 @@ data "gitlab_group" "owner" {
   group_id = tonumber(var.owner_group_id)
 }
 
-resource "gitlab_group" "admins" {
+resource "gitlab_group" 
+ {
   name        = "<ADMIN-TEAM>"
   path        = "<ADMIN-TEAM>"
   parent_id   = data.gitlab_group.owner.group_id

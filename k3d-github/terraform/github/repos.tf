@@ -2,7 +2,7 @@
 module "gitops" {
   source             = "./modules/repository"
   visibility         = "private"
-  repo_name          = "gitops"
+  repo_name          = "<GIT-REPO-NAME>"
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
 }
@@ -10,7 +10,7 @@ module "gitops" {
 module "metaphor" {
   source = "./modules/repository"
 
-  repo_name          = "metaphor"
+  repo_name          = "<METPAHOR-REPO-NAME>"
   archive_on_destroy = false
   auto_init          = false # set to false if importing an existing repository
 }
