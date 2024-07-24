@@ -1,5 +1,5 @@
 data "vault_identity_group" "admins" {
-  group_name = "<ADMIN-TEAM>"
+  group_name = "admins"
 }
 
 resource "vault_identity_group_member_entity_ids" "admins_membership" {
