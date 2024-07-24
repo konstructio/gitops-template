@@ -90,7 +90,7 @@ resource "vault_generic_secret" "external_secrets_token" {
 resource "vault_generic_secret" "metaphor" {
   for_each = toset(["development", "staging", "production"])
 
-  path = "${vault_mount.secret.path}/${each.key}/<METPAHOR-REPO-NAME>"
+  path = "${vault_mount.secret.path}/${each.key}/metaphor"
   # note: these secrets are not actually sensitive.
   # do not hardcode passwords in git under normal circumstances.
   data_json = jsonencode(
