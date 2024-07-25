@@ -86,10 +86,7 @@ module "eks" {
     # See https://github.com/aws/containers-roadmap/issues/1666 for more context
     iam_role_attach_cni_policy = true
   }
-  iam_role_additional_policies = {
-
-  }
-
+  
   eks_managed_node_groups = {
     iam_role_additional_policies = {
       S3Access = "arn:aws:iam::126827061464:policy/cert-manager-cyje-77"
