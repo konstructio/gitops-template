@@ -1,6 +1,6 @@
 
 data "digitalocean_kubernetes_versions" "versions" {
-  version_prefix = "1.27."
+  version_prefix = "1.28."
 }
 
 resource "digitalocean_kubernetes_cluster" "cluster" {
