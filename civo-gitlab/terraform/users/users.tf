@@ -23,7 +23,7 @@ terraform {
 }
 
 data "gitlab_group" "admins" {
-  full_path = "<GITLAB_OWNER>/admins"
+  full_path = "<GITLAB_OWNER>/<ADMIN-TEAM>"
 }
 
 data "gitlab_group" "developers" {

@@ -26,3 +26,4 @@ resource "gitlab_project_hook" "atlantis" {
   push_events           = true
   note_events           = true
 }
+
