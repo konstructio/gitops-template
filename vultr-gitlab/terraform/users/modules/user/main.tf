@@ -133,11 +133,11 @@ variable "group_id" {
 }
 
 data "vault_identity_group" "admins" {
-  group_name = "<ADMIN-TEAM>"
+  group_name = "<ADMIN_TEAM>"
 }
 
 data "gitlab_group" "admins" {
-  full_path = "<GITLAB_OWNER>/<ADMIN-TEAM>"
+  full_path = "<GITLAB_OWNER>/<ADMIN_TEAM>"
 }
 
 data "gitlab_group" "developers" {

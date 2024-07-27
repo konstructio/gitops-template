@@ -1,7 +1,7 @@
 module "metaphor" {
   source       = "./modules/project"
   group_name   = data.gitlab_group.owner.id
-  project_name = "<METPAHOR-REPO-NAME>"
+  project_name = "<METAPHOR_REPO_NAME>"
   # create_ecr                            = true
   initialize_with_readme                = false
   only_allow_merge_if_pipeline_succeeds = false
@@ -11,7 +11,7 @@ module "metaphor" {
 module "gitops" {
   source       = "./modules/project"
   group_name   = data.gitlab_group.owner.id
-  project_name = "<GIT-REPO-NAME> "
+  project_name = "<GIT_REPO_NAME> "
   # create_ecr                            = true
   initialize_with_readme                = false
   only_allow_merge_if_pipeline_succeeds = false

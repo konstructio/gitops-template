@@ -1,5 +1,5 @@
 resource "github_team" "admins" {
-  name        = "<ADMIN-TEAM>"
+  name        = "<ADMIN_TEAM>"
   description = "administrators of the kubefirst platform"
   privacy     = "closed"
 }

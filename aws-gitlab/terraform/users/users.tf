@@ -18,7 +18,7 @@ terraform {
 }
 
 data "gitlab_group" "admins" {
-  full_path = "<GITLAB_OWNER>/<ADMIN-TEAM>"
+  full_path = "<GITLAB_OWNER>/<ADMIN_TEAM>"
 }
 
 data "gitlab_group" "developers" {
@@ -31,7 +31,7 @@ data "vault_auth_backend" "userpass" {
 }
 
 data "vault_identity_group" "admins" {
-  group_name = "<ADMIN-TEAM>"
+  group_name = "<ADMIN_TEAM>"
 }
 
 variable "initial_password" {

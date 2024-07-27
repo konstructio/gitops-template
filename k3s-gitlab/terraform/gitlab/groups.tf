@@ -4,8 +4,8 @@ data "gitlab_group" "owner" {
 
 resource "gitlab_group" 
  {
-  name        = "<ADMIN-TEAM>"
-  path        = "<ADMIN-TEAM>"
+  name        = "<ADMIN_TEAM>"
+  path        = "<ADMIN_TEAM>"
   parent_id   = data.gitlab_group.owner.group_id
   description = "admins group"
 }

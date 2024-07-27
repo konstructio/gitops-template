@@ -20,7 +20,7 @@ terraform {
 }
 
 data "github_team" "admins" {
-  slug = "<ADMIN-TEAM>"
+  slug = "<ADMIN_TEAM>"
 }
 
 data "github_team" "developers" {
