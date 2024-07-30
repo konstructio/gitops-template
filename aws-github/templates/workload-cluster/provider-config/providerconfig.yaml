@@ -16,15 +16,19 @@ spec:
         required_providers {
           kubernetes = {
             source = "hashicorp/kubernetes"
-            version = "2.23.0"
+            version = ">= 2.23.0, < 3.0.0"
           }
           vault = {
             source = "hashicorp/vault"
-            version = "3.19.0"
+            version = ">= 3.19.0, < 4.0.0"
+          }
+          random = {
+            source = "hashicorp/random"
+            version = ">= 3.6.2, < 4.0.0"
           }
           aws = {
             source = "hashicorp/aws"
-            version = "5.30.0"
+            version = ">= 5.30.0, < 6.0.0"
           }
         }
       }
