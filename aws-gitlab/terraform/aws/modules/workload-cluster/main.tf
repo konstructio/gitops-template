@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_version = "1.29"
+  cluster_version = "1.26"
   vpc_cidr        = "10.0.0.0/16"
   azs             = slice(data.aws_availability_zones.available.names, 0, 3)
   tags = {
@@ -13,6 +13,21 @@ locals {
 ################################################################################
 # EKS Module
 ################################################################################
+module "iam_node_group_role" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+
+  create_role = true
+
+  role_name_prefix = "${var.cluster_name}-node-group"
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+  ]
+  number_of_custom_role_policy_arns = 3
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.10.0"
@@ -22,7 +37,8 @@ module "eks" {
   cluster_endpoint_public_access = true
   create_kms_key                 = false
   cluster_encryption_config      = {}
-  create_iam_role                = true
+  create_iam_role                = false
+  iam_role_arn                   = module.iam_node_group_role.iam_role_arn
   cluster_addons = {
     # AWS launch CoreDNS itself with their add-on https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html
     # coredns = {
