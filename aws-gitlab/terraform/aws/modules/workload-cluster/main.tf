@@ -1,30 +1,10 @@
-provider "aws" {
-  region = local.region
-}
-
-provider "kubernetes" {
-  host                   = module.eks.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data != null ? module.eks.cluster_certificate_authority_data : "")
-
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
-    # This requires the awscli to be installed locally where Terraform is executed
-    args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
-  }
-}
-
 data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
 
 locals {
-  name            = "<CLUSTER_NAME>"
   cluster_version = "1.26"
-  region          = "<CLOUD_REGION>"
-
-  vpc_cidr = "10.0.0.0/16"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
-
+  vpc_cidr        = "10.0.0.0/16"
+  azs             = slice(data.aws_availability_zones.available.names, 0, 3)
   tags = {
     kubefirst = "true"
   }
@@ -33,16 +13,32 @@ locals {
 ################################################################################
 # EKS Module
 ################################################################################
+module "iam_node_group_role" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+
+  create_role = true
+
+  role_name_prefix = "${var.cluster_name}-node-group"
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+  ]
+  number_of_custom_role_policy_arns = 3
+}
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.10.0"
 
-  cluster_name                   = local.name
+  cluster_name                   = var.cluster_name
   cluster_version                = local.cluster_version
   cluster_endpoint_public_access = true
   create_kms_key                 = false
   cluster_encryption_config      = {}
+  create_iam_role                = false
+  iam_role_arn                   = module.iam_node_group_role.iam_role_arn
   cluster_addons = {
     # AWS launch CoreDNS itself with their add-on https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html
     # coredns = {
@@ -74,10 +70,20 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
+  manage_aws_auth_configmap = false
+
+  # aws_auth_roles = [
+  #   # managed node group is automatically added to the configmap
+  #   {
+  #     rolearn  = ""
+  #     username = ""
+  #     groups   = ["system:masters"]
+  #   },
+  # ]
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
-    instance_types = ["<NODE_TYPE>"]
+    instance_types = [var.node_type]
 
     # We are using the IRSA created below for permissions
     # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
@@ -86,13 +92,13 @@ module "eks" {
     # See https://github.com/aws/containers-roadmap/issues/1666 for more context
     iam_role_attach_cni_policy = true
   }
-  
+
   eks_managed_node_groups = {
     # Default node group - as provided by AWS EKS
     default_node_group = {
-      desired_size = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
-      min_size     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
-      max_size     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
+      desired_size = tonumber(var.node_count) # tonumber() is used for a string token value
+      min_size     = tonumber(var.node_count) # tonumber() is used for a string token value
+      max_size     = tonumber(var.node_count) # tonumber() is used for a string token value
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false
@@ -112,7 +118,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "4.0.2"
 
-  name = local.name
+  name = var.cluster_name
   cidr = local.vpc_cidr
 
   azs             = local.azs
@@ -120,7 +126,7 @@ module "vpc" {
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
-  enable_ipv6            = false
+  enable_ipv6            = true
   create_egress_only_igw = true
 
   public_subnet_ipv6_prefixes  = [0, 1, 2]
@@ -146,7 +152,7 @@ module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.32.0"
 
-  role_name             = upper("VPC-CNI-IRSA-<CLUSTER_NAME>")
+  role_name             = upper("VPC-CNI-IRSA-${var.cluster_name}")
   attach_vpc_cni_policy = true
   role_policy_arns = {
     AmazonEKS_CNI_Policy = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
@@ -167,7 +173,7 @@ module "aws_ebs_csi_driver" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.32.0"
 
-  role_name = upper("EBS-CSI-DRIVER-<CLUSTER_NAME>")
+  role_name = upper("EBS-CSI-DRIVER-${var.cluster_name}")
 
   role_policy_arns = {
     admin = aws_iam_policy.aws_ebs_csi_driver.arn
@@ -184,7 +190,7 @@ module "aws_ebs_csi_driver" {
 }
 
 resource "aws_iam_policy" "aws_ebs_csi_driver" {
-  name        = "aws-ebs-csi-driver-${local.name}"
+  name        = "aws-ebs-csi-driver-${var.cluster_name}"
   path        = "/"
   description = "policy for aws ebs csi driver"
 
@@ -325,68 +331,11 @@ resource "aws_iam_policy" "aws_ebs_csi_driver" {
 EOT
 }
 
-module "argo_workflows" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
-
-  role_name = "argo-${local.name}"
-  role_policy_arns = {
-    admin = "arn:aws:iam::aws:policy/AdministratorAccess"
-  }
-
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["argo:argo-server"]
-    }
-  }
-
-  tags = local.tags
-}
-
-module "argocd" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
-
-  role_name = "argocd-${local.name}"
-  role_policy_arns = {
-    argocd = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
-  }
-  assume_role_condition_test = "StringLike"
-  allow_self_assume_role     = true
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["argocd:argocd-application-controller", "argocd:argocd-server"]
-    }
-  }
-
-  tags = local.tags
-}
-
-module "atlantis" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
-
-  role_name = "atlantis-${local.name}"
-  role_policy_arns = {
-    atlantis = "arn:aws:iam::aws:policy/AdministratorAccess",
-  }
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["atlantis:atlantis"]
-    }
-  }
-
-  tags = local.tags
-}
-
 module "cert_manager" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.32.0"
 
-  role_name = "cert-manager-${local.name}"
+  role_name = "cert-manager-${var.cluster_name}"
   role_policy_arns = {
     cert_manager = aws_iam_policy.cert_manager.arn
   }
@@ -401,7 +350,7 @@ module "cert_manager" {
 }
 
 resource "aws_iam_policy" "cert_manager" {
-  name        = "cert-manager-${local.name}"
+  name        = "cert-manager-${var.cluster_name}"
   path        = "/"
   description = "policy for external dns to access route53 resources"
 
@@ -432,103 +381,11 @@ resource "aws_iam_policy" "cert_manager" {
 EOT
 }
 
-module "chartmuseum" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
-
-  role_name = "chartmuseum-${local.name}"
-  role_policy_arns = {
-    chartmuseum = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-  }
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["chartmuseum:chartmuseum"]
-    }
-  }
-
-  tags = local.tags
-}
-
-module "crossplane_custom_trust" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "5.33.0"
-
-  create_role = true
-
-  role_name = "crossplane-${local.name}"
-
-  create_custom_role_trust_policy = true
-  custom_role_trust_policy        = data.aws_iam_policy_document.crossplane_custom_trust_policy.json
-  custom_role_policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
-}
-
-data "aws_iam_policy_document" "crossplane_custom_trust_policy" {
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "${split("arn:aws:iam::<AWS_ACCOUNT_ID>:oidc-provider/", module.eks.oidc_provider_arn)[1]}:aud"
-      values   = ["sts.amazonaws.com"]
-    }
-
-    condition {
-      test     = "StringLike"
-      variable = "${split("arn:aws:iam::<AWS_ACCOUNT_ID>:oidc-provider/", module.eks.oidc_provider_arn)[1]}:sub"
-      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-<CLUSTER_NAME>"]
-    }
-
-    principals {
-      type        = "Federated"
-      identifiers = [module.eks.oidc_provider_arn]
-    }
-  }
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"]
-    }
-  }
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-${local.name}"]
-    }
-  }
-}
-
-module "ecr_publish_permissions_sync" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
-
-  role_name = "ecr-publish-permissions-sync-${local.name}"
-  role_policy_arns = {
-    admin = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
-  }
-
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["argo:ecr-publish-permissions-sync"]
-    }
-  }
-
-  tags = local.tags
-}
-
 module "external_dns" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.32.0"
 
-  role_name = "external-dns-${local.name}"
+  role_name = "external-dns-${var.cluster_name}"
   role_policy_arns = {
     external_dns = aws_iam_policy.external_dns.arn
   }
@@ -543,7 +400,7 @@ module "external_dns" {
 }
 
 resource "aws_iam_policy" "external_dns" {
-  name        = "external-dns-${local.name}"
+  name        = "external-dns-${var.cluster_name}"
   path        = "/"
   description = "policy for external dns to access route53 resources"
 
@@ -575,81 +432,16 @@ resource "aws_iam_policy" "external_dns" {
 EOT
 }
 
-module "kubefirst_api" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
+resource "vault_generic_secret" "clusters" {
+  path = "secret/clusters/${var.cluster_name}"
 
-  role_name = "kubefirst-api-${local.name}"
-  role_policy_arns = {
-    kubefirst = "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-  }
-  assume_role_condition_test = "StringLike"
-  allow_self_assume_role     = true
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kubefirst:kubefirst-kubefirst-api"]
-    }
-  }
-
-  tags = local.tags
-}
-
-module "vault" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
-
-  role_name = "vault-${local.name}"
-  role_policy_arns = {
-    dynamo = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-    kms    = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
-    vault  = aws_iam_policy.vault_server.arn,
-  }
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["vault:vault"]
-    }
-  }
-
-  tags = local.tags
-}
-
-resource "aws_iam_policy" "vault_server" {
-  name        = "vault-unseal-${local.name}"
-  path        = "/"
-  description = "vault server kms unseal policy"
-
-  policy = <<EOT
-{
-  "Version": "2012-10-17",
-  "Statement": [
+  data_json = jsonencode(
     {
-      "Sid": "VaultAWSAuthMethod",
-      "Effect": "Allow",
-      "Action": [
-        "ec2:DescribeInstances",
-        "iam:GetInstanceProfile",
-        "iam:GetUser",
-        "iam:GetRole"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Sid": "VaultKMSUnseal",
-      "Effect": "Allow",
-      "Action": [
-        "kms:Encrypt",
-        "kms:Decrypt",
-        "kms:DescribeKey"
-      ],
-      "Resource": [
-        "*"
-      ]
+      cluster_ca_certificate = module.eks.cluster_certificate_authority_data
+      host                   = module.eks.cluster_endpoint
+      cluster_name           = var.cluster_name
+      environment            = var.cluster_name
+      argocd_role_arn        = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
     }
-  ]
-}
-EOT
+  )
 }
