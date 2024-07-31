@@ -1,0 +1,46 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  configuration: |
+      terraform {
+        backend "s3" {
+          bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
+          key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
+          region = "<CLOUD_REGION>"
+          encrypt = true
+        }
+        required_providers {
+          kubernetes = {
+            source = "hashicorp/kubernetes"
+            version = "2.23.0"
+          }
+          vault = {
+            source = "hashicorp/vault"
+            version = "3.19.0"
+          }
+          aws = {
+            source = "hashicorp/aws"
+            version = "5.30.0"
+          }
+        }
+      }
+      provider "aws" {
+        region = "<WORKLOAD_CLUSTER_REGION>"
+      }
+  credentials:
+  - filename: gen-nothing
+    source: None
+    secretRef:
+      namespace: crossplane-system
+      name: no-creds
+      key: token
+  - filename: .git-credentials
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: git-credentials
+      key: creds

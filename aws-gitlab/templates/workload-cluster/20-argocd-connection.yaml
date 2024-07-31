@@ -1,0 +1,54 @@
+apiVersion: "external-secrets.io/v1beta1"
+kind: ExternalSecret
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
+  labels:
+    app.kubernetes.io/part-of: argocd
+spec:
+  target:
+    name: <WORKLOAD_CLUSTER_NAME>
+    template:
+      metadata:
+        labels:
+          argocd.argoproj.io/secret-type: cluster
+      engineVersion: v2
+      data:
+        name: "{{ .cluster_name }}"
+        server: "{{ .host }}"
+        clusterResources: "true"
+        config: |
+          {
+              "awsAuthConfig": {
+                  "clusterName": "{{ .cluster_name }}",
+                  "roleARN": "{{ .argocd_role_arn }}"
+              },
+              "tlsClientConfig": {
+                  "insecure": false,
+                  "caData": "{{ .cluster_ca_certificate }}"
+              }
+          }
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-kv-secret
+  refreshInterval: 10s
+  data:
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: argocd_role_arn
+        conversionStrategy: Default
+      secretKey: argocd_role_arn
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: cluster_ca_certificate
+        conversionStrategy: Default
+      secretKey: cluster_ca_certificate
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: cluster_name
+      secretKey: cluster_name
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: host
+      secretKey: host
