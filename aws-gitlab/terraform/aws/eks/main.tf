@@ -189,6 +189,7 @@ module "vpc_cni_irsa" {
   }
 
 
+
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
@@ -382,7 +383,7 @@ module "argo_workflows" {
 
 module "argocd" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.40.0"
+  version = "5.32.0"
 
   role_name = "argocd-${local.name}"
   role_policy_arns = {
@@ -489,7 +490,11 @@ module "chartmuseum" {
 module "crossplane_custom_trust" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "5.33.0"
+module "crossplane_custom_trust" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "5.33.0"
 
+  create_role = true
   create_role = true
 
   role_name = "crossplane-${local.name}"
@@ -513,8 +518,32 @@ data "aws_iam_policy_document" "crossplane_custom_trust_policy" {
     condition {
       test     = "StringLike"
       variable = "${split("arn:aws:iam::<AWS_ACCOUNT_ID>:oidc-provider/", module.eks.oidc_provider_arn)[1]}:sub"
-      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-*"]
+      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-<CLUSTER_NAME>"]
     }
+
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+  }
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/KubernetesAdmin"]
+    }
+  }
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-${local.name}"]
+    }
+  }
 
     principals {
       type        = "Federated"
@@ -613,7 +642,7 @@ EOT
 
 module "kubefirst_api" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.40.0"
+  version = "5.32.0"
 
   role_name = "kubefirst-api-${local.name}"
   role_policy_arns = {
