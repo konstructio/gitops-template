@@ -498,7 +498,7 @@ data "aws_iam_policy_document" "crossplane_custom_trust_policy" {
     condition {
       test     = "StringLike"
       variable = "${split("arn:aws:iam::<AWS_ACCOUNT_ID>:oidc-provider/", module.eks.oidc_provider_arn)[1]}:sub"
-      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-<CLUSTER_NAME>"]
+      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-*"]
     }
 
     principals {
