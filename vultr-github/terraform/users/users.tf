@@ -25,11 +25,11 @@ terraform {
 }
 
 data "github_team" "admins" {
-  slug = "admins"
+  slug = "<ADMIN_TEAM>"
 }
 
 data "github_team" "developers" {
-  slug = "developers"
+  slug = "<DEVELOPER-TEAM>"
 }
 
 data "vault_auth_backend" "userpass" {
@@ -37,7 +37,7 @@ data "vault_auth_backend" "userpass" {
 }
 
 data "vault_identity_group" "admins" {
-  group_name = "admins"
+  group_name = "<ADMIN_TEAM>"
 }
 
 variable "initial_password" {

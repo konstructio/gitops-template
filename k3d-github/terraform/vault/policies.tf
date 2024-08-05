@@ -141,7 +141,7 @@ EOT
 }
 
 resource "vault_policy" "developer" {
-  name = "developer"
+  name = "developers"
 
   policy = <<EOT
 # Allow full write access to developers, without delete

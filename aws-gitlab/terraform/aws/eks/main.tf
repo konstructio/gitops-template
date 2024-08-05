@@ -74,7 +74,6 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-  manage_aws_auth_configmap = false
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
@@ -87,10 +86,7 @@ module "eks" {
     # See https://github.com/aws/containers-roadmap/issues/1666 for more context
     iam_role_attach_cni_policy = true
   }
-  iam_role_additional_policies = {
-
-  }
-
+  
   eks_managed_node_groups = {
     iam_role_additional_policies = {
       S3Access = "arn:aws:iam::126827061464:policy/cert-manager-cyje-77"

@@ -74,7 +74,6 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-  manage_aws_auth_configmap = true
 
   aws_auth_roles = [
     # managed node group is automatically added to the configmap
