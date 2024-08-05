@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.50.0-rc.2a704f6
+    targetRevision: 2.50.0-rc.e4183ac
     chart: kubefirst
     helm:
       values: |-
