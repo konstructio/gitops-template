@@ -13,7 +13,7 @@ spec:
     module: |
       variable "instance_size" {
         type    = string
-        default = "g4s.kube.medium"
+        default = "<WORKLOAD_NODE_TYPE>"
       }
 
       variable "node_count" {
