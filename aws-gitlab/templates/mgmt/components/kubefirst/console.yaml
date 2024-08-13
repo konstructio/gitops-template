@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.kubefirst.com
-    targetRevision: 2.4.14-rc4
+    targetRevision: 2.4.16
     chart: kubefirst
     helm:
       values: |-
@@ -34,6 +34,10 @@ spec:
             IN_CLUSTER: "true"
             CLUSTER_NAME: "<CLUSTER_NAME>"
             ENTERPRISE_API_URL: "http://kubefirst-kubefirst-api-ee.kubefirst.svc.cluster.local"
+          serviceAccount:
+            create: true
+            annotations:
+              eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/kubefirst-api-<CLUSTER_NAME>
         console:
           isClusterZero: "false"
           domain: "<DOMAIN_NAME>"

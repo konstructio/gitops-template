@@ -19,3 +19,4 @@ variable "node_type" {
   default     = "t3.medium"
   type        = string
 }
+
