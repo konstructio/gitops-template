@@ -45,10 +45,11 @@ resource "civo_firewall" "kubefirst" {
 }
 
 resource "civo_kubernetes_cluster" "kubefirst" {
-  name         = local.cluster_name
-  network_id   = civo_network.kubefirst.id
-  firewall_id  = civo_firewall.kubefirst.id
-  cluster_type = "talos"
+  name             = local.cluster_name
+  network_id       = civo_network.kubefirst.id
+  firewall_id      = civo_firewall.kubefirst.id
+  cluster_type     = "talos"
+  write_kubeconfig = true
   pools {
     label      = local.cluster_name
     size       = "<NODE_TYPE>"
