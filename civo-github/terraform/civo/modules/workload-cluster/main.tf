@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    civo = {
+      source  = "civo/civo"
+      version = "~> 1.1.0"
+    }
+  }
+}
 
 locals {
   cluster_name = "<WORKLOAD_CLUSTER_NAME>"
