@@ -34,7 +34,7 @@ locals {
 }
 
 data "digitalocean_kubernetes_versions" "versions" {
-  version_prefix = "1.28."
+  version_prefix = "1.29."
 }
 
 resource "digitalocean_kubernetes_cluster" "kubefirst" {
