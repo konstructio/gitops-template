@@ -3,7 +3,7 @@ kind: Workspace
 metadata:
   name: <WORKLOAD_CLUSTER_NAME>-infrastructure
 spec:
-  providerConfigRef: 
+  providerConfigRef:
     name: <WORKLOAD_CLUSTER_NAME>
   forProvider:
     source: Remote

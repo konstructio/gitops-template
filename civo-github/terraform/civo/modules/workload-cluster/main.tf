@@ -13,10 +13,14 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   network_id       = civo_network.kubefirst.id
   firewall_id      = civo_firewall.kubefirst.id
   write_kubeconfig = true
+  cluster_type     = local.is_gpu ? "talos" : "k3s" # k3s doesn't support GPU
   pools {
     label      = var.cluster_name
     size       = var.node_type
     node_count = var.node_count
+    labels = local.is_gpu ? {
+      "nvidia.com/gpu.deploy.operator-validator" = "false"
+    } : {}
   }
 }
 
@@ -41,6 +45,17 @@ provider "kubernetes" {
   client_certificate     = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
   client_key             = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
   cluster_ca_certificate = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
+}
+
+provider "helm" {
+  repository_config_path = "${path.module}/.helm/repositories.yaml"
+  repository_cache       = "${path.module}/.helm"
+  kubernetes {
+    host                   = civo_kubernetes_cluster.kubefirst.api_endpoint
+    client_certificate     = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
+    client_key             = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
+    cluster_ca_certificate = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
+  }
 }
 
 resource "kubernetes_cluster_role_v1" "argocd_manager" {
