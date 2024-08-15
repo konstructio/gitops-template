@@ -128,7 +128,7 @@ resource "kubernetes_namespace_v1" "external_secrets_operator" {
 
 resource "kubernetes_namespace_v1" "environment" {
   metadata {
-    name = "<WORKLOAD_CLUSTER_NAME>"
+    name = var.cluster_name
   }
 }
 
