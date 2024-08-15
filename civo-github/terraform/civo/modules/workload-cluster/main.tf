@@ -1,7 +1,3 @@
-locals {
-  cluster_name = "<WORKLOAD_CLUSTER_NAME>"
-}
-
 resource "civo_network" "kubefirst" {
   label = var.cluster_name
 }
