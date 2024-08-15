@@ -15,7 +15,7 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   write_kubeconfig = true
   pools {
     label      = var.cluster_name
-    size       = var.instance_size
+    size       = var.node_type
     node_count = var.node_count
   }
 }
