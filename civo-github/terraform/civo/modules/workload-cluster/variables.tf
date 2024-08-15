@@ -1,9 +1,19 @@
-variable "instance_size" {
-  type    = string
-  default = "<WORKLOAD_NODE_TYPE>"
+variable "cluster_name" {
+  type = string
+}
+
+variable "cluster_region" {
+  type = string
+}
+
+variable "environment" {
+  type = string
 }
 
 variable "node_count" {
-  type    = number
-  default = "<WORKLOAD_NODE_COUNT>"
+  type = number
+}
+
+variable "node_type" {
+  type = string
 }
