@@ -1,40 +1,27 @@
-terraform {
-  required_providers {
-    civo = {
-      source  = "civo/civo"
-      version = "~> 1.1.0"
-    }
-  }
-}
-
-locals {
-  cluster_name = "<WORKLOAD_CLUSTER_NAME>"
-}
-
 resource "civo_network" "kubefirst" {
-  label = local.cluster_name
+  label = var.cluster_name
 }
 
 resource "civo_firewall" "kubefirst" {
-  name                 = local.cluster_name
+  name                 = var.cluster_name
   network_id           = civo_network.kubefirst.id
   create_default_rules = true
 }
 
 resource "civo_kubernetes_cluster" "kubefirst" {
-  name             = local.cluster_name
+  name             = var.cluster_name
   network_id       = civo_network.kubefirst.id
   firewall_id      = civo_firewall.kubefirst.id
   write_kubeconfig = true
   pools {
-    label      = local.cluster_name
+    label      = var.cluster_name
     size       = var.instance_size
     node_count = var.node_count
   }
 }
 
 resource "vault_generic_secret" "clusters" {
-  path = "secret/clusters/${local.cluster_name}"
+  path = "secret/clusters/${var.cluster_name}"
 
   data_json = jsonencode(
     {
@@ -43,7 +30,7 @@ resource "vault_generic_secret" "clusters" {
       client_key              = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
       cluster_ca_certificate  = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
       host                    = civo_kubernetes_cluster.kubefirst.api_endpoint
-      cluster_name            = local.cluster_name
+      cluster_name            = var.cluster_name
       argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
     }
   )
@@ -168,7 +155,7 @@ data "vault_generic_secret" "external_secrets_operator" {
 
 resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
   metadata {
-    name      = "${local.cluster_name}-cluster-vault-bootstrap"
+    name      = "${var.cluster_name}-cluster-vault-bootstrap"
     namespace = kubernetes_namespace_v1.environment.metadata.0.name
   }
   data = {
@@ -179,7 +166,7 @@ resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
 
 resource "kubernetes_secret_v1" "external_secrets_operator" {
   metadata {
-    name      = "${local.cluster_name}-cluster-vault-bootstrap"
+    name      = "${var.cluster_name}-cluster-vault-bootstrap"
     namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name
   }
   data = {
