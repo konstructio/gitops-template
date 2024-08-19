@@ -74,7 +74,6 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
     instance_types = ["<NODE_TYPE>"]
@@ -383,7 +382,7 @@ module "argo_workflows" {
 
 module "argocd" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
+  version = "5.40.0"
 
   role_name = "argocd-${local.name}"
   role_policy_arns = {
@@ -642,7 +641,7 @@ EOT
 
 module "kubefirst_api" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.32.0"
+  version = "5.40.0"
 
   role_name = "kubefirst-api-${local.name}"
   role_policy_arns = {
