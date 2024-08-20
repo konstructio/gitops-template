@@ -13,4 +13,4 @@ spec:
   revisionActivationPolicy: Automatic
   revisionHistoryLimit: 1
   skipDependencyResolution: false
- 
+
