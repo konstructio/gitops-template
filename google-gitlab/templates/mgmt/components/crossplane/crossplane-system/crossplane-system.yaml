@@ -10,12 +10,12 @@ metadata:
 spec:
   project: default
   destination:
-    name: in-cluster 
+    name: in-cluster
     namespace: crossplane-system
   source:
     repoURL: https://charts.crossplane.io/stable
     chart: crossplane
-    targetRevision: 1.12.2
+    targetRevision: 1.16.0
   syncPolicy:
     automated:
       prune: true
