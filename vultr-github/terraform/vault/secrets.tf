@@ -56,6 +56,16 @@ resource "vault_generic_secret" "docker_config" {
   )
 }
 
+resource "vault_generic_secret" "regsitry_auth" {
+  path = "${vault_mount.secret.path}/registry-auth"
+
+  data_json = jsonencode(
+    {
+      auth = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
+    }
+  )
+}
+
 resource "vault_generic_secret" "metaphor" {
   for_each = toset(["development", "staging", "production"])
 
