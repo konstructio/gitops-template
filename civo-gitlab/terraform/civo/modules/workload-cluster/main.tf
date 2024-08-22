@@ -1,24 +1,23 @@
-
-data "digitalocean_kubernetes_versions" "versions" {
-  version_prefix = "1.29."
+resource "civo_network" "kubefirst" {
+  label = var.cluster_name
 }
 
-resource "digitalocean_kubernetes_cluster" "cluster" {
-  name    = var.cluster_name
-  region  = lower(var.cluster_region)
-  version = data.digitalocean_kubernetes_versions.versions.latest_version
+resource "civo_firewall" "kubefirst" {
+  name                 = var.cluster_name
+  network_id           = civo_network.kubefirst.id
+  create_default_rules = true
+}
 
-  node_pool {
-    name       = "${var.cluster_name}-node-pool"
+resource "civo_kubernetes_cluster" "kubefirst" {
+  name             = var.cluster_name
+  network_id       = civo_network.kubefirst.id
+  firewall_id      = civo_firewall.kubefirst.id
+  write_kubeconfig = true
+  pools {
+    label      = var.cluster_name
     size       = var.node_type
-    auto_scale = true
-    min_nodes  = var.node_count
-    max_nodes  = var.node_count
+    node_count = var.node_count
   }
-}
-
-data "digitalocean_kubernetes_cluster" "cluster" {
-  name = digitalocean_kubernetes_cluster.cluster.name
 }
 
 resource "vault_generic_secret" "clusters" {
@@ -26,24 +25,23 @@ resource "vault_generic_secret" "clusters" {
 
   data_json = jsonencode(
     {
-      kubeconfig              = data.digitalocean_kubernetes_cluster.cluster.kube_config[0].raw_config
-      token                   = data.digitalocean_kubernetes_cluster.cluster.kube_config[0].token
-      cluster_ca_certificate  = base64decode(data.digitalocean_kubernetes_cluster.cluster.kube_config[0].cluster_ca_certificate)
-      host                    = digitalocean_kubernetes_cluster.cluster.endpoint
+      kubeconfig              = civo_kubernetes_cluster.kubefirst.kubeconfig
+      client_certificate      = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
+      client_key              = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
+      cluster_ca_certificate  = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
+      host                    = civo_kubernetes_cluster.kubefirst.api_endpoint
       cluster_name            = var.cluster_name
-      environment             = var.environment
       argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
     }
   )
-  depends_on = [digitalocean_kubernetes_cluster.cluster]
 }
 
 provider "kubernetes" {
-  host                   = digitalocean_kubernetes_cluster.cluster.endpoint
-  token                  = data.digitalocean_kubernetes_cluster.cluster.kube_config[0].token
-  cluster_ca_certificate = base64decode(data.digitalocean_kubernetes_cluster.cluster.kube_config[0].cluster_ca_certificate)
+  host                   = civo_kubernetes_cluster.kubefirst.api_endpoint
+  client_certificate     = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
+  client_key             = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
+  cluster_ca_certificate = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
 }
-
 
 resource "kubernetes_cluster_role_v1" "argocd_manager" {
   metadata {
