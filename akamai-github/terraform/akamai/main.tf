@@ -35,7 +35,7 @@ locals {
 
 resource "linode_lke_cluster" "kubefirst" {
   label       = local.cluster_name
-  k8s_version = "1.28"
+  k8s_version = "1.30"
   region      = "us-central"
   tags        = ["<CLUSTER_NAME>"]
 
