@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.kubefirst.com
+    repoURL: https://charts.konstruct.io
     targetRevision: 2.5.0-rc13
     chart: kubefirst
     helm:
