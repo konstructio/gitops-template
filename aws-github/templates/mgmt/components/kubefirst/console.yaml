@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.konstruct.io
-    targetRevision: 2.5.3
+    targetRevision: 2.5.4-rc1
     chart: kubefirst
     helm:
       values: |-
