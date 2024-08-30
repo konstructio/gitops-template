@@ -29,6 +29,7 @@ spec:
           extraEnv:
             IN_CLUSTER: "true"
             SAAS_API_URL: "https://saas-api-development.mgmt-24.konstruct.io"
+            SAAS_URL: "https://saas-development.mgmt-24.konstruct.io"
         kubefirst-api:
           isClusterZero: "false"
           extraEnv:
@@ -40,6 +41,8 @@ spec:
           domain: "<DOMAIN_NAME>"
           extraEnv:
             POSTHOG_KEY: "phc_1i5RDnv8Byf9w05fV8l02GSltpDwF9iyf0ry0U0Fw4r"
+            SAAS_API_URL: "https://saas-api-development.mgmt-24.konstruct.io"
+            SAAS_URL: "https://saas-development.mgmt-24.konstruct.io"
           extraEnvSecrets:
             CLIENT_ID:
               name: kubefirst-console-secrets
