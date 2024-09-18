@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'https://helm.releases.hashicorp.com'
-    targetRevision: 0.22.0
+    targetRevision: 0.28.1
     helm:
       parameters:
         - name: 'server.ingress.hosts[0].host'
