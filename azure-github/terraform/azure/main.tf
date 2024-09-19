@@ -1,6 +1,6 @@
 terraform {
   backend "azurerm" {
-    container_name       = "terraform"
+    container_name       = "<KUBEFIRST_STATE_STORE_CONTAINER_NAME>"
     key                  = "azure/terraform.tfstate"
     resource_group_name  = "<KUBEFIRST_STATE_STORE_RESOURCE_GROUP>"
     storage_account_name = "<KUBEFIRST_STATE_STORE_BUCKET>"
