@@ -1,5 +1,6 @@
 **/*.env
 **/.env
+**/.envrc
 **/.terraform/
 **/.terraform.lock.hcl
 **/terraform.tfstate
@@ -9,3 +10,4 @@
 .DS_Store
 deprecated-*
 kubeconfig-*
+kubeconfig
