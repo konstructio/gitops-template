@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-reloader
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '30'
+spec:
+  project: <WORKLOAD_CLUSTER_NAME>
+  source:
+    repoURL: 'https://stakater.github.io/stakater-charts'
+    targetRevision: v1.0.10
+    chart: reloader
+    helm:
+      values: |-
+        ignoreSecrets: false
+  destination:
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: reloader
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        maxDuration: 5m0s
+        factor: 2

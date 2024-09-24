@@ -1,0 +1,63 @@
+apiVersion: "external-secrets.io/v1beta1"
+kind: ExternalSecret
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
+  labels:
+    app.kubernetes.io/part-of: argocd
+spec:
+  target:
+    name: <WORKLOAD_CLUSTER_NAME>
+    template:
+      metadata:
+        labels:
+          argocd.argoproj.io/secret-type: cluster
+      engineVersion: v2
+      data:
+        name: "{{ .cluster_name }}"
+        server: "{{ .host }}"
+        clusterResources: "true"
+        config: |
+          {
+            "bearerToken": "{{ .argocd_manager_sa_token }}",
+            "tlsClientConfig": {
+                "caData": "{{ .cluster_ca_certificate | b64enc }}",
+                "certData": "{{ .client_certificate | b64enc }}",
+                "insecure": false,
+                "keyData": "{{ .client_key | b64enc }}"
+              }
+          }
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-kv-secret
+  refreshInterval: 10s
+  data:
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: argocd_manager_sa_token
+      secretKey: argocd_manager_sa_token
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: host
+      secretKey: host
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: cluster_name
+      secretKey: cluster_name
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: cluster_ca_certificate
+        conversionStrategy: Default
+      secretKey: cluster_ca_certificate
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: client_certificate
+        conversionStrategy: Default
+      secretKey: client_certificate
+    - remoteRef:
+        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        property: client_key
+        conversionStrategy: Default
+      secretKey: client_key
+

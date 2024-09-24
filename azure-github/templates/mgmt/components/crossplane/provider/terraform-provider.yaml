@@ -1,0 +1,16 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '20'
+  name: crossplane-provider-terraform
+spec:
+  controllerConfigRef:
+    name: terraform-config
+  ignoreCrossplaneConstraints: false
+  package: xpkg.upbound.io/upbound/provider-terraform:v0.12.0
+  packagePullPolicy: IfNotPresent
+  revisionActivationPolicy: Automatic
+  revisionHistoryLimit: 1
+  skipDependencyResolution: false
+ 

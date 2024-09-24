@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-kustomized-app
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '100'
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: argocd
+    name: in-cluster
+  project: default
+  source:
+    path: registry/clusters/<CLUSTER_NAME>/components/argocd
+    repoURL: '<GITOPS_REPO_URL>'
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        maxDuration: 5m0s
+        factor: 2
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

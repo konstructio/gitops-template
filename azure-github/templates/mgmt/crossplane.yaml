@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crossplane-components
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '60'
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: <GITOPS_REPO_URL>
+    path: registry/clusters/<CLUSTER_NAME>/components/crossplane
+    targetRevision: HEAD
+  destination:
+    name: in-cluster
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Replace=true

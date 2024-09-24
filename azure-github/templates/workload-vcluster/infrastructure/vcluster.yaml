@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  project: default
+  source:
+    repoURL: https://charts.loft.sh
+    targetRevision: 0.15.5
+    chart: vcluster-k8s
+    helm:
+      values: |
+        syncer:
+          extraArgs:
+          - --tls-san=<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
+          - --kube-config-context-name=<WORKLOAD_CLUSTER_NAME>
+          - --out-kube-config-server=https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
+          replicas: 4
+        ingress:
+          enabled: true
+          pathType: ImplementationSpecific
+          apiVersion: networking.k8s.io/v1
+          ingressClassName: "nginx"
+          host: <WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
+          annotations:
+            nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+            nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+            nginx.ingress.kubernetes.io/ssl-redirect: "true"
+            <CERT_MANAGER_ISSUER_ANNOTATION_1>
+            <CERT_MANAGER_ISSUER_ANNOTATION_2>
+            <CERT_MANAGER_ISSUER_ANNOTATION_3>
+            <CERT_MANAGER_ISSUER_ANNOTATION_4>
+          tls:
+            - secretName: <WORKLOAD_CLUSTER_NAME>-tls
+              hosts:
+                - <WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>
+  destination:
+    name: in-cluster
+    namespace: <WORKLOAD_CLUSTER_NAME>
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

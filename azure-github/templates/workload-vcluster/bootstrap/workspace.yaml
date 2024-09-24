@@ -1,0 +1,229 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-bootstrap
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+    crossplane.io/external-name: <WORKLOAD_CLUSTER_NAME>-bootstrap
+spec:
+  providerConfigRef:
+    name: <WORKLOAD_CLUSTER_NAME>
+  forProvider:
+    source: Inline
+    module: |
+      variable "cluster_name" {
+        type = string
+        default = "<WORKLOAD_CLUSTER_NAME>"
+      }
+      provider "kubernetes" {
+        alias = "local"
+      }
+      data "kubernetes_secret_v1" "vcluster_kubeconfig" {
+        provider = "kubernetes.local"
+        metadata {
+          name = "vc-<WORKLOAD_CLUSTER_NAME>"
+          namespace = "<WORKLOAD_CLUSTER_NAME>"
+        }
+      }      
+
+      resource "vault_generic_secret" "clusters" {
+        path = "secret/clusters/${var.cluster_name}"
+
+        data_json = jsonencode(
+          {
+            kubeconfig              = data.kubernetes_secret_v1.vcluster_kubeconfig.data.config
+            client_certificate      = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-certificate-data)
+            client_key              = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-key-data)
+            cluster_ca_certificate  = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).clusters[0].cluster.certificate-authority-data)
+            host                    = "https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>"
+            cluster_name            = var.cluster_name
+            argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
+          }
+        )
+      }
+
+      provider "kubernetes" {
+        alias = "target"
+        host = "https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>"
+
+        client_certificate     = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-certificate-data)
+        client_key             = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-key-data)
+        cluster_ca_certificate = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).clusters[0].cluster.certificate-authority-data)
+      }
+
+      resource "kubernetes_cluster_role_v1" "argocd_manager" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "argocd-manager-role"
+        }
+
+        rule {
+          api_groups = ["*"]
+          resources  = ["*"]
+          verbs      = ["*"]
+        }
+        rule {
+          non_resource_urls = ["*"]
+          verbs = ["*"]
+        }
+      }
+
+
+      resource "kubernetes_cluster_role_binding_v1" "argocd_manager" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "argocd-manager-role-binding"
+        }
+        role_ref {
+          api_group = "rbac.authorization.k8s.io"
+          kind      = "ClusterRole"
+          name      = kubernetes_cluster_role_v1.argocd_manager.metadata.0.name
+        }
+        subject {
+          kind      = "ServiceAccount"
+          name      = kubernetes_service_account_v1.argocd_manager.metadata.0.name
+          namespace = "kube-system"
+        }
+      }
+
+      resource "kubernetes_service_account_v1" "argocd_manager" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "argocd-manager"
+          namespace = "kube-system"
+        }
+        secret {
+          name = "argocd-manager-token"
+        }
+      }
+
+      resource "kubernetes_secret_v1" "argocd_manager" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "argocd-manager-token"
+          namespace = "kube-system"
+          annotations = {
+            "kubernetes.io/service-account.name" = "argocd-manager"
+          }
+        }
+        type = "kubernetes.io/service-account-token"
+        depends_on = [ kubernetes_service_account_v1.argocd_manager ]
+      }
+
+      resource "kubernetes_namespace_v1" "external_dns" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "external-dns"
+        }
+      }
+
+      data "vault_generic_secret" "external_dns" {
+        path = "secret/external-dns"
+      }
+
+      resource "kubernetes_secret_v1" "external_dns" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "external-dns-secrets"
+          namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
+        }
+        data = {
+          token = data.vault_generic_secret.external_dns.data["token"]
+        }
+        type = "Opaque"
+      }
+
+
+      resource "kubernetes_namespace_v1" "external_secrets_operator" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "external-secrets-operator"
+        }
+      }
+
+      data "vault_generic_secret" "external_secrets_operator" {
+        path = "secret/atlantis"
+      }
+
+      resource "kubernetes_namespace_v1" "environment" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "<WORKLOAD_CLUSTER_NAME>"
+        }
+      }
+
+      data "vault_generic_secret" "docker_config" {
+        path = "secret/dockerconfigjson"
+      }
+
+      resource "kubernetes_secret_v1" "image_pull" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "docker-config"
+          namespace = kubernetes_namespace_v1.environment.metadata.0.name
+        }
+
+        data = {
+          ".dockerconfigjson" = data.vault_generic_secret.docker_config.data["dockerconfig"]
+        }
+
+        type = "kubernetes.io/dockerconfigjson"
+      }
+
+      resource "kubernetes_secret_v1" "external_secrets_operator_environment" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "${var.cluster_name}-cluster-vault-bootstrap"
+          namespace = kubernetes_namespace_v1.environment.metadata.0.name
+        }
+        data = {
+          vault-token = data.vault_generic_secret.external_secrets_operator.data["VAULT_TOKEN"]
+        }
+        type = "Opaque"
+      }
+
+      resource "kubernetes_secret_v1" "external_secrets_operator" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "${var.cluster_name}-cluster-vault-bootstrap"
+          namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name
+        }
+        data = {
+          vault-token = data.vault_generic_secret.external_secrets_operator.data["VAULT_TOKEN"]
+        }
+        type = "Opaque"
+      }
+
+      resource "kubernetes_service_account_v1" "external_secrets" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "external-secrets"
+          namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name
+        }
+        secret {
+          name = "external-secrets-token"
+        }
+      }
+
+      resource "kubernetes_secret_v1" "external_secrets" {
+        provider = "kubernetes.target"
+        metadata {
+          name = "external-secrets-token"
+          namespace = kubernetes_namespace_v1.external_secrets_operator.metadata.0.name
+          annotations = {
+            "kubernetes.io/service-account.name" = "external-secrets"
+          }
+        }
+        type = "kubernetes.io/service-account-token"
+        depends_on = [ kubernetes_service_account_v1.external_secrets ]
+      }
+
+      resource "kubernetes_config_map" "kubefirst_cm" {
+        metadata {
+          name = "kubefirst-cm"
+          namespace = "kube-system"
+        }
+        data = {
+          mgmt_cluster_id = "<CLUSTER_ID>"
+        }
+      }
