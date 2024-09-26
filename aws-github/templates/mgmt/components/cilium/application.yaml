@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+ kind: Application
+ metadata:
+   name: <CLUSTER_NAME>-cilium
+   namespace: argocd
+   finalizers:
+     - resources-finalizer.argocd.argoproj.io
+ spec:
+   destination:
+     namespace: cilium
+     name: <CLUSTER_DESTINATION>
+   source:
+     repoURL: https://helm.cilium.io/
+     targetRevision: 1.16.1  # Update this to the desired version, this is the current lastest (stable) version on the Cilium Helm repository
+     chart: cilium
+   project: default
+   syncPolicy:
+     syncOptions:
+       - CreateNamespace=true
+     automated:
+       prune: true
+       selfHeal: true
