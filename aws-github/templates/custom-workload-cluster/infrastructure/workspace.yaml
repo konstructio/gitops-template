@@ -1,0 +1,19 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-infrastructure
+spec:
+  providerConfigRef: 
+    name: <WORKLOAD_CLUSTER_NAME>
+  forProvider:
+    source: Remote
+    module: <WORKLOAD_CLUSTER_TERRAFORM_MODULE_URL>
+    vars:
+    - key: cluster_name
+      value: "<WORKLOAD_CLUSTER_NAME>"
+    - key: cluster_region
+      value: "<WORKLOAD_CLUSTER_REGION>"
+    - key: node_count
+      value: "<WORKLOAD_NODE_COUNT>"
+    - key: node_type
+      value: "<WORKLOAD_NODE_TYPE>"

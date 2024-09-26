@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-ingress-nginx
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '30'
+spec:
+  project: <WORKLOAD_CLUSTER_NAME>
+  source:
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    targetRevision: 4.10.0
+    helm:
+      values: |-
+        controller:
+          ingressClass: nginx
+          publishService:
+            enabled: true
+          service:
+            annotations:
+              service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+              service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
+          extraArgs:
+            enable-ssl-passthrough: true
+    chart: ingress-nginx
+  destination:
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: ingress-nginx
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
