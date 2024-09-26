@@ -24,14 +24,23 @@ spec:
         - ingress
         domainFilters:
         - <EXTERNAL_DNS_DOMAIN_NAME>
+        # Used if Cloudflare
+        env:
+        - name: <EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME>
+          valueFrom:
+            secretKeyRef:
+              name: external-dns-secrets
+              key: token
+              optional: true
+        # Used if Azure
         extraVolumes:
         - name: azure-config-file
           secret:
-            secretName: <EXTERNAL_DNS_PROVIDER_SECRET_NAME>
+            secretName: external-dns-secrets # Set in Terraform
+            optional: true
         extraVolumeMounts:
         - name: azure-config-file
-          mountPath: /etc/kubernetes/azure.json
-          subPath: token
+          mountPath: /etc/kubernetes
           readOnly: true
     chart: external-dns
   destination:
