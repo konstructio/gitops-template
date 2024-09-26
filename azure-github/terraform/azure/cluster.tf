@@ -97,3 +97,31 @@ resource "azurerm_role_assignment" "external_dns" {
   role_definition_name = "DNS Zone Contributor"
   principal_id         = azurerm_kubernetes_cluster.kubefirst.kubelet_identity[0].object_id
 }
+
+resource "kubernetes_namespace_v1" "external_dns" {
+  count = local.use_dns_zone ? 1 : 0
+
+  metadata {
+    name = "external-dns"
+  }
+}
+
+# This must be created by Terraform as the userAssignedIdentityID is a generated value
+resource "kubernetes_secret_v1" "external_dns" {
+  count = local.use_dns_zone ? 1 : 0
+
+  metadata {
+    name      = "external-dns-secrets" # Used by the external-secrets component too
+    namespace = kubernetes_namespace_v1.external_dns[count.index].metadata.0.name
+  }
+  data = {
+    "azure.json" = jsonencode({
+      tenantId                    = data.azurerm_client_config.current.tenant_id
+      subscriptionId              = data.azurerm_client_config.current.subscription_id
+      resourceGroup               = local.dns_zone_rg
+      useManagedIdentityExtension = true
+      userAssignedIdentityID      = azurerm_kubernetes_cluster.kubefirst.kubelet_identity[0].client_id
+    })
+  }
+  type = "Opaque"
+}

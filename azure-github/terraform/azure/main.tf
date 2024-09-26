@@ -15,6 +15,10 @@ terraform {
       source  = "hashicorp/local"
       version = ">= 2.5.2, < 4.0.0"
     }
+     kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = ">= 2.32.0, < 3.0.0"
+    }
   }
 }
 
@@ -24,6 +28,13 @@ provider "azurerm" {
       prevent_deletion_if_contains_resources = false
     }
   }
+}
+
+provider "kubernetes" {
+  host                   = azurerm_kubernetes_cluster.kubefirst.kube_config.0.host
+  client_certificate     = base64decode(azurerm_kubernetes_cluster.kubefirst.kube_config.0.client_certificate)
+  client_key             = base64decode(azurerm_kubernetes_cluster.kubefirst.kube_config.0.client_key)
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.kubefirst.kube_config.0.cluster_ca_certificate)
 }
 
 locals {
@@ -49,3 +60,5 @@ resource "azurerm_resource_group" "kubefirst" {
 
   tags = local.tags
 }
+
+data "azurerm_client_config" "current" {}
