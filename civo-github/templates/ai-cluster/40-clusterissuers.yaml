@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-cert-issuers
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '40'
+spec:
+  project: <WORKLOAD_CLUSTER_NAME>
+  source:
+    repoURL: <GITOPS_REPO_URL>
+    path: registry/clusters/<WORKLOAD_CLUSTER_NAME>/cert-issuers
+    targetRevision: HEAD
+  destination:
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
