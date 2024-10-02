@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-openwebui
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '30'
+spec:
+  project: <WORKLOAD_CLUSTER_NAME>
+  source:
+    repoURL: https://helm.openwebui.com/  # The Helm repository for Open WebUI
+    targetRevision: v3.1.19  # Set to the desired version of the chart or use 'latest'
+    chart: open-webui  # The chart name in the Helm repository
+    helm:
+      releaseName: open-webui
+      values: |
+        image:
+          repository: ghcr.io/open-webui/open-webui
+          tag: "cuda"
+        serviceAccount:
+          create: true
+          name: openwebui-sa
+        ports:
+          - name: http
+            containerPort: 8080
+            hostPort: 3000
+        extraArgs:
+          - "--gpus all"
+        extraHosts:
+          - "host.docker.internal:host-gateway"
+        volumeMounts:
+          - name: openwebui-data
+            mountPath: /app/backend/data
+        volumes:
+          - name: openwebui-data
+            persistentVolumeClaim:
+              claimName: open-webui-pvc
+  destination:
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: openwebui
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
