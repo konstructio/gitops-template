@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://charts.konstruct.io
     targetRevision: 2.6.2-rc7
-    chart: kubefirst
+    chart: kubefirst-pro
     helm:
       values: |-
         global:
@@ -25,17 +25,10 @@ spec:
           kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
           kubefirstVersion: "<KUBEFIRST_VERSION>"
           useTelemetry: "<USE_TELEMETRY>"
-        kubefirst-api-ee:
+        kubefirst-pro-api:
           extraEnv:
-            IN_CLUSTER: "true"
-        kubefirst-api:
-          isClusterZero: "false"
-          extraEnv:
-            IN_CLUSTER: "true"
             CLUSTER_NAME: "<CLUSTER_NAME>"
-            ENTERPRISE_API_URL: "http://kubefirst-kubefirst-api-ee.kubefirst.svc.cluster.local"
-        console:
-          isClusterZero: "false"
+        kubefirst-pro-ui:
           domain: "<DOMAIN_NAME>"
           extraEnv:
             DISABLE_AUTH: "true"
@@ -48,6 +41,12 @@ spec:
               key: client_secret
           ingress:
             enabled: "true"
+            className: nginx
+            annotations:
+              <CERT_MANAGER_ISSUER_ANNOTATION_1>
+              <CERT_MANAGER_ISSUER_ANNOTATION_2>
+              <CERT_MANAGER_ISSUER_ANNOTATION_3>
+              <CERT_MANAGER_ISSUER_ANNOTATION_4>
             hosts:
               - host: kubefirst.<DOMAIN_NAME>
                 paths:
@@ -58,7 +57,7 @@ spec:
                 hosts:
                   - kubefirst.<DOMAIN_NAME>
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: kubefirst
   syncPolicy:
     automated:
