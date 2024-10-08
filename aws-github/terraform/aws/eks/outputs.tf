@@ -10,7 +10,6 @@ output "cluster_autoscaler_policy_arn" {
   value = aws_iam_policy.cluster_autoscaler.arn
 }
 
-
 output "vault_dynamodb_policy_arn" {
   value = aws_iam_policy.vault_dynamodb.arn
 }
