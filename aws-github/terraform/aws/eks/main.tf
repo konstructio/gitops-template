@@ -689,36 +689,45 @@ resource "aws_iam_policy" "vault_server" {
 EOT
 }
 
-resource "aws_iam_policy" "cluster_autoscaler" {
-  name = "cluster-autoscaler-${local.name}"
+resource "aws_iam_policy" "vault_dynamodb" {
+  name = "vault-dynamodb-${local.name}"
   path = "/"
 
   policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": [
-          "autoscaling:DescribeAutoScalingGroups",
-          "autoscaling:DescribeAutoScalingInstances",
-          "autoscaling:DescribeLaunchConfigurations",
-          "autoscaling:DescribeScalingActivities",
-          "ec2:DescribeImages",
-          "ec2:DescribeInstanceTypes",
-          "ec2:DescribeLaunchTemplateVersions",
-          "ec2:GetInstanceTypesFromInstanceRequirements",
-          "eks:DescribeNodegroup"
-        ],
-        "Resource": ["*"]
-      },
-      {
-        "Effect": "Allow",
-        "Action": [
-          "autoscaling:SetDesiredCapacity",
-          "autoscaling:TerminateInstanceInAutoScalingGroup"
-        ],
-        "Resource": ["*"]
-      }
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:Query",
+                "dynamodb:DescribeTable",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem"
+            ],
+            "Resource": "*"
+        }
     ]
-  })
+})
+}
+
+resource "aws_iam_policy" "vault_kms" {
+  name = "vault-kms-${local.name}"
+  path = "/"
+
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:DescribeKey",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:GenerateDataKey"
+            ],
+            "Resource": "*"
+        }
+    ]
+})
 }
