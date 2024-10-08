@@ -690,7 +690,7 @@ EOT
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {
-  name = "cluster-autoscaler"
+  name = "cluster-autoscaler-$(local.name)"
   path = "/"
   policy = jsonencode({
     "Version": "2012-10-17",
@@ -737,6 +737,8 @@ resource "aws_iam_policy" "vault_dynamodb" {
                 "dynamodb:GetItem",
                 "dynamodb:PutItem",
                 "dynamodb:DeleteItem"
+                "dynamodb:BatchWriteItem",
+                "dynamodb:UpdateItem"
             ],
             "Resource": "*"
         }
