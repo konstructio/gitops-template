@@ -9,11 +9,12 @@ resource "civo_firewall" "kubefirst" {
 }
 
 resource "civo_kubernetes_cluster" "kubefirst" {
-  name             = var.cluster_name
-  network_id       = civo_network.kubefirst.id
-  firewall_id      = civo_firewall.kubefirst.id
-  write_kubeconfig = true
-  cluster_type     = local.is_gpu ? "talos" : "k3s" # k3s doesn't support GPU
+  name                = var.cluster_name
+  network_id          = civo_network.kubefirst.id
+  firewall_id         = civo_firewall.kubefirst.id
+  write_kubeconfig    = true
+  cluster_type        = local.is_gpu ? "talos" : "k3s" # k3s doesn't support GPU
+  kubernetes_version  = local.is_gpu ? "1.28.7-k3s1" : "1.27.0"
   pools {
     label      = var.cluster_name
     size       = var.node_type
