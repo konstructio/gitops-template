@@ -4,7 +4,7 @@ metadata:
   name: <WORKLOAD_CLUSTER_NAME>-openwebui
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '30'
+    argocd.argoproj.io/sync-wave: '50'
 spec:
   project: <WORKLOAD_CLUSTER_NAME>
   source:
@@ -28,13 +28,20 @@ spec:
           - "--gpus all"
         extraHosts:
           - "host.docker.internal:host-gateway"
-        volumeMounts:
-          - name: openwebui-data
-            mountPath: /app/backend/data
-        volumes:
-          - name: openwebui-data
-            persistentVolumeClaim:
-              claimName: open-webui-pvc
+        persistentVolume:
+            enabled: true
+            size: 50Gi
+        ingress:
+          enabled: true
+          class: "nginx"
+          annotations: 
+            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+            nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          host: "ollama.<DOMAIN_NAME>"
+          tls: true
+          existingSecret: "<WORKLOAD_CLUSTER_NAME>-ollama-http-ingress"
+        
   destination:
     name: <WORKLOAD_CLUSTER_NAME>
     namespace: openwebui
