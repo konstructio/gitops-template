@@ -51,7 +51,7 @@ spec:
             - --namespace
             - kubefirst
             - --label
-            - app.kubernetes.io/name=console
+            - app.kubernetes.io/name=kubefirst-pro-ui
           image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
           imagePullPolicy: IfNotPresent
           name: wait

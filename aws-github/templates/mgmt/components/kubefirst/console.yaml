@@ -9,8 +9,8 @@ spec:
   project: default
   source:
     repoURL: https://charts.konstruct.io
-    targetRevision: 2.6.2-rc7
-    chart: kubefirst
+    targetRevision: 2.6.2-rc24
+    chart: kubefirst-pro
     helm:
       values: |-
         global:
@@ -25,21 +25,10 @@ spec:
           kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
           kubefirstVersion: "<KUBEFIRST_VERSION>"
           useTelemetry: "<USE_TELEMETRY>"
-        kubefirst-api-ee:
+        kubefirst-pro-api:
           extraEnv:
-            IN_CLUSTER: "true"
-        kubefirst-api:
-          isClusterZero: "false"
-          extraEnv:
-            IN_CLUSTER: "true"
             CLUSTER_NAME: "<CLUSTER_NAME>"
-            ENTERPRISE_API_URL: "http://kubefirst-kubefirst-api-ee.kubefirst.svc.cluster.local"
-          serviceAccount:
-            create: true
-            annotations:
-              eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/kubefirst-api-<CLUSTER_NAME>
-        console:
-          isClusterZero: "false"
+        kubefirst-pro-ui:
           domain: "<DOMAIN_NAME>"
           extraEnvSecrets:
             CLIENT_ID:
