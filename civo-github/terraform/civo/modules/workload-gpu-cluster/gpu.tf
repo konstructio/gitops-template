@@ -21,22 +21,21 @@ data "civo_size" "gpu" {
 
 # Create labels for the GPU operator namespace
 resource "kubernetes_namespace_v1" "gpu_operator_labels" {
-  count = local.is_gpu ? 1 : 0
   metadata {
     name = "gpu-operator"
     labels = {
       "pod-security.kubernetes.io/enforce" = "privileged"
     }
   }
+  depends_on = [module.civo_kubernetes_cluster]
 }
 
 # Helm release configuration for the Nvidia GPU operator
 resource "helm_release" "gpu_operator" {
-  count           = local.is_gpu ? 1 : 0
   name            = "gpu-operator"
   repository      = "https://helm.ngc.nvidia.com/nvidia"
   chart           = "gpu-operator"
-  namespace       = kubernetes_namespace_v1.gpu_operator_labels[count.index].metadata[0].name
+  namespace       = kubernetes_namespace_v1.gpu_operator_labels.metadata[0].name
   version         = "v24.6.0"
   atomic          = true
   cleanup_on_fail = true
@@ -212,15 +211,15 @@ resource "helm_release" "gpu_operator" {
       }
     })
   ]
+  depends_on = [module.civo_kubernetes_cluster]
 }
 # as the host driver and the nvidia container toolkit are provided within Talos as Shims,
 # we need to create a daemonset that forces these to be marked as ready for the GPU operator
 # TODO: "productionise" this
 resource "kubernetes_daemonset" "fake_toolkit_ready" {
-  count = local.is_gpu ? 1 : 0
   metadata {
     name      = "fake-toolkit-ready"
-    namespace = kubernetes_namespace_v1.gpu_operator_labels[count.index].metadata[0].name
+    namespace = kubernetes_namespace_v1.gpu_operator_labels.metadata[0].name
   }
   spec {
     selector {
@@ -286,5 +285,5 @@ resource "kubernetes_daemonset" "fake_toolkit_ready" {
       }
     }
   }
-  depends_on = [helm_release.gpu_operator]
+  depends_on = [helm_release.gpu_operator, module.civo_kubernetes_cluster]
 }

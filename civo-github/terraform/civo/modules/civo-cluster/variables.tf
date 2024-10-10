@@ -22,3 +22,11 @@ variable "cluster_type" {
   type        = string
   description = "type of cluster talos/k3s"
 }
+
+variable "labels" {
+  type = map(string)
+}
+
+variable "mgmt_cluster_id" {
+  type = string
+}
