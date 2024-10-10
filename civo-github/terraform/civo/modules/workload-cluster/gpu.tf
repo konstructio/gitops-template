@@ -3,7 +3,7 @@
 locals {
   gpu_node_sizes = [for i in data.civo_size.gpu.sizes : i.name]
   gpu_prefixes   = ["g4g.", "an."] # Civo GPU sizes start with these prefixes - ensure to end with "." to avoid false positives
-  is_gpu         = contains(local.gpu_node_sizes, var.node_type)
+  is_gpu         = contains(local.gpu_node_sizes, var.node_type) && var.is_gpu
 }
 
 # Get all the GPU node types
