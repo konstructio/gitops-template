@@ -19,3 +19,5 @@ spec:
       value: "<WORKLOAD_NODE_COUNT>"
     - key: node_type
       value: <WORKLOAD_NODE_TYPE>
+    - key: is_gpu
+      value: "false"
