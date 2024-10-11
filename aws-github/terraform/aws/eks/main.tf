@@ -736,7 +736,7 @@ resource "aws_iam_policy" "vault_dynamodb" {
                 "dynamodb:DescribeTable",
                 "dynamodb:GetItem",
                 "dynamodb:PutItem",
-                "dynamodb:DeleteItem"
+                "dynamodb:DeleteItem",
                 "dynamodb:BatchWriteItem",
                 "dynamodb:UpdateItem"
             ],
