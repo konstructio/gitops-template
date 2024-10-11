@@ -690,7 +690,7 @@ EOT
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {
-  name = "cluster-autoscaler-$(local.name)"
+  name = "cluster-autoscaler-${local.name}"
   path = "/"
   policy = jsonencode({
     "Version": "2012-10-17",
