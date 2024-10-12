@@ -614,7 +614,7 @@ module "kubefirst_api" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.40.0"
 
-  role_name = "kubefirst-api-${local.name}"
+  role_name = "kubefirst-pro-api-${local.name}"
   role_policy_arns = {
     kubefirst = "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
   }
@@ -623,7 +623,7 @@ module "kubefirst_api" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kubefirst:kubefirst-kubefirst-api"]
+      namespace_service_accounts = ["kubefirst:kubefirst-kubefirst-pro-api"]
     }
   }
 
