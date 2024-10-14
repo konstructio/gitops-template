@@ -34,6 +34,10 @@ spec:
       }
       provider "aws" {
         region = "<WORKLOAD_CLUSTER_REGION>"
+        allowed_account_ids = ["<WORKLOAD_CLUSTER_ACCOUNT_ID>"]
+        assume_role {
+          role_arn = "<WORKLOAD_ASSUME_ROLE>"
+        }
       }
   credentials:
   - filename: gen-nothing
