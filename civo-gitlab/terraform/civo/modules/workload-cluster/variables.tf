@@ -18,6 +18,6 @@ variable "node_type" {
   type = string
 }
 
-var "is_gpu" {
+variable "is_gpu" {
   type = bool
 }
