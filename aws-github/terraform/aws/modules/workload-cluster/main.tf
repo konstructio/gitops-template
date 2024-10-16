@@ -419,3 +419,52 @@ resource "vault_generic_secret" "clusters" {
     }
   )
 }
+
+
+module "cluster_autoscaler_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.40.0"
+
+  role_name = "cluster-autoscaler-${var.cluster_name}"
+  role_policy_arns = {
+    cluster_autoscalert = aws_iam_policy.cluster_autoscaler.arn
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role     = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:cluster-autoscaler"]
+    }
+  }
+
+  tags = local.tags
+}
+
+
+resource "aws_iam_policy" "cluster_autoscaler" {
+  name = "cluster-autoscaler-${var.cluster_name}"
+  path = "/"
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "autoscaling:DescribeAutoScalingGroups",
+          "autoscaling:DescribeAutoScalingInstances",
+          "autoscaling:DescribeLaunchConfigurations",
+          "autoscaling:DescribeScalingActivities",
+          "ec2:DescribeImages",
+          "ec2:DescribeInstanceTypes",
+          "ec2:DescribeLaunchTemplateVersions",
+          "ec2:GetInstanceTypesFromInstanceRequirements",
+          "eks:DescribeNodegroup",
+          "autoscaling:SetDesiredCapacity",
+          "autoscaling:TerminateInstanceInAutoScalingGroup"
+        ],
+        "Resource": ["*"]
+      }
+    ]
+  })
+}
