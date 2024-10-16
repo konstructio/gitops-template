@@ -105,7 +105,7 @@ module "eks" {
 
   access_entries = {
     
-    argocd_<CLUSTER_NAME> = {
+    "argocd_<CLUSTER_NAME>" = {
       cluster_name      = "<CLUSTER_NAME>"
       principal_arn     = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
       username          = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
@@ -120,7 +120,7 @@ module "eks" {
       }
     }
 
-    atlantis_<CLUSTER_NAME> = {
+    "atlantis_<CLUSTER_NAME>" = {
       cluster_name      = "<CLUSTER_NAME>"
       principal_arn     = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
       username          = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
@@ -687,6 +687,27 @@ resource "aws_iam_policy" "vault_server" {
   ]
 }
 EOT
+}
+
+
+module "cluster_autoscaler_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.40.0"
+
+  role_name = "cluster-autoscaler-${local.name}"
+  role_policy_arns = {
+    cluster_autoscalert = aws_iam_policy.cluster_autoscaler.arn
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role     = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:cluster-autoscaler"]
+    }
+  }
+
+  tags = local.tags
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {

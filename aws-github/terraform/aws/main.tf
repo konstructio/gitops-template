@@ -27,11 +27,6 @@ resource "aws_iam_role_policy_attachment" "vcluster_external_dns" {
   policy_arn = module.eks.external_dns_policy_arn
 }
 
-resource "aws_iam_role_policy_attachment" "vcluster_cluster_autoscaler" {
-  role       = module.eks.node_iam_role_name
-  policy_arn = module.eks.cluster_autoscaler_policy_arn
-}
-
 module "kms" {
   source = "./kms"
 }
