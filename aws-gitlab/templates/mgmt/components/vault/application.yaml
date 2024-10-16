@@ -18,6 +18,11 @@ spec:
           value: vault.<DOMAIN_NAME>
       values: |-
         server:
+          image:
+            repository: "hashicorp/vault"
+            tag: "1.14.1"
+            pullPolicy: IfNotPresent
+
           serviceAccount:
             create: true
             name: vault
