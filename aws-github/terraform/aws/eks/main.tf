@@ -70,9 +70,9 @@ module "eks" {
     }
   }
 
-  vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = module.vpc.private_subnets
-  control_plane_subnet_ids = module.vpc.intra_subnets
+  vpc_id                   = "vpc-0e9d250c3d0d27d6e"
+  subnet_ids               = ["subnet-01fb33dc29c3e2af1","subnet-02762df78b0451e12","subnet-0faa9b5d16e78609c"]
+  control_plane_subnet_ids = ["subnet-0368859d1a36f8430","subnet-0a851b69c07d0d842","subnet-0865c94d2ee3d3cba"]
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
@@ -143,39 +143,6 @@ module "eks" {
 # Supporting Resources
 ################################################################################
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "4.0.2"
-
-  name = local.name
-  cidr = local.vpc_cidr
-
-  azs             = local.azs
-  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
-  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
-  intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
-
-  enable_ipv6            = false
-  create_egress_only_igw = true
-
-  public_subnet_ipv6_prefixes  = [0, 1, 2]
-  private_subnet_ipv6_prefixes = [3, 4, 5]
-  intra_subnet_ipv6_prefixes   = [6, 7, 8]
-
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
-
-  public_subnet_tags = {
-    "kubernetes.io/role/elb" = 1
-  }
-
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = 1
-  }
-
-  tags = local.tags
-}
 
 module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
