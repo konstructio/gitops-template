@@ -707,12 +707,6 @@ resource "aws_iam_policy" "cluster_autoscaler" {
           "ec2:DescribeLaunchTemplateVersions",
           "ec2:GetInstanceTypesFromInstanceRequirements",
           "eks:DescribeNodegroup"
-        ],
-        "Resource": ["*"]
-      },
-      {
-        "Effect": "Allow",
-        "Action": [
           "autoscaling:SetDesiredCapacity",
           "autoscaling:TerminateInstanceInAutoScalingGroup"
         ],
