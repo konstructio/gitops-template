@@ -32,16 +32,6 @@ resource "aws_iam_role_policy_attachment" "vcluster_cluster_autoscaler" {
   policy_arn = module.eks.cluster_autoscaler_policy_arn
 }
 
-resource "aws_iam_role_policy_attachment" "vcluster_dynamodb" {
-  role       = module.eks.node_iam_role_name
-  policy_arn = module.eks.vault_dynamodb_policy_arn
-}
-
-resource "aws_iam_role_policy_attachment" "vcluster_kms" {
-  role       = module.eks.node_iam_role_name
-  policy_arn = module.eks.vault_kms_policy_arn
-}
-
 module "kms" {
   source = "./kms"
 }

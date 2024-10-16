@@ -636,8 +636,8 @@ module "vault" {
 
   role_name = "vault-${local.name}"
   role_policy_arns = {
-    dynamo = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-    kms    = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    dynamo = aws_iam_policy.vault_dynamodb.arn,
+    kms    = aws_iam_policy.vault_kms.arn,
     vault  = aws_iam_policy.vault_server.arn,
   }
   oidc_providers = {
