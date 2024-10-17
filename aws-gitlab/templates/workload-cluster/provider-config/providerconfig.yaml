@@ -35,8 +35,10 @@ spec:
       provider "aws" {
         region = "<WORKLOAD_CLUSTER_REGION>"
         allowed_account_ids = ["<WORKLOAD_CLUSTER_ACCOUNT_ID>"]
-        assume_role {
+        assume_role_with_web_identity {
+          session_name = "kubefirst-pro"
           role_arn = "<WORKLOAD_ASSUME_ROLE>"
+          web_identity_token_file = "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
         }
       }
   credentials:
