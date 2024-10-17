@@ -22,6 +22,22 @@ module "eks" {
   create_kms_key                 = false
   cluster_encryption_config      = {}
 
+  access_entries = {
+    "argocd_<AWS_ACCOUNT_ID>" = {
+      cluster_name  = "${var.cluster_name}"
+      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<AWS_ACCOUNT_ID>"
+      policy_associations = {
+        argocdAdminAccess = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    }
+  }
+
   cluster_addons = {
     aws-ebs-csi-driver = {
       most_recent              = true
@@ -446,11 +462,11 @@ resource "aws_iam_policy" "cluster_autoscaler" {
   name = "cluster-autoscaler-${var.cluster_name}"
   path = "/"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "autoscaling:DescribeAutoScalingGroups",
           "autoscaling:DescribeAutoScalingInstances",
           "autoscaling:DescribeLaunchConfigurations",
@@ -463,7 +479,7 @@ resource "aws_iam_policy" "cluster_autoscaler" {
           "autoscaling:SetDesiredCapacity",
           "autoscaling:TerminateInstanceInAutoScalingGroup"
         ],
-        "Resource": ["*"]
+        "Resource" : ["*"]
       }
     ]
   })
