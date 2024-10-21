@@ -25,7 +25,7 @@ module "eks" {
   access_entries = {
     "argocd_<AWS_ACCOUNT_ID>" = {
       cluster_name  = "${var.cluster_name}"
-      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<AWS_ACCOUNT_ID>"
+      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
       policy_associations = {
         argocdAdminAccess = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
