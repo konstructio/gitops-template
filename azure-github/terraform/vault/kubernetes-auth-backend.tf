@@ -3,7 +3,7 @@ provider "kubernetes" {
 }
 
 data "azurerm_kubernetes_cluster" "kubefirst" {
-  name = local.cluster_name
+  name                = local.cluster_name
   resource_group_name = local.cluster_name
 }
 
