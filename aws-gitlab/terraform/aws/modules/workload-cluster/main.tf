@@ -27,7 +27,7 @@ module "eks" {
   access_entries = {
     "argocd_<AWS_ACCOUNT_ID>" = {
       cluster_name  = "${var.cluster_name}"
-      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<AWS_ACCOUNT_ID>"
+      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-${var.cluster_name}"
       policy_associations = {
         argocdAdminAccess = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
@@ -70,8 +70,6 @@ module "eks" {
   vpc_id                   = module.vpc.vpc_id
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
-
-  manage_aws_auth_configmap = false
 
   # aws_auth_roles = [
   #   # managed node group is automatically added to the configmap
