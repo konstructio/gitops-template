@@ -40,14 +40,39 @@ variable "atlantis_repo_webhook_url" {
   type    = string
 }
 
-variable "aws_access_key_id" {
+variable "azure_storage_account" {
   default = ""
   type    = string
 }
 
-variable "aws_secret_access_key" {
-  default = ""
-  type    = string
+variable "azure_storage_access_key" {
+  default   = ""
+  type      = string
+  sensitive = true
+}
+
+variable "arm_client_id" {
+  default   = ""
+  type      = string
+  sensitive = true
+}
+
+variable "arm_client_secret" {
+  default   = ""
+  type      = string
+  sensitive = true
+}
+
+variable "arm_tenant_id" {
+  default   = ""
+  type      = string
+  sensitive = true
+}
+
+variable "arm_subscription_id" {
+  default   = ""
+  type      = string
+  sensitive = true
 }
 
 variable "vault_token" {
