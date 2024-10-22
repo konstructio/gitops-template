@@ -36,7 +36,7 @@ spec:
               <CERT_MANAGER_ISSUER_ANNOTATION_4>
             hosts:
               - argo.<DOMAIN_NAME>
-            paths: 
+            paths:
               - /
             pathType: Prefix
             tls:
@@ -65,20 +65,9 @@ spec:
         useStaticCredentials: true
         artifactRepository:
           archiveLogs: false
-          s3:
-            accessKeySecret:
-              name: ci-secrets
-              key: accesskey
-            secretKeySecret:
-              name: ci-secrets
-              key: secretkey
-            insecure: false
-            bucket: <KUBEFIRST_STATE_STORE_BUCKET>
-            endpoint: objectstore.<CLOUD_REGION>.civo.com
-            region: <CLOUD_REGION>
-            useSDKCreds: false
-            encryptionOptions:
-              enableEncryption: false
+          azure:
+            container: <KUBEFIRST_STATE_STORE_BUCKET>
+            useSDKCreds: true
     chart: argo-workflows
   destination:
     name: in-cluster
