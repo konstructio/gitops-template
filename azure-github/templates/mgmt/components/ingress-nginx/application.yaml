@@ -18,7 +18,9 @@ spec:
           publishService:
             enabled: true
           service:
-            annotations: {}
+            annotations:
+              service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+            externalTrafficPolicy: Local
           extraArgs:
             enable-ssl-passthrough: true
     chart: ingress-nginx
