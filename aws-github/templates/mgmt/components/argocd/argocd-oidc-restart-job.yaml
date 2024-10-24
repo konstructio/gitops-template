@@ -57,7 +57,8 @@ spec:
              (kubectl rollout restart deploy --selector app.kubernetes.io/name=argocd-server -n argocd 
              && echo "Restarting argocd-server pod's" ) || echo "Unable to restart ArgoCD application controller";
 
-             (kubectl rollout restart sts --selector app.kubernetes.io/name=argocd-application-controller -n argocd && echo "Restarting argocd-application-controller pod's" ) || echo "Unable to restart ArgoCD application controller"
+             (kubectl rollout restart sts --selector app.kubernetes.io/name=argocd-application-controller -n argocd 
+             && echo "Restarting argocd-application-controller pod's" ) || echo "Unable to restart ArgoCD application controller"
       restartPolicy: OnFailure
       serviceAccountName: argocd-oidc-restart-job
 
