@@ -44,6 +44,8 @@ kind: Job
 metadata:
   name: argocd-oidc-restart-job
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
