@@ -90,8 +90,8 @@ module "eks" {
     # Default node group - as provided by AWS EKS
     default_node_group = {
       desired_size = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
-      min_size     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
-      max_size     = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
+      min_size     = tonumber("1") # tonumber() is used for a string token value
+      max_size     = tonumber("<NODE_COUNT>")+10 # tonumber() is used for a string token value
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false
@@ -105,7 +105,7 @@ module "eks" {
 
   access_entries = {
     
-    argocd_<CLUSTER_NAME> = {
+    "argocd_<CLUSTER_NAME>" = {
       cluster_name      = "<CLUSTER_NAME>"
       principal_arn     = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
       username          = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
@@ -120,7 +120,7 @@ module "eks" {
       }
     }
 
-    atlantis_<CLUSTER_NAME> = {
+    "atlantis_<CLUSTER_NAME>" = {
       cluster_name      = "<CLUSTER_NAME>"
       principal_arn     = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
       username          = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
@@ -614,7 +614,7 @@ module "kubefirst_api" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.40.0"
 
-  role_name = "kubefirst-api-${local.name}"
+  role_name = "kubefirst-pro-api-${local.name}"
   role_policy_arns = {
     kubefirst = "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
   }
@@ -623,7 +623,7 @@ module "kubefirst_api" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kubefirst:kubefirst-kubefirst-api"]
+      namespace_service_accounts = ["kubefirst:kubefirst-kubefirst-pro-api"]
     }
   }
 
@@ -636,8 +636,8 @@ module "vault" {
 
   role_name = "vault-${local.name}"
   role_policy_arns = {
-    dynamo = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-    kms    = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    dynamo = aws_iam_policy.vault_dynamodb.arn,
+    kms    = aws_iam_policy.vault_kms.arn,
     vault  = aws_iam_policy.vault_server.arn,
   }
   oidc_providers = {
@@ -687,4 +687,97 @@ resource "aws_iam_policy" "vault_server" {
   ]
 }
 EOT
+}
+
+
+module "cluster_autoscaler_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.40.0"
+
+  role_name = "cluster-autoscaler-${local.name}"
+  role_policy_arns = {
+    cluster_autoscalert = aws_iam_policy.cluster_autoscaler.arn
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role     = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:cluster-autoscaler"]
+    }
+  }
+
+  tags = local.tags
+}
+
+resource "aws_iam_policy" "cluster_autoscaler" {
+  name = "cluster-autoscaler-${local.name}"
+  path = "/"
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "autoscaling:DescribeAutoScalingGroups",
+          "autoscaling:DescribeAutoScalingInstances",
+          "autoscaling:DescribeLaunchConfigurations",
+          "autoscaling:DescribeScalingActivities",
+          "ec2:DescribeImages",
+          "ec2:DescribeInstanceTypes",
+          "ec2:DescribeLaunchTemplateVersions",
+          "ec2:GetInstanceTypesFromInstanceRequirements",
+          "eks:DescribeNodegroup",
+          "autoscaling:SetDesiredCapacity",
+          "autoscaling:TerminateInstanceInAutoScalingGroup"
+        ],
+        "Resource": ["*"]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "vault_dynamodb" {
+  name = "vault-dynamodb-${local.name}"
+  path = "/"
+
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:Query",
+                "dynamodb:DescribeTable",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:UpdateItem"
+            ],
+            "Resource": "*"
+        }
+    ]
+})
+}
+
+resource "aws_iam_policy" "vault_kms" {
+  name = "vault-kms-${local.name}"
+  path = "/"
+
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:DescribeKey",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:GenerateDataKey"
+            ],
+            "Resource": "*"
+        }
+    ]
+})
 }

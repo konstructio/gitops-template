@@ -15,6 +15,7 @@ rules:
       - apps
     resources:
       - deployments
+      - statefulsets
     verbs:
       - get
       - list
@@ -43,15 +44,22 @@ kind: Job
 metadata:
   name: argocd-oidc-restart-job
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
       containers:
         - name: argocd-oidc-restart-job
-          image: public.ecr.aws/bitnami/kubectl:1.24
-          command:
-            - /bin/sh
-            - -c
-            - echo restarting argocd-server in 15 seconds && sleep 15 && echo restarting && kubectl -n argocd get deployment/argocd-server -oyaml | kubectl -n argocd replace --force -f -
+          image: public.ecr.aws/bitnami/kubectl:1.28
+          command: ["/bin/sh", "-c"]
+          args:
+            - echo "Give me time to think" && sleep 15;
+
+             (kubectl rollout restart deploy --selector app.kubernetes.io/name=argocd-server -n argocd 
+             && echo "Restarting argocd-server pod's" ) || echo "Unable to restart ArgoCD application controller";
+
+             (kubectl rollout restart sts --selector app.kubernetes.io/name=argocd-application-controller -n argocd 
+             && echo "Restarting argocd-application-controller pod's" ) || echo "Unable to restart ArgoCD application controller"
       restartPolicy: OnFailure
       serviceAccountName: argocd-oidc-restart-job

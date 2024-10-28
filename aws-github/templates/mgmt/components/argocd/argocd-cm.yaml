@@ -10,4 +10,4 @@ data:
     clientID: $argocd-oidc-secret:clientId
     clientSecret: $argocd-oidc-secret:clientSecret
     requestedScopes: ["openid", "groups", "user", "profile", "email"]
-    requestedIDTokenClaims: {"groups": {"essential": true}}
+    requestedIDTokenClaims: {"groups": {"essential": true}}   

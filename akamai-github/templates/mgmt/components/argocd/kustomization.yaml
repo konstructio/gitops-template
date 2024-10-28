@@ -5,7 +5,7 @@ namespace: argocd
 # To upgrade ArgoCD, increment the version here
 # https://github.com/argoproj/argo-cd/tags
 resources:
-  - github.com:konstructio/manifests.git/argocd/cloud?ref=v1.1.0
+  - github.com:konstructio/manifests.git/argocd/cloud?ref=v1.1.1
   - argocd-ui-ingress.yaml
   - externalsecrets.yaml
   - argocd-oidc-restart-job.yaml

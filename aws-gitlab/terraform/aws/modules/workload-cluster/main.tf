@@ -15,7 +15,7 @@ locals {
 ################################################################################
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.10.0"
+  version = "~> 20.0"
 
   cluster_name                   = var.cluster_name
   cluster_version                = local.cluster_version
@@ -23,6 +23,23 @@ module "eks" {
   create_kms_key                 = false
   cluster_encryption_config      = {}
   create_iam_role                = true
+
+  access_entries = {
+    "argocd_<AWS_ACCOUNT_ID>" = {
+      cluster_name  = "${var.cluster_name}"
+      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      policy_associations = {
+        argocdAdminAccess = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    }
+  }
+
   cluster_addons = {
     # AWS launch CoreDNS itself with their add-on https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html
     # coredns = {
@@ -54,8 +71,6 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-  manage_aws_auth_configmap = false
-
   # aws_auth_roles = [
   #   # managed node group is automatically added to the configmap
   #   {
@@ -81,8 +96,8 @@ module "eks" {
     # Default node group - as provided by AWS EKS
     default_node_group = {
       desired_size = tonumber(var.node_count) # tonumber() is used for a string token value
-      min_size     = tonumber(var.node_count) # tonumber() is used for a string token value
-      max_size     = tonumber(var.node_count) # tonumber() is used for a string token value
+      min_size     = tonumber(1) # tonumber() is used for a string token value
+      max_size     = tonumber(var.node_count)+10 # tonumber() is used for a string token value
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false
@@ -429,3 +444,52 @@ resource "vault_generic_secret" "clusters" {
     }
   )
 }
+
+module "cluster_autoscaler_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.40.0"
+
+  role_name = "cluster-autoscaler-${var.cluster_name}"
+  role_policy_arns = {
+    cluster_autoscalert = aws_iam_policy.cluster_autoscaler.arn
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role     = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:cluster-autoscaler"]
+    }
+  }
+
+  tags = local.tags
+}
+
+
+resource "aws_iam_policy" "cluster_autoscaler" {
+  name = "cluster-autoscaler-${var.cluster_name}"
+  path = "/"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "autoscaling:DescribeAutoScalingGroups",
+          "autoscaling:DescribeAutoScalingInstances",
+          "autoscaling:DescribeLaunchConfigurations",
+          "autoscaling:DescribeScalingActivities",
+          "ec2:DescribeImages",
+          "ec2:DescribeInstanceTypes",
+          "ec2:DescribeLaunchTemplateVersions",
+          "ec2:GetInstanceTypesFromInstanceRequirements",
+          "eks:DescribeNodegroup",
+          "autoscaling:SetDesiredCapacity",
+          "autoscaling:TerminateInstanceInAutoScalingGroup"
+        ],
+        "Resource" : ["*"]
+      }
+    ]
+  })
+}
+

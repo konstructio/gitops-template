@@ -5,7 +5,7 @@ resource "random_password" "chartmuseum_password" {
 }
 
 resource "vault_generic_secret" "chartmuseum_secrets" {
-  path = "${vault_mount.secret.path}/secret/chartmuseum"
+  path = "${vault_mount.secret.path}/chartmuseum"
 
   data_json = jsonencode(
     {
