@@ -5,22 +5,25 @@ terraform {
     resource_group_name  = "<KUBEFIRST_STATE_STORE_RESOURCE_GROUP>"
     storage_account_name = "<KUBEFIRST_STATE_STORE_BUCKET>"
   }
-
   required_providers {
-    github = {
-      source  = "integrations/github"
-      version = "~> 5.17.0"
+    gitlab = {
+      source  = "gitlabhq/gitlab"
+      version = "15.8.0"
+    }
+    vault = {
+      source = "hashicorp/vault"
     }
   }
 }
 
-data "github_team" "admins" {
-  slug = "admins"
+data "gitlab_group" "admins" {
+  full_path = "<GITLAB_OWNER>/admins"
 }
 
-data "github_team" "developers" {
-  slug = "developers"
+data "gitlab_group" "developers" {
+  full_path = "<GITLAB_OWNER>/developers"
 }
+
 
 data "vault_auth_backend" "userpass" {
   path = "userpass"
@@ -35,10 +38,18 @@ variable "initial_password" {
   default = ""
 }
 
+data "vault_identity_group" "developers" {
+  group_name = "developers"
+}
+
 module "admins" {
   source = "./admins"
 
-  initial_password = var.initial_password
+  initial_password = var.initial_password # ignore or remove - this is only used to bootstrap the initial kbot password
+}
+
+module "developers" {
+  source = "./developers"
 }
 
 resource "vault_identity_group_member_entity_ids" "admins_membership" {

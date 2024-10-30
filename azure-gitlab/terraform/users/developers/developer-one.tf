@@ -2,19 +2,17 @@
 # # adjust module name developer_one below to your developer's firstname_lastname.
 # # create as many developer module files as you have developer personnel.
 
-# # For Single Sign On: be sure to also add the new user to the developers-outputs.tf
-
 # module "developer_one" {
-#   source = "../modules/user/github"
-# 
+#   source = "../modules/user"
+
 #   acl_policies            = ["developer"]
-#   email                   = "dev.one@example.com"
-#   first_name              = "Dev"
-#   github_username         = "developer-ones-github-username"
-#   team_id                 = data.github_team.developers.id
-#   last_name               = "One"
+#   email                   = "developer.one@your-company.io"
+#   first_name              = "developer"
+#   fullname                = "developer one"
+#   group_id                = data.vault_identity_group.developers.group_id
+#   gitlab_username         = "your-developers-gilab-username"
+#   last_name               = "one"
 #   username                = "done"
 #   user_disabled           = false
 #   userpass_accessor       = data.vault_auth_backend.userpass.accessor
 # }
-#

@@ -1,14 +1,13 @@
 module "kbot" {
-  # kbot is your automation user for all automation
-  # on the platform that needs a bot account
-  source = "../modules/user/github"
+  source = "../modules/user"
 
   acl_policies      = ["admin"]
   email             = "<ALERTS_EMAIL>"
   first_name        = "K"
-  github_username   = "<GITHUB_USER>"
+  fullname          = "kbot"
+  gitlab_username   = "<GITLAB_USER>"
+  group_id          = data.vault_identity_group.admins.group_id
   last_name         = "Bot"
-  team_id           = data.github_team.admins.id
   initial_password  = var.initial_password
   username          = "kbot"
   user_disabled     = false
@@ -16,5 +15,6 @@ module "kbot" {
 }
 
 variable "initial_password" {
-  type = string
+  type    = string
+  default = ""
 }
