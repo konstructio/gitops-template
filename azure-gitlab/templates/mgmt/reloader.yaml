@@ -4,7 +4,7 @@ metadata:
   name: reloader-components
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: '60'
+    argocd.argoproj.io/sync-wave: '50'
 spec:
   project: default
   source:
@@ -12,7 +12,7 @@ spec:
     path: registry/clusters/<CLUSTER_NAME>/components/reloader
     targetRevision: HEAD
   destination:
-    name: in-cluster
+    server: https://kubernetes.default.svc
     namespace: reloader
   syncPolicy:
     automated:

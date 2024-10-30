@@ -3,7 +3,7 @@ kind: ClusterWorkflowTemplate
 metadata:
   name: cwft-helm
   annotations:
-    argocd.argoproj.io/sync-wave: '55'
+    argocd.argoproj.io/sync-wave: '0'
 spec:
   templates:
   - name: get-chart-version

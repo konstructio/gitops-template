@@ -31,13 +31,13 @@ roleRef:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: github-runner-clusterrole
+  name: gitlab-runner-clusterrole
   annotations:
     argocd.argoproj.io/sync-wave: '0'
 subjects:
   - kind: ServiceAccount
-    name: github-runner
-    namespace: github-runner
+    name: gitlab-runner
+    namespace: gitlab-runner
 roleRef:
   kind: ClusterRole
   name: admin

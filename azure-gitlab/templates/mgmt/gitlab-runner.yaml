@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: github-runner-components
+  name: gitlab-runner-components
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: '60'
@@ -9,11 +9,11 @@ spec:
   project: default
   source:
     repoURL: <GITOPS_REPO_URL>
-    path: registry/clusters/<CLUSTER_NAME>/components/github-runner
+    path: registry/clusters/<CLUSTER_NAME>/components/gitlab-runner
     targetRevision: HEAD
   destination:
-    name: in-cluster
-    namespace: github-runner
+    server: https://kubernetes.default.svc
+    namespace: gitlab-runner
   syncPolicy:
     automated:
       prune: true
@@ -24,8 +24,8 @@ spec:
       - Replace=true
       - PruneLast=true
     retry:
-      limit: 5
+      limit: 10
       backoff:
-        duration: 5s
+        duration: 10s
         maxDuration: 5m0s
         factor: 2
