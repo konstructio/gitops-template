@@ -17,6 +17,16 @@ resource "vault_generic_secret" "chartmuseum_secrets" {
   )
 }
 
+resource "vault_generic_secret" "container_registry_auth" {
+  path = "${vault_mount.secret.path}/deploy-tokens/container-registry-auth"
+
+  data_json = jsonencode(
+    {
+      auth = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbo@example.com", "auth" : "${var.b64_docker_auth}" } } }),
+    }
+  )
+}
+
 resource "vault_generic_secret" "azure_creds" {
   path = "${vault_mount.secret.path}/argo"
 
@@ -28,38 +38,12 @@ resource "vault_generic_secret" "azure_creds" {
   )
 }
 
-resource "vault_generic_secret" "crossplane" {
-  path = "${vault_mount.secret.path}/crossplane"
-
-  data_json = jsonencode(
-    {
-      # AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
-      # AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
-      # CIVO_TOKEN            = var.civo_token
-      VAULT_ADDR  = "http://vault.vault.svc.cluster.local:8200"
-      VAULT_TOKEN = var.vault_token
-      password    = var.github_token
-      username    = "<GITHUB_USER>"
-    }
-  )
-}
-
 resource "vault_generic_secret" "docker_config" {
   path = "${vault_mount.secret.path}/dockerconfigjson"
 
   data_json = jsonencode(
     {
-      dockerconfig = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
-    }
-  )
-}
-
-resource "vault_generic_secret" "regsitry_auth" {
-  path = "${vault_mount.secret.path}/registry-auth"
-
-  data_json = jsonencode(
-    {
-      auth = jsonencode({ "auths" : { "ghcr.io" : { "auth" : "${var.b64_docker_auth}" } } }),
+      dockerconfig = jsonencode({ "auths" : { "registry.gitlab.com" : { "username" : "container-registry-auth", "password" : "${var.container_registry_auth}", "email" : "kbot@example.com", "auth" : "${var.b64_docker_auth}" } } }),
     }
   )
 }
@@ -88,21 +72,27 @@ resource "vault_generic_secret" "ci_secrets" {
       BASIC_AUTH_USER       = "kbot",
       BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
       SSH_PRIVATE_KEY       = var.kbot_ssh_private_key,
-      PERSONAL_ACCESS_TOKEN = var.github_token,
+      PERSONAL_ACCESS_TOKEN = var.gitlab_token,
     }
   )
 }
 
-resource "vault_generic_secret" "cloudflare" {
-  path = "${vault_mount.secret.path}/cloudflare"
+resource "gitlab_user_runner" "shared_runner" {
+  group_id  = var.owner_group_id
+  runner_type = "group_type"
+  description = "Shared Runner for Group Projects"
+  tag_list    = ["shared"]
+  untagged = true
+}
 
-  data_json = jsonencode(
-    {
-      origin-ca-api-key = var.cloudflare_origin_ca_api_key,
-      cf-api-key        = var.cloudflare_api_key,
-      cloudflare-token  = var.cloudflare_api_key,
-    }
-  )
+resource "vault_generic_secret" "gitlab_runner" {
+  path      = "${vault_mount.secret.path}/gitlab-runner"
+  data_json = <<EOT
+{
+  "RUNNER_TOKEN" : "${gitlab_user_runner.shared_runner.token}",
+  "RUNNER_REGISTRATION_TOKEN" : ""
+}
+EOT
 }
 
 resource "vault_generic_secret" "atlantis_secrets" {
@@ -111,10 +101,10 @@ resource "vault_generic_secret" "atlantis_secrets" {
   data_json = jsonencode(
     {
       ARGO_SERVER_URL                     = "argo.argo.svc.cluster.local:2746",
-      ATLANTIS_GH_HOSTNAME                = "github.com",
-      ATLANTIS_GH_TOKEN                   = var.github_token,
-      ATLANTIS_GH_USER                    = "<GITHUB_USER>",
-      ATLANTIS_GH_WEBHOOK_SECRET          = var.atlantis_repo_webhook_secret,
+      ATLANTIS_GITLAB_HOSTNAME            = "gitlab.com",
+      ATLANTIS_GITLAB_TOKEN               = var.gitlab_token,
+      ATLANTIS_GITLAB_USER                = "<GITLAB_USER>",
+      ATLANTIS_GITLAB_WEBHOOK_SECRET      = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
       # AWS_ACCESS_KEY_ID                   = var.aws_access_key_id,
@@ -124,17 +114,33 @@ resource "vault_generic_secret" "atlantis_secrets" {
       TF_VAR_b64_docker_auth = var.b64_docker_auth,
       # CIVO_TOKEN                          = var.civo_token,
       # TF_VAR_civo_token                   = var.civo_token,
-      GITHUB_OWNER                        = "<GITHUB_OWNER>",
-      GITHUB_TOKEN                        = var.github_token,
-      TF_VAR_github_token                 = var.github_token,
+      GITLAB_OWNER                        = "<GITLAB_OWNER>",
+      GITLAB_TOKEN                        = var.gitlab_token,
+      TF_VAR_gitlab_token                 = var.gitlab_token,
+      TF_VAR_container_registry_auth      = var.container_registry_auth,
+      TF_VAR_owner_group_id               = var.owner_group_id,
       TF_VAR_kbot_ssh_public_key          = var.kbot_ssh_public_key,
       TF_VAR_kbot_ssh_private_key         = var.kbot_ssh_private_key,
-      TF_VAR_cloudflare_origin_ca_api_key = var.cloudflare_origin_ca_api_key
-      TF_VAR_cloudflare_api_key           = var.cloudflare_api_key
       VAULT_ADDR                          = "http://vault.vault.svc.cluster.local:8200",
       TF_VAR_vault_addr                   = "http://vault.vault.svc.cluster.local:8200",
       VAULT_TOKEN                         = var.vault_token,
       TF_VAR_vault_token                  = var.vault_token,
+    }
+  )
+}
+
+resource "vault_generic_secret" "crossplane" {
+  path = "${vault_mount.secret.path}/crossplane"
+
+  data_json = jsonencode(
+    {
+      # AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
+      # AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
+      # CIVO_TOKEN            = var.civo_token
+      VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
+      VAULT_TOKEN           = var.vault_token
+      password              = var.gitlab_token
+      username              = "<GITLAB_USER>"
     }
   )
 }

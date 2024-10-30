@@ -6,17 +6,7 @@ variable "b64_docker_auth" {
   type = string
 }
 
-variable "cloudflare_origin_ca_api_key" {
-  type    = string
-  default = ""
-}
-
-variable "cloudflare_api_key" {
-  type    = string
-  default = ""
-}
-
-variable "github_token" {
+variable "gitlab_token" {
   type = string
 }
 
@@ -73,6 +63,15 @@ variable "arm_subscription_id" {
   default   = ""
   type      = string
   sensitive = true
+}
+
+variable "container_registry_auth" {
+  type = string
+}
+
+variable "owner_group_id" {
+  description = "gitlab owner group id"
+  type        = string
 }
 
 variable "vault_token" {
