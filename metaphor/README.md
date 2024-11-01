@@ -4,9 +4,9 @@
 
 `metaphor` is an example application which serves as a demonstration space for how your applications hook into your infrastructure and tooling.
 
-`metaphor` is deployed to all of your environments just like your other applications will be. This means that when you make changes to your ci/cd, you can test it out using an application that works just like your applications do.
+`metaphor` is deployed to all of your environments just like your other applications will be. This means that when you make changes to your ci/cd, you can test it out using an application that works just like your applications do. More information on Metaphor [in our documentation](https://kubefirst.konstruct.io/docs/k3d/explore/metaphor).
 
-The cloud ([GitHub](https://docs.kubefirst.com/kubefirst/github/install.html)/[GitLab](https://docs.kubefirst.com/kubefirst/gitlab/install.html)) deployed instances of `metaphor` are available at:
+The cloud GitHub/GitLab deployed instances of `metaphor` are available at:
 
 | environment | url                                          |
 | ----------- | -------------------------------------------- |
@@ -14,7 +14,7 @@ The cloud ([GitHub](https://docs.kubefirst.com/kubefirst/github/install.html)/[G
 | staging     | `https://metaphor-staging.<DOMAIN_NAME>`     |
 | production  | `https://metaphor-production.<DOMAIN_NAME>`  |
 
-The [local](https://docs.kubefirst.com/kubefirst/local/install.html) deployed instances of `metaphor` is available at:
+The local deployed instances of `metaphor` is available at:
 
 | environment | url                                          |
 | ----------- | -------------------------------------------- |
