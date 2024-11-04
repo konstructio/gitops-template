@@ -33,15 +33,16 @@ spec:
         }
       }
       provider "civo" {
+        credentials_file = "civo.json"
         region = "<WORKLOAD_CLUSTER_REGION>"
       }
   credentials:
-  - filename: gen-nothing
-    source: None
+  - filename: civo.json
+    source: Secret
     secretRef:
       namespace: crossplane-system
       name: civo-creds
-      key: token
+      key: config.json
   - filename: .git-credentials
     source: Secret
     secretRef:
