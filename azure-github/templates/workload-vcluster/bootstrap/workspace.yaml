@@ -24,7 +24,7 @@ spec:
           name = "vc-<WORKLOAD_CLUSTER_NAME>"
           namespace = "<WORKLOAD_CLUSTER_NAME>"
         }
-      }      
+      }
 
       resource "vault_generic_secret" "clusters" {
         path = "secret/clusters/${var.cluster_name}"
@@ -117,6 +117,12 @@ spec:
         }
       }
 
+      # Used if using Azure DNS
+      data "vault_generic_secret" "azure_dns" {
+        path = "secret/azure-dns"
+      }
+
+      # Used if using Cloudflare
       data "vault_generic_secret" "external_dns" {
         path = "secret/external-dns"
       }
@@ -128,7 +134,8 @@ spec:
           namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
         }
         data = {
-          token = data.vault_generic_secret.external_dns.data["token"]
+          "azure.json" = data.vault_generic_secret.azure_dns.data["azure.json"]
+          token        = data.vault_generic_secret.external_dns.data["token"]
         }
         type = "Opaque"
       }
