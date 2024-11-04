@@ -141,3 +141,17 @@ resource "vault_generic_secret" "atlantis_secrets" {
     }
   )
 }
+
+resource "vault_generic_secret" "azure_dns" {
+  path = "${vault_mount.secret.path}/azure-dns"
+
+  data_json = jsonencode({
+    "azure.json" = jsonencode({
+      tenantId                    = data.azurerm_client_config.current.tenant_id
+      subscriptionId              = data.azurerm_client_config.current.subscription_id
+      resourceGroup               = "dns-zones"
+      useManagedIdentityExtension = true
+      userAssignedIdentityID      = data.azurerm_kubernetes_cluster.kubefirst.kubelet_identity[0].client_id
+    })
+  })
+}
