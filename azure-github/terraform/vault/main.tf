@@ -24,3 +24,5 @@ provider "azurerm" {
 provider "vault" {
   skip_tls_verify = "true"
 }
+
+data "azurerm_client_config" "current" {}
