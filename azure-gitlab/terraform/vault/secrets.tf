@@ -32,8 +32,10 @@ resource "vault_generic_secret" "azure_creds" {
 
   data_json = jsonencode(
     {
-      # accesskey = var.aws_access_key_id,
-      # secretkey = var.aws_secret_access_key,
+      client_id         = var.arm_client_id
+      arm_client_secret = var.arm_client_secret
+      tenant_id         = var.arm_tenant_id
+      subscription_id   = var.arm_subscription_id
     }
   )
 }
@@ -67,12 +69,14 @@ resource "vault_generic_secret" "ci_secrets" {
 
   data_json = jsonencode(
     {
-      # accesskey             = var.aws_access_key_id,
-      # secretkey             = var.aws_secret_access_key,
-      BASIC_AUTH_USER       = "kbot",
-      BASIC_AUTH_PASS       = random_password.chartmuseum_password.result,
-      SSH_PRIVATE_KEY       = var.kbot_ssh_private_key,
-      PERSONAL_ACCESS_TOKEN = var.gitlab_token,
+      client_id             = var.arm_client_id
+      arm_client_secret     = var.arm_client_secret
+      tenant_id             = var.arm_tenant_id
+      subscription_id       = var.arm_subscription_id
+      BASIC_AUTH_USER       = "kbot"
+      BASIC_AUTH_PASS       = random_password.chartmuseum_password.result
+      SSH_PRIVATE_KEY       = var.kbot_ssh_private_key
+      PERSONAL_ACCESS_TOKEN = var.gitlab_token
     }
   )
 }
@@ -107,13 +111,11 @@ resource "vault_generic_secret" "atlantis_secrets" {
       ATLANTIS_GITLAB_WEBHOOK_SECRET      = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_secret = var.atlantis_repo_webhook_secret,
       TF_VAR_atlantis_repo_webhook_url    = var.atlantis_repo_webhook_url,
-      # AWS_ACCESS_KEY_ID                   = var.aws_access_key_id,
-      # AWS_SECRET_ACCESS_KEY               = var.aws_secret_access_key,
-      # TF_VAR_aws_access_key_id            = var.aws_access_key_id,
-      # TF_VAR_aws_secret_access_key        = var.aws_secret_access_key,
-      TF_VAR_b64_docker_auth = var.b64_docker_auth,
-      # CIVO_TOKEN                          = var.civo_token,
-      # TF_VAR_civo_token                   = var.civo_token,
+      ARM_CLIENT_ID                       = var.arm_client_id
+      ARM_CLIENT_SECRET                   = var.arm_client_secret
+      ARM_TENANT_ID                       = var.arm_tenant_id
+      ARM_SUBSCRIPTION_ID                 = var.arm_subscription_id
+      TF_VAR_b64_docker_auth              = var.b64_docker_auth,
       GITLAB_OWNER                        = "<GITLAB_OWNER>",
       GITLAB_TOKEN                        = var.gitlab_token,
       TF_VAR_gitlab_token                 = var.gitlab_token,
@@ -129,18 +131,33 @@ resource "vault_generic_secret" "atlantis_secrets" {
   )
 }
 
+resource "vault_generic_secret" "azure_dns" {
+  path = "${vault_mount.secret.path}/azure-dns"
+
+  data_json = jsonencode({
+    "azure.json" = jsonencode({
+      tenantId                    = data.azurerm_client_config.current.tenant_id
+      subscriptionId              = data.azurerm_client_config.current.subscription_id
+      resourceGroup               = "dns-zones"
+      useManagedIdentityExtension = true
+      userAssignedIdentityID      = data.azurerm_kubernetes_cluster.kubefirst.kubelet_identity[0].client_id
+    })
+  })
+}
+
 resource "vault_generic_secret" "crossplane" {
   path = "${vault_mount.secret.path}/crossplane"
 
   data_json = jsonencode(
     {
-      # AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
-      # AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
-      # CIVO_TOKEN            = var.civo_token
-      VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
-      VAULT_TOKEN           = var.vault_token
-      password              = var.gitlab_token
-      username              = "<GITLAB_USER>"
+      ARM_CLIENT_ID       = var.arm_client_id
+      ARM_CLIENT_SECRET   = var.arm_client_secret
+      ARM_TENANT_ID       = var.arm_tenant_id
+      ARM_SUBSCRIPTION_ID = var.arm_subscription_id
+      VAULT_ADDR          = "http://vault.vault.svc.cluster.local:8200"
+      VAULT_TOKEN         = var.vault_token
+      password            = var.gitlab_token
+      username            = "<GITLAB_USER>"
     }
   )
 }

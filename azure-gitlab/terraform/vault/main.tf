@@ -31,3 +31,5 @@ provider "vault" {
 provider "gitlab" {
   token = var.gitlab_token
 }
+
+data "azurerm_client_config" "current" {}
