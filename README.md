@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://docs.kubefirst.io/">Install</a>&nbsp;|&nbsp;
+  <a href="https://kubefirst.konstruct.io/docs/">Install</a>&nbsp;|&nbsp;
   <a href="https://twitter.com/kubefirst">Twitter</a>&nbsp;|&nbsp;
-  <a href="https://www.linkedin.com/company/kubefirst">LinkedIn</a>&nbsp;|&nbsp;
-  <a href="https://join.slack.com/t/kubefirst/shared_invite/zt-r0r9cfts-OVnH0ooELDLm9n9p2aU7fw">Slack</a>&nbsp;|&nbsp;
-  <a href="https://kubefirst.io/blog">Blog</a>
+  <a href="https://www.linkedin.com/company/konstructio/">LinkedIn</a>&nbsp;|&nbsp;
+  <a href="https://konstruct.io/slack">Slack</a>&nbsp;|&nbsp;
+  <a href="https://blog.konstruct.io/">Blog</a>
 </p>
 
 # gitops
@@ -25,7 +25,7 @@ The `gitops` repository has 2 main sections
 
 ## kubefirst apps
 
-The [kubefirst cli](https://github.com/kubefirst/kubefirst) has established the following applications:
+The [kubefirst cli](https://github.com/konstructio/kubefirst) has established the following applications:
 
 | Application              | Namespace        | Description                                 | URL (where applicable)             |
 | ------------------------ | ---------------- | ------------------------------------------- | ---------------------------------- |
