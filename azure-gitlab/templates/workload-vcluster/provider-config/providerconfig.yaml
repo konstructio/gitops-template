@@ -1,0 +1,44 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  configuration: |
+      terraform {
+        backend "azurerm" {
+          container_name       = "<KUBEFIRST_STATE_STORE_CONTAINER_NAME>"
+          key                  = "clusters/<WORKLOAD_CLUSTER_NAME>/terraform.tfstate"
+          resource_group_name  = "<KUBEFIRST_STATE_STORE_RESOURCE_GROUP>"
+          storage_account_name = "<KUBEFIRST_STATE_STORE_BUCKET>"
+        }
+        required_providers {
+          azurerm = {
+            source  = "hashicorp/azurerm"
+            version = ">= 4.2.0, < 5.0.0"
+          }
+          kubernetes = {
+            source = "hashicorp/kubernetes"
+            version = "2.23.0"
+          }
+          vault = {
+            source = "hashicorp/vault"
+            version = "3.19.0"
+          }
+        }
+      }
+      provider "azurerm" {
+        features {
+          resource_group {
+            prevent_deletion_if_contains_resources = false
+          }
+        }
+      }
+  credentials:
+  - filename: .git-credentials
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: git-credentials
+      key: creds

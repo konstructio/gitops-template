@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubefirst
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    repoURL: https://charts.konstruct.io
+    targetRevision: 2.7.4-rc1
+    chart: kubefirst-pro
+    helm:
+      values: |-
+        global:
+          cloudProvider: "<CLOUD_PROVIDER>"
+          clusterId: "<CLUSTER_ID>"
+          clusterType: "<CLUSTER_TYPE>"
+          domainName: "<DOMAIN_NAME>"
+          gitProvider: "<GIT_PROVIDER>"
+          installMethod: "helm"
+          kubefirstClient: "<KUBEFIRST_CLIENT>"
+          kubefirstTeam: "<KUBEFIRST_TEAM>"
+          kubefirstTeamInfo: "<KUBEFIRST_TEAM_INFO>"
+          kubefirstVersion: "<KUBEFIRST_VERSION>"
+          useTelemetry: "<USE_TELEMETRY>"
+        kubefirst-pro-api:
+          extraEnv:
+            CLUSTER_NAME: "<CLUSTER_NAME>"
+        kubefirst-pro-ui:
+          domain: "<DOMAIN_NAME>"
+          extraEnvSecrets:
+            CLIENT_ID:
+              name: kubefirst-console-secrets
+              key: client_id
+            SECRET_ID:
+              name: kubefirst-console-secrets
+              key: client_secret
+          ingress:
+            enabled: "true"
+            className: nginx
+            annotations:
+              <CERT_MANAGER_ISSUER_ANNOTATION_1>
+              <CERT_MANAGER_ISSUER_ANNOTATION_2>
+              <CERT_MANAGER_ISSUER_ANNOTATION_3>
+              <CERT_MANAGER_ISSUER_ANNOTATION_4>
+            hosts:
+              - host: kubefirst.<DOMAIN_NAME>
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: kubefirst-tls
+                hosts:
+                  - kubefirst.<DOMAIN_NAME>
+  destination:
+    name: in-cluster
+    namespace: kubefirst
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
