@@ -15,8 +15,8 @@ terraform {
       source  = "hashicorp/local"
       version = ">= 2.5.2, < 4.0.0"
     }
-     kubernetes = {
-      source = "hashicorp/kubernetes"
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
       version = ">= 2.32.0, < 3.0.0"
     }
   }
@@ -42,12 +42,13 @@ locals {
   dns_zone             = "<AZURE_DNS_ZONE_NAME>"
   dns_zone_rg          = "<AZURE_DNS_ZONE_RESOURCE_GROUP>"
   kube_config_filename = "../../../kubeconfig"
-  kubernetes_version   = "1.29.7" # Latest stable at time of writing
+  kubernetes_version   = "1.29."
+  location             = "<CLOUD_REGION>"
   node_count           = tonumber("<NODE_COUNT>")
   tags = {
     ClusterName   = local.cluster_name
-    kubefirst     = "true"
     ProvisionedBy = "kubefirst"
+    Type          = "management"
   }
   use_dns_zone = try(local.dns_zone != "", false)
   vm_size      = "<NODE_TYPE>"
@@ -56,9 +57,15 @@ locals {
 # All resources must be created in a resource group - the location will be inferred from this
 resource "azurerm_resource_group" "kubefirst" {
   name     = local.cluster_name
-  location = "<CLOUD_REGION>"
+  location = local.location
 
   tags = local.tags
 }
 
 data "azurerm_client_config" "current" {}
+
+data "azurerm_kubernetes_service_versions" "current" {
+  location        = local.location
+  version_prefix  = local.kubernetes_version
+  include_preview = false
+}
