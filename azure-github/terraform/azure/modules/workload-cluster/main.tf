@@ -15,7 +15,7 @@ locals {
     Type                = "workload"
     ManagementClusterID = "<CLUSTER_ID>"
   }
-  use_dns_zone = try(local.dns_zone != "" && local.dns_zone_rg != "", false)
+  use_dns_zone = try(local.dns_zone != "", false)
 }
 
 # All resources must be created in a resource group - the location will be inferred from this
