@@ -20,7 +20,7 @@ spec:
         required_providers {
           civo = {
             source = "civo/civo"
-            version = "~> 1.1.0"
+            version = "= 1.1.0"
           }
           kubernetes = {
             source = "hashicorp/kubernetes"
@@ -41,7 +41,7 @@ spec:
     source: Secret
     secretRef:
       namespace: crossplane-system
-      name: civo-creds
+      name: <WORKLOAD_CIVO_ACCOUNT_NAME>-civo-creds
       key: config.json
   - filename: .git-credentials
     source: Secret
