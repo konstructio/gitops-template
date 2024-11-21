@@ -13,6 +13,32 @@ spec:
     targetRevision: 4.11.2
     helm:
       values: |-
+        initConfig:
+          enabled: true
+          image: alpine:latest
+          imagePullPolicy: IfNotPresent
+          # sharedDir is set as env var INIT_SHARED_DIR
+          sharedDir: /plugins
+          workDir: /tmp
+          sizeLimit: 250Mi
+          script: |
+            #!/bin/sh
+            set -eoux pipefail
+
+            # OpenTofu
+            TF_VERSION="1.6.2"
+            # TF_FILE="${INIT_SHARED_DIR}/tofu"
+            TF_FILE="${INIT_SHARED_DIR}/terraform"
+            wget https://github.com/opentofu/opentofu/releases/download/v${TF_VERSION}/tofu_${TF_VERSION}_linux_amd64.zip
+            unzip tofu_${TF_VERSION}_linux_amd64.zip
+            # mv tofu ${INIT_SHARED_DIR}/terraform
+            mv tofu "${TF_FILE}"
+            chmod 755 "${TF_FILE}"
+            terraform -v
+    
+        environment:
+          ATLANTIS_TF_DOWNLOAD: false
+
         statefulSet:
           annotations:
             secret.reloader.stakater.com/reload: "atlantis-secrets"
