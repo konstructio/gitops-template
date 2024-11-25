@@ -10,7 +10,7 @@ metadata:
 spec:
   description: <WORKLOAD_CLUSTER_NAME> description
   sourceRepos:
-  - 'git@github.com:mrsimonemmsorg/gitops.git'
+  - '<GITOPS_REPO_URL>'
   - 'https://kubernetes.github.io/ingress-nginx'
   - 'https://kubernetes-sigs.github.io/external-dns'
   - 'https://charts.jetstack.io'

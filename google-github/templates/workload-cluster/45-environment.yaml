@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:mrsimonemmsorg/gitops.git
+    repoURL: <GITOPS_REPO_URL>
     path: registry/environments/<WORKLOAD_ENVIRONMENT>
     targetRevision: HEAD
   destination:
