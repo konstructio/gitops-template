@@ -26,9 +26,11 @@ spec:
           kubefirstVersion: "<KUBEFIRST_VERSION>"
           useTelemetry: "<USE_TELEMETRY>"
         kubefirst-pro-api:
+          fullnameOverride: "kubefirst-pro-api"
           extraEnv:
             CLUSTER_NAME: "<CLUSTER_NAME>"
         kubefirst-pro-ui:
+          fullnameOverride: "kubefirst-pro-ui"
           domain: "<DOMAIN_NAME>"
           extraEnv:
             DISABLE_AUTH: "true"

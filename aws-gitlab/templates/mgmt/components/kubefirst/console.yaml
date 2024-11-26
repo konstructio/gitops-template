@@ -26,6 +26,7 @@ spec:
           kubefirstVersion: "<KUBEFIRST_VERSION>"
           useTelemetry: "<USE_TELEMETRY>"
         kubefirst-pro-api:
+          fullnameOverride: "kubefirst-pro-api"
           extraEnv:
             CLUSTER_NAME: "<CLUSTER_NAME>"
           serviceAccount:
@@ -33,6 +34,7 @@ spec:
             annotations: 
               eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/kubefirst-pro-api-<CLUSTER_NAME>
         kubefirst-pro-ui:
+          fullnameOverride: "kubefirst-pro-ui"
           domain: "<DOMAIN_NAME>"
           extraEnvSecrets:
             CLIENT_ID:
