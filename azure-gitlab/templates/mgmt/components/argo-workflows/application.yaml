@@ -21,7 +21,14 @@ spec:
             limits:
               cpu: 1
               memory: 1024Mi
+        controller:
+          deploymentAnnotations:
+            configmap.reloader.stakater.com/reload: argo-workflow-controller-configmap
+            secret.reloader.stakater.com/reload: azure-storage-credentials
         server:
+          deploymentAnnotations:
+            configmap.reloader.stakater.com/reload: argo-workflow-controller-configmap
+            secret.reloader.stakater.com/reload: azure-storage-credentials
           secure: false
           extraArgs:
           - --auth-mode=client
@@ -66,8 +73,13 @@ spec:
         artifactRepository:
           archiveLogs: false
           azure:
-            container: <KUBEFIRST_STATE_STORE_BUCKET>
-            useSDKCreds: true
+            endpoint: https://<KUBEFIRST_STATE_STORE_BUCKET>.blob.core.windows.net
+            blobNameFormat: "argo-workflows/artifacts/{{workflow.creationTimestamp.Y}}/{{workflow.creationTimestamp.m}}/{{workflow.creationTimestamp.d}}/{{workflow.uid}}/{{workflow.name}}/{{pod.name}}"
+            container: <KUBEFIRST_STATE_STORE_CONTAINER_NAME>
+            useSDKCreds: false
+            accountKeySecret:
+              name: azure-storage-credentials
+              key: account-access-key
     chart: argo-workflows
   destination:
     name: in-cluster
