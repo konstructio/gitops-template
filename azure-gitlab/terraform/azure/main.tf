@@ -49,7 +49,7 @@ locals {
     kubefirst     = "true"
     ProvisionedBy = "kubefirst"
   }
-  use_dns_zone = try(local.dns_zone != "" && local.dns_zone_rg != "", false)
+  use_dns_zone = try(local.dns_zone != "", false)
   vm_size      = "<NODE_TYPE>"
 }
 

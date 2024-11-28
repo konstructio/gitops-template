@@ -118,7 +118,7 @@ resource "kubernetes_secret_v1" "external_dns" {
     "azure.json" = jsonencode({
       tenantId                    = data.azurerm_client_config.current.tenant_id
       subscriptionId              = data.azurerm_client_config.current.subscription_id
-      resourceGroup               = local.dns_zone_rg
+      resourceGroup               = data.azurerm_dns_zone.external_dns[count.index].resource_group_name
       useManagedIdentityExtension = true
       userAssignedIdentityID      = azurerm_kubernetes_cluster.kubefirst.kubelet_identity[0].client_id
     })
