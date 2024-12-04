@@ -1,6 +1,6 @@
 resource "azurerm_log_analytics_workspace" "kubefirst" {
   location            = azurerm_resource_group.kubefirst.location
-  name                = local.cluster_name
+  name                = var.cluster_name
   resource_group_name = azurerm_resource_group.kubefirst.name
   retention_in_days   = 30
   sku                 = "PerGB2018"
@@ -24,18 +24,18 @@ resource "azurerm_log_analytics_solution" "kubefirst" {
 }
 
 resource "azurerm_kubernetes_cluster" "kubefirst" {
-  name                = local.cluster_name
+  name                = var.cluster_name
   location            = azurerm_resource_group.kubefirst.location
   resource_group_name = azurerm_resource_group.kubefirst.name
-  dns_prefix          = local.cluster_name
+  dns_prefix          = var.cluster_name
 
   kubernetes_version      = data.azurerm_kubernetes_service_versions.current.latest_version
   node_os_upgrade_channel = "NodeImage"
 
   default_node_pool {
     name           = "kubefirst"
-    node_count     = local.node_count
-    vm_size        = local.vm_size
+    node_count     = var.node_count
+    vm_size        = var.node_type
     vnet_subnet_id = azurerm_subnet.kubefirst.id
   }
 
@@ -72,13 +72,6 @@ resource "azurerm_kubernetes_cluster" "kubefirst" {
   }
 }
 
-resource "local_file" "kubeconfig" {
-  content              = azurerm_kubernetes_cluster.kubefirst.kube_config_raw
-  filename             = local.kube_config_filename
-  directory_permission = "0755"
-  file_permission      = "0600"
-}
-
 // Grant permissions for the cluster to manage DNS
 // zone records so external-dns can do it's thing
 //
@@ -96,32 +89,4 @@ resource "azurerm_role_assignment" "external_dns" {
   scope                = data.azurerm_dns_zone.external_dns[count.index].id
   role_definition_name = "DNS Zone Contributor"
   principal_id         = azurerm_kubernetes_cluster.kubefirst.kubelet_identity[0].object_id
-}
-
-resource "kubernetes_namespace_v1" "external_dns" {
-  count = local.use_dns_zone ? 1 : 0
-
-  metadata {
-    name = "external-dns"
-  }
-}
-
-# This must be created by Terraform as the userAssignedIdentityID is a generated value
-resource "kubernetes_secret_v1" "external_dns" {
-  count = local.use_dns_zone ? 1 : 0
-
-  metadata {
-    name      = "external-dns-secrets" # Used by the external-secrets component too
-    namespace = kubernetes_namespace_v1.external_dns[count.index].metadata.0.name
-  }
-  data = {
-    "azure.json" = jsonencode({
-      tenantId                    = data.azurerm_client_config.current.tenant_id
-      subscriptionId              = data.azurerm_client_config.current.subscription_id
-      resourceGroup               = data.azurerm_dns_zone.external_dns[count.index].resource_group_name
-      useManagedIdentityExtension = true
-      userAssignedIdentityID      = azurerm_kubernetes_cluster.kubefirst.kubelet_identity[0].client_id
-    })
-  }
-  type = "Opaque"
 }

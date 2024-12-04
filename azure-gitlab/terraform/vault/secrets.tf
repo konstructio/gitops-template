@@ -82,11 +82,11 @@ resource "vault_generic_secret" "ci_secrets" {
 }
 
 resource "gitlab_user_runner" "shared_runner" {
-  group_id  = var.owner_group_id
+  group_id    = var.owner_group_id
   runner_type = "group_type"
   description = "Shared Runner for Group Projects"
   tag_list    = ["shared"]
-  untagged = true
+  untagged    = true
 }
 
 resource "vault_generic_secret" "gitlab_runner" {
