@@ -9,7 +9,7 @@ spec:
   project: <WORKLOAD_CLUSTER_NAME>
   source:
     repoURL: https://helm.openwebui.com/  # The Helm repository for Open WebUI
-    targetRevision: v3.1.19  # Set to the desired version of the chart or use 'latest'
+    targetRevision: v4.0.5  # Set to the desired version of the chart or use 'latest'
     chart: open-webui  # The chart name in the Helm repository
     helm:
       releaseName: open-webui
