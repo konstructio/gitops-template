@@ -75,7 +75,7 @@ module "eks" {
   control_plane_subnet_ids = module.vpc.intra_subnets
 
   eks_managed_node_group_defaults = {
-    ami_type       = "BOTTLEROCKET_ARM_64"
+    ami_type       = "<AMI_TYPE>"
     instance_types = ["<NODE_TYPE>"]
 
     # We are using the IRSA created below for permissions
