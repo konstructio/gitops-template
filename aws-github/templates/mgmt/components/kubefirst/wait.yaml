@@ -52,7 +52,7 @@ spec:
             - kubefirst
             - --label
             - app.kubernetes.io/name=kubefirst-pro-ui
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          image: ghcr.io/jokestax/kubernetes-toolkit:latest
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure

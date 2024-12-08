@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
         - name: argocd-oidc-restart-job
-          image: public.ecr.aws/bitnami/kubectl:1.28
+          image: bitnami/kubectl:latest
           command: ["/bin/sh", "-c"]
           args:
             - echo "Give me time to think" && sleep 15;
