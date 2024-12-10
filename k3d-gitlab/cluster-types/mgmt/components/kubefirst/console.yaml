@@ -30,6 +30,7 @@ spec:
             CLUSTER_NAME: "<CLUSTER_NAME>"
         kubefirst-pro-ui:
           domain: "<DOMAIN_NAME>"
+          isK3d: "true"
           extraEnv:
             DISABLE_AUTH: "true"
           extraEnvSecrets:
