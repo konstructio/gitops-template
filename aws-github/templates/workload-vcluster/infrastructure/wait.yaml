@@ -52,7 +52,7 @@ spec:
             - <WORKLOAD_CLUSTER_NAME>
             - --label
             - app=vcluster-api
-          image: ghcr.io/jokestax/kubernetes-toolkit:latest
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
           imagePullPolicy: IfNotPresent
           name: kubernetes-toolkit
       restartPolicy: OnFailure
@@ -76,7 +76,7 @@ spec:
             - <WORKLOAD_CLUSTER_NAME>
             - --label
             - app=vcluster-controller
-          image: ghcr.io/jokestax/kubernetes-toolkit:latest
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
           imagePullPolicy: IfNotPresent
           name: kubernetes-toolkit
       restartPolicy: OnFailure
@@ -100,7 +100,7 @@ spec:
             - <WORKLOAD_CLUSTER_NAME>
             - --label
             - app=vcluster
-          image: ghcr.io/jokestax/kubernetes-toolkit:latest
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
           imagePullPolicy: IfNotPresent
           name: kubernetes-toolkit
       restartPolicy: OnFailure
@@ -124,7 +124,7 @@ spec:
             - <WORKLOAD_CLUSTER_NAME>
             - --label
             - app=vcluster-etcd
-          image: ghcr.io/jokestax/kubernetes-toolkit:latest
+          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
           imagePullPolicy: IfNotPresent
           name: kubernetes-toolkit
       restartPolicy: OnFailure
