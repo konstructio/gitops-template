@@ -52,7 +52,7 @@ spec:
             - chartmuseum
             - --label
             - app.kubernetes.io/name=chartmuseum
-          image: ghcr.io/jokestax/kubernetes-toolkit
+          image: ghcr.io/konstructio/kubernetes-toolkit:latest
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure

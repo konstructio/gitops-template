@@ -52,7 +52,7 @@ spec:
             - ingress-nginx
             - --label
             - app.kubernetes.io/name=ingress-nginx
-          image: ghcr.io/jokestax/kubernetes-toolkit
+          image: ghcr.io/konstructio/kubernetes-toolkit:latest
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure

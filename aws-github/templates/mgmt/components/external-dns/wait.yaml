@@ -52,7 +52,7 @@ spec:
             - external-dns
             - --label
             - app.kubernetes.io/name=external-dns
-          image: ghcr.io/jokestax/kubernetes-toolkit
+          image: ghcr.io/konstructio/kubernetes-toolkit:latest
           imagePullPolicy: IfNotPresent
           name: kubernetes-toolkit
       restartPolicy: OnFailure

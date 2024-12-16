@@ -66,7 +66,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: ecr-publish-permissions-sync
-              image: ghcr.io/jokestax/kubernetes-toolkit
+              image: ghcr.io/konstructio/kubernetes-toolkit:latest
               imagePullPolicy: IfNotPresent
               args:
                 - sync-ecr-token

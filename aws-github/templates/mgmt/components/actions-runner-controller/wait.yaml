@@ -52,7 +52,7 @@ spec:
             - github-runner
             - --label
             - app.kubernetes.io/name=actions-runner-controller
-          image: ghcr.io/jokestax/kubernetes-toolkit
+          image: ghcr.io/konstructio/kubernetes-toolkit:latest
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
