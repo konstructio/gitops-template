@@ -52,7 +52,7 @@ spec:
             - external-secrets-operator
             - --label
             - app.kubernetes.io/name=external-secrets-cert-controller
-          image: ghcr.io/konstructio/kubernetes-toolkit:latest
+          image: ghcr.io/konstructio/kubernetes-toolkit:v0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
@@ -76,7 +76,7 @@ spec:
             - external-secrets-operator
             - --label
             - app.kubernetes.io/name=external-secrets
-          image: ghcr.io/konstructio/kubernetes-toolkit:latest
+          image: ghcr.io/konstructio/kubernetes-toolkit:v0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
@@ -100,7 +100,7 @@ spec:
             - external-secrets-operator
             - --label
             - app.kubernetes.io/name=external-secrets-webhook
-          image: ghcr.io/konstructio/kubernetes-toolkit:latest
+          image: ghcr.io/konstructio/kubernetes-toolkit:v0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure

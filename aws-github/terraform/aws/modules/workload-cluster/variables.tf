@@ -19,3 +19,9 @@ variable "node_type" {
   default     = "t3.medium"
   type        = string
 }
+
+variable "ami_type" {
+  description = "the ami type for node group"
+  default = "AL2_x86_64"
+  type = string
+}

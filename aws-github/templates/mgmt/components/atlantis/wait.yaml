@@ -52,7 +52,7 @@ spec:
             - atlantis
             - --label
             - app=atlantis
-          image: ghcr.io/konstructio/kubernetes-toolkit:latest
+          image: ghcr.io/konstructio/kubernetes-toolkit:v0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
