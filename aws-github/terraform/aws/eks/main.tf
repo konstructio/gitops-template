@@ -75,7 +75,7 @@ module "eks" {
   control_plane_subnet_ids = module.vpc.intra_subnets
 
   eks_managed_node_group_defaults = {
-    ami_type       = "AL2_x86_64"
+    ami_type       = "<AMI_TYPE>"
     instance_types = ["<NODE_TYPE>"]
 
     # We are using the IRSA created below for permissions
@@ -610,6 +610,26 @@ resource "aws_iam_policy" "external_dns" {
 EOT
 }
 
+resource "aws_iam_policy" "ssm_access_policy" {
+  name = "kubefirst-pro-api-ssm-access"
+  description = "Policy to allow SSM actions for kubefirst-pro-api"
+  policy = jsondecode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid = "Statement1",
+        Effect = "Allow",
+        Action = [
+          "ssm:*"
+        ],
+        Resource = [
+          "*"
+        ]
+      }
+    ]
+  })
+}
+
 module "kubefirst_api" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.40.0"
@@ -617,6 +637,7 @@ module "kubefirst_api" {
   role_name = "kubefirst-pro-api-${local.name}"
   role_policy_arns = {
     kubefirst = "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+    ssm = aws_iam_policy.ssm_access_policy.arn
   }
   assume_role_condition_test = "StringLike"
   allow_self_assume_role     = true
@@ -626,7 +647,6 @@ module "kubefirst_api" {
       namespace_service_accounts = ["kubefirst:kubefirst-pro-api"]
     }
   }
-
   tags = local.tags
 }
 

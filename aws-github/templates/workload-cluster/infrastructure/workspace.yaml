@@ -17,3 +17,7 @@ spec:
       value: "<WORKLOAD_NODE_COUNT>"
     - key: node_type
       value: "<WORKLOAD_NODE_TYPE>"
+    - key: ami_type
+      value: "<WORKLOAD_AMI_TYPE>"
+
+

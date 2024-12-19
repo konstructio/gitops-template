@@ -20,3 +20,8 @@ variable "node_type" {
   type        = string
 }
 
+variable "ami_type" {
+  description = "the ami type for node group"
+  default = "AL2_x86_64"
+  type = string
+}
