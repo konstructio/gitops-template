@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: wait
-        image: bitnami/kubectl:latest
+        image: docker.io/bitnami/kubectl:1.28
         command:
         - /bin/sh
         - -c
