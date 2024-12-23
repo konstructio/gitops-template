@@ -8,7 +8,7 @@ spec:
   configuration: |
     terraform {
       backend "s3" {
-          bucket = "<KUBEFIRST_STATE_STORE_BUCKET>.civo.com"
+          bucket = "<KUBEFIRST_STATE_STORE_BUCKET>.vultr.com"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
 
           skip_credentials_validation = true
