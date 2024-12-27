@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: 0.20.1
+    targetRevision: 0.42.7
     helm:
       values: |-
         nameOverride: argo
@@ -43,7 +43,10 @@ spec:
               - secretName: argo-tls
                 hosts:
                   - argo.<DOMAIN_NAME>
+          authModes:
+            - sso
           sso:
+            enabled: true
             issuer: https://vault.<DOMAIN_NAME>/v1/identity/oidc/provider/kubefirst
             clientId:
               name: argo-secrets
