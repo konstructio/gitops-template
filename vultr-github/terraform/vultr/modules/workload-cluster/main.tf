@@ -19,7 +19,7 @@ resource "vault_generic_secret" "clusters" {
   data_json = jsonencode(
     {
       kubeconfig = vultr_kubernetes.cluster.kube_config
-      client_secret = vultr_kubernetes.cluster.client_key
+      client_key = vultr_kubernetes.cluster.client_key
       client_certificate = vultr_kubernetes.cluster.client_certificate
       cluster_ca_certificate = base64decode(vultr_kubernetes.cluster.cluster_ca_certificate)
       host = "${vultr_kubernetes.cluster.endpoint}:6443"

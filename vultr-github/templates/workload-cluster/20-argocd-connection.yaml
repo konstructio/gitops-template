@@ -22,10 +22,10 @@ spec:
           {
             "bearerToken": "{{ .argocd_manager_sa_token }}",
             "tlsClientConfig": {
-                "caData": "{{ .cluster_ca_certificate | b64enc }}",
-                "certData": "{{ .client_certificate | b64enc }}",
+                "caData": "{{ .cluster_ca_certificate }}",
+                "certData": "{{ .client_certificate }}",
                 "insecure": false,
-                "keyData": "{{ .client_key | b64enc }}"
+                "keyData": "{{ .client_key }}"
               }
           }
   secretStoreRef:
