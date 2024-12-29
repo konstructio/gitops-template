@@ -2,7 +2,7 @@ locals {
   cluster_name         = var.cluster_name
   pool_name            = "${local.cluster_name}-node-pool"
   pool_instance_type   = var.node_type
-  kubernetes_version   = "v1.30.3+1"
+  kubernetes_version   = "v1.30.6+1"
 }
 
 resource "vultr_kubernetes" "cluster" {
