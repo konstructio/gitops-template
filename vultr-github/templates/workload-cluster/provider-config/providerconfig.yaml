@@ -8,17 +8,18 @@ spec:
   configuration: |
     terraform {
       backend "s3" {
-          bucket = "<KUBEFIRST_STATE_STORE_BUCKET>.vultr.com"
-          key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-
-          skip_credentials_validation = true
-          skip_metadata_api_check     = true
-          skip_region_validation      = true
-          force_path_style            = true
-        }
+        bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
+        key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
+        endpoint = "ewr1.vultrobjects.com"
+        region   = "us-east-1"
+        skip_credentials_validation = true
+        skip_metadata_api_check     = true
+        skip_region_validation      = true
+        force_path_style            = true
+      }
       required_providers {
         vultr = {
-          source = "vultr/vultr"
+          source  = "vultr/vultr"
           version = "2.23.1"
         }
       }

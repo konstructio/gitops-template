@@ -1,29 +1,15 @@
-locals {
-  cluster_name         = var.cluster_name
-  pool_name            = "${local.cluster_name}-node-pool"
-  pool_instance_type   = var.node_type
-  kubernetes_version   = "v1.30.6+1"
-}
-
 resource "vultr_kubernetes" "cluster" {
   region  = var.cluster_region
-  label   = local.cluster_name
-  version = local.kubernetes_version
+  label   = var.cluster_name
+  version = "v1.30.6+1"
 
   node_pools {
-    plan          = local.pool_instance_type
-    label         = local.pool_name
+    plan          = var.node_type
+    label         = "${var.cluster_name}-node-pool"
     auto_scaler   = true
     node_quantity = var.node_count
     min_nodes     = var.node_count # tonumber() is used for a string token value
     max_nodes     = var.node_count # tonumber() is used for a string token value
-  }
-}
-
-data "vultr_kubernetes" "cluster" {
-  filter {
-    name = var.cluster_name
-    values = []
   }
 }
 
@@ -32,10 +18,11 @@ resource "vault_generic_secret" "clusters" {
 
   data_json = jsonencode(
     {
-      kubeconfig = data.vultr_kubernetes.cluster.kube_config[0].raw_config
-      token = data.vultr_kubernetes.cluster.kube_config[0].token
-      cluster_ca_certificate = base64decode(data.vultr_kubernetes.cluster.kube_config[0].cluster_ca_certificate)
-      host = vultr_kubernetes.cluster.cluster.endpoint
+      kubeconfig = vultr_kubernetes.cluster.kube_config
+      client_secret = vultr_kubernetes.cluster.client_key
+      client_certificate = vultr_kubernetes.cluster.client_certificate
+      cluster_ca_certificate = base64decode(vultr_kubernetes.cluster.cluster_ca_certificate)
+      host = "${vultr_kubernetes.cluster.endpoint}:6443"
       cluster_name = var.cluster_name
       environment = var.environment
       argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
@@ -45,9 +32,10 @@ resource "vault_generic_secret" "clusters" {
 }
 
 provider "kubernetes" {
-  host = vultr_kubernetes.cluster.endpoint
-  token = data.vultr_kubernetes.cluster.kube_config[0].token
-  cluster_ca_certificate = base64decode(data.vultr_kubernetes.cluster.kube_config[0].cluster_ca_certificate)
+  host = "${vultr_kubernetes.cluster.endpoint}:6443"
+  client_certificate     = base64decode(yamldecode(base64decode(vultr_kubernetes.cluster.kube_config)).users[0].user["client-certificate-data"])
+  client_key             = base64decode(yamldecode(base64decode(vultr_kubernetes.cluster.kube_config)).users[0].user["client-key-data"])
+  cluster_ca_certificate = base64decode(yamldecode(base64decode(vultr_kubernetes.cluster.kube_config)).clusters[0].cluster["certificate-authority-data"])
 }
 
 resource "kubernetes_cluster_role_v1" "argocd_manager" {
@@ -209,6 +197,6 @@ resource "kubernetes_config_map" "kubefirst_cm" {
   }
 
   data = {
-    mgmt_cluster_id = "<CLUSTER_ID>"
+    mgmt_cluster_id = "v7wrdf"
   }
 }
