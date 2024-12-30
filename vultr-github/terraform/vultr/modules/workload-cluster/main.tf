@@ -18,13 +18,13 @@ resource "vault_generic_secret" "clusters" {
 
   data_json = jsonencode(
     {
-      kubeconfig = vultr_kubernetes.cluster.kube_config
-      client_key = vultr_kubernetes.cluster.client_key
-      client_certificate = vultr_kubernetes.cluster.client_certificate
-      cluster_ca_certificate = base64decode(vultr_kubernetes.cluster.cluster_ca_certificate)
-      host = "${vultr_kubernetes.cluster.endpoint}:6443"
-      cluster_name = var.cluster_name
-      environment = var.environment
+      kubeconfig              = vultr_kubernetes.cluster.kube_config
+      client_key              = base64decode(vultr_kubernetes.cluster.client_key)
+      client_certificate      = base64decode(vultr_kubernetes.cluster.client_certificate)
+      cluster_ca_certificate  = base64decode(vultr_kubernetes.cluster.cluster_ca_certificate)
+      host                    = "https://${vultr_kubernetes.cluster.endpoint}:6443"
+      cluster_name            = var.cluster_name
+      environment             = var.environment
       argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
     }
   )
