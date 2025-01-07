@@ -613,7 +613,7 @@ EOT
 resource "aws_iam_policy" "ssm_access_policy" {
   name = "kubefirst-pro-api-ssm-access"
   description = "Policy to allow SSM actions for kubefirst-pro-api"
-  policy = jsondecode({
+  policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
