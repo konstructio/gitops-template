@@ -19,7 +19,7 @@ data "aws_availability_zones" "available" {}
 
 locals {
   name            = "<CLUSTER_NAME>"
-  cluster_version = "1.29"
+  cluster_version = "1.31"
   region          = "<CLOUD_REGION>"
 
   vpc_cidr = "10.0.0.0/16"
@@ -89,9 +89,9 @@ module "eks" {
   eks_managed_node_groups = {
     # Default node group - as provided by AWS EKS
     default_node_group = {
-      desired_size = tonumber("<NODE_COUNT>") # tonumber() is used for a string token value
-      min_size     = tonumber("1") # tonumber() is used for a string token value
-      max_size     = tonumber("<NODE_COUNT>")+10 # tonumber() is used for a string token value
+      desired_size = tonumber("<NODE_COUNT>")      # tonumber() is used for a string token value
+      min_size     = tonumber("1")                 # tonumber() is used for a string token value
+      max_size     = tonumber("<NODE_COUNT>") + 10 # tonumber() is used for a string token value
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false
@@ -104,14 +104,14 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 
   access_entries = {
-    
+
     "argocd_<CLUSTER_NAME>" = {
-      cluster_name      = "<CLUSTER_NAME>"
-      principal_arn     = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
-      username          = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      cluster_name  = "<CLUSTER_NAME>"
+      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      username      = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
       policy_associations = {
         view_deployments = {
-          policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
           access_scope = {
             namespaces = ["default"]
             type       = "namespace"
@@ -121,12 +121,12 @@ module "eks" {
     }
 
     "atlantis_<CLUSTER_NAME>" = {
-      cluster_name      = "<CLUSTER_NAME>"
-      principal_arn     = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
-      username          = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
+      cluster_name  = "<CLUSTER_NAME>"
+      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
+      username      = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
       policy_associations = {
         view_deployments = {
-          policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
           access_scope = {
             namespaces = ["default"]
             type       = "namespace"
@@ -611,13 +611,13 @@ EOT
 }
 
 resource "aws_iam_policy" "ssm_access_policy" {
-  name = "kubefirst-pro-api-ssm-access"
+  name        = "kubefirst-pro-api-ssm-access"
   description = "Policy to allow SSM actions for kubefirst-pro-api"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Sid = "Statement1",
+        Sid    = "Statement1",
         Effect = "Allow",
         Action = [
           "ssm:*"
@@ -637,7 +637,7 @@ module "kubefirst_api" {
   role_name = "kubefirst-pro-api-${local.name}"
   role_policy_arns = {
     kubefirst = "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-    ssm = aws_iam_policy.ssm_access_policy.arn
+    ssm       = aws_iam_policy.ssm_access_policy.arn
   }
   assume_role_condition_test = "StringLike"
   allow_self_assume_role     = true
@@ -735,11 +735,11 @@ resource "aws_iam_policy" "cluster_autoscaler" {
   name = "cluster-autoscaler-${local.name}"
   path = "/"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "autoscaling:DescribeAutoScalingGroups",
           "autoscaling:DescribeAutoScalingInstances",
           "autoscaling:DescribeLaunchConfigurations",
@@ -752,7 +752,7 @@ resource "aws_iam_policy" "cluster_autoscaler" {
           "autoscaling:SetDesiredCapacity",
           "autoscaling:TerminateInstanceInAutoScalingGroup"
         ],
-        "Resource": ["*"]
+        "Resource" : ["*"]
       }
     ]
   })
@@ -763,23 +763,23 @@ resource "aws_iam_policy" "vault_dynamodb" {
   path = "/"
 
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "dynamodb:Query",
-                "dynamodb:DescribeTable",
-                "dynamodb:GetItem",
-                "dynamodb:PutItem",
-                "dynamodb:DeleteItem",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:UpdateItem"
-            ],
-            "Resource": "*"
-        }
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:Query",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:UpdateItem"
+        ],
+        "Resource" : "*"
+      }
     ]
-})
+  })
 }
 
 resource "aws_iam_policy" "vault_kms" {
@@ -787,18 +787,18 @@ resource "aws_iam_policy" "vault_kms" {
   path = "/"
 
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "kms:DescribeKey",
-                "kms:Decrypt",
-                "kms:Encrypt",
-                "kms:GenerateDataKey"
-            ],
-            "Resource": "*"
-        }
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "kms:DescribeKey",
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:GenerateDataKey"
+        ],
+        "Resource" : "*"
+      }
     ]
-})
+  })
 }
