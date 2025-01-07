@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_version = "1.29"
+  cluster_version = "1.31"
   vpc_cidr        = "10.0.0.0/16"
   azs             = slice(data.aws_availability_zones.available.names, 0, 3)
   tags = {
@@ -95,9 +95,9 @@ module "eks" {
   eks_managed_node_groups = {
     # Default node group - as provided by AWS EKS
     default_node_group = {
-      desired_size = tonumber(var.node_count) # tonumber() is used for a string token value
-      min_size     = tonumber(1) # tonumber() is used for a string token value
-      max_size     = tonumber(var.node_count)+10 # tonumber() is used for a string token value
+      desired_size = tonumber(var.node_count)      # tonumber() is used for a string token value
+      min_size     = tonumber(1)                   # tonumber() is used for a string token value
+      max_size     = tonumber(var.node_count) + 10 # tonumber() is used for a string token value
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false
