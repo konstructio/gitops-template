@@ -611,7 +611,7 @@ EOT
 }
 
 resource "aws_iam_policy" "ssm_access_policy" {
-  name = "kubefirst-pro-api-ssm-access"
+  name = "kubefirst-pro-api-ssm-access-${local.name}"
   description = "Policy to allow SSM actions for kubefirst-pro-api"
   policy = jsonencode({
     Version = "2012-10-17",
