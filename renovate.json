@@ -1,0 +1,13 @@
+{
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "enabledManagers": ["terraform", "argocd", "kustomize"],
+  "argocd": {
+    "fileMatch": ["templates/.+\\.yaml$"]
+  },
+  "terraform": {
+    "commitMessageTopic": "Terraform {{depName}}",
+    "fileMatch": ["\\.tf$"],
+    "pinDigests": false
+  }
+}
