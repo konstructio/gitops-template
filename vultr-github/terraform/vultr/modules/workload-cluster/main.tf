@@ -8,8 +8,8 @@ resource "vultr_kubernetes" "cluster" {
     label         = "${var.cluster_name}-node-pool"
     auto_scaler   = true
     node_quantity = var.node_count
-    min_nodes     = var.node_count # tonumber() is used for a string token value
-    max_nodes     = var.node_count # tonumber() is used for a string token value
+    min_nodes     = var.node_count
+    max_nodes     = var.node_count
   }
 }
 
