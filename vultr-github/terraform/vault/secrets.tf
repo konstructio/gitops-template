@@ -23,7 +23,7 @@ resource "vault_generic_secret" "crossplane" {
 
   data_json = jsonencode(
     {
-      AWS_ACCESS_KEY     = var.aws_access_key_id,
+      AWS_ACCESS_KEY        = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
       VULTR_API_KEY         = var.vultr_api_key,
       VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
