@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-openwebui
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '50'
+spec:
+  project: <WORKLOAD_CLUSTER_NAME>
+  source:
+    repoURL: https://helm.openwebui.com/  # The Helm repository for Open WebUI
+    targetRevision: v3.1.19  # Set to the desired version of the chart or use 'latest'
+    chart: open-webui  # The chart name in the Helm repository
+    helm:
+      releaseName: open-webui
+      values: |
+        image:
+          repository: ghcr.io/open-webui/open-webui
+          tag: "cuda"
+        serviceAccount:
+          create: true
+          name: openwebui-sa
+        ports:
+          - name: http
+            containerPort: 8080
+            hostPort: 3000
+        extraArgs:
+          - "--gpus all"
+        extraHosts:
+          - "host.docker.internal:host-gateway"
+        persistentVolume:
+            enabled: true
+            size: 50Gi
+        ingress:
+          enabled: true
+          class: "nginx"
+          annotations: 
+            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+            nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          host: "ollama.<DOMAIN_NAME>"
+          tls: true
+          existingSecret: "<WORKLOAD_CLUSTER_NAME>-ollama-http-ingress"
+        
+  destination:
+    name: <WORKLOAD_CLUSTER_NAME>
+    namespace: openwebui
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

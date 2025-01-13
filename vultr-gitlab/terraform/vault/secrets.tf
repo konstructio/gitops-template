@@ -22,7 +22,7 @@ resource "vault_generic_secret" "crossplane" {
 
   data_json = jsonencode(
     {
-      AWS_ACCESS_KEY_ID     = var.aws_access_key_id,
+      AWS_ACCESS_KEY        = var.aws_access_key_id,
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key,
       VULTR_API_KEY         = var.vultr_api_key,
       VAULT_ADDR            = "http://vault.vault.svc.cluster.local:8200"
@@ -106,11 +106,11 @@ resource "vault_generic_secret" "ci_secrets" {
 }
 
 resource "gitlab_user_runner" "shared_runner" {
-  group_id  = var.owner_group_id
+  group_id    = var.owner_group_id
   runner_type = "group_type"
   description = "Shared Runner for Group Projects"
   tag_list    = ["shared"]
-  untagged = true
+  untagged    = true
 }
 
 
