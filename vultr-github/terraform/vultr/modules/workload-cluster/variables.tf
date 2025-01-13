@@ -19,6 +19,6 @@ variable "node_type" {
 }
 
 variable "is_gpu" {
-  type = bool
+  type    = bool
   default = false
 }

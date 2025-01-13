@@ -32,7 +32,7 @@ resource "vault_generic_secret" "clusters" {
 }
 
 provider "kubernetes" {
-  host = "${vultr_kubernetes.cluster.endpoint}:6443"
+  host                   = "${vultr_kubernetes.cluster.endpoint}:6443"
   client_certificate     = base64decode(yamldecode(base64decode(vultr_kubernetes.cluster.kube_config)).users[0].user["client-certificate-data"])
   client_key             = base64decode(yamldecode(base64decode(vultr_kubernetes.cluster.kube_config)).users[0].user["client-key-data"])
   cluster_ca_certificate = base64decode(yamldecode(base64decode(vultr_kubernetes.cluster.kube_config)).clusters[0].cluster["certificate-authority-data"])
