@@ -13,12 +13,12 @@ spec:
     module: |
       variable "instance_size" {
         type    = string
-        default = "e2-medium"
+        default = "<WORKLOAD_NODE_TYPE>"
       }
 
       variable "region" {
         type    = string
-        default = "europe-west1"
+        default = "<WORKLOAD_CLUSTER_REGION>"
       }
 
       variable "node_count" {
@@ -27,12 +27,29 @@ spec:
       }
 
       locals {
-        cluster_name = "kf-<WORKLOAD_CLUSTER_NAME>"
+        cluster_name = "<WORKLOAD_CLUSTER_NAME>"
         subnet_name  = lookup(module.vpc.subnets, "${var.region}/subnet-01-${local.cluster_name}").name
       }
 
       data "google_client_config" "current" {}
 
+      resource "google_compute_router" "router" {
+        name    = "gke-cloud-router-${local.cluster_name}"
+        project = data.google_client_config.current.project
+        network = local.cluster_name
+        region  = var.region
+      }
+      
+      module "cloud-nat" {
+        name                               = "gke-nat-config-${local.cluster_name}"
+        source                             = "terraform-google-modules/cloud-nat/google"
+        version                            = "~> 5.0"
+        project_id                         = data.google_client_config.current.project
+        region                             = var.region
+        router                             = google_compute_router.router.name
+        source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      }
+      
       resource "google_service_account" "kubefirst" {
         account_id   = local.cluster_name
         display_name = "Service Account for ${local.cluster_name} cluster"
@@ -107,7 +124,7 @@ spec:
         node_pools = [
           {
             name      = "kubefirst"
-            node_type = var.instance_size
+            machine_type = var.instance_size
 
             // Autoscaling
             // PER ZONE
