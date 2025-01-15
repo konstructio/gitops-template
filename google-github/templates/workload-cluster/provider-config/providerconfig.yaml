@@ -14,28 +14,27 @@ spec:
         required_providers {
           google = {
             source = "hashicorp/google"
-            version = "5.35.0"
+            version = "~> 6.11.0"
           }
           kubernetes = {
             source = "hashicorp/kubernetes"
-            version = "2.23.0"
+            version = "~> 2.23.0"
           }
           vault = {
             source = "hashicorp/vault"
-            version = "3.19.0"
+            version = "~> 3.19.0"
           }
         }
       }
+      provider "google-beta" {
+        credentials = "gcp-credentials.json" 
+        project     = "<GOOGLE_PROJECT>"
+      }
       provider "google" {
-        project = "<GOOGLE_PROJECT>"
+        credentials = "gcp-credentials.json"
+        project     = "<GOOGLE_PROJECT>"
       }
   credentials:
-  - filename: gen-nothing
-    source: None
-    secretRef:
-      namespace: crossplane-system
-      name: civo-creds
-      key: token
   - filename: .git-credentials
     source: Secret
     secretRef:
