@@ -46,25 +46,23 @@ spec:
 
       resource "vault_generic_secret" "clusters" {
         path = "secret/clusters/${local.cluster_name}"
-
+      
         data_json = jsonencode(
           {
-            kubeconfig             = linode_lke_cluster.kubefirst.kubeconfig
-            client_certificate     = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
-            client_key             = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
-            cluster_ca_certificate = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
-            host                   = linode_lke_cluster.kubefirst.dashboard_url
-            cluster_name           = local.cluster_name
+            kubeconfig              = linode_lke_cluster.kubefirst.kubeconfig
+            token                   = yamldecode(base64decode(linode_lke_cluster.kubefirst.kubeconfig)).users[0].user.token
+            cluster_ca_certificate  = base64decode(yamldecode(base64decode(linode_lke_cluster.kubefirst.kubeconfig)).clusters[0].cluster["certificate-authority-data"])
+            host                    = linode_lke_cluster.kubefirst.api_endpoints[0]
+            cluster_name            = local.cluster_name
             argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
           }
         )
       }
 
       provider "kubernetes" {
-        host                   = linode_lke_cluster.kubefirst.dashboard_url
-        client_certificate     = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
-        client_key             = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
-        cluster_ca_certificate = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
+        host                   = linode_lke_cluster.kubefirst.api_endpoints[0]
+        token                  = yamldecode(base64decode(linode_lke_cluster.kubefirst.kubeconfig)).users[0].user.token
+        cluster_ca_certificate = base64decode(yamldecode(base64decode(linode_lke_cluster.kubefirst.kubeconfig)).clusters[0].cluster["certificate-authority-data"])
       }
 
       resource "kubernetes_cluster_role_v1" "argocd_manager" {

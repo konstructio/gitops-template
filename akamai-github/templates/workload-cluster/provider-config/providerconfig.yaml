@@ -34,8 +34,6 @@ spec:
           }
         }
       }
-      provider "linode" {
-      }
   credentials:
   - filename: .git-credentials
     source: Secret
