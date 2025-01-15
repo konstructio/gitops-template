@@ -4,7 +4,7 @@ terraform {
     key      = "terraform/civo/terraform.tfstate"
     endpoint = "https://<CLUSTER_NAME>.us-east-1.linodeobjects.com" #! edit
 
-    region = "us-east-1" #! edit
+    region = "us-east-1"
 
     skip_credentials_validation = true
     skip_metadata_api_check     = true

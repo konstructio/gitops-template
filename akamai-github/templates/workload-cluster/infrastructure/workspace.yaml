@@ -1,19 +1,24 @@
 apiVersion: tf.upbound.io/v1beta1
 kind: Workspace
 metadata:
-  name: <WORKLOAD_CLUSTER_NAME>
+  name: "<WORKLOAD_CLUSTER_NAME>"
   annotations:
     argocd.argoproj.io/sync-wave: "10"
-    crossplane.io/external-name: <WORKLOAD_CLUSTER_NAME>
+    crossplane.io/external-name: "<WORKLOAD_CLUSTER_NAME>"
 spec:
   providerConfigRef:
-    name: <WORKLOAD_CLUSTER_NAME>
+    name: "<WORKLOAD_CLUSTER_NAME>"
   forProvider:
     source: Inline
     module: |
       variable "instance_size" {
         type    = string
-        default = "g4s.kube.medium"
+        default = "<WORKLOAD_NODE_TYPE>"
+      }
+
+      variable "region" {
+        type    = string
+        default = "<WORKLOAD_CLUSTER_REGION>"
       }
 
       variable "node_count" {
@@ -25,24 +30,17 @@ spec:
         cluster_name = "<WORKLOAD_CLUSTER_NAME>"
       }
 
-      resource "civo_network" "kubefirst" {
-        label = local.cluster_name
-      }
+      resource "linode_lke_cluster" "kubefirst" {
+        label       = local.cluster_name
+        k8s_version = "1.30"
+        region      =  var.region
+        pool {
+          type = var.instance_size
 
-      resource "civo_firewall" "kubefirst" {
-        name                 = local.cluster_name
-        network_id           = civo_network.kubefirst.id
-        create_default_rules = true
-      }
-
-      resource "civo_kubernetes_cluster" "kubefirst" {
-        name        = local.cluster_name
-        network_id  = civo_network.kubefirst.id
-        firewall_id = civo_firewall.kubefirst.id
-        pools {
-          label      = local.cluster_name
-          size       = var.instance_size
-          node_count = var.node_count
+          autoscaler {
+            min = var.node_count
+            max = var.node_count
+          }
         }
       }
 
@@ -51,11 +49,11 @@ spec:
 
         data_json = jsonencode(
           {
-            kubeconfig             = civo_kubernetes_cluster.kubefirst.kubeconfig
-            client_certificate     = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
-            client_key             = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
-            cluster_ca_certificate = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
-            host                   = civo_kubernetes_cluster.kubefirst.api_endpoint
+            kubeconfig             = linode_lke_cluster.kubefirst.kubeconfig
+            client_certificate     = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
+            client_key             = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
+            cluster_ca_certificate = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
+            host                   = linode_lke_cluster.kubefirst.dashboard_url
             cluster_name           = local.cluster_name
             argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
           }
@@ -63,10 +61,10 @@ spec:
       }
 
       provider "kubernetes" {
-        host                   = civo_kubernetes_cluster.kubefirst.api_endpoint
-        client_certificate     = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
-        client_key             = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
-        cluster_ca_certificate = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
+        host                   = linode_lke_cluster.kubefirst.dashboard_url
+        client_certificate     = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
+        client_key             = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
+        cluster_ca_certificate = base64decode(yamldecode(linode_lke_cluster.kubefirst.kubeconfig).clusters[0].cluster.certificate-authority-data)
       }
 
       resource "kubernetes_cluster_role_v1" "argocd_manager" {
