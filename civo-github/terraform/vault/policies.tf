@@ -248,3 +248,14 @@ path "sys/control-group/request" {
 }
 EOT
 }
+
+
+resource "vault_policy" "oidc_token" {
+  name = "oidc_token"
+
+  policy = <<EOT
+path "identity/oidc/token/federated" {
+  capabilities = [ "read" ]
+}
+EOT
+}
