@@ -8,10 +8,12 @@ resource "vault_identity_oidc_key" "federated" {
 }
 
 resource "vault_identity_oidc_role" "federated" {
-  name     = "federated"
-  key      = vault_identity_oidc_key.federated.id
-  ttl      = 3600
-  template = <<EOT
+  name = "federated"
+  key  = vault_identity_oidc_key.federated.id
+  # This is temporary
+  client_id = "kubefirst.konstruct.io/federated"
+  ttl       = 3600
+  template  = <<EOT
   {
   "kubernetes.io": {
     "serviceaccount": {
