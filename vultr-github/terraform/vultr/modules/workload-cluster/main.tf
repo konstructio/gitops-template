@@ -1,7 +1,7 @@
 resource "vultr_kubernetes" "cluster" {
   region  = var.cluster_region
   label   = var.cluster_name
-  version = "v1.30.6+1"
+  version = "v1.31.5+1"
 
   node_pools {
     plan          = var.node_type
