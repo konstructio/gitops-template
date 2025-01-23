@@ -7,12 +7,12 @@ metadata:
 spec:
   configuration: |
       terraform {
-        backend "s3" {
+          backend "s3" {
           bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          endpoint = "https://us-east-1.linodeobjects.com"
+          endpoint = "https://<CLUSTER_NAME>.us-east-1.linodeobjects.com" #! edit
 
-          region = "<CLOUD_REGION>"
+          region = "us-east-1"
 
           skip_credentials_validation = true
           skip_metadata_api_check     = true
@@ -20,29 +20,21 @@ spec:
           force_path_style            = true
         }
         required_providers {
-          civo = {
-            source = "civo/civo"
+          linode = {
+            source  = "linode/linode"
+            version = "2.16.0"
           }
           kubernetes = {
-            source = "hashicorp/kubernetes"
+            source  = "hashicorp/kubernetes"
             version = "2.23.0"
           }
           vault = {
-            source = "hashicorp/vault"
+            source  = "hashicorp/vault"
             version = "3.19.0"
           }
         }
       }
-      provider "civo" {
-        region = "<WORKLOAD_CLUSTER_REGION>"
-      }
   credentials:
-  - filename: gen-nothing
-    source: None
-    secretRef:
-      namespace: crossplane-system
-      name: civo-creds
-      key: token
   - filename: .git-credentials
     source: Secret
     secretRef:
