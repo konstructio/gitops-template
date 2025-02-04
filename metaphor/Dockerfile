@@ -1,28 +1,43 @@
-FROM node:20-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-COPY . /app
+FROM --platform=$BUILDPLATFORM imbios/bun-node:1.2.0-20-alpine AS base
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+FROM base AS deps
+
 WORKDIR /app
 
-FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+# Install dependencies based on the preferred package manager
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
-FROM base AS builder
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run build
+# Build the app
+FROM deps AS builder
+WORKDIR /app
+COPY . .
 
-FROM base
+RUN bun run build
 
-COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder --chown=node:node /app/.next/standalone ./
-COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+RUN ls -la
+
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1002 bunjs
+RUN adduser --system --uid 1002 nextjs
+
+COPY --from=builder --chown=nextjs:bunjs /app/public ./public
+COPY --from=builder --chown=nextjs:bunjs /app/.next/standalone .
+COPY --from=builder --chown=nextjs:bunjs /app/.next/static ./.next/static
 
 EXPOSE 8080
 
-ENV HOSTNAME 0.0.0.0
-ENV PORT 8080
+USER nextjs
+
+ENV PORT=8080
 
 CMD ["node", "server.js"]
