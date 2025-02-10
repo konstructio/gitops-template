@@ -20,3 +20,4 @@ metaphor:
     console: https://kubefirst.<DOMAIN_NAME>
   vaultMountPoint: kubefirst
   vaultSecretPath: development/metaphor
+  originIssuerIsEnabled: false
