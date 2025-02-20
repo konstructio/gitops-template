@@ -14,7 +14,7 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   firewall_id         = civo_firewall.kubefirst.id
   write_kubeconfig    = true
   cluster_type        = local.is_gpu ? "talos" : "k3s" # k3s doesn't support GPU
-  kubernetes_version  = local.is_gpu ?  "1.27.0" : "1.28.7-k3s1"
+  kubernetes_version  = local.is_gpu ?  "talos-v1.5.0" : "1.28.7-k3s1"
   pools {
     label      = var.cluster_name
     size       = var.node_type
