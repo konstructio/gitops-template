@@ -106,35 +106,17 @@ module "eks" {
   }
 
   # Enable admin permissions for the cluster creator
-  enable_cluster_creator_admin_permissions = true
+  enable_cluster_creator_admin_permissions = false
 
   access_entries = {
 
-    "argocd_<CLUSTER_NAME>" = {
-      cluster_name  = "<CLUSTER_NAME>"
-      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
-      username      = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+    "cluster_creator" = {
+      principal_arn = "<AWS_IAM_CALLER_ARN>"
       policy_associations = {
-        view_deployments = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+        admin_permission = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
           access_scope = {
-            namespaces = ["default"]
-            type       = "namespace"
-          }
-        }
-      }
-    }
-
-    "atlantis_<CLUSTER_NAME>" = {
-      cluster_name  = "<CLUSTER_NAME>"
-      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
-      username      = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
-      policy_associations = {
-        view_deployments = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-          access_scope = {
-            namespaces = ["default"]
-            type       = "namespace"
+            type = "cluster"
           }
         }
       }
@@ -616,7 +598,7 @@ EOT
 }
 
 resource "aws_iam_policy" "ssm_access_policy" {
-  name = "kubefirst-pro-api-ssm-access-${local.name}"
+  name        = "kubefirst-pro-api-ssm-access-${local.name}"
   description = "Policy to allow SSM actions for kubefirst-pro-api"
   policy = jsonencode({
     Version = "2012-10-17",
