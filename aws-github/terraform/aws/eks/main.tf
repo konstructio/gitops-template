@@ -109,7 +109,6 @@ module "eks" {
   enable_cluster_creator_admin_permissions = false
 
   access_entries = {
-
     "cluster_creator" = {
       principal_arn = "<AWS_IAM_CALLER_ARN>"
       policy_associations = {
