@@ -108,20 +108,6 @@ module "eks" {
   # Enable admin permissions for the cluster creator
   enable_cluster_creator_admin_permissions = false
 
-  access_entries = {
-    "cluster_creator" = {
-      principal_arn = "<AWS_IAM_CALLER_ARN>"
-      policy_associations = {
-        admin_permission = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-          access_scope = {
-            type = "cluster"
-          }
-        }
-      }
-    }
-  }
-
   tags = local.tags
 }
 
