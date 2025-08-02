@@ -1,27 +1,35 @@
 # Template Tokens Reference
 
-This document lists all template tokens used in this K3D + GitHub local development configuration. These tokens are replaced during the GitOps template instantiation process.
+This document lists all template tokens used in this Azure + GitHub cloud provider configuration. These tokens are replaced during the GitOps template instantiation process.
 
 > **⚠️ Security Warning**: Never store sensitive information like API keys, passwords, or secrets directly in token values. Use proper secret management systems like Vault, Kubernetes secrets, or your cloud provider's secret management service.
 
 ## Token Categories
 
-### Local Development Configuration
+### Cloud Infrastructure
 
 | Token | Template Value | Description |
 |-------|---------------|-------------|
-| `CLOUD_PROVIDER` | `<CLOUD_PROVIDER>` | Cloud provider name (k3d) |
-| `CLOUD_REGION` | `<CLOUD_REGION>` | Region identifier for local setup |
-| `K3D_DOMAIN` | `<K3D_DOMAIN>` | Local domain for K3D cluster |
-| `NODE_COUNT` | `<NODE_COUNT>` | Number of K3D nodes |
-| `NODE_TYPE` | `<NODE_TYPE>` | Node type configuration |
+| `CLOUD_PROVIDER` | `<CLOUD_PROVIDER>` | Cloud provider name (azure) |
+| `CLOUD_REGION` | `<CLOUD_REGION>` | Azure region for deployment |
+| `NODE_COUNT` | `<NODE_COUNT>` | Number of worker nodes |
+| `NODE_TYPE` | `<NODE_TYPE>` | Azure VM size for nodes |
+
+### Azure-Specific Configuration
+
+| Token | Template Value | Description |
+|-------|---------------|-------------|
+| `AZURE_DNS_ZONE_NAME` | `<AZURE_DNS_ZONE_NAME>` | Azure DNS zone name |
+| `AZURE_DNS_ZONE_RESOURCE_GROUP` | `<AZURE_DNS_ZONE_RESOURCE_GROUP>` | Resource group for DNS zone |
+| `KUBEFIRST_STATE_STORE_CONTAINER_NAME` | `<KUBEFIRST_STATE_STORE_CONTAINER_NAME>` | Azure storage container name |
+| `KUBEFIRST_STATE_STORE_RESOURCE_GROUP` | `<KUBEFIRST_STATE_STORE_RESOURCE_GROUP>` | Resource group for state storage |
 
 ### Cluster Configuration
 
 | Token | Template Value | Description |
 |-------|---------------|-------------|
 | `CLUSTER_ID` | `<CLUSTER_ID>` | Unique cluster identifier |
-| `CLUSTER_NAME` | `<CLUSTER_NAME>` | K3D cluster name |
+| `CLUSTER_NAME` | `<CLUSTER_NAME>` | AKS cluster name |
 | `CLUSTER_TYPE` | `<CLUSTER_TYPE>` | Type of cluster deployment |
 | `KUBE_CONFIG_PATH` | `<KUBE_CONFIG_PATH>` | Path to kubeconfig file |
 
@@ -31,7 +39,7 @@ This document lists all template tokens used in this K3D + GitHub local developm
 |-------|---------------|-------------|
 | `DOMAIN_NAME` | `<DOMAIN_NAME>` | Base domain for all services |
 | `EXTERNAL_DNS_DOMAIN_NAME` | `<EXTERNAL_DNS_DOMAIN_NAME>` | Domain for external DNS |
-| `EXTERNAL_DNS_PROVIDER_NAME` | `<EXTERNAL_DNS_PROVIDER_NAME>` | DNS provider configuration |
+| `EXTERNAL_DNS_PROVIDER_NAME` | `<EXTERNAL_DNS_PROVIDER_NAME>` | DNS provider (azure-dns, cloudflare, etc.) |
 | `EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME` | `<EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME>` | Environment variable for DNS token |
 
 ### Application URLs
@@ -59,14 +67,9 @@ This document lists all template tokens used in this K3D + GitHub local developm
 |-------|---------------|-------------|
 | `GIT_FQDN` | `<GIT_FQDN>` | Fully qualified domain name for Git |
 | `GIT_PROVIDER` | `<GIT_PROVIDER>` | Git provider name (github) |
-| `GIT-PROTOCOL` | `<GIT-PROTOCOL>` | Git protocol (ssh/https) |
 | `GITHUB_HOST` | `<GITHUB_HOST>` | GitHub hostname |
 | `GITHUB_OWNER` | `<GITHUB_OWNER>` | GitHub organization/user |
 | `GITHUB_USER` | `<GITHUB_USER>` | GitHub username |
-| `GITLAB_HOST` | `<GITLAB_HOST>` | GitLab hostname (if applicable) |
-| `GITLAB_OWNER` | `<GITLAB_OWNER>` | GitLab group/user (if applicable) |
-| `GITLAB_OWNER_GROUP_ID` | `<GITLAB_OWNER_GROUP_ID>` | GitLab group ID (if applicable) |
-| `GITLAB_USER` | `<GITLAB_USER>` | GitLab username (if applicable) |
 | `GITOPS_REPO_URL` | `<GITOPS_REPO_URL>` | GitOps repository URL |
 | `GITOPS_REPO_ATLANTIS_WEBHOOK_URL` | `<GITOPS_REPO_ATLANTIS_WEBHOOK_URL>` | Webhook URL for Atlantis |
 
@@ -75,10 +78,10 @@ This document lists all template tokens used in this K3D + GitHub local developm
 | Token | Template Value | Description |
 |-------|---------------|-------------|
 | `CONTAINER_REGISTRY_URL` | `<CONTAINER_REGISTRY_URL>` | Container registry URL |
-| `KUBEFIRST_ARTIFACTS_BUCKET` | `<KUBEFIRST_ARTIFACTS_BUCKET>` | Storage bucket for artifacts |
-| `KUBEFIRST_STATE_STORE_BUCKET` | `<KUBEFIRST_STATE_STORE_BUCKET>` | Storage bucket for Terraform state |
-| `KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME` | `<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>` | Hostname for state bucket |
-| `VAULT_DATA_BUCKET` | `<VAULT_DATA_BUCKET>` | Storage bucket for Vault data |
+| `KUBEFIRST_ARTIFACTS_BUCKET` | `<KUBEFIRST_ARTIFACTS_BUCKET>` | Azure storage account for artifacts |
+| `KUBEFIRST_STATE_STORE_BUCKET` | `<KUBEFIRST_STATE_STORE_BUCKET>` | Azure storage account for Terraform state |
+| `KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME` | `<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>` | Hostname for state storage |
+| `VAULT_DATA_BUCKET` | `<VAULT_DATA_BUCKET>` | Azure storage account for Vault data |
 
 ### Platform Configuration
 
@@ -90,7 +93,7 @@ This document lists all template tokens used in this K3D + GitHub local developm
 | `KUBEFIRST_TEAM` | `<KUBEFIRST_TEAM>` | Team name |
 | `KUBEFIRST_TEAM_INFO` | `<KUBEFIRST_TEAM_INFO>` | Additional team information |
 | `KUBEFIRST_VERSION` | `<KUBEFIRST_VERSION>` | Kubefirst platform version |
-| `ORIGIN_ISSUER_IS_ENABLED` | `<ORIGIN_ISSUER_IS_ENABLED>` | Whether Origin CA issuer is enabled |
+| `ORIGIN_ISSUER_IS_ENABLED` | `<ORIGIN_ISSUER_IS_ENABLED>` | Whether Cloudflare Origin CA issuer is enabled |
 | `USE_TELEMETRY` | `<USE_TELEMETRY>` | Enable/disable telemetry |
 
 ### Workload Clusters
@@ -104,12 +107,12 @@ This document lists all template tokens used in this K3D + GitHub local developm
 | `WORKLOAD_ENVIRONMENT` | `<WORKLOAD_ENVIRONMENT>` | Environment name for workload |
 | `WORKLOAD_EXTERNAL_DNS_DOMAIN_NAME` | `<WORKLOAD_EXTERNAL_DNS_DOMAIN_NAME>` | DNS domain for workload cluster |
 | `WORKLOAD_NODE_COUNT` | `<WORKLOAD_NODE_COUNT>` | Number of nodes in workload cluster |
-| `WORKLOAD_NODE_TYPE` | `<WORKLOAD_NODE_TYPE>` | Instance type for workload nodes |
+| `WORKLOAD_NODE_TYPE` | `<WORKLOAD_NODE_TYPE>` | VM size for workload nodes |
 
 ## Usage Notes
 
 - These tokens are automatically replaced during template instantiation
 - Token values should not contain sensitive information
-- K3D provides a local Kubernetes development environment
-- Most URLs will use local domains or localhost addresses
-- This configuration is optimized for development and testing
+- All URLs will be generated based on your domain configuration
+- Azure-specific tokens handle resource groups and Azure services
+- Storage uses Azure Storage Accounts instead of S3 buckets

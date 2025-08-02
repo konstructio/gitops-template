@@ -1,27 +1,29 @@
 # Template Tokens Reference
 
-This document lists all template tokens used in this K3D + GitHub local development configuration. These tokens are replaced during the GitOps template instantiation process.
+This document lists all template tokens used in this AWS + GitLab cloud provider configuration. These tokens are replaced during the GitOps template instantiation process.
 
 > **⚠️ Security Warning**: Never store sensitive information like API keys, passwords, or secrets directly in token values. Use proper secret management systems like Vault, Kubernetes secrets, or your cloud provider's secret management service.
 
 ## Token Categories
 
-### Local Development Configuration
+### Cloud Infrastructure
 
 | Token | Template Value | Description |
 |-------|---------------|-------------|
-| `CLOUD_PROVIDER` | `<CLOUD_PROVIDER>` | Cloud provider name (k3d) |
-| `CLOUD_REGION` | `<CLOUD_REGION>` | Region identifier for local setup |
-| `K3D_DOMAIN` | `<K3D_DOMAIN>` | Local domain for K3D cluster |
-| `NODE_COUNT` | `<NODE_COUNT>` | Number of K3D nodes |
-| `NODE_TYPE` | `<NODE_TYPE>` | Node type configuration |
+| `AWS_ACCOUNT_ID` | `<AWS_ACCOUNT_ID>` | AWS account identifier |
+| `AWS_KMS_KEY_ID` | `<AWS_KMS_KEY_ID>` | AWS KMS key for encryption |
+| `CLOUD_PROVIDER` | `<CLOUD_PROVIDER>` | Cloud provider name (aws) |
+| `CLOUD_REGION` | `<CLOUD_REGION>` | AWS region for deployment |
+| `AMI_TYPE` | `<AMI_TYPE>` | EC2 instance AMI type |
+| `NODE_COUNT` | `<NODE_COUNT>` | Number of worker nodes |
+| `NODE_TYPE` | `<NODE_TYPE>` | EC2 instance type for nodes |
 
 ### Cluster Configuration
 
 | Token | Template Value | Description |
 |-------|---------------|-------------|
 | `CLUSTER_ID` | `<CLUSTER_ID>` | Unique cluster identifier |
-| `CLUSTER_NAME` | `<CLUSTER_NAME>` | K3D cluster name |
+| `CLUSTER_NAME` | `<CLUSTER_NAME>` | EKS cluster name |
 | `CLUSTER_TYPE` | `<CLUSTER_TYPE>` | Type of cluster deployment |
 | `KUBE_CONFIG_PATH` | `<KUBE_CONFIG_PATH>` | Path to kubeconfig file |
 
@@ -31,7 +33,7 @@ This document lists all template tokens used in this K3D + GitHub local developm
 |-------|---------------|-------------|
 | `DOMAIN_NAME` | `<DOMAIN_NAME>` | Base domain for all services |
 | `EXTERNAL_DNS_DOMAIN_NAME` | `<EXTERNAL_DNS_DOMAIN_NAME>` | Domain for external DNS |
-| `EXTERNAL_DNS_PROVIDER_NAME` | `<EXTERNAL_DNS_PROVIDER_NAME>` | DNS provider configuration |
+| `EXTERNAL_DNS_PROVIDER_NAME` | `<EXTERNAL_DNS_PROVIDER_NAME>` | DNS provider (route53, cloudflare, etc.) |
 | `EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME` | `<EXTERNAL_DNS_PROVIDER_TOKEN_ENV_NAME>` | Environment variable for DNS token |
 
 ### Application URLs
@@ -58,15 +60,11 @@ This document lists all template tokens used in this K3D + GitHub local developm
 | Token | Template Value | Description |
 |-------|---------------|-------------|
 | `GIT_FQDN` | `<GIT_FQDN>` | Fully qualified domain name for Git |
-| `GIT_PROVIDER` | `<GIT_PROVIDER>` | Git provider name (github) |
-| `GIT-PROTOCOL` | `<GIT-PROTOCOL>` | Git protocol (ssh/https) |
-| `GITHUB_HOST` | `<GITHUB_HOST>` | GitHub hostname |
-| `GITHUB_OWNER` | `<GITHUB_OWNER>` | GitHub organization/user |
-| `GITHUB_USER` | `<GITHUB_USER>` | GitHub username |
-| `GITLAB_HOST` | `<GITLAB_HOST>` | GitLab hostname (if applicable) |
-| `GITLAB_OWNER` | `<GITLAB_OWNER>` | GitLab group/user (if applicable) |
-| `GITLAB_OWNER_GROUP_ID` | `<GITLAB_OWNER_GROUP_ID>` | GitLab group ID (if applicable) |
-| `GITLAB_USER` | `<GITLAB_USER>` | GitLab username (if applicable) |
+| `GIT_PROVIDER` | `<GIT_PROVIDER>` | Git provider name (gitlab) |
+| `GITLAB_HOST` | `<GITLAB_HOST>` | GitLab hostname |
+| `GITLAB_OWNER` | `<GITLAB_OWNER>` | GitLab group/user |
+| `GITLAB_OWNER_GROUP_ID` | `<GITLAB_OWNER_GROUP_ID>` | GitLab group ID |
+| `GITLAB_USER` | `<GITLAB_USER>` | GitLab username |
 | `GITOPS_REPO_URL` | `<GITOPS_REPO_URL>` | GitOps repository URL |
 | `GITOPS_REPO_ATLANTIS_WEBHOOK_URL` | `<GITOPS_REPO_ATLANTIS_WEBHOOK_URL>` | Webhook URL for Atlantis |
 
@@ -75,10 +73,10 @@ This document lists all template tokens used in this K3D + GitHub local developm
 | Token | Template Value | Description |
 |-------|---------------|-------------|
 | `CONTAINER_REGISTRY_URL` | `<CONTAINER_REGISTRY_URL>` | Container registry URL |
-| `KUBEFIRST_ARTIFACTS_BUCKET` | `<KUBEFIRST_ARTIFACTS_BUCKET>` | Storage bucket for artifacts |
-| `KUBEFIRST_STATE_STORE_BUCKET` | `<KUBEFIRST_STATE_STORE_BUCKET>` | Storage bucket for Terraform state |
+| `KUBEFIRST_ARTIFACTS_BUCKET` | `<KUBEFIRST_ARTIFACTS_BUCKET>` | S3 bucket for artifacts |
+| `KUBEFIRST_STATE_STORE_BUCKET` | `<KUBEFIRST_STATE_STORE_BUCKET>` | S3 bucket for Terraform state |
 | `KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME` | `<KUBEFIRST_STATE_STORE_BUCKET_HOSTNAME>` | Hostname for state bucket |
-| `VAULT_DATA_BUCKET` | `<VAULT_DATA_BUCKET>` | Storage bucket for Vault data |
+| `VAULT_DATA_BUCKET` | `<VAULT_DATA_BUCKET>` | S3 bucket for Vault data |
 
 ### Platform Configuration
 
@@ -90,13 +88,15 @@ This document lists all template tokens used in this K3D + GitHub local developm
 | `KUBEFIRST_TEAM` | `<KUBEFIRST_TEAM>` | Team name |
 | `KUBEFIRST_TEAM_INFO` | `<KUBEFIRST_TEAM_INFO>` | Additional team information |
 | `KUBEFIRST_VERSION` | `<KUBEFIRST_VERSION>` | Kubefirst platform version |
-| `ORIGIN_ISSUER_IS_ENABLED` | `<ORIGIN_ISSUER_IS_ENABLED>` | Whether Origin CA issuer is enabled |
 | `USE_TELEMETRY` | `<USE_TELEMETRY>` | Enable/disable telemetry |
 
 ### Workload Clusters
 
 | Token | Template Value | Description |
 |-------|---------------|-------------|
+| `WORKLOAD_AMI_TYPE` | `<WORKLOAD_AMI_TYPE>` | AMI type for workload clusters |
+| `WORKLOAD_ASSUME_ROLE` | `<WORKLOAD_ASSUME_ROLE>` | IAM role for workload clusters |
+| `WORKLOAD_CLUSTER_ACCOUNT_ID` | `<WORKLOAD_CLUSTER_ACCOUNT_ID>` | AWS account for workload clusters |
 | `WORKLOAD_CLUSTER_BOOTSTRAP_TERRAFORM_MODULE_URL` | `<WORKLOAD_CLUSTER_BOOTSTRAP_TERRAFORM_MODULE_URL>` | Terraform module for bootstrap |
 | `WORKLOAD_CLUSTER_NAME` | `<WORKLOAD_CLUSTER_NAME>` | Name of workload cluster |
 | `WORKLOAD_CLUSTER_REGION` | `<WORKLOAD_CLUSTER_REGION>` | Region for workload cluster |
@@ -110,6 +110,6 @@ This document lists all template tokens used in this K3D + GitHub local developm
 
 - These tokens are automatically replaced during template instantiation
 - Token values should not contain sensitive information
-- K3D provides a local Kubernetes development environment
-- Most URLs will use local domains or localhost addresses
-- This configuration is optimized for development and testing
+- All URLs will be generated based on your domain configuration
+- AWS-specific tokens are only used in AWS deployments
+- GitLab-specific tokens are only used with GitLab integration

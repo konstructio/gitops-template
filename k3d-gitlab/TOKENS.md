@@ -1,6 +1,6 @@
 # Template Tokens Reference
 
-This document lists all template tokens used in this K3D + GitHub local development configuration. These tokens are replaced during the GitOps template instantiation process.
+This document lists all template tokens used in this K3D + GitLab local development configuration. These tokens are replaced during the GitOps template instantiation process.
 
 > **⚠️ Security Warning**: Never store sensitive information like API keys, passwords, or secrets directly in token values. Use proper secret management systems like Vault, Kubernetes secrets, or your cloud provider's secret management service.
 
@@ -58,15 +58,11 @@ This document lists all template tokens used in this K3D + GitHub local developm
 | Token | Template Value | Description |
 |-------|---------------|-------------|
 | `GIT_FQDN` | `<GIT_FQDN>` | Fully qualified domain name for Git |
-| `GIT_PROVIDER` | `<GIT_PROVIDER>` | Git provider name (github) |
-| `GIT-PROTOCOL` | `<GIT-PROTOCOL>` | Git protocol (ssh/https) |
-| `GITHUB_HOST` | `<GITHUB_HOST>` | GitHub hostname |
-| `GITHUB_OWNER` | `<GITHUB_OWNER>` | GitHub organization/user |
-| `GITHUB_USER` | `<GITHUB_USER>` | GitHub username |
-| `GITLAB_HOST` | `<GITLAB_HOST>` | GitLab hostname (if applicable) |
-| `GITLAB_OWNER` | `<GITLAB_OWNER>` | GitLab group/user (if applicable) |
-| `GITLAB_OWNER_GROUP_ID` | `<GITLAB_OWNER_GROUP_ID>` | GitLab group ID (if applicable) |
-| `GITLAB_USER` | `<GITLAB_USER>` | GitLab username (if applicable) |
+| `GIT_PROVIDER` | `<GIT_PROVIDER>` | Git provider name (gitlab) |
+| `GITLAB_HOST` | `<GITLAB_HOST>` | GitLab hostname |
+| `GITLAB_OWNER` | `<GITLAB_OWNER>` | GitLab group/user |
+| `GITLAB_OWNER_GROUP_ID` | `<GITLAB_OWNER_GROUP_ID>` | GitLab group ID |
+| `GITLAB_USER` | `<GITLAB_USER>` | GitLab username |
 | `GITOPS_REPO_URL` | `<GITOPS_REPO_URL>` | GitOps repository URL |
 | `GITOPS_REPO_ATLANTIS_WEBHOOK_URL` | `<GITOPS_REPO_ATLANTIS_WEBHOOK_URL>` | Webhook URL for Atlantis |
 
@@ -113,3 +109,4 @@ This document lists all template tokens used in this K3D + GitHub local developm
 - K3D provides a local Kubernetes development environment
 - Most URLs will use local domains or localhost addresses
 - This configuration is optimized for development and testing
+- GitLab-specific tokens are only used with GitLab integration
