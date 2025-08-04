@@ -43,7 +43,7 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   name                = local.cluster_name
   network_id          = civo_network.kubefirst.id
   firewall_id         = civo_firewall.kubefirst.id
-  kubernetes_version  = "1.28.7-k3s1"
+  kubernetes_version  = "1.30.5-k3s1"
   write_kubeconfig    = true
   pools {
     label      = local.cluster_name
