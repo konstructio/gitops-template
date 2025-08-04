@@ -2,6 +2,10 @@ provider "aws" {
   region = local.region
 }
 
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks.cluster_id
+}
+
 provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data != null ? module.eks.cluster_certificate_authority_data : "")
@@ -14,6 +18,21 @@ provider "kubernetes" {
   }
 }
 
+terraform {
+  required_providers {
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+    }
+  }
+}
+
+provider "kubectl" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data != null ? module.eks.cluster_certificate_authority_data : "")
+  token                  = data.aws_eks_cluster_auth.main.token
+  load_config_file       = false
+}
+
 data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
 
@@ -23,7 +42,7 @@ locals {
   region          = "<CLOUD_REGION>"
 
   vpc_cidr = "10.0.0.0/16"
-  secondary_vpc_cidr =  ""
+  secondary_vpc_cidr = ["100.64.0.0/16"]
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
@@ -161,7 +180,7 @@ module "vpc" {
   # private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
   private_subnets = concat(
     [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)],
-    [for k, v in local.azs : cidrsubnet(local.secondary_vpc_cidr, 2, k)]
+    [for k, v in local.azs : cidrsubnet(local.secondary_vpc_cidr[0], 2, k)]
   )
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
