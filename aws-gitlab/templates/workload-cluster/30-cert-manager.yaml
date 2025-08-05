@@ -11,7 +11,7 @@ spec:
   project: <WORKLOAD_CLUSTER_NAME>
   source:
     repoURL: https://charts.jetstack.io
-    targetRevision: v1.14.4
+    targetRevision: v1.18.2
     helm:
       values: |-
         serviceAccount:
