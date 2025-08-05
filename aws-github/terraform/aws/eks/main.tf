@@ -41,7 +41,7 @@ locals {
   cluster_version = "1.31"
   region          = "<CLOUD_REGION>"
 
-  vpc_cidr = "10.0.0.0/16"
+  vpc_cidr = "10.167.92.0/22"
   secondary_vpc_cidr = ["100.64.0.0/16"]
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
