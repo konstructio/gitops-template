@@ -14,7 +14,7 @@ resource "civo_kubernetes_cluster" "kubefirst" {
   firewall_id      = civo_firewall.kubefirst.id
   write_kubeconfig = true
   cluster_type     = local.is_gpu ? "talos" : "k3s" # k3s doesn't support GPU
-  kubernetes_version  = local.is_gpu ?  "talos-v1.5.0" : "1.28.7-k3s1"
+  kubernetes_version  = local.is_gpu ?  "talos-v1.5.0" : "1.30.5-k3s1"
   pools {
     label      = var.cluster_name
     size       = var.node_type
@@ -51,7 +51,7 @@ provider "kubernetes" {
 provider "helm" {
   repository_config_path = "${path.module}/.helm/repositories.yaml"
   repository_cache       = "${path.module}/.helm"
-  kubernetes {
+  kubernetes = {
     host                   = civo_kubernetes_cluster.kubefirst.api_endpoint
     client_certificate     = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-certificate-data)
     client_key             = base64decode(yamldecode(civo_kubernetes_cluster.kubefirst.kubeconfig).users[0].user.client-key-data)
