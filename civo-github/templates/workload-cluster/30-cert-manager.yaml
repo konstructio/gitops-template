@@ -18,6 +18,9 @@ spec:
           create: true
           name: cert-manager
         installCRDs: true
+        env:
+          ENV_1: '<WORKLOAD_CIDR>'
+          ENV_2: '<BUSINESS_UNIT>'
     chart: cert-manager
   destination:
     name: <WORKLOAD_CLUSTER_NAME>
