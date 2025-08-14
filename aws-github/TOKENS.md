@@ -111,3 +111,8 @@ This document lists all template tokens used in this AWS + GitHub cloud provider
 - Token values should not contain sensitive information
 - All URLs will be generated based on your domain configuration
 - AWS-specific tokens are only used in AWS deployments
+
+## Custom Tokens
+| `WORKLOAD_CIDR` | `<WORKLOAD_CIDR>` | Cidr range |
+| `BUSINESS_UNIT` | `<BUSINESS_UNIT>` | Business Unit |
+
