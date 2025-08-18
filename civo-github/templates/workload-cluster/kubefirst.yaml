@@ -1,4 +1,4 @@
-clusterType: "physical" # "physical|virtual|gpu"
+clusterType: "virtual" # "physical|virtual|gpu"
 inputs:
   - name: "cidr"
     token: "<WORKLOAD_CIDR>" 
