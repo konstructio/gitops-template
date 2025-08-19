@@ -8,16 +8,10 @@ spec:
   configuration: |
       terraform {
         backend "s3" {
-          bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
+          bucket   = "k1-state-store-mgmt-ecr-kgetpods-biz-jd-fqf420"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          endpoint = "https://objectstore.<CLOUD_REGION>.civo.com"
-
-          region = "<CLOUD_REGION>"
-
-          skip_credentials_validation = true
-          skip_metadata_api_check     = true
-          skip_region_validation      = true
-          force_path_style            = true
+          region = "us-east-1"
+          encrypt = true
         }
         required_providers {
           civo = {
