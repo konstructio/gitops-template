@@ -24,10 +24,6 @@ spec:
             source  = "civo/civo"
             version = "= 1.1.5"
           }
-          helm = {
-            source = "hashicorp/helm"
-            version = "~> 2.15.0"
-          }
         }
       }
       provider "civo" {
