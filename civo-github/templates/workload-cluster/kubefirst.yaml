@@ -1,0 +1,10 @@
+clusterType: "physical" # physical|virtual|gpu
+inputs:
+  - name: "cidr"
+    token: "<WORKLOAD_CIDR>" 
+    prompt: "Enter your workload cluster VPC CIDR block"
+    tip: "10.0.0.0/16"
+  - name: "business-unit"
+    token: "<BUSINESS_UNIT>"
+    prompt: "Enter your business unit name"
+    tip: "e.g. 'engineering', 'sales', 'marketing'"
