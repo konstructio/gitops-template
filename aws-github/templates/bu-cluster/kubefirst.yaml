@@ -1,0 +1,7 @@
+# argocd-argoproj.io/skip-reconcile: true
+clusterType: "physical" # physical|virtual|gpu
+inputs:
+  - name: "business-unit-github-org"
+    token: "<BUSINESS_UNIT_GITHUB_ORG>" 
+    prompt: "Business Unit's GitHub organization"
+    tip: "Example: konstructio"
