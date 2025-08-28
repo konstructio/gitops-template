@@ -4,4 +4,4 @@ inputs:
   - name: "example-input-name"
     token: "<EXAMPLE_INPUT_TOKEN>" 
     prompt: "Example custom input"
-    tip: "For demonstration purposes only, provide any value"
+    tip: "Manage your custom inputs in your cluster template's kubefirst.yaml file"
