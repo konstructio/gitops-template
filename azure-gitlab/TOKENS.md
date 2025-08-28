@@ -110,6 +110,12 @@ This document lists all template tokens used in this Azure + GitLab cloud provid
 | `WORKLOAD_NODE_COUNT` | `<WORKLOAD_NODE_COUNT>` | Number of nodes in workload cluster |
 | `WORKLOAD_NODE_TYPE` | `<WORKLOAD_NODE_TYPE>` | VM size for workload nodes |
 
+### Workload Cluster Custom Inputs
+
+| Token | Template Value | Description |
+|-------|---------------|-------------|
+| `EXAMPLE_INPUT_TOKEN` | `<EXAMPLE_INPUT_TOKEN>` | Demonstration Custom Input from Workload Cluster Template |
+
 ## Usage Notes
 
 - These tokens are automatically replaced during template instantiation
