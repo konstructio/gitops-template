@@ -8,6 +8,7 @@ spec:
   forProvider:
     source: Remote
     module: <WORKLOAD_CLUSTER_TERRAFORM_MODULE_URL>
+    enableTerraformCLILogging: true
     vars:
     - key: cluster_name
       value: "<WORKLOAD_CLUSTER_NAME>"
