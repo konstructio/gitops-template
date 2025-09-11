@@ -4,7 +4,7 @@
 # https://kubefirst-pro.konstruct.io/docs/features/clusters/custom-templates
 # uncomment the inputs below to propt your users for input variable values
 
-clusterType: "physical"
+clusterType: "gpu"
 # inputs:
 #   - name: "example"
 #     token: "<WORKLOAD_EXAMPLE_TOKEN>>" 
