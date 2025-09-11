@@ -1,0 +1,2 @@
+# +argocd:skip-file-rendering
+clusterType: "physical"
