@@ -25,6 +25,7 @@ spec:
     retry:
       limit: 5
       backoff:
-        duration: 5s
-        maxDuration: 5m0s
+        duration: 1m
+        maxDuration: 15m0s
         factor: 2
+
