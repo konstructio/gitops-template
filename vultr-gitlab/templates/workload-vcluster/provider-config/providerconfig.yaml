@@ -37,6 +37,7 @@ spec:
       provider "digitalocean" {
         region = "<WORKLOAD_CLUSTER_REGION>"
       }
+  pluginCache: false
   credentials:
   - filename: gen-nothing
     source: None

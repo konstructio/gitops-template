@@ -41,6 +41,7 @@ spec:
           web_identity_token_file = "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
         }
       }
+  pluginCache: false
   credentials:
   - filename: gen-nothing
     source: None
