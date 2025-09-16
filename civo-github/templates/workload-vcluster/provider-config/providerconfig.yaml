@@ -36,6 +36,7 @@ spec:
       provider "civo" {
         region = "<WORKLOAD_CLUSTER_REGION>"
       }
+  pluginCache: false
   credentials:
   - filename: gen-nothing
     source: None

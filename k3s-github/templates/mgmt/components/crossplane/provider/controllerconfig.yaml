@@ -10,6 +10,7 @@ spec:
   args:
   - -d
   - --poll=2m
+  - --max-reconcile-rate=10
   envFrom:
   - secretRef:
       name: crossplane-secrets

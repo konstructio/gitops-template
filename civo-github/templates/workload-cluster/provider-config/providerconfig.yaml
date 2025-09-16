@@ -30,6 +30,7 @@ spec:
         credentials_file = "civo.json"
         region = "<WORKLOAD_CLUSTER_REGION>"
       }
+  pluginCache: false
   credentials:
   - filename: civo.json
     source: Secret

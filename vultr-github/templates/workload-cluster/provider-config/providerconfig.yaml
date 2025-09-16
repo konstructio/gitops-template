@@ -24,6 +24,7 @@ spec:
         }
       }
     }
+  pluginCache: false
   credentials:
   - filename: .git-credentials
     source: Secret

@@ -23,6 +23,7 @@ spec:
           }
         }
       }
+  pluginCache: false
   credentials:
   - filename: gen-nothing
     source: None
