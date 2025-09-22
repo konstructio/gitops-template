@@ -1,0 +1,22 @@
+controlPlane: 
+  distro: 
+    k3s:
+      enabled: true
+      extraArgs:
+        - "--tls-san=${vcluster_name}.${domain_name}"
+
+  ingress:
+    enabled: true
+    pathType: ImplementationSpecific
+    host: "${vcluster_name}.${domain_name}"
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    spec:
+      ingressClassName: "nginx"
+      tls:
+        - secretName: "${vcluster_name}-tls"
+          hosts:
+            - "${vcluster_name}.${domain_name}"

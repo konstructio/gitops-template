@@ -1,0 +1,19 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>-infrastructure
+spec:
+  providerConfigRef:
+    name: <WORKLOAD_CLUSTER_NAME>
+  forProvider:
+    source: Remote
+    module: <WORKLOAD_CLUSTER_TERRAFORM_MODULE_URL>
+    vars:
+    - key: vcluster_name
+      value: "<WORKLOAD_CLUSTER_NAME>"
+    - key: mgmt_cluster_name
+      value: "<MGMT_CLUSTER_NAME>"
+    - key: domain_name
+      value: "<DOMAIN_NAME>"
+    - key: vault_domain
+      value: "<VAULT_DOMAIN>"
