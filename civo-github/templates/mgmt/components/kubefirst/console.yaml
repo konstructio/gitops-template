@@ -28,6 +28,15 @@ spec:
           kubefirstVersion: "<KUBEFIRST_VERSION>"
           useTelemetry: "<USE_TELEMETRY>"
         kubefirst-pro-api:
+          annotations:
+            vault.hashicorp.com/agent-inject: "true"
+            vault.hashicorp.com/role: "sa-kubefirst-pro-api" 
+            vault.hashicorp.com/auth-path: auth/kubernetes/kubefirst
+            vault.hashicorp.com/agent-inject-secret-jwt-token: "identity/oidc/token/federated"
+            vault.hashicorp.com/agent-inject-template-jwt-token: |
+              {{- with secret "identity/oidc/token/federated" -}}
+              {{ .Data.token }}
+              {{- end }}
           extraEnv:
             CLUSTER_NAME: "<CLUSTER_NAME>"
         kubefirst-pro-ui:

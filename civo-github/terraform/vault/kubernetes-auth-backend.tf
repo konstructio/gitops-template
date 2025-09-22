@@ -33,3 +33,39 @@ resource "vault_kubernetes_auth_backend_role" "k8s_external_secrets" {
   token_ttl                        = 86400
   token_policies                   = ["admin", "default"]
 }
+
+resource "vault_kubernetes_auth_backend_role" "k8s_kubefirst_api" {
+  backend                          = vault_auth_backend.k8s.path
+  role_name                        = "sa-kubefirst-pro-api"
+  bound_service_account_names      = ["kubefirst-pro-api"]
+  bound_service_account_namespaces = ["kubefirst"]
+  token_ttl                        = 3600
+  token_policies                   = ["oidc_token"]
+}
+
+resource "vault_kubernetes_auth_backend_role" "k8s_argocd_server" {
+  backend                          = vault_auth_backend.k8s.path
+  role_name                        = "sa-argocd-server"
+  bound_service_account_names      = ["argocd-server"]
+  bound_service_account_namespaces = ["argocd"]
+  token_ttl                        = 3600
+  token_policies                   = ["oidc_token"]
+}
+
+resource "vault_kubernetes_auth_backend_role" "k8s_argocd_application_controller" {
+  backend                          = vault_auth_backend.k8s.path
+  role_name                        = "sa-argocd-application-controller"
+  bound_service_account_names      = ["argocd-application-controller"]
+  bound_service_account_namespaces = ["argocd"]
+  token_ttl                        = 3600
+  token_policies                   = ["oidc_token"]
+}
+
+resource "vault_kubernetes_auth_backend_role" "k8s_crossplane-provider-terraform" {
+  backend                          = vault_auth_backend.k8s.path
+  role_name                        = "sa-crossplane-provider-terraform"
+  bound_service_account_names      = ["crossplane-provider-terraform-5e9bbaf0b61c"]
+  bound_service_account_namespaces = ["crossplane-system"]
+  token_ttl                        = 3600
+  token_policies                   = ["oidc_token"]
+}
