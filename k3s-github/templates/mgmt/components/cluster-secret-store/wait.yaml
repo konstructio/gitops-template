@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: wait
-        image: public.ecr.aws/bitnami/kubectl:1.24
+        image: registry.k8s.io/kubectl:v1.31.0
         command:
         - /bin/sh
         - -c
