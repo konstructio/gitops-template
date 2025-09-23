@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: argocd-oidc-restart-job
-          image: busybox:1.37.0
+          image: dtzar/helm-kubectl:3.19.0
           command:
             - /bin/sh
             - -c
