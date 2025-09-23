@@ -11,8 +11,8 @@ spec:
     vars:
     - key: vcluster_name
       value: "<WORKLOAD_CLUSTER_NAME>"
-    - key: mgmt_cluster_name
-      value: "<MGMT_CLUSTER_NAME>"
+    - key: host_cluster
+      value: "<HOST_NAME>"
     - key: domain_name
       value: "<DOMAIN_NAME>"
     - key: vault_domain

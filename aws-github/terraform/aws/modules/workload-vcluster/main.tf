@@ -1,5 +1,5 @@
 data "vault_generic_secret" "cluster" {
-  path = "secret/clusters/${var.mgmt_cluster_name}"
+  path = "secret/clusters/${var.host_cluster}"
 }
 
 data "vault_generic_secret" "vcluster" {
@@ -45,7 +45,7 @@ resource "kubernetes_role" "secret_reader" {
   depends_on = [helm_release.my_vcluster]
   metadata {
     name      = "secret-reader-${var.vcluster_name}"
-    namespace = var.mgmt_cluster_name 
+    namespace = var.host_cluster 
   }
 
   rule {
@@ -59,7 +59,7 @@ resource "kubernetes_role_binding" "allow_secret_access" {
   depends_on = [kubernetes_role.secret_reader]
   metadata {
     name      = "allow-secret-access-${var.vcluster_name}"
-    namespace = var.mgmt_cluster_name
+    namespace = var.host_cluster
   }
 
   subject {
@@ -176,7 +176,7 @@ resource "kubernetes_job" "post-creation" {
 
           env {
             name  = "MGMT_CLUSTER_NAME"
-            value = var.mgmt_cluster_name
+            value = var.host_cluster
           }
 
           env {

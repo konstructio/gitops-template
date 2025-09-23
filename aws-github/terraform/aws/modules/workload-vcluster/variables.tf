@@ -1,4 +1,4 @@
-variable "mgmt_cluster_name" {
+variable "host_cluster" {
   description = "the name of the host cluster"
   type        = string
 }
