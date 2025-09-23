@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: argocd-oidc-restart-job
-          image: registry.k8s.io/kubectl:v1.31.0
+          image: busybox:1.37.0
           command:
             - /bin/sh
             - -c
