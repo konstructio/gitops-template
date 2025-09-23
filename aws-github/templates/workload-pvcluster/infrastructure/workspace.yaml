@@ -12,7 +12,7 @@ spec:
     - key: vcluster_name
       value: "<WORKLOAD_CLUSTER_NAME>"
     - key: host_cluster
-      value: "<HOST_NAME>"
+      value: "<HOST_CLUSTER>"
     - key: domain_name
       value: "<DOMAIN_NAME>"
     - key: vault_domain
