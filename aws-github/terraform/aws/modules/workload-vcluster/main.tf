@@ -7,6 +7,10 @@ data "vault_generic_secret" "vcluster" {
   path = "secret/clusters/${var.vcluster_name}"
 }
 
+data "aws_eks_cluster" "cluster" {
+  name = var.host_cluster
+}
+
 data "aws_eks_cluster_auth" "cluster" {
   name = var.host_cluster
 }
