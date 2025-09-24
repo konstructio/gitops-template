@@ -23,18 +23,12 @@ provider "helm" {
     }   
 }
 
-# Add the repository resource
-resource "helm_repository" "loft" {
-  name = "loft"
-  url  = "https://charts.loft.sh"
-}
-
 resource "helm_release" "my_vcluster" {
   name             = var.vcluster_name
   namespace        = var.vcluster_name
   create_namespace = true
 
-  repository       = helm_repository.loft.metadata[0].name
+  repository       = "https://charts.loft.sh"
   chart            = "vcluster"
   version          = "0.24.0"
 
@@ -44,8 +38,6 @@ resource "helm_release" "my_vcluster" {
       domain_name   = var.domain_name
     })
   ]
-
-  depends_on = [helm_repository.loft]
 }
 
 provider "kubernetes" {
