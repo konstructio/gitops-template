@@ -8,9 +8,9 @@ spec:
   configuration: |
       terraform {
         backend "s3" {
-          bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
-          key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          region = "<CLOUD_REGION>"
+          bucket   = "k1-state-store-mgmt-kgetpods-biz-jd-ehf8eg"
+          key      = "registry/clusters/test1/infrastructure/provider-config/terraform.tfstate"
+          region = "us-east-1"
           encrypt = true
         }
         required_providers {
