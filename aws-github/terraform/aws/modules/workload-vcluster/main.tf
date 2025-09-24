@@ -43,8 +43,7 @@ resource "helm_release" "my_vcluster" {
 
 provider "kubernetes" {
     host = data.vault_generic_secret.cluster.data["host"]
-    client_certificate = data.vault_generic_secret.cluster.data["client_certificate"]
-    client_key = data.vault_generic_secret.cluster.data["client_key"]
+    token                  = data.aws_eks_cluster_auth.cluster.token
     cluster_ca_certificate = data.vault_generic_secret.cluster.data["cluster_ca_certificate"]
 }
 
