@@ -23,14 +23,19 @@ provider "helm" {
     }   
 }
 
+data "helm_repository" "loft" {
+  name = "loft"
+  url  = "https://charts.loft.sh"
+}
+
 resource "helm_release" "my_vcluster" {
   name             = var.vcluster_name
   namespace        = var.vcluster_name
   create_namespace = true
 
-  repository       = "https://charts.loft.sh"
+  repository       = data.helm_repository.loft.url
   chart            = "vcluster"
-  version          = "0.24.0"
+  version          = "0.28.0" # must exist in the repo
 
   values = [
     templatefile("${path.module}/values.yaml", {
