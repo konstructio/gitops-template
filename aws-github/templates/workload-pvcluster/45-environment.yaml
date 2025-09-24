@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:rr737/gitops.git
+    repoURL: git@github.com:kgetpods-biz/gitops.git
     path: registry/environments/<WORKLOAD_ENVIRONMENT>
     targetRevision: HEAD
   destination:

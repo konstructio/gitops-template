@@ -10,7 +10,7 @@ metadata:
 spec:
   project: <WORKLOAD_CLUSTER_NAME>
   source:
-    repoURL: git@github.com:rr737/gitops.git
+    repoURL: git@github.com:kgetpods-biz/gitops.git
     path: registry/clusters/<WORKLOAD_CLUSTER_NAME>/cert-issuers
     targetRevision: HEAD
   destination:

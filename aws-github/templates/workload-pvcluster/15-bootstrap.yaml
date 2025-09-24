@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: <WORKLOAD_CLUSTER_NAME>-cluster-secret-store
+  name: <WORKLOAD_CLUSTER_NAME>-bootstrap
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: '40'
+    argocd.argoproj.io/sync-wave: '15'
 spec:
-  project: <WORKLOAD_CLUSTER_NAME>
+  project: default
   source:
     repoURL: git@github.com:kgetpods-biz/gitops.git
-    path: registry/clusters/<WORKLOAD_CLUSTER_NAME>/cluster-secret-store
+    path: registry/clusters/<WORKLOAD_CLUSTER_NAME>/bootstrap
     targetRevision: HEAD
   destination:
-    name: <WORKLOAD_CLUSTER_NAME>
-    namespace: external-secrets-operator
+    name: in-cluster
+    namespace: crossplane-system
   syncPolicy:
     automated:
       prune: true
