@@ -11,7 +11,7 @@ spec:
       serviceAccountName: argocd-server
       containers:
       - name: wait
-        image: registry.k8s.io/kubectl:v1.31.0
+        image: dtzar/helm-kubectl:3.19.0
         command:
         - /bin/sh
         - -c

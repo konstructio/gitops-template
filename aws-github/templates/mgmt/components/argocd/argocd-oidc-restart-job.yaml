@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
         - name: argocd-oidc-restart-job
-          image: registry.k8s.io/kubectl:v1.31.0
+          image: dtzar/helm-kubectl:3.19.0
           command: ["/bin/sh", "-c"]
           args:
             - echo "Give me time to think" && sleep 15;
