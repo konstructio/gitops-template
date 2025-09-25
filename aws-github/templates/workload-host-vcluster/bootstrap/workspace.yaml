@@ -35,7 +35,7 @@ spec:
             client_certificate      = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-certificate-data)
             client_key              = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-key-data)
             cluster_ca_certificate  = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).clusters[0].cluster.certificate-authority-data)
-            host                    = "https://<WORKLOAD_CLUSTER_NAME>.kgetpods-biz"
+            host                    = "https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>"
             cluster_name            = var.cluster_name
             argocd_manager_sa_token = kubernetes_secret_v1.argocd_manager.data.token
           }
@@ -44,7 +44,7 @@ spec:
 
       provider "kubernetes" {
         alias = "target"
-        host = "https://<WORKLOAD_CLUSTER_NAME>.kgetpods-biz"
+        host = "https://<WORKLOAD_CLUSTER_NAME>.<DOMAIN_NAME>"
 
         client_certificate     = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-certificate-data)
         client_key             = base64decode(yamldecode(data.kubernetes_secret_v1.vcluster_kubeconfig.data.config).users[0].user.client-key-data)
