@@ -52,7 +52,7 @@ spec:
             - argo
             - --label
             - app.kubernetes.io/name=argo-workflow-controller
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          image: ghcr.io/konstructio/kubernetes-toolkit:v0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
@@ -76,7 +76,7 @@ spec:
             - argo
             - --label
             - app.kubernetes.io/name=argo-server
-          image: public.ecr.aws/kubefirst/kubernetes-toolkit:0.0.8
+          image: ghcr.io/konstructio/kubernetes-toolkit:v0.1.3
           imagePullPolicy: IfNotPresent
           name: wait
       restartPolicy: OnFailure
