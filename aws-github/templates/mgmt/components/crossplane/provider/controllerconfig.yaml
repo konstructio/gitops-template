@@ -16,3 +16,10 @@ spec:
   envFrom:
   - secretRef:
       name: crossplane-secrets
+  volumeMounts:
+  - mountPath: /.cache
+    name: helmcache
+  volumes:
+    - name: helmcache
+      emptyDir:
+        sizeLimit: 500Mi
