@@ -19,7 +19,7 @@ provider "helm" {
     kubernetes = {
         host                   = data.vault_generic_secret.cluster.data["host"]
         token                  = data.aws_eks_cluster_auth.cluster.token
-        cluster_ca_certificate = data.vault_generic_secret.cluster.data["cluster_ca_certificate"]
+        cluster_ca_certificate = base64decode(data.vault_generic_secret.cluster.data["cluster_ca_certificate"])
     }   
 }
 
@@ -43,7 +43,7 @@ resource "helm_release" "my_vcluster" {
 provider "kubernetes" {
     host = data.vault_generic_secret.cluster.data["host"]
     token                  = data.aws_eks_cluster_auth.cluster.token
-    cluster_ca_certificate = data.vault_generic_secret.cluster.data["cluster_ca_certificate"]
+    cluster_ca_certificate = base64decode(data.vault_generic_secret.cluster.data["cluster_ca_certificate"])
 }
 
 resource "kubernetes_role" "secret_reader" {
