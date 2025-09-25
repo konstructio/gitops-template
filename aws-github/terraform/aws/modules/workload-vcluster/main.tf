@@ -19,13 +19,8 @@ provider "helm" {
     kubernetes = {
         host                   = data.vault_generic_secret.cluster.data["host"]
         token                  = data.aws_eks_cluster_auth.cluster.token
-        cluster_ca_certificate = data.vault_generic_secret.cluster.data["cluster_ca_certificate"]
+        cluster_ca_certificate = base64decode(data.vault_generic_secret.cluster.data["cluster_ca_certificate"])
     }   
-}
-
-data "helm_repository" "loft" {
-  name = "loft"
-  url  = "https://charts.loft.sh"
 }
 
 resource "helm_release" "my_vcluster" {
@@ -33,9 +28,9 @@ resource "helm_release" "my_vcluster" {
   namespace        = var.vcluster_name
   create_namespace = true
 
-  repository       = data.helm_repository.loft.url
+  repository       = "https://charts.loft.sh"
   chart            = "vcluster"
-  version          = "0.28.0" # must exist in the repo
+  version          = "0.24.0"
 
   values = [
     templatefile("${path.module}/values.yaml", {
@@ -48,7 +43,7 @@ resource "helm_release" "my_vcluster" {
 provider "kubernetes" {
     host = data.vault_generic_secret.cluster.data["host"]
     token                  = data.aws_eks_cluster_auth.cluster.token
-    cluster_ca_certificate = data.vault_generic_secret.cluster.data["cluster_ca_certificate"]
+    cluster_ca_certificate = base64decode(data.vault_generic_secret.cluster.data["cluster_ca_certificate"])
 }
 
 resource "kubernetes_role" "secret_reader" {
