@@ -17,7 +17,7 @@ spec:
   - 'https://charts.external-secrets.io'
   - 'https://helm.datadoghq.com'
   - 'https://stakater.github.io/stakater-charts'
-  - 'https://chartmuseum.kgetpods-biz'
+  - 'https://chartmuseum.<DOMAIN_NAME>'
   - 'https://charts.loft.sh'
   - 'https://github.com/cloudflare/origin-ca-issuer'
   - 'https://cloudflare.github.io/origin-ca-issuer/charts'
