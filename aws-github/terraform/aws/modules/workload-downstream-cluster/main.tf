@@ -423,13 +423,11 @@ resource "aws_iam_policy" "external_dns" {
 EOT
 }
 
-resource "aws_secretsmanager_secret" "clusters" {
-  name = "clusters/${var.cluster_name}"
-}
-
-resource "aws_secretsmanager_secret_version" "clusters" {
-  secret_id     = aws_secretsmanager_secret.clusters.id
-  secret_string = jsonencode({
+resource "aws_ssm_parameter" "clusters" {
+  name        = "/clusters/${var.cluster_name}"
+  description = "Cluster configuration for ${var.cluster_name}"
+  type        = "String" # or "SecureString" if you want encryption
+  value = jsonencode({
     cluster_ca_certificate = module.eks.cluster_certificate_authority_data
     host                   = module.eks.cluster_endpoint
     cluster_name           = var.cluster_name
@@ -437,7 +435,6 @@ resource "aws_secretsmanager_secret_version" "clusters" {
     argocd_role_arn        = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-${var.cluster_name}"
   })
 }
-
 
 module "cluster_autoscaler_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
