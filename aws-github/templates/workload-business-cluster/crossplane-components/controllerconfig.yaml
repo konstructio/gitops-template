@@ -1,0 +1,66 @@
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
+metadata:
+  name: terraform-config
+  labels:
+    app: crossplane-provider-terraform
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  serviceAccountTemplate:
+    metadata:
+      name: crossplane-provider-terraform-mgmt-kgetpods-biz-jd
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::<WORKLOAD_ASSUME_ROLE>:role/crossplane-<WORKLOAD_CLUSTER_NAME>
+  deploymentTemplate:
+    metadata:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::<WORKLOAD_ASSUME_ROLE>:role/crossplane-<WORKLOAD_CLUSTER_NAME>
+    spec:
+      selector:
+        matchLabels:
+          pkg.crossplane.io/provider: terraform
+      template:
+        metadata:
+          labels:
+            pkg.crossplane.io/provider: terraform
+        spec:
+          securityContext:  
+            fsGroup: 65532
+          containers:
+          - name: package-runtime
+            image: ghcr.io/konstructio/provider-terraform:v0.0.1
+            args:
+              - -d
+              - --poll=4m
+              - --max-reconcile-rate=10
+            envFrom:
+              - secretRef:
+                  name: crossplane-secrets
+            volumeMounts:
+              - mountPath: /.cache
+                name: helmcache
+              - mountPath: /logs
+                name: shared-logs
+          - name: log-streamer
+            imagePullPolicy: Always
+            image: ghcr.io/konstructio/logs-streamer:v0.0.2
+            ports:
+              - containerPort: 9090
+                name: http
+                protocol: TCP
+            env:
+              - name: PORT
+                value: "9090"
+              - name: LOG_DIR
+                value: "/logs"
+            volumeMounts:
+              - mountPath: /logs
+                name: shared-logs
+                readOnly: true
+          volumes:
+            - name: helmcache
+              emptyDir:
+                sizeLimit: 500Mi
+            - name: shared-logs
+              emptyDir: {}
