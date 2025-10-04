@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: <WORKLOAD_CLUSTER_NAME>
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: <WORKLOAD_CLUSTER_NAME> description
+  sourceRepos:
+  - '<GITOPS_REPO_URL>'
+  - 'https://kubernetes.github.io/ingress-nginx'
+  - 'https://kubernetes-sigs.github.io/external-dns'
+  - 'https://charts.jetstack.io'
+  - 'https://charts.external-secrets.io'
+  - 'https://helm.datadoghq.com'
+  - 'https://stakater.github.io/stakater-charts'
+  - 'https://chartmuseum.feedkray.one'
+  - 'https://charts.loft.sh'
+  - 'https://github.com/cloudflare/origin-ca-issuer'
+  - 'https://cloudflare.github.io/origin-ca-issuer/charts'
+  - '*' # Adding wildcard for the gitops catalog. This wildcard can be removed from the template or after provisioning
+  destinations:
+  - namespace: external-dns
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: datadog
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: default
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: <WORKLOAD_ENVIRONMENT>
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: external-secrets-operator
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: reloader
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: cert-manager
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: ingress-nginx
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: kube-system
+    name: <WORKLOAD_CLUSTER_NAME>
+  - namespace: '*' # Adding wildcard for the gitops catalog. This wildcard can be removed from the template or after provisioning
+    server: '*' # Adding wildcard for the gitops catalog. This wildcard can be removed from the template or after provisioning
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  roles:
+  - description: <WORKLOAD_CLUSTER_NAME>-admin-role
+    groups:
+    - admins
+    name: admin-role
+    policies:
+    - p, proj:<WORKLOAD_CLUSTER_NAME>:admin-role, applications, *, <WORKLOAD_CLUSTER_NAME>/*, allow

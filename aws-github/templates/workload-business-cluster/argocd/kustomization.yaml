@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+# To upgrade ArgoCD, increment the version here
+# https://github.com/argoproj/argo-cd/tags
+resources:
+  - github.com:konstructio/manifests.git/argocd/cloud?ref=v1.1.1
+  - argocd-ui-ingress.yaml
+
+patchesStrategicMerge:
+  - argocd-server-sa.yaml
+  - argocd-application-controller-sa.yaml
+  - argocd-applicationset-controller-sa.yaml
+  - argocd-server-deployment.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
