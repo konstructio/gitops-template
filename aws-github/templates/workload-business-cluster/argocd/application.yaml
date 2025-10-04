@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argocd-application-creator
+  namespace: argocd
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argocd-application-creator
+  namespace: argocd
+rules:
+- apiGroups: ["argoproj.io"]
+  resources: ["applications"]
+  verbs: ["create", "get", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-application-creator
+  namespace: argocd
+subjects:
+- kind: ServiceAccount
+  name: argocd-application-creator
+  namespace: argocd
+roleRef:
+  kind: Role
+  name: argocd-application-creator
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: apply-argocd-clusters-app
+  namespace: argocd
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      serviceAccountName: argocd-application-creator
+      restartPolicy: OnFailure
+      containers:
+      - name: kubectl
+        image: dtzar/helm-kubectl:3.19.0
+        env:
+        - name: ORG_NAME
+          value: "<ORG_NAME>"
+        - name: REPO_NAME
+          value: "<REPO_NAME>"
+        - name: CLUSTER_NAME
+          value: "<WORKLOAD_CLUSTER_NAME>"
+        command:
+        - /bin/sh
+        - -c
+        - |
+          cat <<EOF | kubectl apply -f -
+          apiVersion: argoproj.io/v1alpha1
+          kind: Application
+          metadata:
+            name: registry
+            namespace: argocd
+            annotations:
+              argocd.argoproj.io/sync-wave: '1001'
+            finalizers:
+              - resources-finalizer.argocd.argoproj.io
+          spec:
+            project: default
+            source:
+              repoURL: https://github.com/${ORG_NAME}/${REPO_NAME}
+              path: registry/clusters/${CLUSTER_NAME}
+              targetRevision: HEAD
+            destination:
+              name: in-cluster
+              namespace: argocd
+            syncPolicy:
+              automated:
+                prune: true
+                selfHeal: true
+              syncOptions:
+                - CreateNamespace=true
+              retry:
+                limit: 5
+                backoff:
+                  duration: 5s
+                  maxDuration: 5m0s
+                  factor: 2
+          EOF
