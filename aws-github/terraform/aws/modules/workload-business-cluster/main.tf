@@ -23,9 +23,9 @@ module "eks" {
   cluster_encryption_config      = {}
 
   access_entries = {
-    "argocd_<AWS_ACCOUNT_ID>" = {
+    "argocd_${var.cluster_name}" = {
       cluster_name  = "${var.cluster_name}"
-      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      principal_arn = "arn:aws:iam::${var.cluster_name}:role/argocd-<CLUSTER_NAME>"
       policy_associations = {
         argocdAdminAccess = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
@@ -481,7 +481,7 @@ resource "vault_generic_secret" "clusters" {
       host                   = module.eks.cluster_endpoint
       cluster_name           = var.cluster_name
       environment            = var.cluster_name
-      argocd_role_arn        = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      argocd_role_arn        = "arn:aws:iam::${var.cluster_name}:role/argocd-<CLUSTER_NAME>"
     }
   )
 }
@@ -533,4 +533,41 @@ resource "aws_iam_policy" "cluster_autoscaler" {
       }
     ]
   })
+}
+
+module "crossplane_custom_trust" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "5.33.0"
+
+  create_role = true
+
+  role_name = "crossplane-${var.cluster_name}"
+
+  create_custom_role_trust_policy = true
+  custom_role_trust_policy        = data.aws_iam_policy_document.crossplane_custom_trust_policy.json
+  custom_role_policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+}
+
+data "aws_iam_policy_document" "crossplane_custom_trust_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${split("arn:aws:iam::${var.account_id}:oidc-provider/", module.eks.oidc_provider_arn)[1]}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "${split("arn:aws:iam::${var.account_id}:oidc-provider/", module.eks.oidc_provider_arn)[1]}:sub"
+      values   = ["system:serviceaccount:crossplane-system:crossplane-provider-terraform-${var.cluster_name}"]
+    }
+
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+  }
 }

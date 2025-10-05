@@ -22,4 +22,6 @@ spec:
       value: "<WORKLOAD_AMI_TYPE>"
     - key: s3_bucket_name
       value: "<WORKLOAD_S3_BUCKET_NAME>"
+    - key: account_id
+      value: "<WORKLOAD_CLUSTER_ACCOUNT_ID>"
 

@@ -25,3 +25,14 @@ variable "ami_type" {
   default = "AL2_x86_64"
   type = string
 }
+
+variable "account_id" {
+  description = "the account id where the cluster is being created"
+  type        = string
+}
+
+
+variable s3_bucket_name {
+  description = "the name of the s3 bucket to store terraform state"
+  type        = string
+}
