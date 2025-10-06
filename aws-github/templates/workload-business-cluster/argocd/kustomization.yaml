@@ -8,6 +8,7 @@ resources:
   - github.com:konstructio/manifests.git/argocd/cloud?ref=v1.1.1
   - argocd-ui-ingress.yaml
   - application.yaml
+  - rbac.yaml
 
 patchesStrategicMerge:
   - argocd-cmd-params-cm.yaml
