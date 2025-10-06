@@ -11,11 +11,11 @@ spec:
     metadata:
       name: crossplane-provider-terraform-<WORKLOAD_CLUSTER_NAME>
       annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::<WORKLOAD_ASSUME_ROLE>:role/crossplane-<WORKLOAD_CLUSTER_NAME>
+        eks.amazonaws.com/role-arn: arn:aws:iam::<WORKLOAD_CLUSTER_ACCOUNT_ID>:role/crossplane-<WORKLOAD_CLUSTER_NAME>
   deploymentTemplate:
     metadata:
       annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::<WORKLOAD_ASSUME_ROLE>:role/crossplane-<WORKLOAD_CLUSTER_NAME>
+        eks.amazonaws.com/role-arn: arn:aws:iam::<WORKLOAD_CLUSTER_ACCOUNT_ID>:role/crossplane-<WORKLOAD_CLUSTER_NAME>
     spec:
       selector:
         matchLabels:
