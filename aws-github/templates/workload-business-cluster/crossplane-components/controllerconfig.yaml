@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceAccountTemplate:
     metadata:
-      name: crossplane-provider-terraform-mgmt-kgetpods-biz-jd
+      name: crossplane-provider-terraform-<WORKLOAD_CLUSTER_NAME>
       annotations:
         eks.amazonaws.com/role-arn: arn:aws:iam::<WORKLOAD_ASSUME_ROLE>:role/crossplane-<WORKLOAD_CLUSTER_NAME>
   deploymentTemplate:
