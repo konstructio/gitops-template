@@ -10,6 +10,28 @@ locals {
 }
 
 ################################################################################
+# S3 Bucket
+################################################################################
+
+module "s3_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.0"
+
+  providers = {
+    aws = aws.business_mgmt_s3_bucket_region
+  }
+
+  bucket = "k1-bu-mgmt-${var.cluster_name}"
+
+  force_destroy = true
+  versioning = {
+    enabled = true
+  }
+
+  tags = local.tags
+}
+
+################################################################################
 # EKS Module
 ################################################################################
 module "eks" {

@@ -10,6 +10,7 @@ resources:
   - application.yaml
 
 patchesStrategicMerge:
+  - argocd-cmd-params-cm.yaml
   - argocd-server-sa.yaml
   - argocd-application-controller-sa.yaml
   - argocd-applicationset-controller-sa.yaml
