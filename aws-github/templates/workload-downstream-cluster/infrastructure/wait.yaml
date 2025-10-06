@@ -11,7 +11,7 @@ spec:
       serviceAccountName: argocd-server
       containers:
       - name: wait
-        image: docker.io/bitnami/kubectl:1.28
+        image: dtzar/helm-kubectl:3.19.0
         command:
         - /bin/sh
         - -c

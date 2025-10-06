@@ -41,6 +41,16 @@ spec:
           web_identity_token_file = "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
         }
       }
+      provider "aws" {
+        alias  = "business_mgmt_region"
+        region = "<BUSINESS_MGMT_REGION>"
+        allowed_account_ids = ["<WORKLOAD_CLUSTER_ACCOUNT_ID>"]
+        assume_role_with_web_identity {
+          session_name = "kubefirst-pro"
+          role_arn = "<WORKLOAD_ASSUME_ROLE>"
+          web_identity_token_file = "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
+        }
+      }
   pluginCache: false
   credentials:
   - filename: gen-nothing

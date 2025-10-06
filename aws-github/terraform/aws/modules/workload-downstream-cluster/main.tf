@@ -23,9 +23,9 @@ module "eks" {
   cluster_encryption_config      = {}
 
   access_entries = {
-    "argocd_<AWS_ACCOUNT_ID>" = {
+    "argocd_<BUSINESS_MGMT_AWS_ACCOUNT_ID>" = {
       cluster_name  = "${var.cluster_name}"
-      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
+      principal_arn = "arn:aws:iam::<BUSINESS_MGMT_AWS_ACCOUNT_ID>:role/argocd-<BUSINESS_MGMT_CLUSTER_NAME>"
       policy_associations = {
         argocdAdminAccess = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
@@ -424,15 +424,16 @@ EOT
 }
 
 resource "aws_ssm_parameter" "clusters" {
+  provider    = aws.business_mgmt_region
   name        = "/clusters/${var.cluster_name}"
   description = "Cluster configuration for ${var.cluster_name}"
-  type        = "String" # or "SecureString" if you want encryption
+  type        = "String"
   value = jsonencode({
     cluster_ca_certificate = module.eks.cluster_certificate_authority_data
     host                   = module.eks.cluster_endpoint
     cluster_name           = var.cluster_name
     environment            = var.cluster_name
-    argocd_role_arn        = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-${var.cluster_name}"
+    argocd_role_arn        = "arn:aws:iam::<BUSINESS_MGMT_AWS_ACCOUNT_ID>:role/argocd-<BUSINESS_MGMT_CLUSTER_NAME>"
   })
 }
 
@@ -483,3 +484,60 @@ resource "aws_iam_policy" "cluster_autoscaler" {
     ]
   })
 }
+
+module "external_secrets_operator" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.40.0"
+
+  role_name = "eso-${var.cluster_name}"
+  role_policy_arns = {
+    external_secrets_operator = aws_iam_policy.external_secrets_operator.arn
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role     = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["external-secrets-operator:external-secrets"]
+    }
+  }
+
+  tags = local.tags
+  
+}
+resource "aws_iam_policy" "external_secrets_operator" {
+  name = "external-secrets-operator-${var.cluster_name}"
+  path = "/"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:ListSecrets",
+          "secretsmanager:ListSecretVersionIds"
+        ],
+        "Resource" : ["*"]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:DescribeParameters"
+        ],
+        "Resource" : ["*"]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "kms:Decrypt",
+          "kms:DescribeKey"
+        ],
+        "Resource" : ["*"]
+      }
+    ]
+  })
+} 

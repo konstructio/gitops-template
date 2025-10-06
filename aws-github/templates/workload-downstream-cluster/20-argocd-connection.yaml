@@ -1,4 +1,4 @@
-apiVersion: "external-secrets.io/v1beta1"
+apiVersion: "external-secrets.io/v1"
 kind: ExternalSecret
 metadata:
   name: <WORKLOAD_CLUSTER_NAME>
@@ -31,24 +31,24 @@ spec:
           }
   secretStoreRef:
     kind: ClusterSecretStore
-    name: <BUSINESS_UNIT_NAME>-aws-secret-manager
+    name: <BUSINESS_UNIT_NAME>-aws-ssm
   refreshInterval: 10s
   data:
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/down1  
         property: argocd_role_arn
         conversionStrategy: Default
       secretKey: argocd_role_arn
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/down1  
         property: cluster_ca_certificate
         conversionStrategy: Default
       secretKey: cluster_ca_certificate
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/down1 
         property: cluster_name
       secretKey: cluster_name
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/down1 
         property: host
       secretKey: host
