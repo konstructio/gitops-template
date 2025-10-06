@@ -31,7 +31,7 @@ spec:
           }
   secretStoreRef:
     kind: ClusterSecretStore
-    name: <BUSINESS_UNIT_NAME>-aws-ssm
+    name: <BUSINESS_MGMT_CLUSTER_NAME>-aws-ssm
   refreshInterval: 10s
   data:
     - remoteRef:
