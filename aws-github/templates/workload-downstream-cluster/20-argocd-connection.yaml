@@ -35,20 +35,20 @@ spec:
   refreshInterval: 10s
   data:
     - remoteRef:
-        key: /clusters/down1  
+        key: /clusters/<WORKLOAD_CLUSTER_NAME>  
         property: argocd_role_arn
         conversionStrategy: Default
       secretKey: argocd_role_arn
     - remoteRef:
-        key: /clusters/down1  
+        key: /clusters/<WORKLOAD_CLUSTER_NAME>  
         property: cluster_ca_certificate
         conversionStrategy: Default
       secretKey: cluster_ca_certificate
     - remoteRef:
-        key: /clusters/down1 
+        key: /clusters/<WORKLOAD_CLUSTER_NAME> 
         property: cluster_name
       secretKey: cluster_name
     - remoteRef:
-        key: /clusters/down1 
+        key: /clusters/<WORKLOAD_CLUSTER_NAME> 
         property: host
       secretKey: host
