@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: log-streamer-service
+  labels:
+    app: log-streamer
+spec:
+  ports:
+  - port: 9090
+    targetPort: 9090
+    protocol: TCP
+    name: http
+  selector:
+    pkg.crossplane.io/provider: provider-terraform 
+    pkg.crossplane.io/revision: crossplane-provider-terraform-6fe8d52ff0a1 

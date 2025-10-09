@@ -5,10 +5,10 @@ metadata:
     argocd.argoproj.io/sync-wave: '20'
   name: crossplane-provider-terraform
 spec:
-  controllerConfigRef:
+  runtimeConfigRef:
     name: terraform-config
   ignoreCrossplaneConstraints: false
-  package: xpkg.upbound.io/upbound/provider-terraform:v0.14.1
+  package: xpkg.upbound.io/upbound/provider-terraform:v0.20.0
   packagePullPolicy: IfNotPresent
   revisionActivationPolicy: Automatic
   revisionHistoryLimit: 1
