@@ -1,24 +1,89 @@
 apiVersion: pkg.crossplane.io/v1alpha1
-kind: ControllerConfig
+kind: DeploymentRuntimeConfig
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: '10'
-    eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/crossplane-<CLUSTER_NAME>
   labels:
     app: crossplane-provider-terraform
   name: terraform-config
 spec:
-  args:
-  - -d
-  - --poll=2m
-  - --max-reconcile-rate=10
-  envFrom:
-  - secretRef:
-      name: crossplane-secrets
-  volumeMounts:
-  - mountPath: /.cache
-    name: helmcache
-  volumes:
-    - name: helmcache
-      emptyDir:
-        sizeLimit: 500Mi
+  serviceAccountTemplate:
+    metadata:
+      name: crossplane-provider-terraform-<CLUSTER_NAME>
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/crossplane-<CLUSTER_NAME>
+  deploymentTemplate:
+    metadata:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/crossplane-<CLUSTER_NAME>
+    spec:
+      selector:
+        matchLabels:
+          pkg.crossplane.io/provider: terraform
+          pkg.crossplane.io/revision: ""
+      template:
+        metadata:
+          labels:
+            pkg.crossplane.io/provider: terraform
+            pkg.crossplane.io/revision: ""
+        spec:
+          containers:
+          # Main application container
+          - name: package-runtime
+            image: ghcr.io/konstructio/provider-terraform:v0.0.1
+            args:
+            - -d
+            - --poll=4m
+            - --max-reconcile-rate=10
+            envFrom:
+            - secretRef:
+                name: crossplane-secrets
+            volumeMounts:
+            - mountPath: /.cache
+              name: helmcache
+            - mountPath: /logs
+              name: shared-logs
+          
+          # Log streaming sidecar container
+          - name: log-streamer
+            image: ghcr.io/konstructio/logs-streamer:v0.0.7
+            ports:
+            - containerPort: 9090
+              name: http
+              protocol: TCP
+            env:
+            - name: PORT
+              value: "9090"
+            - name: LOG_DIR
+              value: "/logs"
+            volumeMounts:
+            - mountPath: /logs
+              name: shared-logs
+              readOnly: true 
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 256Mi
+            livenessProbe:
+              httpGet:
+                path: /health
+                port: 9090
+              initialDelaySeconds: 10
+              periodSeconds: 30
+            readinessProbe:
+              httpGet:
+                path: /health
+                port: 9090 
+              initialDelaySeconds: 5
+              periodSeconds: 10
+          
+          volumes:
+          - name: helmcache
+            emptyDir:
+              sizeLimit: 500Mi
+          - name: shared-logs
+            emptyDir:
+              sizeLimit: 1Gi  

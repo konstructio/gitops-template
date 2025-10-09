@@ -435,6 +435,10 @@ resource "vault_generic_secret" "clusters" {
       argocd_role_arn        = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
     }
   )
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 
