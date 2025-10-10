@@ -47,7 +47,7 @@ spec:
         allowed_account_ids = ["<WORKLOAD_CLUSTER_ACCOUNT_ID>"]
         assume_role_with_web_identity {
           session_name = "kubefirst-pro"
-          role_arn = "arn:aws:iam::<WORKLOAD_CLUSTER_ACCOUNT_ID>:role/crossplane-<BUSINESS_UNIT_CLUSTER_NAME>"
+          role_arn = "<WORKLOAD_ASSUME_ROLE>"
           web_identity_token_file = "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
         }
       }
