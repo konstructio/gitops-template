@@ -1,4 +1,5 @@
 data "aws_ssm_parameter" "cluster" {
+  provider = aws.business_mgmt_region
   name = "/clusters/${var.cluster_name}"
 }
 
