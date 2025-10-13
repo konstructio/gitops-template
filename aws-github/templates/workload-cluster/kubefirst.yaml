@@ -5,9 +5,9 @@
 # uncomment the inputs below to propt your users for input variable values
 
 clusterType: "physical"
-# inputs:
-#   - name: "example"
-#     token: "<WORKLOAD_EXAMPLE_TOKEN>>" 
-#     prompt: "Example input for your workload cluster template"
-#     tip: "Prompt users with input guidance here"
-
+inputs:
+  - name: "example"
+    token: "<WORKLOAD_EXAMPLE_TOKEN>>" 
+    prompt: "Example input for your workload cluster template"
+    tip: "Prompt users with input guidance here"
+    required: false
