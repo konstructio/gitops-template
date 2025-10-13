@@ -1,10 +1,6 @@
-data "vault_generic_secret" "cluster" {
-  path = "secret/clusters/${var.host_cluster}"
-}
-
-data "vault_generic_secret" "vcluster" {
-  depends_on = [kubernetes_job.post-creation]
-  path = "secret/clusters/${var.vcluster_name}"
+data "aws_ssm_parameter" "cluster" {
+  provider = aws.business_mgmt_region
+  name = "/clusters/${var.host_cluster}"
 }
 
 data "aws_eks_cluster" "cluster" {
@@ -21,6 +17,18 @@ provider "helm" {
         token                  = data.aws_eks_cluster_auth.cluster.token
         cluster_ca_certificate = data.vault_generic_secret.cluster.data["cluster_ca_certificate"]
     }   
+}
+
+locals {
+  vcluster_host = "${var.vcluster_name}.${var.domain_name}"
+  
+  original_kubeconfig = data.kubernetes_secret.vcluster_kubeconfig.data["config"]
+  
+  modified_kubeconfig = replace(
+    local.original_kubeconfig,
+    "/server:\\s*https://[^:]+(?::\\d+)?/",
+    "server: https://${local.vcluster_host}"
+  )
 }
 
 data "helm_repository" "loft" {
@@ -43,6 +51,44 @@ resource "helm_release" "my_vcluster" {
       domain_name   = var.domain_name
     })
   ]
+}
+
+data "kubernetes_secret" "vcluster_kubeconfig" {
+  depends_on = [helm_release.my_vcluster]
+  
+  metadata {
+    name      = "vc-${var.vcluster_name}"
+    namespace = var.vcluster_name
+  }
+}
+
+resource "kubernetes_secret" "example" {
+  depends_on = [data.kubernetes_secret.vcluster_kubeconfig]
+  provider   = kubernetes.incluster
+  
+  metadata {
+    name      = "vc-${var.vcluster_name}"
+    namespace = var.vcluster_name
+  }
+
+  data = {
+    config = local.modified_kubeconfig
+  }
+}
+
+
+resource "aws_ssm_parameter" "clusters" {
+  provider    = aws.business_mgmt_region
+  name        = "/clusters/${var.vcluster_name}"
+  description = "Cluster configuration for ${var.vcluster_name}"
+  type        = "String"
+  value = jsonencode({
+    cluster_ca_certificate = module.eks.cluster_certificate_authority_data
+    host                   = module.eks.cluster_endpoint
+    cluster_name           = var.cluster_name
+    environment            = var.cluster_name
+    argocd_role_arn        = "arn:aws:iam::<BUSINESS_MGMT_AWS_ACCOUNT_ID>:role/argocd-<BUSINESS_MGMT_CLUSTER_NAME>"
+  })
 }
 
 provider "kubernetes" {
@@ -164,63 +210,4 @@ resource "kubernetes_role_binding" "example" {
     name      = "kubernetes-toolkit"
     namespace = "${var.vcluster_name}"
   }
-}
-
-resource "kubernetes_job" "post-creation" {
-  depends_on = [helm_release.my_vcluster]
-  metadata {
-    name = "post-creation"
-    namespace = "${var.vcluster_name}"
-  }
-  spec {
-    template {
-      metadata {}
-      spec {
-        container {
-          name    = "post-creation"
-          image   = "jokesta/vcluster-job"
-          env {
-            name  = "IN_CLUSTER"
-            value = "true"
-          }
-
-          env {
-            name  = "MGMT_CLUSTER_NAME"
-            value = var.host_cluster
-          }
-
-          env {
-            name  = "VCLUSTER_NAME"
-            value = var.vcluster_name
-          }
-
-          env {
-            name  = "VAULT_DOMAIN"
-            value = var.vault_domain
-          }
-        }
-        restart_policy = "OnFailure"
-      }
-    }
-    backoff_limit = 20
-  }
-  wait_for_completion = true
-}
-
-provider "kubernetes" {
-  alias = "incluster"
-}
-
-resource "kubernetes_secret" "example" {
-  depends_on = [kubernetes_job.post-creation]
-  provider = kubernetes.incluster
-  metadata {
-    name      = "vc-${var.vcluster_name}"
-    namespace = "${var.vcluster_name}"
-  }
-
-   data = {
-    config = (data.vault_generic_secret.vcluster.data["kubeconfig"])
-  }
-
 }

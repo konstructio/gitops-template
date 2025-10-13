@@ -17,10 +17,6 @@ module "s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.0"
 
-  providers = {
-    aws = aws.business_mgmt_s3_bucket_region
-  }
-
   bucket = "k1-bu-mgmt-${var.cluster_name}"
 
   force_destroy = true
@@ -342,18 +338,36 @@ resource "aws_iam_policy" "aws_ebs_csi_driver" {
 EOT
 }
 
+resource "aws_iam_openid_connect_provider" "eks" {
+  provider = aws.kubefirst_mgmt_s3_bucket_region
+  url             = module.eks.cluster_oidc_issuer_url
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+}
+
+data "tls_certificate" "eks" {
+  url = module.eks.cluster_oidc_issuer_url
+}
+
+data "aws_caller_identity" "kubefirst_mgmt" {
+  provider = aws.kubefirst_mgmt_s3_bucket_region
+}
 
 module "cert_manager" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.42.0"
 
+  providers = {
+    aws = aws.kubefirst_mgmt_s3_bucket_region
+  }
+  
   role_name = "cert-manager-${var.cluster_name}"
   role_policy_arns = {
     cert_manager = aws_iam_policy.cert_manager.arn
   }
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.oidc_provider_arn
+      provider_arn               = "arn:aws:iam::${data.aws_caller_identity.kubefirst_mgmt.account_id}:oidc-provider/${module.eks.oidc_provider}"
       namespace_service_accounts = ["cert-manager:cert-manager"]
     }
   }
@@ -362,9 +376,11 @@ module "cert_manager" {
 }
 
 resource "aws_iam_policy" "cert_manager" {
+  provider = aws.kubefirst_mgmt_s3_bucket_region
+  
   name        = "cert-manager-${var.cluster_name}-${random_integer.id.result}"
   path        = "/"
-  description = "policy for external dns to access route53 resources"
+  description = "policy for cert-manager to access route53 resources"
 
   policy = <<EOT
 {
@@ -398,13 +414,17 @@ module "external_dns" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.42.0"
 
+  providers = {
+    aws = aws.kubefirst_mgmt_s3_bucket_region
+  }
+
   role_name = "external-dns-${var.cluster_name}"
   role_policy_arns = {
     external_dns = aws_iam_policy.external_dns.arn
   }
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.oidc_provider_arn
+      provider_arn               = "arn:aws:iam::${data.aws_caller_identity.kubefirst_mgmt.account_id}:oidc-provider/${module.eks.oidc_provider}"
       namespace_service_accounts = ["external-dns:external-dns"]
     }
   }
@@ -413,6 +433,8 @@ module "external_dns" {
 }
 
 resource "aws_iam_policy" "external_dns" {
+  provider = aws.kubefirst_mgmt_s3_bucket_region
+  
   name        = "external-dns-${var.cluster_name}-${random_integer.id.result}"
   path        = "/"
   description = "policy for external dns to access route53 resources"
@@ -503,7 +525,7 @@ resource "vault_generic_secret" "clusters" {
       host                   = module.eks.cluster_endpoint
       cluster_name           = var.cluster_name
       environment            = var.cluster_name
-      argocd_role_arn        = "arn:aws:iam::${var.cluster_name}:role/argocd-<CLUSTER_NAME>"
+      argocd_role_arn        = "arn:aws:iam::${data.aws_caller_identity.kubefirst_mgmt.account_id}:role/argocd-<CLUSTER_NAME>"
     }
   )
 }
@@ -592,4 +614,24 @@ data "aws_iam_policy_document" "crossplane_custom_trust_policy" {
       identifiers = [module.eks.oidc_provider_arn]
     }
   }
+}
+
+module "argocd" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.46.0"
+
+  role_name = "argocd-${var.cluster_name}"
+  role_policy_arns = {
+    argocd = "arn:aws:iam::aws:policy/AdministratorAccess",
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role     = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["argocd:argocd-application-controller", "argocd:argocd-server"]
+    }
+  }
+
+  tags = local.tags
 }

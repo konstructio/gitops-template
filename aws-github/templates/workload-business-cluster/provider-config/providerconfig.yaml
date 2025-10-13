@@ -8,9 +8,9 @@ spec:
   configuration: |
       terraform {
         backend "s3" {
-          bucket   = "k1-state-store-mgmt-kgetpods-biz-jd-ehf8eg"
+          bucket   = "<KUBEFIRST_STATE_STORE_BUCKET>"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          region = "us-east-1"
+          region = "<CLOUD_REGION>"
           encrypt = true
         }
         required_providers {
@@ -42,12 +42,12 @@ spec:
         }
       }
       provider "aws" {
-        alias = "business_mgmt_s3_bucket_region"
-        region = "us-east-1"
-        allowed_account_ids = ["<WORKLOAD_CLUSTER_ACCOUNT_ID>"]
+        alias = "kubefirst_mgmt_s3_bucket_region"
+        region = "<CLOUD_REGION>"
+        allowed_account_ids = ["<KUBEFIRST_MGMT_ACCOUNT_ID>"]
         assume_role_with_web_identity {
           session_name = "kubefirst-pro"
-          role_arn = "<WORKLOAD_ASSUME_ROLE>"
+          role_arn = "arn:aws:iam::<KUBEFIRST_MGMT_ACCOUNT_ID>:role/crossplane-<KUBEFIRST_MGMT_CLUSTER_NAME>"
           web_identity_token_file = "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
         }
       }
