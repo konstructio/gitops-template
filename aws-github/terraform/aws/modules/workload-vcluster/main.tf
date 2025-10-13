@@ -76,21 +76,6 @@ resource "kubernetes_secret" "example" {
   }
 }
 
-
-resource "aws_ssm_parameter" "clusters" {
-  provider    = aws.business_mgmt_region
-  name        = "/clusters/${var.vcluster_name}"
-  description = "Cluster configuration for ${var.vcluster_name}"
-  type        = "String"
-  value = jsonencode({
-    cluster_ca_certificate = module.eks.cluster_certificate_authority_data
-    host                   = module.eks.cluster_endpoint
-    cluster_name           = var.cluster_name
-    environment            = var.cluster_name
-    argocd_role_arn        = "arn:aws:iam::<BUSINESS_MGMT_AWS_ACCOUNT_ID>:role/argocd-<BUSINESS_MGMT_CLUSTER_NAME>"
-  })
-}
-
 provider "kubernetes" {
     host = data.vault_generic_secret.cluster.data["host"]
     token                  = data.aws_eks_cluster_auth.cluster.token

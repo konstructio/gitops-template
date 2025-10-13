@@ -9,6 +9,10 @@ locals {
   }
 }
 
+data "aws_caller_identity" "kubefirst_mgmt" {
+  provider = aws.kubefirst_mgmt_s3_bucket_region
+}
+
 ################################################################################
 # S3 Bucket
 ################################################################################
@@ -43,7 +47,7 @@ module "eks" {
   access_entries = {
     "argocd_${var.cluster_name}" = {
       cluster_name  = "${var.cluster_name}"
-      principal_arn = "arn:aws:iam::${var.cluster_name}:role/argocd-<CLUSTER_NAME>"
+      principal_arn = "arn:aws:iam::${data.aws_caller_identity.kubefirst_mgmt.account_id}:role/argocd-mgmt-kgetpods-biz"
       policy_associations = {
         argocdAdminAccess = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
@@ -349,10 +353,6 @@ data "tls_certificate" "eks" {
   url = module.eks.cluster_oidc_issuer_url
 }
 
-data "aws_caller_identity" "kubefirst_mgmt" {
-  provider = aws.kubefirst_mgmt_s3_bucket_region
-}
-
 module "cert_manager" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.42.0"
@@ -525,7 +525,7 @@ resource "vault_generic_secret" "clusters" {
       host                   = module.eks.cluster_endpoint
       cluster_name           = var.cluster_name
       environment            = var.cluster_name
-      argocd_role_arn        = "arn:aws:iam::${data.aws_caller_identity.kubefirst_mgmt.account_id}:role/argocd-<CLUSTER_NAME>"
+      argocd_role_arn        = "arn:aws:iam::${data.aws_caller_identity.kubefirst_mgmt.account_id}:role/argocd-mgmt-kgetpods-biz"
     }
   )
 }

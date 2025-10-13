@@ -7,7 +7,7 @@ spec:
     name: <WORKLOAD_CLUSTER_NAME>
   forProvider:
     source: Remote
-    module: git::https://github.com/kgetpods-biz/gitops.git//terraform/aws/modules/bootstrap?ref=main
+    module: git::https://github.com/kgetpods-biz/gitops.git//terraform/aws/modules/business-bootstrap?ref=main
     vars:
     - key: cluster_name
       value: "<WORKLOAD_CLUSTER_NAME>"
