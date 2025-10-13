@@ -8,9 +8,9 @@ spec:
   configuration: |
       terraform {
         backend "s3" {
-          bucket   = "<STATE_STORE_BUCKET>"
+          bucket   = "<BUSINESS_STATE_STORE_BUCKET>"
           key      = "registry/clusters/<WORKLOAD_CLUSTER_NAME>/infrastructure/provider-config/terraform.tfstate"
-          region = "<CLOUD_REGION>"
+          region = "<BUSINESS_MGMT_REGION>"
           encrypt = true
         }
         required_providers {
