@@ -18,7 +18,7 @@ spec:
           create: true
           name: cert-manager
           annotations:
-            eks.amazonaws.com/role-arn: 'arn:aws:iam::<WORKLOAD_CLUSTER_ACCOUNT_ID>:role/cert-manager-<WORKLOAD_CLUSTER_NAME>'
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<KUBEFIRST_MGMT_ACCOUNT_ID>:role/cert-manager-<WORKLOAD_CLUSTER_NAME>'
         installCRDs: true
     chart: cert-manager
   destination:

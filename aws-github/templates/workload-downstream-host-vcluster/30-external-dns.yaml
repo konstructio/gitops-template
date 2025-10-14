@@ -22,7 +22,7 @@ spec:
           create: true
           name: external-dns
           annotations:
-            eks.amazonaws.com/role-arn: 'arn:aws:iam::<WORKLOAD_CLUSTER_ACCOUNT_ID>:role/external-dns-<WORKLOAD_CLUSTER_NAME>'
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<KUBEFIRST_MGMT_ACCOUNT_ID>:role/external-dns-<WORKLOAD_CLUSTER_NAME>'
         provider: <EXTERNAL_DNS_PROVIDER_NAME>
         sources:
         - ingress
