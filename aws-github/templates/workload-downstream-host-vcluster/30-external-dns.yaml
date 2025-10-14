@@ -2,6 +2,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: <WORKLOAD_CLUSTER_NAME>-external-dns
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: '30'
@@ -19,17 +21,13 @@ spec:
         serviceAccount:
           create: true
           name: external-dns
-        provider: cloudflare
+          annotations:
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::<WORKLOAD_CLUSTER_ACCOUNT_ID>:role/external-dns-<WORKLOAD_CLUSTER_NAME>'
+        provider: <EXTERNAL_DNS_PROVIDER_NAME>
         sources:
         - ingress
         domainFilters:
         - <WORKLOAD_EXTERNAL_DNS_DOMAIN_NAME>
-        env:
-        - name: CF_API_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: external-dns-secrets
-              key: token
     chart: external-dns
   destination:
     name: <WORKLOAD_CLUSTER_NAME>

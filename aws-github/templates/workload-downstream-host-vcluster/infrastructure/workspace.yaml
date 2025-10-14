@@ -15,5 +15,3 @@ spec:
       value: "<HOST_CLUSTER>"
     - key: domain_name
       value: "<DOMAIN_NAME>"
-    - key: vault_domain
-      value: "<VAULT_DOMAIN>"

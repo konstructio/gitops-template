@@ -30,33 +30,33 @@ spec:
           }
   secretStoreRef:
     kind: ClusterSecretStore
-    name: vault-kv-secret
+    name: <BUSINESS_MGMT_CLUSTER_NAME>-aws-ssm
   refreshInterval: 10s
   data:
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/<WORKLOAD_CLUSTER_NAME>
         property: argocd_manager_sa_token
       secretKey: argocd_manager_sa_token
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/<WORKLOAD_CLUSTER_NAME>
         property: host
       secretKey: host
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/<WORKLOAD_CLUSTER_NAME>
         property: cluster_name
       secretKey: cluster_name
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/<WORKLOAD_CLUSTER_NAME>
         property: cluster_ca_certificate
         conversionStrategy: Default
       secretKey: cluster_ca_certificate
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/<WORKLOAD_CLUSTER_NAME>
         property: client_certificate
         conversionStrategy: Default
       secretKey: client_certificate
     - remoteRef:
-        key: clusters/<WORKLOAD_CLUSTER_NAME>
+        key: /clusters/<WORKLOAD_CLUSTER_NAME>
         property: client_key
         conversionStrategy: Default
       secretKey: client_key

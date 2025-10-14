@@ -51,6 +51,16 @@ spec:
           web_identity_token_file = "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
         }
       }
+      provider "aws" {
+        alias = "kubefirst_mgmt_s3_bucket_region"
+        region = "<CLOUD_REGION>"
+        allowed_account_ids = ["<KUBEFIRST_MGMT_ACCOUNT_ID>"]
+        assume_role_with_web_identity {
+          session_name = "kubefirst-pro"
+          role_arn = "arn:aws:iam::<KUBEFIRST_MGMT_ACCOUNT_ID>:role/crossplane-<KUBEFIRST_MGMT_CLUSTER_NAME>"
+          web_identity_token_file = "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
+        }
+      }
   pluginCache: false
   credentials:
   - filename: gen-nothing
