@@ -11,7 +11,3 @@ variable "vcluster_name" {
 variable "domain_name" {
     type = string
 }
-
-variable "vault_domain" {
-    type = string
-}
