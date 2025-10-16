@@ -529,8 +529,9 @@ module "external_secrets_operator" {
   tags = local.tags
   
 }
+
 resource "aws_iam_policy" "external_secrets_operator" {
-  name = "external-secrets-operator-${var.cluster_name}"
+  name = "external-secrets-operator-${var.cluster_name}-${random_integer.id.result}"
   path = "/"
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -539,20 +540,35 @@ resource "aws_iam_policy" "external_secrets_operator" {
         "Effect" : "Allow",
         "Action" : [
           "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret",
-          "secretsmanager:ListSecrets",
-          "secretsmanager:ListSecretVersionIds"
+          "secretsmanager:DescribeSecret"
         ],
-        "Resource" : ["*"]
+        "Resource" : [
+          "arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:${var.cluster_name}/*"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "secretsmanager:ListSecrets"
+        ],
+        "Resource" : "*"
       },
       {
         "Effect" : "Allow",
         "Action" : [
           "ssm:GetParameter",
-          "ssm:GetParameters",
+          "ssm:GetParameters"
+        ],
+        "Resource" : [
+          "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.cluster_name}/*"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
           "ssm:DescribeParameters"
         ],
-        "Resource" : ["*"]
+        "Resource" : "*"
       },
       {
         "Effect" : "Allow",
@@ -560,8 +576,13 @@ resource "aws_iam_policy" "external_secrets_operator" {
           "kms:Decrypt",
           "kms:DescribeKey"
         ],
-        "Resource" : ["*"]
+        "Resource" : [
+          "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/*"
+        ]
       }
     ]
   })
-} 
+}
+
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
