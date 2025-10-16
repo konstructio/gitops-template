@@ -467,6 +467,30 @@ resource "aws_iam_policy" "external_dns" {
 EOT
 }
 
+module "crossplane_kubefirst_mgmt" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.42.0"
+
+  providers = {
+    aws = aws.kubefirst_mgmt_s3_bucket_region
+  }
+
+  role_name = "crossplane-${var.cluster_name}"
+  
+  role_policy_arns = {
+    admin = "arn:aws:iam::aws:policy/AdministratorAccess"
+  }
+  
+  oidc_providers = {
+    main = {
+      provider_arn               = "arn:aws:iam::${data.aws_caller_identity.kubefirst_mgmt.account_id}:oidc-provider/${module.eks.oidc_provider}"
+      namespace_service_accounts = ["crossplane-system:crossplane-provider-terraform-${var.cluster_name}"]
+    }
+  }
+
+  tags = local.tags
+}
+
 module "external_secrets_operator" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.40.0"

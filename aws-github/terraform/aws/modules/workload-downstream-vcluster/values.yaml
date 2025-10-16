@@ -3,12 +3,12 @@ controlPlane:
     k3s:
       enabled: true
       extraArgs:
-        - "--tls-san=${vcluster_name}.${domain_name}"
+        - "--tls-san=test1.gitopsmagic.com"
 
   ingress:
     enabled: true
     pathType: ImplementationSpecific
-    host: "${vcluster_name}.${domain_name}"
+    host: "test1.gitopsmagic.com"
     annotations:
       nginx.ingress.kubernetes.io/backend-protocol: HTTPS
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
@@ -17,6 +17,11 @@ controlPlane:
     spec:
       ingressClassName: "nginx"
       tls:
-        - secretName: "${vcluster_name}-tls"
+        - secretName: "test1-tls"
           hosts:
-            - "${vcluster_name}.${domain_name}"
+            - "test1.gitopsmagic.com"
+
+sync:
+  toHost:
+    serviceAccounts:
+      enabled: true
