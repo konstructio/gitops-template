@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ack-ecr-controller
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '35'
+spec:
+  destination:
+    namespace: ack-system
+    name: <WORKLOAD_CLUSTER_NAME>
+  project: <WORKLOAD_CLUSTER_NAME>
+  source:
+    chart: ecr-chart
+    helm:
+      parameters:
+      - name: aws.region
+        value: us-east-1
+      - name: serviceAccount.annotations.eks\.amazonaws\.com/role-arn
+        value: arn:aws:iam::659548672500:role/ack-ecr-<WORKLOAD_CLUSTER_NAME>
+    repoURL: public.ecr.aws/aws-controllers-k8s
+    targetRevision: 1.3.1
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

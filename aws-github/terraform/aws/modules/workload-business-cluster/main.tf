@@ -504,7 +504,10 @@ module "external_secrets_operator" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["external-secrets-operator:external-secrets"]
+      namespace_service_accounts = [
+        "external-secrets-operator:external-secrets",
+        "argocd:external-secrets"
+        ]
     }
   }
 
@@ -659,3 +662,75 @@ module "argocd" {
 
   tags = local.tags
 }
+
+module "ack-ecr" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.40.0"
+
+  role_name = "ack-ecr-${var.cluster_name}"
+  role_policy_arns = {
+    ack-ecr = aws_iam_policy.ack-ecr.arn
+  }
+  assume_role_condition_test = "StringLike"
+  allow_self_assume_role     = true
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["ack-system:ack-ecr-controller"]
+    }
+  }
+
+  tags = local.tags
+  
+}
+
+resource "aws_iam_policy" "ack-ecr" {
+  name = "ack-ecr-${var.cluster_name}"
+  path = "/"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid": "ECRRepositoryManagement",
+        "Effect": "Allow",
+        "Action": [
+          "ecr:CreateRepository",
+          "ecr:DeleteRepository",
+          "ecr:DescribeRepositories",
+          "ecr:ListTagsForResource",
+          "ecr:TagResource",
+          "ecr:UntagResource"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Sid": "ECRImageTagMutability",
+        "Effect": "Allow",
+        "Action": [
+          "ecr:PutImageTagMutability"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Sid": "ECRLifecyclePolicy",
+        "Effect": "Allow",
+        "Action": [
+          "ecr:PutLifecyclePolicy",
+          "ecr:GetLifecyclePolicy",
+          "ecr:DeleteLifecyclePolicy"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Sid": "ECRRepositoryPolicy",
+        "Effect": "Allow",
+        "Action": [
+          "ecr:SetRepositoryPolicy",
+          "ecr:GetRepositoryPolicy",
+          "ecr:DeleteRepositoryPolicy"
+        ],
+        "Resource": "*"
+      }
+    ]
+  })
+} 
