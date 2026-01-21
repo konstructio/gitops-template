@@ -106,40 +106,7 @@ module "eks" {
   }
 
   # Enable admin permissions for the cluster creator
-  enable_cluster_creator_admin_permissions = true
-
-  access_entries = {
-
-    "argocd_<CLUSTER_NAME>" = {
-      cluster_name  = "<CLUSTER_NAME>"
-      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
-      username      = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/argocd-<CLUSTER_NAME>"
-      policy_associations = {
-        view_deployments = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-          access_scope = {
-            namespaces = ["default"]
-            type       = "namespace"
-          }
-        }
-      }
-    }
-
-    "atlantis_<CLUSTER_NAME>" = {
-      cluster_name  = "<CLUSTER_NAME>"
-      principal_arn = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
-      username      = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/atlantis-<CLUSTER_NAME>"
-      policy_associations = {
-        view_deployments = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-          access_scope = {
-            namespaces = ["default"]
-            type       = "namespace"
-          }
-        }
-      }
-    }
-  }
+  enable_cluster_creator_admin_permissions = false
 
   tags = local.tags
 }
@@ -616,7 +583,7 @@ EOT
 }
 
 resource "aws_iam_policy" "ssm_access_policy" {
-  name = "kubefirst-pro-api-ssm-access-${local.name}"
+  name        = "kubefirst-pro-api-ssm-access-${local.name}"
   description = "Policy to allow SSM actions for kubefirst-pro-api"
   policy = jsonencode({
     Version = "2012-10-17",
