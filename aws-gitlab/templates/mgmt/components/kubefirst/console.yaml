@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.konstruct.io
-    targetRevision: 2.10.4
+    targetRevision: 2.10.5-rc1
     chart: kubefirst-pro
     helm:
       values: |-
